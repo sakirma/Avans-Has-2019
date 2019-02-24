@@ -12,25 +12,23 @@
 {!! HTML::style('css/leaflet/leaflet.css') !!}
 {!! HTML::style('css/leaflet/leaflet-map.css') !!}
 
-<body>
-    <div id="mapid"> </div>
+    <body>
+        <div id="mapid"> </div>
 
-    <script> 
-        var mymap = L.map('mapid').setView([52.143438, 6.215206], 7.5);
+        <script> 
+            var mymap = L.map('mapid').setView([52.143438, 6.215206], 7.5);
 
-        L.tileLayer('https://api.mapbox.com/styles/v1/sakirma/cjsj37dym6e401gqi2zcu2aph/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: 'sakirma.cjsj37dym6e401gqi2zcu2aph',
-            accessToken: 'pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig' // AccessToken has only read permission.
-        }).addTo(mymap);
+            L.tileLayer('https://api.mapbox.com/styles/v1/sakirma/cjsj37dym6e401gqi2zcu2aph/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: 'sakirma.cjsj37dym6e401gqi2zcu2aph',
+                accessToken: 'pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig' // AccessToken has only read permission.
+            }).addTo(mymap);
 
-        // var Thunderforest_Pioneer = L.tileLayer('https://{s}.tile.thunderforest.com/pioneer/{z}/{x}/{y}.png?apikey={apikey}', {
-        //     attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        //              Thunderforest.Pioneer API KEY
-        //     apikey: '450176119bce4887899777df6ae618bc',
-        //     maxZoom: 22
-        // }).addTo(mymap);
-    </script>
-</body>
+            L.popup()
+                .setLatLng([52.143438, 6.215206])
+                .setContent('<p>Hello world!<br />This is a nice popup.</p>')
+                .openOn(mymap);
+        </script>
+    </body>
 </html>
