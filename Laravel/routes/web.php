@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/leaflet', function(){
     return view('leafletExample');
 });

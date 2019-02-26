@@ -9,9 +9,10 @@
 
 
 {!! HTML::script('js/leaflet.js')!!}
+{!! HTML::script('js/GeoJSONExample/Example1.js')!!}
+
 {!! HTML::style('css/leaflet/leaflet.css') !!}
 {!! HTML::style('css/leaflet/leaflet-map.css') !!}
-
     <body>
         <div id="mapid"> </div>
 
@@ -24,11 +25,10 @@
                 id: 'sakirma.cjsj37dym6e401gqi2zcu2aph',
                 accessToken: 'pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig' // AccessToken has only read permission.
             }).addTo(mymap);
-
-            L.popup()
-                .setLatLng([52.143438, 6.215206])
-                .setContent('<p>Hello world!<br />This is a nice popup.</p>')
-                .openOn(mymap);
+            
+            
+            // TODO: This has to be done through the database. Retrieve the GeoJSON data and convert it using json_encode().
+            L.geoJSON(example).addTo(mymap);
         </script>
     </body>
 </html>
