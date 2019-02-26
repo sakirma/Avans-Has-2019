@@ -15,14 +15,6 @@ var example = {
       {
         "type": "Feature",
         "properties": {
-          "stroke": "#555555",
-          "stroke-width": 2,
-          "stroke-opacity": 1,
-          "fill": "#02a81b",
-          "fill-opacity": 0.5,
-          "extraInformatie": "HAH",
-          "meerInformatie": "WAT",
-          "NOGMEERINFORMATIE": "WOW"
         },
         "geometry": {
           "type": "Polygon",
