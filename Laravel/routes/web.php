@@ -19,3 +19,7 @@ Route::get('/', function () {
 Route::get('/leaflet', function(){
     return view('leafletExample');
 });
+
+Route::get('/front-end', function(){
+    return view('mainpage');
+});
