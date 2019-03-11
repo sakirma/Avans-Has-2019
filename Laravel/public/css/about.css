@@ -27,8 +27,8 @@
   /* The main image */
 
   #main-image{
-    margin-top: 50px;
-    
+    margin-top: 25vh;
+
     max-width: 1000px;
     width: 70%;
   }
@@ -44,9 +44,8 @@
   
   #banner img{
     width: 100vw;
-    height: 150px;
-  
-    border-radius: 15px;
+    height: 200px;
+
     object-fit: cover;
   
     mask:-moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */

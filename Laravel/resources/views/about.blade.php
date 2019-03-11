@@ -25,7 +25,7 @@
         <span class="navbtn" style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776;</span>
         <div class="container">
             <div id="banner">
-                <img src="{{ asset('img/about-banner.jpg') }}" alt="den bosch bossen">
+                <img src="{{ asset('img/about-banner2.jpg') }}" alt="den bosch bossen">
                 <h1>About us!</h1>
             </div>
             <img id="main-image" src="{{ asset('img/shertogenbosch.png') }}">
