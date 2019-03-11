@@ -20,6 +20,10 @@ Route::get('/leaflet', function(){
     return view('leafletExample');
 });
 
-Route::get('/front-end', function(){
-    return view('mainpage');
+Route::get('/home', function(){
+    return view('home');
+});
+
+Route::get('about', function(){
+    return view('about');
 });
