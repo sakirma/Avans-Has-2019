@@ -56,4 +56,55 @@ body{
     
     transform: translate(-50%, -91%);
   }
+
+  /* Project explanation container */
+
+  #project-exp{
+    text-align: left;
+    
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 250px;
+
+    padding: 50px;
+    background-color: white;
+
+    border-radius: 20px;
+    opacity: 0.8;
+
+    min-width: 450px;
+
+    color: black;
+  }
   
+  #project-exp h1{ margin-bottom: 15px; }
+  #project-exp p{
+
+    -moz-hyphens:auto;
+    -ms-hyphens:auto;
+    -webkit-hyphens:auto;
+    hyphens:auto;
+    word-wrap:break-word;
+  }
+
+  .img-container{ text-align: center; }
+
+  .img-container img{
+    max-width: 250px;
+    max-height: 250px;
+    
+    object-fit: cover;
+    margin: 50px;
+  }
+
+  @media screen and (max-width: 653px) {
+    
+    /* The info card */
+    #project-exp{ 
+      min-width: 50px;
+ 
+      margin-left: 0px;
+      margin-right: 10px;
+    }
+  }
+
