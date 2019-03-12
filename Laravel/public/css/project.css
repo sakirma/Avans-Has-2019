@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css?family=Pacifico|Righteous|Roboto');
+    
+    *{
+        margin: 0px;
+        padding: 0px;
+        font-family: 'Roboto', sans-serif;
+    }
+
+
+body{
+    background-color: rgb(159, 198, 151); /* Black*/
+}
+
+.container{
+    text-align: center;
+    
+    float: left;
+
+    width: 100vw;
+    height: auto;
+  }
+
+  /* The banner */
+  
+  #banner{ 
+    width: 100vw;
+    height: 150px;
+
+    float: left;
+  }
+  
+  #banner img{
+    width: 100vw;
+    height: 200px;
+
+    object-fit: cover;
+  
+    mask:-moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+    mask: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    mask: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+    -webkit-mask: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+    -webkit-mask: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    -webkit-mask: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+    z-index: -1;
+  }
+  
+  #banner h1{
+    color: white;
+  
+    position: absolute;
+    
+    top: 95px;
+    left: 50%;
+    
+    transform: translate(-50%, -91%);
+  }
+  
