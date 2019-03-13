@@ -26,16 +26,20 @@
         <div class="container">
             <div id="banner">
                 <img src="{{ asset('img/about-banner2.jpg') }}" alt="den bosch bossen">
-                <h1>Details van {{ $name }}</h1>
+                <h1>Details</h1>
             </div>
             <table>
                 <tr>
                     <th>Naam:</th>
-                    <td>{{ $name }}</td>
+                    @foreach($model as $item)
+                    <td>{{ $item->name }}</td>
+                    @endforeach
                 </tr>
                 <tr>
                     <th>Omschrijving:</th>
-                    <td>{{ $information }}</td>
+                    @foreach($model as $item)
+                    <td>{{ $item->information }}</td>
+                    @endforeach
                 </tr>
             </table>
         </div>
