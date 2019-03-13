@@ -27,6 +27,7 @@
         <a href="{{ url('/home')}}"> Home</a>
         <a href="{{ url('/snuffelen')}}"> Snuffelen</a>
         <a href="{{ url('/about')}}"> About</a>
+        <a href="{{ url('/project')}}"> Project</a>
     </div>
     <span class="navbtn" style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776;</span>
     <div id="container">
