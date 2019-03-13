@@ -5,6 +5,8 @@
     padding: 0px;
 }
 
+
+
 /* Main page */
 
 #background-image {
@@ -34,4 +36,28 @@
 #banner h1{
     font-family: 'Righteous', cursive;
     font-size: 60px;
+}
+
+/* The map container */
+
+#map-container{ width: 100vw; }
+
+#leaflet{
+    
+    text-align: center;
+    
+    width: 80%;
+    height: 100vh;
+    
+    display: inline-block;
+}
+
+/* Legenda */
+
+#legenda{
+    background-color: rgb(181, 214, 139);   
+    display:inline-block;
+    
+    width: 20%;
+    height: 100vh;
 }

@@ -20,10 +20,6 @@ Route::get('/leaflet', function(){
     return view('leafletExample');
 });
 
-Route::get('/home', function(){
-    return view('home');
-});
-
 Route::get('/about', function(){
     return view('about');
 });
@@ -31,3 +27,5 @@ Route::get('/about', function(){
 Route::get('/project', function(){
     return view('project');
 });
+
+Route::get('home/', 'MainPageController@GetCatagories');
