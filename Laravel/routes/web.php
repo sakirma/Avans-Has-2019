@@ -29,7 +29,7 @@ Route::get('about', function(){
 });
 
 Route::get('details', function() {
-    return view('home');
+    abort(404);
 });
 
 Route::get('details/{id}', "ProjectPointsController@GetDetails");
