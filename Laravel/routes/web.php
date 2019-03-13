@@ -27,3 +27,9 @@ Route::get('/home', function(){
 Route::get('about', function(){
     return view('about');
 });
+
+Route::get('details', function() {
+    return view('home');
+});
+
+Route::get('details/{id}', "ProjectPointsController@GetDetails");
