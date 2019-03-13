@@ -12,10 +12,8 @@ class ProjectPointsController extends Controller
     public function GetDetails($id)
     {
         // Loading model
-       // $model = ProjectPointModel::where('id', $id);
-        $model = DB::select('select * from project_points where id=?', [$id]);
-
-        //var_dump($model);
+       $model = ProjectPointModel::find($id);
+       
         /*
         $testModel = array(
             'name' => 'Test name',
