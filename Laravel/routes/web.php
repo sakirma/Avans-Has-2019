@@ -10,11 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', 'MainPageController@GetCatagories');
 
 Route::get('/leaflet', function(){
     return view('leafletExample');
@@ -27,5 +23,3 @@ Route::get('/about', function(){
 Route::get('/project', function(){
     return view('project');
 });
-
-Route::get('home/', 'MainPageController@GetCatagories');
