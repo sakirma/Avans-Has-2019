@@ -29,3 +29,9 @@ Route::get('/project', function(){
 });
 
 Route::get('home/', 'MainPageController@GetCatagories');
+
+Route::get('details', function() {
+    abort(404);
+});
+
+Route::get('details/{id}', "ProjectPointsController@GetDetails");
