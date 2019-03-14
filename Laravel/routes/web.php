@@ -23,3 +23,9 @@ Route::get('/about', function(){
 Route::get('/project', function(){
     return view('project');
 });
+
+Route::get('details', function() {
+    abort(404);
+});
+
+Route::get('details/{id}', "ProjectPointsController@GetDetails");
