@@ -12,7 +12,7 @@ $(document).ready(function () {
 
 
     // TODO: This has to be done through the database. Retrieve the GeoJSON data and convert it using json_encode().
-    L.geoJSON(example).addTo(mymap);
+    L.geoJSON(example).addTo(mymap).on('click', () => { window.open("/project"); });;
 
     console.log(example);
 });
@@ -24,31 +24,31 @@ function changeToCategory(cat){
 
     if(cat == "categorie 1"){
         markerGroup = L.layerGroup().addTo(mymap);
-        new L.marker([51.758065435566195, 5.3166961669921875]).addTo(markerGroup);
-        new L.marker([51.718055435566195, 5.2166961669921875]).addTo(markerGroup);
-        new L.marker([51.758045435566195, 5.1166961669921875]).addTo(markerGroup);
-        new L.marker([51.708035435566195, 5.5166961669921875]).addTo(markerGroup);
+        new L.marker([51.758065435566195, 5.3166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });
+        new L.marker([51.718055435566195, 5.2166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
+        new L.marker([51.758045435566195, 5.1166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
+        new L.marker([51.708035435566195, 5.5166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
     }
     if(cat == "categorie 2"){
         markerGroup = L.layerGroup().addTo(mymap);
-        new L.marker([51.458065435566195, 5.3166961669921875]).addTo(markerGroup);
-        new L.marker([51.418055435566195, 5.2166961669921875]).addTo(markerGroup);
-        new L.marker([51.458045435566195, 5.1166961669921875]).addTo(markerGroup);
-        new L.marker([51.408035435566195, 5.5166961669921875]).addTo(markerGroup);
+        new L.marker([51.458065435566195, 5.3166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
+        new L.marker([51.418055435566195, 5.2166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
+        new L.marker([51.458045435566195, 5.1166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
+        new L.marker([51.408035435566195, 5.5166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
     }
     if(cat == "categorie 3"){
         markerGroup = L.layerGroup().addTo(mymap);
-        new L.marker([51.758065435566195, 5.2166961669921875]).addTo(markerGroup);
-        new L.marker([51.718055435566195, 5.3166961669921875]).addTo(markerGroup);
-        new L.marker([51.758045435566195, 5.4166961669921875]).addTo(markerGroup);
-        new L.marker([51.608035435566195, 5.5166961669921875]).addTo(markerGroup);
+        new L.marker([51.758065435566195, 5.2166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
+        new L.marker([51.718055435566195, 5.3166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
+        new L.marker([51.758045435566195, 5.4166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
+        new L.marker([51.608035435566195, 5.5166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
     }
     if(cat == "categorie 4"){
         markerGroup = L.layerGroup().addTo(mymap);
-        new L.marker([51.358065435566195, 5.2166961669921875]).addTo(markerGroup);
-        new L.marker([51.718055435566195, 5.4166961669921875]).addTo(markerGroup);
-        new L.marker([51.258045435566195, 5.5166961669921875]).addTo(markerGroup);
-        new L.marker([51.808035435566195, 5.1166961669921875]).addTo(markerGroup);
+        new L.marker([51.358065435566195, 5.2166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
+        new L.marker([51.718055435566195, 5.4166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
+        new L.marker([51.258045435566195, 5.5166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
+        new L.marker([51.808035435566195, 5.1166961669921875]).addTo(markerGroup).on('click', () => { window.open("/project"); });;
     }
 
 }
