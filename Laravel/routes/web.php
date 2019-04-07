@@ -29,3 +29,5 @@ Route::get('details', function() {
 });
 
 Route::get('details/{id}', "ProjectPointsController@GetDetails");
+
+Route::get('index', "RoutesController@index");
