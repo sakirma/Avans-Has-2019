@@ -31,4 +31,5 @@ Route::get('details', function() {
 
 Route::get('details/{id}', "ProjectPointsController@GetDetails");
 
-Route::get('index', "RoutesController@index");
+Route::get('routelist', "RoutesController@index");
+Route::get('/home', 'MainPageController@GetCatagories');
