@@ -11,12 +11,14 @@ class InterestPlace extends Model
 
     protected $fillable = [
         'project_id',
-        'geo_json',
+        'point',
+        'area',
         'name',
         'information',
     ];
 
     protected $spatialFields = [
-        'geopoint',
+        'location',
+        'area'
     ];
 }
