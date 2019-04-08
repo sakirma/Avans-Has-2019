@@ -11,6 +11,7 @@
 |
 */
 Route::get('/', 'MainPageController@GetCatagories');
+Route::get('details/{id}', "ProjectPointsController@getDetails");
 
 Route::get('/leaflet', function(){
     return view('leafletExample');
@@ -20,7 +21,7 @@ Route::get('/about', function(){
     return view('about');
 });
 
-Route::get('/project', function(){
+    Route::get('/project', function(){
     return view('project');
 });
 
