@@ -24,7 +24,7 @@ Route::get('/about', function(){
     return view('about');
 });
 
-Route::get('/project', function(){
+    Route::get('/project', function(){
     return view('project');
 });
 
