@@ -28,9 +28,4 @@ class ProjectPointsController extends Controller
 
         abort(404);
     }
-
-    public function getNearestPoints(Request $request){
-        $location=$request->location;
-        var_dump($location);
-    }
 }
