@@ -26,10 +26,34 @@ $(document).ready(function () {
         accessToken: 'pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig' // AccessToken has only read permission.
     }).addTo(mymap);
 
+    mymap.locate({setView: true, maxZoom: 16});
+
     console.log(example);
 });
 
+mymap.on('locationfound', onLocationFound);
+mymap.on('locationerror', onLocationError);
 
+function onLocationError(e) {
+    alert(e.message);
+}
+
+function onLocationFound(e) {
+    let radius = e.accuracy / 2;
+    let greenIcon = new L.icon({
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    L.marker(e.latlng, {icon: greenIcon}).addTo(mymap)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+    L.circle(e.latlng, radius).addTo(mymap);
+}
 function changeToCategory(cat){
 
     mymap.removeLayer(markerGroup);
