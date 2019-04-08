@@ -10,7 +10,7 @@ use App\Models\Project;
 
 class ProjectPointsController extends Controller
 {
-    public function GetDetails($id)
+    public function getDetails($id)
     {
         // Loading model
         //$model = ProjectPoint::find($id);
@@ -29,5 +29,10 @@ class ProjectPointsController extends Controller
         //}
 
         //abort(404);
+    }
+
+    public function getNearestPoints(Request $request){
+        $location=$request->location;
+        var_dump($location);
     }
 }

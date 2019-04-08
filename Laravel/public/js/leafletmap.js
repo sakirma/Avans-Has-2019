@@ -1,4 +1,6 @@
-var mymap = L.map('leaflet').setView([52.143438, 6.215206], 7.5);
+import * as L from "../../app/Libraries/leaflet/leaflet-src";
+
+const mymap = L.map('leaflet').setView([52.143438, 6.215206], 7.5);
 var markerGroup = [];
 
 
@@ -41,6 +43,11 @@ function onLocationFound(e) {
         .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
     L.circle(e.latlng, radius).addTo(mymap);
+
+    let posting = $.post( "/location", { location: e.latlng, });
+    posting.done( function ( data ) {
+       alert("Data loaded: " + data);
+    });
 }
 
 
