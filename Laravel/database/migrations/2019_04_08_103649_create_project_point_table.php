@@ -18,6 +18,9 @@ class CreateProjectPointTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('project_id');
 
+            $table->point('location');
+            $table->geometryCollection('geo_json');
+
             $table->string('name');
             $table->string('information');
         });
