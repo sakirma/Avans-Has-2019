@@ -53,6 +53,7 @@ function onLocationFound(e) {
         .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
     L.circle(e.latlng, radius).addTo(mymap);
+
 }
 function changeToCategory(cat){
 

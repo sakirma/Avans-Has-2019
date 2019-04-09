@@ -9,6 +9,7 @@
     <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/navbar.js') }}"></script>
 
 
