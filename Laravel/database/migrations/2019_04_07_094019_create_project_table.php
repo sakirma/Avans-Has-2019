@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+
 class CreateProjectTable extends Migration
 {
     /**
@@ -15,6 +16,8 @@ class CreateProjectTable extends Migration
     {
         Schema::create('project', function (Blueprint $table) {
             $table->increments('id');
+            $table->point('location');
+            $table->geometryCollection('geo_json');
             $table->string("category");
             $table->string('name');
             $table->text('information');
