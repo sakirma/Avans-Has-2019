@@ -13,6 +13,8 @@
 Route::get('/', 'MainPageController@GetCatagories');
 Route::get('details/{id}', "ProjectPointsController@getDetails");
 
+Route::post('/location', "ProjectPointsController@getLocationData");
+
 Route::get('/leaflet', function(){
     return view('leafletExample');
 });

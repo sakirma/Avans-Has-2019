@@ -8,6 +8,12 @@ use App\Models\ProjectPoint;
 
 class ProjectPointsController extends Controller
 {
+    public function getLocationData(Request $request)
+    {
+        //Maak call naar database om alle lat en long terug te halen
+        return json_encode($request->all());
+    }
+
     public function getDetails($id)
     {
         // Loading model
@@ -26,6 +32,6 @@ class ProjectPointsController extends Controller
             return view('details', ['model' => $model, 'project' => $project]);
         }
 
-        abort(404);
+        return abort(404);
     }
 }
