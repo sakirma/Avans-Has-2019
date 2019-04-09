@@ -9,11 +9,11 @@ use App\Models\ProjectPoint;
 
 class ProjectPointsController extends Controller
 {
-    public function GetDetails($id)
+    public function getDetails($id)
     {
         // Loading model
-       $model = ProjectPoint::find($id);
-       $project = $model->project;
+        $model = ProjectPoint::find($id);
+        $project = $model->project;
 
         /*
         $testModel = array(
@@ -23,7 +23,7 @@ class ProjectPointsController extends Controller
         */
 
         // Check if model has been found in DB
-        if(!empty($model)){
+        if (!empty($model)) {
             return view('details', ['model' => $model, 'project' => $project]);
         }
 
