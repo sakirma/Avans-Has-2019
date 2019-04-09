@@ -29,8 +29,7 @@ Route::get('details', function() {
     abort(404);
 });
 
-Route::get('details/{id}', "ProjectPointsController@GetDetails");
+Route::get('routelist', "RoutesController@index");
 
 Route::post('AddProject', "ProjectController@SetPointLocation");
 Route::post('GetProjectWithinDistance', "ProjectController@GetProjectLocations");
-
