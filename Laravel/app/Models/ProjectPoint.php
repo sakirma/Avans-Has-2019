@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProjectPoint extends Model
 {
-    protected $table = 'project_points';
+    protected $table = 'project_point';
 
     // Table does not have timestamps
     public $timestamps = false;
