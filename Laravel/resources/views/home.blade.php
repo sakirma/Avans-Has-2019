@@ -17,9 +17,11 @@
 
 {!! HTML::script('js/leaflet.js')!!}
 {!! HTML::script('js/GeoJSONExample/Example1.js')!!}
+{!! HTML::script('js/leaflet/leaflet-routing-machine.js')!!}
 
 {!! HTML::style('css/leaflet/leaflet.css') !!}
 {!! HTML::style('css/leaflet/leaflet-map.css') !!}
+{!! HTML::style('css/leaflet/leaflet-routing-machine.css') !!}
 
 <body>
     <div id="mysidenav" class="sidenav">
