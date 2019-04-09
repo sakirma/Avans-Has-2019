@@ -30,4 +30,7 @@ Route::get('details', function() {
 
 Route::get('details/{id}', "ProjectPointsController@GetDetails");
 
+
+Auth::routes();
+
 Route::post('login', [ 'as' => 'login', 'uses' => 'Auth\LoginController@login']);
