@@ -33,3 +33,8 @@ Route::get('routelist', "RoutesController@index");
 
 Route::post('AddProject', "ProjectController@SetPointLocation");
 Route::post('GetProjectWithinDistance', "ProjectController@GetProjectLocations");
+
+Route::get('/admin/home', 'HomeController@index');
+Route::group(['prefix' => 'admin'], function () {
+    Auth::routes();
+});
