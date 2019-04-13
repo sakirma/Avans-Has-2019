@@ -1824,8 +1824,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "FirstPage"
 });
@@ -7064,7 +7062,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.first-page-title[data-v-628e97f8] {\n    font-family: bebas_neuebold !important;\n    font-weight: bold !important;\n}\n.first-page-text[data-v-628e97f8] {\n    /*font-family: VerveineW01-Regular !important;*/\n}\n", ""]);
+exports.push([module.i, "\n.first-page-title[data-v-628e97f8] {\n    font-family: bebas_neuebold !important;\n    font-weight: bold !important;\n}\n.first-page-text[data-v-628e97f8] {\n    font-family: VerveineW01-Regular !important;\n    font-weight: bold !important;\n}\n", ""]);
 
 // exports
 
@@ -38532,14 +38530,12 @@ var render = function() {
             [
               _c(
                 "v-flex",
-                {
-                  staticClass: "text-xs-center white--text",
-                  attrs: { xs12: "", md4: "" }
-                },
+                { attrs: { xs12: "", md4: "" } },
                 [
                   _c(
                     "v-card",
                     {
+                      staticClass: "text-xs-center white--text",
                       staticStyle: { transition: "none" },
                       attrs: { height: "100vh", color: "rgb(136, 176, 0, 0.5)" }
                     },
@@ -38573,7 +38569,13 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-btn",
-                            { attrs: { outline: "", fab: "" } },
+                            {
+                              attrs: {
+                                color: "rgb(0,0,0, 0.65)",
+                                outline: "",
+                                fab: ""
+                              }
+                            },
                             [_c("v-icon", [_vm._v("arrow_drop_down_circle")])],
                             1
                           )
