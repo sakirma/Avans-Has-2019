@@ -96,6 +96,13 @@
       <path value="$PROJECT_DIR$/Laravel/vendor/geo-io/interface" />
       <path value="$PROJECT_DIR$/Laravel/vendor/grimzy/laravel-mysql-spatial" />
       <path value="$PROJECT_DIR$/Laravel/vendor/jmikola/geojson" />
+      <path value="$PROJECT_DIR$/Laravel/vendor/defuse/php-encryption" />
+      <path value="$PROJECT_DIR$/Laravel/vendor/phpseclib/phpseclib" />
+      <path value="$PROJECT_DIR$/Laravel/vendor/firebase/php-jwt" />
+      <path value="$PROJECT_DIR$/Laravel/vendor/symfony/psr-http-message-bridge" />
+      <path value="$PROJECT_DIR$/Laravel/vendor/laravel/passport" />
+      <path value="$PROJECT_DIR$/Laravel/vendor/league/event" />
+      <path value="$PROJECT_DIR$/Laravel/vendor/league/oauth2-server" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

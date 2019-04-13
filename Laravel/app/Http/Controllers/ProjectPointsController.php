@@ -19,6 +19,9 @@ class ProjectPointsController extends Controller
     {
         // Loading model
         $model = ProjectPoint::find($id);
+
+        if(empty($model)) { return view('/project'); }
+
         $project = $model->project;
 
         /*
@@ -32,6 +35,8 @@ class ProjectPointsController extends Controller
         if (!empty($model)) {
             return view('details', ['model' => $model, 'project' => $project]);
         }
+
+
 
         return abort(404);
     }

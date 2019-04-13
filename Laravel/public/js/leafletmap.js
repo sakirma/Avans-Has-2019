@@ -9,10 +9,10 @@ $(document).ready(function () {
 function initMap(){
 
     // TODO: This has to be done through the database. Retrieve the GeoJSON data and convert it using json_encode().
-    L.geoJSON(example).addTo(mymap).on('click', () => {
+    /*L.geoJSON(example).addTo(mymap).on('click', () => {
         window.open("/priject");
     });
-
+    */
     L.Routing.control({
         router: L.Routing.mapbox('pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig'),
         waypoints: [
@@ -84,7 +84,7 @@ function getNearbyPoints(e){
                 let distance = calculateDistance(latlng, dummyArray[i]);
                 console.log('Total: ' + distance);
 
-                if (distance < 70) {
+                if (distance < 7) {
 
                     console.log('Accepted: ' + distance);
 
