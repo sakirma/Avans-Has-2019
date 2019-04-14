@@ -1,6 +1,6 @@
 <template>
     <v-layout align-center justify-center row fill-height>
-        <v-flex shrink>
+        <v-flex shrink class="hidden-sm-and-down">
             <v-img src="img/RoadLeaf-Logo.png"
                    height="100%"
                    max-height="100px"
@@ -17,7 +17,7 @@
                     </v-icon>
                 </v-btn>
 
-                <div class="text-xs-center font-weight-black white--text display-1">
+                <div :class="{'subheading': $vuetify.breakpoint.xs}" class="text-xs-center font-weight-black white--text display-1">
                     LAAT MIJ NATUUR ZIEN
                 </div>
 

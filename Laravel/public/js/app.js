@@ -53158,7 +53158,7 @@ var render = function() {
     [
       _c(
         "v-flex",
-        { attrs: { shrink: "" } },
+        { staticClass: "hidden-sm-and-down", attrs: { shrink: "" } },
         [
           _c("v-img", {
             staticStyle: { filter: "brightness(0) invert(1)" },
@@ -53207,7 +53207,8 @@ var render = function() {
                 "div",
                 {
                   staticClass:
-                    "text-xs-center font-weight-black white--text display-1"
+                    "text-xs-center font-weight-black white--text display-1",
+                  class: { subheading: _vm.$vuetify.breakpoint.xs }
                 },
                 [_vm._v("\n                LAAT MIJ NATUUR ZIEN\n            ")]
               ),
