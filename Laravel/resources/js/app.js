@@ -8,6 +8,16 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 window.Vuetify = require('vuetify');
+
+import L from 'leaflet';
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+    iconUrl: require('leaflet/dist/images/marker-icon.png'),
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+});
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -39,6 +49,11 @@ Vue.component(
 Vue.component('first-page',
     require('./components/FirstPage').default
 );
+
+Vue.component('map-page',
+    require('./components/MapPage').default
+);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -47,5 +62,6 @@ Vue.component('first-page',
 Vue.use(Vuetify);
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    Vuetify,
 });
