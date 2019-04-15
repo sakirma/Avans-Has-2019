@@ -11,22 +11,33 @@
                        :center="center"
                        style="height:100%;">
                     <v-layout align-start justify-start row fill-height mt-0>
+                        <!--TODO: Make a component from this-->
                         <!--Leaflet map's z-index is 1000-->
-                        <v-flex style="z-index: 1001" shrink pl-4 pr-3>
-                            <v-img v-bind:src="buttonImage"
-                                   max-height="100px"
-                                   contain
-                                   width="200px">
-
-                            </v-img>
+                        <v-flex style="z-index: 1001" xs2>
+                            <v-btn class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
+                                <v-layout  px-3 column>
+                                    <v-flex class="white--text font-weight-bold">
+                                        IK WIL MEER ZIEN!
+                                    </v-flex>
+                                    <v-icon style="height: 10px;" large color="white">
+                                        expand_more
+                                    </v-icon>
+                                </v-layout>
+                            </v-btn>
                         </v-flex>
 
                         <!--Leaflet map's z-index is 1000-->
-                        <v-flex style="z-index: 1001">
-                            <v-img v-bind:src="buttonImage"
-                                   max-height="100px"
-                                   contain
-                                   width="200px"/>
+                        <v-flex style="z-index: 1001" xs2>
+                            <v-btn class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
+                                <v-layout column fill-height>
+                                    <v-flex class="white--text font-weight-bold">
+                                        IK WIL RECREËREN!
+                                    </v-flex>
+                                    <v-icon style="height: 10px;" large color="white">
+                                        expand_more
+                                    </v-icon>
+                                </v-layout>
+                            </v-btn>
                         </v-flex>
                     </v-layout>
 
@@ -83,4 +94,9 @@
 </script>
 
 <style scoped>
+    .rounded-bottom-card {
+        margin-top: 0px;
+        border-radius: 0px 0px 10px 10px;
+        height: 50px;
+    }
 </style>

@@ -15,8 +15,10 @@
 <body>
 
 <div id="app">
-    <first-page></first-page>
-    <map-page></map-page>
+    <v-app>
+        <first-page></first-page>
+        <map-page></map-page>
+    </v-app>
 </div>
 <script src="../js/app.js"></script>
 
