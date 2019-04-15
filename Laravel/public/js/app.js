@@ -1872,11 +1872,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'example',
+  name: 'MapPage',
   components: {
     MapPageHeader: _map_page_header__WEBPACK_IMPORTED_MODULE_2__["default"],
     LMap: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LMap"],
@@ -1889,7 +1909,8 @@ __webpack_require__.r(__webpack_exports__);
       center: L.latLng(47.413220, -1.219482),
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      marker: L.latLng(47.413220, -1.219482)
+      marker: L.latLng(47.413220, -1.219482),
+      buttonImage: "img/MapPage/button.png"
     };
   },
   methods: {
@@ -1897,12 +1918,10 @@ __webpack_require__.r(__webpack_exports__);
       setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
       }, 250);
-    },
-    onResize: function onResize() {
-      this.$refs.map.mapObject.invalidateSize();
     }
   },
   mounted: function mounted() {
+    this.$refs.map.mapObject.zoomControl.remove();
     this.$refs.map.mapObject.scrollWheelZoom.disable();
   }
 });
@@ -53092,6 +53111,56 @@ var render = function() {
                   attrs: { zoom: _vm.zoom, center: _vm.center }
                 },
                 [
+                  _c(
+                    "v-layout",
+                    {
+                      attrs: {
+                        "align-start": "",
+                        "justify-start": "",
+                        row: "",
+                        "fill-height": "",
+                        "mt-0": ""
+                      }
+                    },
+                    [
+                      _c(
+                        "v-flex",
+                        {
+                          staticStyle: { "z-index": "1001" },
+                          attrs: { shrink: "", "pl-4": "", "pr-3": "" }
+                        },
+                        [
+                          _c("v-img", {
+                            attrs: {
+                              src: _vm.buttonImage,
+                              "max-height": "100px",
+                              contain: "",
+                              width: "200px"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        { staticStyle: { "z-index": "1001" } },
+                        [
+                          _c("v-img", {
+                            attrs: {
+                              src: _vm.buttonImage,
+                              "max-height": "100px",
+                              contain: "",
+                              width: "200px"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
                   _c("l-tile-layer", {
                     attrs: { url: _vm.url, attribution: _vm.attribution }
                   }),

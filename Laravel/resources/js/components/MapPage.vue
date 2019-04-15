@@ -10,8 +10,28 @@
                        :zoom="zoom"
                        :center="center"
                        style="height:100%;">
-                    <l-tile-layer :url="url"
-                                  :attribution="attribution"></l-tile-layer>
+                    <v-layout align-start justify-start row fill-height mt-0>
+                        <!--Leaflet map's z-index is 1000-->
+                        <v-flex style="z-index: 1001" shrink pl-4 pr-3>
+                            <v-img v-bind:src="buttonImage"
+                                   max-height="100px"
+                                   contain
+                                   width="200px">
+
+                            </v-img>
+                        </v-flex>
+
+                        <!--Leaflet map's z-index is 1000-->
+                        <v-flex style="z-index: 1001">
+                            <v-img v-bind:src="buttonImage"
+                                   max-height="100px"
+                                   contain
+                                   width="200px"/>
+                        </v-flex>
+                    </v-layout>
+
+
+                    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                     <l-marker :lat-lng="marker"></l-marker>
                 </l-map>
             </v-flex>
@@ -31,7 +51,7 @@
     import MapPageHeader from "./map-page-header";
 
     export default {
-        name: 'example',
+        name: 'MapPage',
         components: {
             MapPageHeader,
             LMap,
@@ -45,6 +65,7 @@
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 marker: L.latLng(47.413220, -1.219482),
+                buttonImage: "img/MapPage/button.png"
             }
         },
         methods: {
@@ -52,13 +73,10 @@
                 setTimeout(function () {
                     window.dispatchEvent(new Event('resize'))
                 }, 250);
-            },
-
-            onResize() {
-                this.$refs.map.mapObject.invalidateSize();
             }
         },
         mounted() {
+            this.$refs.map.mapObject.zoomControl.remove();
             this.$refs.map.mapObject.scrollWheelZoom.disable();
         }
     }
