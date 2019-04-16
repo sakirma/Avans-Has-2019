@@ -29,7 +29,7 @@
 
                         <!--Leaflet map's z-index is 1000-->
                         <v-flex style="z-index: 1001" xs12 md3 lg2
-                                :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}">
+                                :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-3': $vuetify.breakpoint.lgAndUp}">
                             <v-btn class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
                                 <v-layout xs3 column>
                                     <v-flex class="white--text font-weight-bold">
