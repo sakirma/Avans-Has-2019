@@ -1,7 +1,7 @@
 <template>
     <div id="mapPage" style="height: 100vh;">
         <v-layout column fill-height style="background-color: #89a226">
-            <v-flex xs1 ma-3 >
+            <v-flex xs1 ma-3>
                 <map-page-header></map-page-header>
             </v-flex>
 
@@ -13,9 +13,10 @@
                     <v-layout align-start justify-start row fill-height mt-0>
                         <!--TODO: Make a component from this-->
                         <!--Leaflet map's z-index is 1000-->
-                        <v-flex style="z-index: 1001" xs2>
+                        <v-flex style="z-index: 1001" xs12 md3 lg2
+                                :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}">
                             <v-btn class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
-                                <v-layout  px-3 column>
+                                <v-layout xs3 column>
                                     <v-flex class="white--text font-weight-bold">
                                         IK WIL MEER ZIEN!
                                     </v-flex>
@@ -27,9 +28,10 @@
                         </v-flex>
 
                         <!--Leaflet map's z-index is 1000-->
-                        <v-flex style="z-index: 1001" xs2>
+                        <v-flex style="z-index: 1001" xs12 md3 lg2
+                                :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}">
                             <v-btn class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
-                                <v-layout column fill-height>
+                                <v-layout xs3 column>
                                     <v-flex class="white--text font-weight-bold">
                                         IK WIL RECREËREN!
                                     </v-flex>
@@ -38,6 +40,17 @@
                                     </v-icon>
                                 </v-layout>
                             </v-btn>
+
+                        </v-flex>
+                        <v-spacer></v-spacer>
+
+                        <!--Leaflet map's z-index is 1000-->
+                        <v-flex style="z-index: 1001" shrink pt-1>
+                            <v-text-field
+                                class="mx-3"
+                                solo
+                                prepend-inner-icon="search"
+                            ></v-text-field>
                         </v-flex>
                     </v-layout>
 
@@ -95,8 +108,9 @@
 
 <style scoped>
     .rounded-bottom-card {
-        margin-top: 0px;
+        margin: 0px 0px 0px 0px;
         border-radius: 0px 0px 10px 10px;
         height: 50px;
+        width: 100%;
     }
 </style>

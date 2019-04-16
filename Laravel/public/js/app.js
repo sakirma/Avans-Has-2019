@@ -1903,6 +1903,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -7256,7 +7269,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.rounded-bottom-card[data-v-3c92cc20] {\n    margin-top: 0px;\n    border-radius: 0px 0px 10px 10px;\n    height: 50px;\n}\n", ""]);
+exports.push([module.i, "\n.rounded-bottom-card[data-v-3c92cc20] {\n    margin: 0px 0px 0px 0px;\n    border-radius: 0px 0px 10px 10px;\n    height: 50px;\n    width: 100%;\n}\n", ""]);
 
 // exports
 
@@ -53186,8 +53199,12 @@ var render = function() {
                       _c(
                         "v-flex",
                         {
+                          class: {
+                            "ml-0": _vm.$vuetify.breakpoint.smAndDown,
+                            "ml-5": _vm.$vuetify.breakpoint.lgAndUp
+                          },
                           staticStyle: { "z-index": "1001" },
-                          attrs: { xs2: "" }
+                          attrs: { xs12: "", md3: "", lg2: "" }
                         },
                         [
                           _c(
@@ -53199,7 +53216,7 @@ var render = function() {
                             [
                               _c(
                                 "v-layout",
-                                { attrs: { "px-3": "", column: "" } },
+                                { attrs: { xs3: "", column: "" } },
                                 [
                                   _c(
                                     "v-flex",
@@ -53239,8 +53256,12 @@ var render = function() {
                       _c(
                         "v-flex",
                         {
+                          class: {
+                            "ml-0": _vm.$vuetify.breakpoint.smAndDown,
+                            "ml-5": _vm.$vuetify.breakpoint.lgAndUp
+                          },
                           staticStyle: { "z-index": "1001" },
-                          attrs: { xs2: "" }
+                          attrs: { xs12: "", md3: "", lg2: "" }
                         },
                         [
                           _c(
@@ -53252,7 +53273,7 @@ var render = function() {
                             [
                               _c(
                                 "v-layout",
-                                { attrs: { column: "", "fill-height": "" } },
+                                { attrs: { xs3: "", column: "" } },
                                 [
                                   _c(
                                     "v-flex",
@@ -53285,6 +53306,23 @@ var render = function() {
                             ],
                             1
                           )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        {
+                          staticStyle: { "z-index": "1001" },
+                          attrs: { shrink: "", "pt-1": "" }
+                        },
+                        [
+                          _c("v-text-field", {
+                            staticClass: "mx-3",
+                            attrs: { solo: "", "prepend-inner-icon": "search" }
+                          })
                         ],
                         1
                       )
@@ -104725,8 +104763,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\husey\Documents\AvansProject\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\husey\Documents\AvansProject\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
