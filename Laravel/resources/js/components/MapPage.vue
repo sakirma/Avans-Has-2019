@@ -15,32 +15,14 @@
                         <!--Leaflet map's z-index is 1000-->
                         <v-flex style="z-index: 1001" xs12 md3 lg2
                                 :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}">
-                            <v-btn class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
-                                <v-layout xs3 column>
-                                    <v-flex class="white--text font-weight-bold">
-                                        IK WIL MEER ZIEN!
-                                    </v-flex>
-                                    <v-icon style="height: 10px;" large color="white">
-                                        expand_more
-                                    </v-icon>
-                                </v-layout>
-                            </v-btn>
+
+                            <drop-down-button title="IK WIL MEER ZIEN!"></drop-down-button>
                         </v-flex>
 
                         <!--Leaflet map's z-index is 1000-->
                         <v-flex style="z-index: 1001" xs12 md3 lg2
                                 :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-3': $vuetify.breakpoint.lgAndUp}">
-                            <v-btn class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
-                                <v-layout xs3 column>
-                                    <v-flex class="white--text font-weight-bold">
-                                        IK WIL RECREËREN!
-                                    </v-flex>
-                                    <v-icon style="height: 10px;" large color="white">
-                                        expand_more
-                                    </v-icon>
-                                </v-layout>
-                            </v-btn>
-
+                            <drop-down-button title="IK WIL RECREËEREN!"></drop-down-button>
                         </v-flex>
                         <v-spacer></v-spacer>
 
@@ -72,7 +54,9 @@
 <script>
     import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
+
     import MapPageHeader from "./map-page-header";
+    import DropDownButton from "./mapPageButton/DropDownButton"
 
     export default {
         name: 'MapPage',
@@ -80,20 +64,20 @@
             MapPageHeader,
             LMap,
             LTileLayer,
-            LMarker
+            LMarker,
+            DropDownButton,
         },
         data() {
             return {
-                zoom: 13,
-                center: L.latLng(47.413220, -1.219482),
+                zoom: 11,
+                center: L.latLng(51.7142669290121, 5.3173828125),
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 marker: L.latLng(47.413220, -1.219482),
                 buttonImage: "img/MapPage/button.png"
             }
         },
-        methods: {
-        },
+        methods: {},
         mounted() {
             this.$refs.map.mapObject.zoomControl.remove();
             this.$refs.map.mapObject.scrollWheelZoom.disable();
@@ -102,10 +86,5 @@
 </script>
 
 <style scoped>
-    .rounded-bottom-card {
-        margin: 0px 0px 0px 0px;
-        border-radius: 0px 0px 10px 10px;
-        height: 50px;
-        width: 100%;
-    }
+
 </style>
