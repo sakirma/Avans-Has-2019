@@ -11,7 +11,7 @@
                         <v-layout align-center justify-center column fill-height>
                             <v-spacer></v-spacer>
                             <v-flex grow>
-                                <v-card-text class="display-3 first-page-title">ROADLEAF</v-card-text>
+                                <v-card-text class="display-4 first-page-title">ROADLEAF</v-card-text>
                                 <v-card-text class="first-page-text display-1">Ontdek Brabant op een andere wijze</v-card-text>
                             </v-flex>
 
@@ -37,6 +37,7 @@
 <style scoped>
     .first-page-title {
         font-family: "Market Deco", Market_Deco !important;
+        font-weight: bold !important;
     }
 
     .first-page-text {

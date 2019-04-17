@@ -7316,7 +7316,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.first-page-title[data-v-628e97f8] {\n    font-family: \"Market Deco\", Market_Deco !important;\n}\n.first-page-text[data-v-628e97f8] {\n    font-family: \"FlorenceRegular\", FlorenceRegular !important;\n    font-weight: bold !important;\n}\n", ""]);
+exports.push([module.i, "\n.first-page-title[data-v-628e97f8] {\n    font-family: \"Market Deco\", Market_Deco !important;\n    font-weight: bold !important;\n}\n.first-page-text[data-v-628e97f8] {\n    font-family: \"FlorenceRegular\", FlorenceRegular !important;\n    font-weight: bold !important;\n}\n", ""]);
 
 // exports
 
@@ -53187,7 +53187,7 @@ var render = function() {
                             [
                               _c(
                                 "v-card-text",
-                                { staticClass: "display-3 first-page-title" },
+                                { staticClass: "display-4 first-page-title" },
                                 [_vm._v("ROADLEAF")]
                               ),
                               _vm._v(" "),
