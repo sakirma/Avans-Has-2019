@@ -1944,10 +1944,7 @@ __webpack_require__.r(__webpack_exports__);
       }, 250);
     }
   },
-  mounted: function mounted() {
-    this.$refs.map.mapObject.zoomControl.remove();
-    this.$refs.map.mapObject.scrollWheelZoom.disable();
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -77855,7 +77852,7 @@ var findRealParent = function (firstVueParent) {
 /*!***********************************************************!*\
   !*** ./node_modules/vue2-leaflet/dist/vue2-leaflet.es.js ***!
   \***********************************************************/
-/*! exports provided: debounce, capitalizeFirstLetter, propsBinder, collectionCleaner, optionsMerger, findRealParent, CircleMixin, ControlMixin, GridLayerMixin, ImageOverlayMixin, InteractiveLayerMixin, LayerMixin, LayerGroupMixin, OptionsMixin, PathMixin, PolygonMixin, PolylineMixin, PopperMixin, TileLayerMixin, TileLayerWMSMixin, LCircle, LCircleMarker, LControl, LControlAttribution, LControlLayers, LControlScale, LControlZoom, LFeatureGroup, LGeoJson, LGridLayer, LIcon, LIconDefault, LImageOverlay, LLayerGroup, LMap, LMarker, LPolygon, LPolyline, LPopup, LRectangle, LTileLayer, LTooltip, LWMSTileLayer */
+/*! exports provided: CircleMixin, ControlMixin, GridLayerMixin, ImageOverlayMixin, InteractiveLayerMixin, LayerMixin, LayerGroupMixin, OptionsMixin, PathMixin, PolygonMixin, PolylineMixin, PopperMixin, TileLayerMixin, TileLayerWMSMixin, LCircle, LCircleMarker, LControl, LControlAttribution, LControlLayers, LControlScale, LControlZoom, LFeatureGroup, LGeoJson, LGridLayer, LIcon, LIconDefault, LImageOverlay, LLayerGroup, LMap, LMarker, LPolygon, LPolyline, LPopup, LRectangle, LTileLayer, LTooltip, LWMSTileLayer, debounce, capitalizeFirstLetter, propsBinder, collectionCleaner, optionsMerger, findRealParent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -82087,7 +82084,7 @@ var __assign = undefined && undefined.__assign || function () {
         var props = ctx.props;
         var max = parseInt(props.max, 10);
         var value = parseInt(props.value, 10);
-        var content = max ? value + " / " + max : props.value;
+        var content = max ? value + " / " + max : String(props.value);
         var isGreater = max && value > max;
         return h('div', {
             staticClass: 'v-counter',
@@ -86760,7 +86757,7 @@ var __assign = undefined && undefined.__assign || function () {
     props: {
         absolute: Boolean,
         color: {
-            type: [Boolean, String],
+            type: String,
             default: 'primary'
         },
         disabled: Boolean,
@@ -89381,7 +89378,7 @@ var __spread = undefined && undefined.__spread || function () {
                     for: this.id
                 },
                 props: {
-                    color: this.radio.validationState || false,
+                    color: this.radio.validationState || '',
                     dark: this.dark,
                     focused: this.hasState,
                     light: this.light
@@ -92383,7 +92380,7 @@ __webpack_require__.r(__webpack_exports__);
         if (this.isActive) {
             var btnCount_1 = 0;
             children = (this.$slots.default || []).map(function (b, i) {
-                if (b.tag && b.componentOptions.Ctor.options.name === 'v-btn') {
+                if (b.tag && typeof b.componentOptions !== 'undefined' && b.componentOptions.Ctor.options.name === 'v-btn') {
                     btnCount_1++;
                     return h('div', {
                         style: {
@@ -97283,7 +97280,7 @@ var Vuetify = {
             return false;
         })(opts.components);
     },
-    version: '1.5.11'
+    version: '1.5.12'
 };
 function checkVueVersion(Vue, requiredVue) {
     var vueDep = requiredVue || '^2.5.18';
@@ -98969,7 +98966,7 @@ var Vuetify = {
         Vue.use(_components_Vuetify__WEBPACK_IMPORTED_MODULE_1__["default"], __assign({ components: _components__WEBPACK_IMPORTED_MODULE_2__,
             directives: _directives__WEBPACK_IMPORTED_MODULE_3__["default"] }, args));
     },
-    version: '1.5.11'
+    version: '1.5.12'
 };
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(Vuetify);
@@ -104776,8 +104773,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Gijs\Documents\GitHub\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Gijs\Documents\GitHub\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

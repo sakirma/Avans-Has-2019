@@ -17,7 +17,9 @@
 <div id="app">
     <v-app>
         <first-page></first-page>
-        <map-page></map-page>
+        <div id="map-container">
+            <map-page ></map-page>
+        </div>
     </v-app>
 </div>
 <script src="../js/app.js"></script>

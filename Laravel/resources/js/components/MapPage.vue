@@ -100,8 +100,7 @@
             }
         },
         mounted() {
-            this.$refs.map.mapObject.zoomControl.remove();
-            this.$refs.map.mapObject.scrollWheelZoom.disable();
+
         }
     }
 </script>
