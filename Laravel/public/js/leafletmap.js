@@ -104,14 +104,14 @@ function calculateDistance(p1, p2){
     let lat2 = p2[0];
     let lon2 = p2[1];
 
-    var R = 6371; // km (change this constant to get miles)
-    var dLat = (lat2-lat1) * Math.PI / 180;
-    var dLon = (lon2-lon1) * Math.PI / 180;
-    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    let R = 6371; // km (change this constant to get miles)
+    let dLat = (lat2-lat1) * Math.PI / 180;
+    let dLon = (lon2-lon1) * Math.PI / 180;
+    let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
         Math.cos(lat1 * Math.PI / 180 ) * Math.cos(lat2 * Math.PI / 180 ) *
         Math.sin(dLon/2) * Math.sin(dLon/2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    var d = R * c;
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    let d = R * c;
     if (d>1) return Math.round(d);
     else if (d<=1) return Math.round(d*1000);
     return d; //Word terug gegeven in km

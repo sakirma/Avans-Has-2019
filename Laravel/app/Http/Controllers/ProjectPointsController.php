@@ -11,8 +11,16 @@ class ProjectPointsController extends Controller
 {
     public function getLocationData(Request $request)
     {
-        //Maak call naar database om alle lat en long terug te halen
-        return json_encode($request->all());
+        $allowedLocations=[];
+        $pointsInfo = ProjectPoint::select('geo_json')->get();
+        /*for ($i=0; $i < $pointInfo.count(); $i){
+            if($pointInfo[$i]->distance < $request->distance){
+                array_push($allowedLocations, $pointInfo[$i]);
+            }
+        }*/
+
+        //return json_encode($pointsInfo);
+        //return json_encode($allowedLocations);
     }
 
     public function getDetails($id)
