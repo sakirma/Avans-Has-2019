@@ -1898,7 +1898,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -1940,8 +1939,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
 //
 //
 //
@@ -2044,12 +2041,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "DropDownButton",
   props: {
-    title: {
+    buttonTitle: {
       type: String,
       "default": ''
+    },
+    title: {
+      type: String,
+      "default": ""
     }
   },
   data: function data() {
@@ -53323,7 +53347,10 @@ var render = function() {
                         },
                         [
                           _c("drop-down-button", {
-                            attrs: { title: "IK WIL MEER ZIEN!" }
+                            attrs: {
+                              buttonTitle: "IK WIL MEER ZIEN!",
+                              title: "NATUURLIEFHEBER, DIT HEBBEN WE VOOR JE"
+                            }
                           })
                         ],
                         1
@@ -53341,7 +53368,10 @@ var render = function() {
                         },
                         [
                           _c("drop-down-button", {
-                            attrs: { title: "IK WIL RECREËEREN!" }
+                            attrs: {
+                              buttonTitle: "IK WIL RECREËEREN!",
+                              title: "GENIET VAN HET LEVEN DOORMIDDEL VAN"
+                            }
                           })
                         ],
                         1
@@ -53465,11 +53495,9 @@ var render = function() {
         [
           _c(
             "v-btn",
-            { attrs: { icon: "" } },
+            { attrs: { "x-large": "", flat: "", icon: "", color: "white" } },
             [
-              _c("v-img", {
-                attrs: { src: "img/MapPage/double_arrow_left.svg" }
-              })
+              _c("v-icon", { attrs: { "x-large": "" } }, [_vm._v("first_page")])
             ],
             1
           ),
@@ -53508,13 +53536,8 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-btn",
-            { attrs: { icon: "" } },
-            [
-              _c("v-img", {
-                staticStyle: { transform: "scaleX(-1)" },
-                attrs: { src: "img/MapPage/double_arrow_left.svg" }
-              })
-            ],
+            { attrs: { "x-large": "", flat: "", icon: "", color: "white" } },
+            [_c("v-icon", { attrs: { "x-large": "" } }, [_vm._v("last_page")])],
             1
           )
         ],
@@ -53547,180 +53570,249 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-menu",
-    {
-      attrs: {
-        "offset-y": "",
-        "nudge-top": "10px",
-        "z-index": "1000",
-        "close-on-content-click": false
-      },
-      scopedSlots: _vm._u([
-        {
-          key: "activator",
-          fn: function(ref) {
-            var on = ref.on
-            return [
+    "div",
+    [
+      _c(
+        "v-btn",
+        _vm._g(
+          {
+            staticClass: "rounded-bottom-card",
+            staticStyle: { "z-index": "1005" },
+            attrs: { color: "rgb(160, 181, 80, 1)" }
+          },
+          _vm.on
+        ),
+        [
+          _c(
+            "v-layout",
+            { attrs: { column: "" } },
+            [
+              _c("v-flex", { staticClass: "white--text font-weight-bold" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.buttonTitle) +
+                    "\n            "
+                )
+              ]),
+              _vm._v(" "),
               _c(
-                "v-btn",
-                _vm._g(
-                  {
-                    staticClass: "rounded-bottom-card",
-                    attrs: { color: "rgb(160, 181, 80, 1)" }
-                  },
-                  on
-                ),
+                "v-icon",
+                {
+                  staticStyle: { height: "10px" },
+                  attrs: { large: "", color: "white" }
+                },
+                [_vm._v("\n                expand_more\n            ")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-layout",
+        { attrs: { row: "" } },
+        [
+          _c(
+            "v-flex",
+            { attrs: { xs12: "" } },
+            [
+              _c(
+                "v-card",
+                {
+                  staticClass: "pt-4 px-5",
+                  staticStyle: { position: "relative", top: "-10px" }
+                },
                 [
+                  _c("div", { staticClass: "title text-xs-center pb-2" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.title) +
+                        "\n                "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("v-divider"),
+                  _vm._v(" "),
                   _c(
-                    "v-layout",
-                    { attrs: { xs3: "", column: "" } },
+                    "v-list",
+                    { attrs: { subheader: "", "two-line": "" } },
                     [
                       _c(
-                        "v-flex",
-                        { staticClass: "white--text font-weight-bold" },
+                        "v-list-tile",
+                        { on: { click: function($event) {} } },
                         [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.title) +
-                              "\n                "
+                          _c(
+                            "v-list-tile-action",
+                            [
+                              _c("v-checkbox", {
+                                model: {
+                                  value: _vm.notifications,
+                                  callback: function($$v) {
+                                    _vm.notifications = $$v
+                                  },
+                                  expression: "notifications"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-tile-content",
+                            {
+                              on: {
+                                click: function($event) {
+                                  _vm.notifications = !_vm.notifications
+                                }
+                              }
+                            },
+                            [
+                              _c("v-list-tile-title", [
+                                _vm._v("Notifications")
+                              ]),
+                              _vm._v(" "),
+                              _c("v-list-tile-sub-title", [
+                                _vm._v("Allow notifications")
+                              ])
+                            ],
+                            1
                           )
-                        ]
+                        ],
+                        1
                       ),
                       _vm._v(" "),
                       _c(
-                        "v-icon",
-                        {
-                          staticStyle: { height: "10px" },
-                          attrs: { large: "", color: "white" }
-                        },
+                        "v-list-tile",
+                        { on: { click: function($event) {} } },
                         [
-                          _vm._v(
-                            "\n                    expand_more\n                "
+                          _c(
+                            "v-list-tile-action",
+                            [
+                              _c("v-checkbox", {
+                                model: {
+                                  value: _vm.sound,
+                                  callback: function($$v) {
+                                    _vm.sound = $$v
+                                  },
+                                  expression: "sound"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-tile-content",
+                            {
+                              on: {
+                                click: function($event) {
+                                  _vm.sound = !_vm.sound
+                                }
+                              }
+                            },
+                            [
+                              _c("v-list-tile-title", [_vm._v("Sound")]),
+                              _vm._v(" "),
+                              _c("v-list-tile-sub-title", [
+                                _vm._v("Hangouts message")
+                              ])
+                            ],
+                            1
                           )
-                        ]
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-list-tile",
+                        { on: { click: function($event) {} } },
+                        [
+                          _c(
+                            "v-list-tile-action",
+                            [
+                              _c("v-checkbox", {
+                                model: {
+                                  value: _vm.video,
+                                  callback: function($$v) {
+                                    _vm.video = $$v
+                                  },
+                                  expression: "video"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-tile-content",
+                            {
+                              on: {
+                                click: function($event) {
+                                  _vm.video = !_vm.video
+                                }
+                              }
+                            },
+                            [
+                              _c("v-list-tile-title", [_vm._v("Video sounds")]),
+                              _vm._v(" "),
+                              _c("v-list-tile-sub-title", [
+                                _vm._v("Hangouts video call")
+                              ])
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-list-tile",
+                        { on: { click: function($event) {} } },
+                        [
+                          _c(
+                            "v-list-tile-action",
+                            [
+                              _c("v-checkbox", {
+                                model: {
+                                  value: _vm.invites,
+                                  callback: function($$v) {
+                                    _vm.invites = $$v
+                                  },
+                                  expression: "invites"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-tile-content",
+                            {
+                              on: {
+                                click: function($event) {
+                                  _vm.invites = !_vm.invites
+                                }
+                              }
+                            },
+                            [
+                              _c("v-list-tile-title", [_vm._v("Invites")]),
+                              _vm._v(" "),
+                              _c("v-list-tile-sub-title", [
+                                _vm._v("Notify when receiving invites")
+                              ])
+                            ],
+                            1
+                          )
+                        ],
+                        1
                       )
                     ],
                     1
                   )
                 ],
                 1
-              )
-            ]
-          }
-        }
-      ])
-    },
-    [
-      _vm._v(" "),
-      _c(
-        "v-card",
-        [
-          _c(
-            "v-list",
-            [
-              _c(
-                "v-list-tile",
-                { attrs: { avatar: "" } },
-                [
-                  _c("v-list-tile-title", [
-                    _vm._v(
-                      "\n                    SADIASJDIOSA ASIOD ASASD\n                "
-                    )
-                  ])
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("v-divider"),
-          _vm._v(" "),
-          _c(
-            "v-list",
-            [
-              _c(
-                "v-list-tile",
-                [
-                  _c(
-                    "v-list-tile-action",
-                    [
-                      _c("v-switch", {
-                        attrs: { color: "purple" },
-                        model: {
-                          value: _vm.message,
-                          callback: function($$v) {
-                            _vm.message = $$v
-                          },
-                          expression: "message"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("v-list-tile-title", [_vm._v("Enable messages")])
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-list-tile",
-                [
-                  _c(
-                    "v-list-tile-action",
-                    [
-                      _c("v-switch", {
-                        attrs: { color: "purple" },
-                        model: {
-                          value: _vm.hints,
-                          callback: function($$v) {
-                            _vm.hints = $$v
-                          },
-                          expression: "hints"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("v-list-tile-title", [_vm._v("Enable hints")])
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-card-actions",
-            [
-              _c("v-spacer"),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { flat: "" },
-                  on: {
-                    click: function($event) {
-                      _vm.menu = false
-                    }
-                  }
-                },
-                [_vm._v("Cancel")]
-              ),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { color: "primary", flat: "" },
-                  on: {
-                    click: function($event) {
-                      _vm.menu = false
-                    }
-                  }
-                },
-                [_vm._v("Save")]
               )
             ],
             1
@@ -105111,8 +105203,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\husey\Documents\AvansProject\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\husey\Documents\AvansProject\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

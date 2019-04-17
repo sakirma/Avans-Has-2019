@@ -1,61 +1,88 @@
 <template>
-    <v-menu offset-y nudge-top="10px" z-index="1000" :close-on-content-click="false">
-        <template v-slot:activator="{ on }">
-            <v-btn class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" v-on="on">
-                <v-layout xs3 column>
-                    <v-flex class="white--text font-weight-bold">
+    <div>
+        <v-btn style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" v-on="on">
+            <v-layout column>
+                <v-flex class="white--text font-weight-bold">
+                    {{ buttonTitle }}
+                </v-flex>
+                <v-icon style="height: 10px;" large color="white">
+                    expand_more
+                </v-icon>
+            </v-layout>
+        </v-btn>
+
+        <v-layout row>
+            <v-flex xs12>
+                <v-card style=" position: relative; top: -10px;" class="pt-4 px-5">
+                    <div class="title text-xs-center pb-2">
                         {{ title }}
-                    </v-flex>
-                    <v-icon style="height: 10px;" large color="white">
-                        expand_more
-                    </v-icon>
-                </v-layout>
-            </v-btn>
-        </template>
-        <v-card>
-            <v-list>
-                <v-list-tile avatar>
-                    <v-list-tile-title>
-                        SADIASJDIOSA ASIOD ASASD
-                    </v-list-tile-title>
-                </v-list-tile>
-            </v-list>
+                    </div>
+                    <v-divider></v-divider>
+                    <v-list
+                            subheader
+                            two-line
+                    >
+                        <v-list-tile @click="">
+                            <v-list-tile-action>
+                                <v-checkbox v-model="notifications"></v-checkbox>
+                            </v-list-tile-action>
 
-            <v-divider></v-divider>
+                            <v-list-tile-content @click="notifications = !notifications">
+                                <v-list-tile-title>Notifications</v-list-tile-title>
+                                <v-list-tile-sub-title>Allow notifications</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
 
-            <v-list>
-                <v-list-tile>
-                    <v-list-tile-action>
-                        <v-switch v-model="message" color="purple"></v-switch>
-                    </v-list-tile-action>
-                    <v-list-tile-title>Enable messages</v-list-tile-title>
-                </v-list-tile>
+                        <v-list-tile @click="">
+                            <v-list-tile-action>
+                                <v-checkbox v-model="sound"></v-checkbox>
+                            </v-list-tile-action>
 
-                <v-list-tile>
-                    <v-list-tile-action>
-                        <v-switch v-model="hints" color="purple"></v-switch>
-                    </v-list-tile-action>
-                    <v-list-tile-title>Enable hints</v-list-tile-title>
-                </v-list-tile>
-            </v-list>
+                            <v-list-tile-content @click="sound = !sound">
+                                <v-list-tile-title>Sound</v-list-tile-title>
+                                <v-list-tile-sub-title>Hangouts message</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
 
-            <v-card-actions>
-                <v-spacer></v-spacer>
+                        <v-list-tile @click="">
+                            <v-list-tile-action>
+                                <v-checkbox v-model="video"></v-checkbox>
+                            </v-list-tile-action>
 
-                <v-btn flat @click="menu = false">Cancel</v-btn>
-                <v-btn color="primary" flat @click="menu = false">Save</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-menu>
+                            <v-list-tile-content @click="video = !video">
+                                <v-list-tile-title>Video sounds</v-list-tile-title>
+                                <v-list-tile-sub-title>Hangouts video call</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+
+                        <v-list-tile @click="">
+                            <v-list-tile-action>
+                                <v-checkbox v-model="invites"></v-checkbox>
+                            </v-list-tile-action>
+
+                            <v-list-tile-content @click="invites = !invites">
+                                <v-list-tile-title>Invites</v-list-tile-title>
+                                <v-list-tile-sub-title>Notify when receiving invites</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                    </v-list>
+                </v-card>
+            </v-flex>
+        </v-layout>
+    </div>
 </template>
 
 <script>
     export default {
         name: "DropDownButton",
         props: {
-            title: {
+            buttonTitle: {
                 type: String,
                 default: '',
+            },
+            title: {
+                type: String,
+                default: "",
             }
         },
         data() {

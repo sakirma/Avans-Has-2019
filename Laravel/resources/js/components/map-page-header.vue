@@ -9,9 +9,8 @@
                    width="150px"/>
         </v-flex>
         <v-layout align-center justify-center row fill-height>
-            <v-btn icon>
-                <v-img src="img/MapPage/double_arrow_left.svg">
-                </v-img>
+            <v-btn x-large flat icon color="white">
+                <v-icon x-large>first_page</v-icon>
             </v-btn>
             <v-btn large flat icon color="white">
                 <v-icon large>
@@ -27,9 +26,8 @@
             <v-btn large flat icon color="white">
                 <v-icon large>arrow_forward_ios</v-icon>
             </v-btn>
-            <v-btn icon>
-                <v-img style="transform: scaleX(-1);" src="img/MapPage/double_arrow_left.svg">
-                </v-img>
+            <v-btn x-large flat icon color="white">
+                <v-icon x-large>last_page</v-icon>
             </v-btn>
         </v-layout>
     </v-layout>

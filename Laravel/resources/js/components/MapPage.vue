@@ -11,18 +11,17 @@
                        :center="center"
                        style="height:100%;">
                     <v-layout align-start justify-start row fill-height mt-0>
-                        <!--TODO: Make a component from this-->
                         <!--Leaflet map's z-index is 1000-->
                         <v-flex style="z-index: 1001" xs12 md3 lg2
                                 :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}">
 
-                            <drop-down-button title="IK WIL MEER ZIEN!"></drop-down-button>
+                            <drop-down-button buttonTitle="IK WIL MEER ZIEN!" title="NATUURLIEFHEBER, DIT HEBBEN WE VOOR JE"></drop-down-button>
                         </v-flex>
 
                         <!--Leaflet map's z-index is 1000-->
                         <v-flex style="z-index: 1001" xs12 md3 lg2
                                 :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-3': $vuetify.breakpoint.lgAndUp}">
-                            <drop-down-button title="IK WIL RECREËEREN!"></drop-down-button>
+                            <drop-down-button buttonTitle="IK WIL RECREËEREN!" title="GENIET VAN HET LEVEN DOORMIDDEL VAN"></drop-down-button>
                         </v-flex>
                         <v-spacer></v-spacer>
 
