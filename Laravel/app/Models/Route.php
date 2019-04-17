@@ -11,7 +11,6 @@ class Route extends Model
     // Table does not have timestamps
     public $timestamps = false;
 
-
     public function project_points()
     {
         return $this->hasMany('App\Models\ProjectPoint');

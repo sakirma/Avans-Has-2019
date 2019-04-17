@@ -13,7 +13,8 @@ class MainPageController extends Controller
         return view('/home', ['categories' => $categories]);
     }
 
-    function rickRoll(){
-        return Redirect::to('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    function index()
+    {
+        return view('mainPage');
     }
 }

@@ -2004,6 +2004,11 @@ pre code {
   opacity: 1;
 }
 
+.form-control::-moz-placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+
 .form-control:-ms-input-placeholder {
   color: #6c757d;
   opacity: 1;
@@ -4940,8 +4945,10 @@ input[type=button].btn-block {
 @media (min-width: 576px) {
   .card-columns {
     -webkit-column-count: 3;
+       -moz-column-count: 3;
             column-count: 3;
     -webkit-column-gap: 1.25rem;
+       -moz-column-gap: 1.25rem;
             column-gap: 1.25rem;
     orphans: 1;
     widows: 1;
@@ -10658,5 +10665,16 @@ a.text-dark:focus {
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+@font-face {
+  font-family: bebas_neuebold;
+  src: url(/public/Fonts/BebasNeue/BebasNeue-Regular.woff2) format("woff2"), url(/public/Fonts/BebasNeue/BebasNeue-Regular.woff) format("woff"), url(/public/Fonts/BebasNeue/BebasNeue-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "VerveineW01-Regular";
+  src: url("//db.onlinewebfonts.com/t/b3fb273a4c9c465126f860b59809fd4a.eot");
+  src: url("//db.onlinewebfonts.com/t/b3fb273a4c9c465126f860b59809fd4a.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/b3fb273a4c9c465126f860b59809fd4a.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/b3fb273a4c9c465126f860b59809fd4a.woff") format("woff"), url("//db.onlinewebfonts.com/t/b3fb273a4c9c465126f860b59809fd4a.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/b3fb273a4c9c465126f860b59809fd4a.svg#VerveineW01-Regular") format("svg");
 }
 

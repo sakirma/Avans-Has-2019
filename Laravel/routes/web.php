@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'MainPageController@GetCatagories');
+Route::get('/', 'MainPageController@index');
 Route::get('details/{id}', "ProjectPointsController@getDetails");
 
 Route::post('/location', "ProjectPointsController@getLocationData");
