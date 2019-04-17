@@ -12,4 +12,9 @@ class MainPageController extends Controller
         $categories = DB::select('SELECT name FROM project_category');
         return view('/home', ['categories' => $categories]);
     }
+
+    function index()
+    {
+        return view('mainPage');
+    }
 }
