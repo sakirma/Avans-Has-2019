@@ -30,6 +30,10 @@ class ProjectController extends Controller
         $project->save();
     }
 
+    public function create() {
+        return view('createProject');
+    }
+
 
     /**
      * @param Request $request

@@ -39,4 +39,4 @@ Route::group(['prefix' => 'admin'], function () {
     Auth::routes();
 });
 
-Route::get('/beheer/project/aanmaken', 'ProjectCrudController@index');
+Route::get('/beheer/project/aanmaken', 'ProjectController@create');
