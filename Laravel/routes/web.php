@@ -38,3 +38,5 @@ Route::get('/admin/home', 'HomeController@index');
 Route::group(['prefix' => 'admin'], function () {
     Auth::routes();
 });
+
+Route::get('/beheer/project/aanmaken', 'ProjectCrudController@index');
