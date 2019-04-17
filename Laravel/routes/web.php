@@ -35,6 +35,9 @@ Route::post('AddProject', "ProjectController@SetPointLocation");
 Route::post('GetProjectWithinDistance', "ProjectController@GetProjectLocations");
 
 Route::get('/admin/home', 'HomeController@index');
+Route::get('/admin/route', function () {
+    return view('createRoute');
+});
 Route::group(['prefix' => 'admin'], function () {
     Auth::routes();
 });

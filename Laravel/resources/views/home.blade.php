@@ -49,7 +49,7 @@
             @endforeach
         </div>
     </div>    
-        <script type="text/javascript" src="{{ asset('js/leafletmap.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/leaflet_create.js') }}"></script>
     </div>
 </body>
 </html>
