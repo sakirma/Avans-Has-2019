@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <link href="{{ asset('css/mainpage.css') }}" rel="stylesheet">
     <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/navbar.js') }}"></script>
 
 
@@ -26,7 +28,7 @@
 <body>
     <div id="mysidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="{{ url('/home')}}"> Home</a>
+        <a href="{{ url('/')}}"> Home</a>
         <a href="{{ url('/about')}}"> About</a>
         <a href="{{ url('/project')}}"> Project</a>
     </div>
@@ -45,7 +47,7 @@
         <div id="leaflet"></div>
         <div id="legenda">
             @foreach($categories as $category)
-                <button type="button" onclick="changeToCategory( '{{$category->name}}' )">{{ $category->name }}</button> 
+                <button type="button" onclick="changeToCategory( '{{$category->name}}' )">{{ $category->name }}</button>
             @endforeach
         </div>
     </div>    
