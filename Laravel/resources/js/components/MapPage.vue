@@ -93,11 +93,6 @@
             }
         },
         methods: {
-            mounted() {
-                setTimeout(function () {
-                    window.dispatchEvent(new Event('resize'))
-                }, 250);
-            }
         },
         mounted() {
             this.$refs.map.mapObject.zoomControl.remove();
