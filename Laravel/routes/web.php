@@ -41,5 +41,3 @@ Route::get('/admin/home', 'HomeController@index');
 Route::group(['prefix' => 'admin'], function () {
     Auth::routes();
 });
-
-Route::get('/special', "MainPageController@rickRoll");
