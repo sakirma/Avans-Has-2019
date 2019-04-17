@@ -1992,8 +1992,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "map-page-header"
+  name: "map-page-header",
+  doubleArrowLeft: "img/MapPage/double_arrow_left.svg"
 });
 
 /***/ }),
@@ -53396,26 +53406,6 @@ var render = function() {
     [
       _c(
         "v-flex",
-        { staticClass: "hidden-sm-and-down", attrs: { shrink: "" } },
-        [
-          _c("v-img", {
-            staticStyle: { filter: "brightness(0) invert(1)" },
-            attrs: {
-              src: "img/RoadLeaf-Logo.png",
-              height: "100%",
-              "max-height": "100px",
-              contain: "",
-              position: "center left",
-              width: "150px"
-            }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-flex",
-        { attrs: { grow: "" } },
         [
           _c(
             "v-layout",
@@ -53428,6 +53418,17 @@ var render = function() {
               }
             },
             [
+              _c(
+                "v-btn",
+                { attrs: { icon: "" } },
+                [
+                  _c("v-img", {
+                    attrs: { src: "img/MapPage/double_arrow_left.svg" }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
               _c(
                 "v-btn",
                 { attrs: { large: "", flat: "", icon: "", color: "white" } },
@@ -53458,6 +53459,18 @@ var render = function() {
                   _c("v-icon", { attrs: { large: "" } }, [
                     _vm._v("arrow_forward_ios")
                   ])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                { attrs: { icon: "" } },
+                [
+                  _c("v-img", {
+                    staticStyle: { transform: "scaleX(-1)" },
+                    attrs: { src: "img/MapPage/double_arrow_left.svg" }
+                  })
                 ],
                 1
               )
@@ -104763,8 +104776,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\husey\Documents\AvansProject\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\husey\Documents\AvansProject\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
