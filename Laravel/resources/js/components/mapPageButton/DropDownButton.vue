@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" v-on="on">
+        <v-btn style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" @click="expand = !expand">
             <v-layout column>
                 <v-flex class="white--text font-weight-bold">
                     {{ buttonTitle }}
@@ -11,64 +11,61 @@
             </v-layout>
         </v-btn>
 
-        <v-layout row>
-            <v-flex xs12>
-                <v-card style=" position: relative; top: -10px;" class="pt-4 px-5">
-                    <div class="title text-xs-center pb-2">
-                        {{ title }}
-                    </div>
-                    <v-divider></v-divider>
-                    <v-list
-                            subheader
-                            two-line
-                    >
-                        <v-list-tile @click="">
-                            <v-list-tile-action>
-                                <v-checkbox v-model="notifications"></v-checkbox>
-                            </v-list-tile-action>
+        <v-expand-transition>
+            <v-layout row v-show="expand">
+                <v-flex xs12>
+                    <v-card class="pt-4 px-5 map-page-themes-list" color="rgb(217, 217, 217, 1)">
+                        <div class="title text-xs-center pb-2">
+                            {{ title }}
+                        </div>
+                        <v-divider></v-divider>
+                        <v-list
+                                style="background-color: #d9d9d9"
+                        >
+                            <v-list-tile ripple>
+                                <v-list-tile-action>
+                                    <v-checkbox></v-checkbox>
+                                </v-list-tile-action>
 
-                            <v-list-tile-content @click="notifications = !notifications">
-                                <v-list-tile-title>Notifications</v-list-tile-title>
-                                <v-list-tile-sub-title>Allow notifications</v-list-tile-sub-title>
-                            </v-list-tile-content>
-                        </v-list-tile>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>Notifications</v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
 
-                        <v-list-tile @click="">
-                            <v-list-tile-action>
-                                <v-checkbox v-model="sound"></v-checkbox>
-                            </v-list-tile-action>
+                            <v-list-tile>
+                                <v-list-tile-action>
+                                    <v-checkbox></v-checkbox>
+                                </v-list-tile-action>
 
-                            <v-list-tile-content @click="sound = !sound">
-                                <v-list-tile-title>Sound</v-list-tile-title>
-                                <v-list-tile-sub-title>Hangouts message</v-list-tile-sub-title>
-                            </v-list-tile-content>
-                        </v-list-tile>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>Sound</v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
 
-                        <v-list-tile @click="">
-                            <v-list-tile-action>
-                                <v-checkbox v-model="video"></v-checkbox>
-                            </v-list-tile-action>
+                            <v-list-tile>
+                                <v-list-tile-action>
+                                    <v-checkbox></v-checkbox>
+                                </v-list-tile-action>
 
-                            <v-list-tile-content @click="video = !video">
-                                <v-list-tile-title>Video sounds</v-list-tile-title>
-                                <v-list-tile-sub-title>Hangouts video call</v-list-tile-sub-title>
-                            </v-list-tile-content>
-                        </v-list-tile>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>Video sounds</v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
 
-                        <v-list-tile @click="">
-                            <v-list-tile-action>
-                                <v-checkbox v-model="invites"></v-checkbox>
-                            </v-list-tile-action>
+                            <v-list-tile>
+                                <v-list-tile-action>
+                                    <v-checkbox></v-checkbox>
+                                </v-list-tile-action>
 
-                            <v-list-tile-content @click="invites = !invites">
-                                <v-list-tile-title>Invites</v-list-tile-title>
-                                <v-list-tile-sub-title>Notify when receiving invites</v-list-tile-sub-title>
-                            </v-list-tile-content>
-                        </v-list-tile>
-                    </v-list>
-                </v-card>
-            </v-flex>
-        </v-layout>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>Invites</v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
+                        </v-list>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+        </v-expand-transition>
     </div>
 </template>
 
@@ -87,10 +84,7 @@
         },
         data() {
             return {
-                fav: true,
-                menu: false,
-                message: false,
-                hints: true
+                expand: false,
             }
         },
     }
@@ -102,5 +96,11 @@
         border-radius: 0px 0px 10px 10px;
         height: 50px;
         width: 100%;
+    }
+
+    .map-page-themes-list {
+        border-radius: 0px 0px 10px 10px;
+        position: relative;
+        top: -10px;
     }
 </style>
