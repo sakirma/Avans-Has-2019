@@ -14,27 +14,32 @@
         <v-expand-transition>
             <v-layout row v-show="expand">
                 <v-flex xs12>
-                    <v-card :class="{'px-0': $vuetify.breakpoint.smAndDown, 'px-5': $vuetify.breakpoint.lgAndUp}" class=" map-page-themes-list pt-4" color="rgb(217, 217, 217, 1)">
+                    <v-card :class="{'px-0': $vuetify.breakpoint.lgAndDown, 'px-5': $vuetify.breakpoint.xl}" class=" map-page-themes-list pt-4" color="rgb(217, 217, 217, 1)">
                         <div class="title text-xs-center pb-2">
                             {{ title }}
                         </div>
-                        <v-divider></v-divider>
-                        <v-list
-                                style="background-color: #d9d9d9"
-                        >
-                            <template v-for="(item, index) in items">
-                                <v-list-tile>
-                                    <v-list-tile-action>
-                                        <v-checkbox></v-checkbox>
-                                    </v-list-tile-action>
+                        <v-divider class="mx-3"></v-divider>
 
-                                    <v-list-tile-content>
-                                        <v-list-tile-title>{{ item }}</v-list-tile-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
-                            </template>
+                        <v-layout justify-center >
+                            <v-card
+                                    style="background-color: #d9d9d9"
+                                    class="text-xs-center "
+                                    flat
+                            >
+                                <template v-for="(item, index) in items">
+                                    <v-list-tile>
+                                        <v-list-tile-action >
+                                            <v-checkbox></v-checkbox>
+                                        </v-list-tile-action>
 
-                        </v-list>
+                                        <v-list-tile-action-text >
+                                            {{ item }}
+                                        </v-list-tile-action-text>
+                                    </v-list-tile>
+                                </template>
+
+                            </v-card>
+                        </v-layout>
                     </v-card>
                 </v-flex>
             </v-layout>
