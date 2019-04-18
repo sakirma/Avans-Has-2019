@@ -14,7 +14,7 @@
         <v-expand-transition>
             <v-layout row v-show="expand">
                 <v-flex xs12>
-                    <v-card class="pt-4 px-5 map-page-themes-list" color="rgb(217, 217, 217, 1)">
+                    <v-card :class="{'px-0': $vuetify.breakpoint.smAndDown, 'px-5': $vuetify.breakpoint.lgAndUp}" class=" map-page-themes-list pt-4" color="rgb(217, 217, 217, 1)">
                         <div class="title text-xs-center pb-2">
                             {{ title }}
                         </div>
@@ -22,45 +22,18 @@
                         <v-list
                                 style="background-color: #d9d9d9"
                         >
-                            <v-list-tile ripple>
-                                <v-list-tile-action>
-                                    <v-checkbox></v-checkbox>
-                                </v-list-tile-action>
+                            <template v-for="(item, index) in items">
+                                <v-list-tile>
+                                    <v-list-tile-action>
+                                        <v-checkbox></v-checkbox>
+                                    </v-list-tile-action>
 
-                                <v-list-tile-content>
-                                    <v-list-tile-title>Notifications</v-list-tile-title>
-                                </v-list-tile-content>
-                            </v-list-tile>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>{{ item }}</v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                            </template>
 
-                            <v-list-tile>
-                                <v-list-tile-action>
-                                    <v-checkbox></v-checkbox>
-                                </v-list-tile-action>
-
-                                <v-list-tile-content>
-                                    <v-list-tile-title>Sound</v-list-tile-title>
-                                </v-list-tile-content>
-                            </v-list-tile>
-
-                            <v-list-tile>
-                                <v-list-tile-action>
-                                    <v-checkbox></v-checkbox>
-                                </v-list-tile-action>
-
-                                <v-list-tile-content>
-                                    <v-list-tile-title>Video sounds</v-list-tile-title>
-                                </v-list-tile-content>
-                            </v-list-tile>
-
-                            <v-list-tile>
-                                <v-list-tile-action>
-                                    <v-checkbox></v-checkbox>
-                                </v-list-tile-action>
-
-                                <v-list-tile-content>
-                                    <v-list-tile-title>Invites</v-list-tile-title>
-                                </v-list-tile-content>
-                            </v-list-tile>
                         </v-list>
                     </v-card>
                 </v-flex>
@@ -80,6 +53,10 @@
             title: {
                 type: String,
                 default: "",
+            },
+            items: {
+                type: Array,
+                default: ['Leeg'],
             }
         },
         data() {
@@ -88,6 +65,7 @@
             }
         },
         mounted() {
+            // Parent is map, but we need the parent of the map to access the code.
             this.$parent.$parent.disableInputEvents(this);
         }
     }

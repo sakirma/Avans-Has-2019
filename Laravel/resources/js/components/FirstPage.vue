@@ -4,7 +4,7 @@
                 height="100vh"
                 src="img/FirstPage/wet-rainy-road-leaf-fallen-hd-gl.jpg">
             <v-layout justify-end row fill-height style="transition: none;">
-                <v-flex xs12 md4>
+                <v-flex xs12 sm4 lg5 xl4>
                     <v-card height="100vh" color="rgb(136, 176, 0, 0.5)"
                             style="transition: none" class="text-xs-center white--text">
 
@@ -12,8 +12,13 @@
 
                             <v-spacer></v-spacer>
                             <v-flex grow>
-                                <v-card-text class="display-4 first-page-title">ROADLEAF</v-card-text>
-                                <v-card-text class="first-page-text display-1">Ontdek Brabant op een andere wijze
+                                <v-card-text :class="{'display-3': $vuetify.breakpoint.mdAndDown}"
+                                             class="display-4 first-page-title">
+                                    ROADLEAF
+                                </v-card-text>
+
+                                <v-card-text class="first-page-text display-1">
+                                    Ontdek Brabant op een andere wijze
                                 </v-card-text>
                             </v-flex>
 

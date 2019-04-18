@@ -17,7 +17,7 @@
 
                             <drop-down-button buttonTitle="IK WIL MEER ZIEN!"
                                               title="NATUURLIEFHEBER, DIT HEBBEN WE VOOR JE"
-                                              id="wow"></drop-down-button>
+                                              :items="LeftDropDownButton" ></drop-down-button>
                         </v-flex>
 
                         <!--Leaflet map's z-index is 1000-->
@@ -25,11 +25,12 @@
                                 :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-3': $vuetify.breakpoint.lgAndUp}">
                             <drop-down-button buttonTitle="IK WIL RECREËEREN!"
                                               title="GENIET VAN HET LEVEN DOORMIDDEL VAN"
-                                              ref="aButton"></drop-down-button>
+                                              :items="RightDropDownButton"></drop-down-button>
                         </v-flex>
                         <v-spacer></v-spacer>
 
                         <!--Leaflet map's z-index is 1000-->
+                        <!--TODO: Remove the events handler from searchbar. -->
                         <v-flex style="z-index: 701" shrink pt-1>
                             <v-text-field
                                     class="mx-3"
@@ -49,7 +50,6 @@
 
             <v-flex xs1>
                 <v-card height="100%" color="rgb(137, 162, 38, 1)">
-                    sadasdasdasd
                 </v-card>
             </v-flex>
         </v-layout>
@@ -80,7 +80,9 @@
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 marker: L.latLng(51.7142669290121, 5.3173828125),
-                buttonImage: "img/MapPage/button.png"
+                buttonImage: "img/MapPage/button.png",
+                LeftDropDownButton: ['Projectnaam A', 'Projectnaam B', 'Projectnaam C'],
+                RightDropDownButton: ['Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks']
             }
         },
         methods: {
