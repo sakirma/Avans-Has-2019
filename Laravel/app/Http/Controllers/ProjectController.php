@@ -45,4 +45,15 @@ class ProjectController extends Controller
 
         return $containsPoint->toJson();
     }
+
+    /**
+     * @param Request $request
+     *      id: project_id
+     *
+     * @return Return View project
+     */
+    public function index(Request $request){
+        $project = Project::find($request['id']);
+        return view('project')->with(["project" => $project]);
+    }
 }
