@@ -9,17 +9,20 @@
                             style="transition: none" class="text-xs-center white--text">
 
                         <v-layout align-center justify-center column fill-height>
+
                             <v-spacer></v-spacer>
                             <v-flex grow>
                                 <v-card-text class="display-4 first-page-title">ROADLEAF</v-card-text>
-                                <v-card-text class="first-page-text display-1">Ontdek Brabant op een andere wijze</v-card-text>
+                                <v-card-text class="first-page-text display-1">Ontdek Brabant op een andere wijze
+                                </v-card-text>
                             </v-flex>
 
                             <v-flex shrink pa-3>
-                                <v-btn color="rgb(0,0,0, 1)" outline large fab @click="$vuetify.goTo('#mapPage')">
+                                <v-btn color="rgb(0, 0, 0, 1)" outline large fab @click="$vuetify.goTo('#mapPage')">
                                     <v-icon>arrow_drop_down_circle</v-icon>
                                 </v-btn>
                             </v-flex>
+
                         </v-layout>
                     </v-card>
                 </v-flex>
@@ -30,7 +33,10 @@
 
 <script>
     export default {
-        name: "FirstPage"
+        name: "FirstPage",
+        mounted() {
+
+        }
     }
 </script>
 

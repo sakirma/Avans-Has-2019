@@ -12,32 +12,38 @@
                        style="height:100%;">
                     <v-layout align-start justify-start row fill-height mt-0>
                         <!--Leaflet map's z-index is 1000-->
-                        <v-flex style="z-index: 1001" xs12 md3 lg2
+                        <v-flex style="z-index: 701" xs12 md3 lg2
                                 :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}">
 
-                            <drop-down-button buttonTitle="IK WIL MEER ZIEN!" title="NATUURLIEFHEBER, DIT HEBBEN WE VOOR JE"></drop-down-button>
+                            <drop-down-button buttonTitle="IK WIL MEER ZIEN!"
+                                              title="NATUURLIEFHEBER, DIT HEBBEN WE VOOR JE"
+                                              id="wow"></drop-down-button>
                         </v-flex>
 
                         <!--Leaflet map's z-index is 1000-->
-                        <v-flex style="z-index: 1001" xs12 md3 lg2
+                        <v-flex style="z-index: 701" xs12 md3 lg2
                                 :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-3': $vuetify.breakpoint.lgAndUp}">
-                            <drop-down-button buttonTitle="IK WIL RECREËEREN!" title="GENIET VAN HET LEVEN DOORMIDDEL VAN"></drop-down-button>
+                            <drop-down-button buttonTitle="IK WIL RECREËEREN!"
+                                              title="GENIET VAN HET LEVEN DOORMIDDEL VAN"
+                                              ref="aButton"></drop-down-button>
                         </v-flex>
                         <v-spacer></v-spacer>
 
                         <!--Leaflet map's z-index is 1000-->
-                        <v-flex style="z-index: 1001" shrink pt-1>
+                        <v-flex style="z-index: 701" shrink pt-1>
                             <v-text-field
-                                class="mx-3"
-                                solo
-                                prepend-inner-icon="search"
+                                    class="mx-3"
+                                    solo
+                                    prepend-inner-icon="search"
                             ></v-text-field>
                         </v-flex>
                     </v-layout>
 
 
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                    <l-marker :lat-lng="marker"></l-marker>
+                    <l-marker :lat-lng="marker">
+                        <l-popup content="Een popop"></l-popup>
+                    </l-marker>
                 </l-map>
             </v-flex>
 
@@ -51,7 +57,7 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
+    import {LMap, LTileLayer, LMarker, LPopup} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
 
     import MapPageHeader from "./map-page-header";
@@ -61,10 +67,11 @@
         name: 'MapPage',
         components: {
             MapPageHeader,
+            DropDownButton,
             LMap,
             LTileLayer,
             LMarker,
-            DropDownButton,
+            LPopup
         },
         data() {
             return {
@@ -72,11 +79,16 @@
                 center: L.latLng(51.7142669290121, 5.3173828125),
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                marker: L.latLng(47.413220, -1.219482),
+                marker: L.latLng(51.7142669290121, 5.3173828125),
                 buttonImage: "img/MapPage/button.png"
             }
         },
-        methods: {},
+        methods: {
+            disableInputEvents(element) {
+                L.DomEvent.disableClickPropagation(element.$el);
+                L.DomEvent.disableScrollPropagation(element.$el);
+            }
+        },
         mounted() {
             this.$refs.map.mapObject.zoomControl.remove();
             this.$refs.map.mapObject.scrollWheelZoom.disable();

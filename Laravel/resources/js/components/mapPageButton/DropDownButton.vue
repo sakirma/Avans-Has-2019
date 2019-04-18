@@ -87,6 +87,9 @@
                 expand: false,
             }
         },
+        mounted() {
+            this.$parent.$parent.disableInputEvents(this);
+        }
     }
 </script>
 
