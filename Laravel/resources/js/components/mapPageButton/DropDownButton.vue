@@ -20,14 +20,15 @@
                         </div>
                         <v-divider class="mx-3"></v-divider>
 
-                        <v-layout justify-center >
+                        <v-layout justify-center>
                             <v-card
-                                    style="background-color: #d9d9d9"
-                                    class="text-xs-center "
+                                    style="background-color: #d9d9d9;"
+                                    class="text-xs-center scroll-y"
                                     flat
+                                    max-height="30vh"
                             >
                                 <template v-for="(item, index) in items">
-                                    <v-list-tile>
+                                    <v-list-tile >
                                         <v-list-tile-action >
                                             <v-checkbox></v-checkbox>
                                         </v-list-tile-action>
@@ -88,5 +89,9 @@
         border-radius: 0px 0px 10px 10px;
         position: relative;
         top: -10px;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
     }
 </style>
