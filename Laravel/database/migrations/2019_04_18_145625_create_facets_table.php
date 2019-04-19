@@ -14,13 +14,15 @@ class CreateFacetsTable extends Migration
     public function up()
     {
         Schema::create('facets', function (Blueprint $table) {
-            $table->bigInteger('project_id');
-            $table->bigInteger('route_id');
+            $table->unsignedInteger('project_id');
+            $table->unsignedInteger('route_id');
             $table->string('information');
-            
+        });
+
+        Schema::table('facets', function(Blueprint $table) {
             $table->primary(['project_id', 'route_id']);
-            $table->foreign('project_id')->on('id')->references('projects');
-            $table->foreign('route_id')->on('id')->references('route');
+            $table->foreign('project_id')->references('id')->on('project')->onDelete('cascade');
+            $table->foreign('route_id')->references('id')->on('route')->onDelete('cascade');
         });
     }
 

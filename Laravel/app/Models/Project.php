@@ -42,4 +42,24 @@ class Project extends Model
     {
         return $this->hasMany('App\Models\Facet');
     }
+
+    public function sortedFacets()
+    {
+        $facets = $this->facets;
+        $sorted = [];
+        foreach($facets as $facet){
+            if(count($sorted) > 0){
+                for($i = 0; $i < count($sorted); $i++){
+                    if($facet->route_id < $sorted[$i]->route_id){
+                        array_splice($sorted, $i, 0, [$facet]);
+                        break;
+                    }else if($i >= count($facets)-1){
+                        $sorted[] = $facet;
+                    }
+                }
+            }else{
+                $sorted[] = $facet;
+            }
+        }
+    }
 }

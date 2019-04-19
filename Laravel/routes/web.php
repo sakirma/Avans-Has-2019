@@ -36,7 +36,7 @@ Route::get('routelist', "RoutesController@index");
 Route::post('AddProject', "ProjectController@SetPointLocation");
 Route::post('GetProjectWithinDistance', "ProjectController@GetProjectLocations");
 
-Route::get('/project/info/{id}/{facet}', "ProjectController@index")->name("project.info");
+Route::get('/project/info/{id}', "ProjectController@index")->name("project.info");
 
 Route::get('/home', 'MainPageController@GetCatagories');
 Route::get('/admin/home', 'HomeController@index');

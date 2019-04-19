@@ -29,13 +29,31 @@
                 @if(isset($project) && !empty($project))
                     <h1>{{ $project->name }}</h1>
                     <p>{{ $project->information }}</p>
-                    <div>
-                        <img onclick="facetBack()" src="{{ asset('img/left_arrow.png') }}">
-                    </div>
-                    <p>{{ $information }}</p>
-                    <div>
-                        <img onclick="facetNext()" src="{{ asset('img/right_arrow.png') }}">
-                    </div>
+
+                    <?php
+                        if(!isset($facet_id)) $facet_id = 0;
+                        
+                        if(isset($_POST["back"])){
+                            $facet_id = $_POST["facet_id"] + 1;
+                            if($facet_id > count($project->facets))
+                                $facet_id = 0;
+                        }else if(isset($_POST["next"])){
+                            $facet_id = $_POST["facet_id"] - 1;
+                            if($facet_id < 0)
+                                $facet_id = count($project->facets) - 1;
+                        }
+                    ?>
+
+                    <form id="facet-form" method="POST">
+                        <input type="hidden" name="facet_id" value="{{ $facet_id }}">
+                        <div>
+                            <input onclick="event.preventDefault(); document.getElementById('facet-form').submit();" type="image" name="back" src="{{ asset('img/left_arrow.png') }}">
+                        </div>
+                        <p>{{ $project->sortedFacets()[$facet_id] }}</p>
+                        <div>
+                            <input onclick="event.preventDefault(); document.getElementById('facet-form').submit();" type="image" name="next" src="{{ asset('img/right_arrow.png') }}">
+                        </div>
+                    </form>
 
                     <div class="img-container">
                         @foreach($project->images() as $image)
@@ -45,18 +63,6 @@
                 @else
                     <p>Could not find any information about this project or project does not exist</p>
                 @endif
-
-                <script>
-
-                    function facetBack(){
-                        
-                    }
-
-                    function facetNext(){
-
-                    }
-
-                </script>
             </div>
         </div>
     </body>
