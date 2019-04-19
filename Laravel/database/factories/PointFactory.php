@@ -49,10 +49,7 @@ $factory->define(App\Models\Project::class, function (Faker $faker) {
                     }
                 }]
             }'),
-        'category' => function() {
-            $category = factory(App\Models\Category::class)->create();
-            return $category->name;
-        },
+        'category' => 'lol',
         'name' => $faker->name,
         'information' => $faker->text(25),
     ];

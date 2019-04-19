@@ -22,11 +22,36 @@ class ProjectTableSeeder extends Seeder
             'name' => 'lol',
         ]);
 
-        factory(App\Models\Project::class)->create();
+        //factory(App\Models\Project::class)->create();
+        $this->AddProjectPoint(51.61716386256088, 5.506896972656249);
+        $this->AddProjectPoint(51.61716386256088, 5.506896972656249);
 
         // Example of changing default values of the factory.
         factory(App\Models\Project::class)->create([
             'name' => 'Abigail',
+        ]);
+    }
+
+    public function AddProjectPoint($lat, $lng)
+    {
+        factory(App\Models\Project::class)->create([
+            'location' => new Point($lat, $lng),
+            'geo_json' => Geometry::fromJson('{
+              "type": "FeatureCollection",
+              "features": [
+                {
+                  "type": "Feature",
+                  "properties": {},
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                      ' . $lat . ',
+                      ' . $lng . '
+                    ]
+                  }
+                }
+              ]
+            }')
         ]);
     }
 }
