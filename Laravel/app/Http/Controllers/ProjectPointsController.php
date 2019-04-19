@@ -9,10 +9,27 @@ use App\Models\ProjectPoint;
 
 class ProjectPointsController extends Controller
 {
+    public function getLocationData(Request $request)
+    {
+        $allowedLocations=[];
+        $pointsInfo = ProjectPoint::select('geo_json')->get();
+        /*for ($i=0; $i < $pointInfo.count(); $i){
+            if($pointInfo[$i]->distance < $request->distance){
+                array_push($allowedLocations, $pointInfo[$i]);
+            }
+        }*/
+
+        //return json_encode($pointsInfo);
+        //return json_encode($allowedLocations);
+    }
+
     public function getDetails($id)
     {
         // Loading model
         $model = ProjectPoint::find($id);
+
+        if(empty($model)) { return view('/project'); }
+
         $project = $model->project;
 
         /*
@@ -27,6 +44,8 @@ class ProjectPointsController extends Controller
             return view('details', ['model' => $model, 'project' => $project]);
         }
 
-        abort(404);
+
+
+        return abort(404);
     }
 }
