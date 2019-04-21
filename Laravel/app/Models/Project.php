@@ -51,15 +51,17 @@ class Project extends Model
             if(count($sorted) > 0){
                 for($i = 0; $i < count($sorted); $i++){
                     if($facet->route_id < $sorted[$i]->route_id){
-                        array_splice($sorted, $i, 0, [$facet]);
+                        array_splice($sorted, $i, 0, array($facet));
                         break;
-                    }else if($i >= count($facets)-1){
+                    }else if($i >= (count($sorted)-1)){
                         $sorted[] = $facet;
+                        break;
                     }
                 }
             }else{
                 $sorted[] = $facet;
             }
         }
+        return $sorted;
     }
 }

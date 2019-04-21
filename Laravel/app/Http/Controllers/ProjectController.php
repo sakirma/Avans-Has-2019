@@ -6,6 +6,7 @@ use App\Models\Project;
 use Grimzy\LaravelMysqlSpatial\Types\Geometry;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
 {
@@ -55,5 +56,10 @@ class ProjectController extends Controller
     public function index(Request $request){
         $project = Project::find($request['id']);
         return view('project')->with(["project" => $project]);
+    }
+
+    public function facetInfo(Request $request){
+        $project = Project::find($request['project']);
+        return view('project')->with(["project" => $project, "facet_id" => $request['facet_id'], "direction" => $request['direction']]);
     }
 }
