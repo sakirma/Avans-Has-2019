@@ -36,7 +36,6 @@
 <script>
     export default {
         name: "map-page-header",
-        doubleArrowLeft: "img/MapPage/double_arrow_left.svg"
     }
 </script>
 
