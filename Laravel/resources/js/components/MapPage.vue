@@ -17,7 +17,7 @@
 
                             <drop-down-button buttonTitle="IK WIL MEER ZIEN!"
                                               title="NATUURLIEFHEBER, DIT HEBBEN WE VOOR JE"
-                                              :items="LeftDropDownButton" ></drop-down-button>
+                                              :items="LeftDropDownButton"></drop-down-button>
                         </v-flex>
 
                         <!--Leaflet map's z-index is 1000-->
@@ -43,7 +43,9 @@
 
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                     <l-marker :lat-lng="marker">
-                        <l-popup content="Een popop"></l-popup>
+                        <l-popup>
+                            <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>
+                        </l-popup>
                     </l-marker>
                 </l-map>
             </v-flex>
@@ -73,6 +75,12 @@
             LMarker,
             LPopup
         },
+        props: {
+            onProjectOpened: {
+                type: Function,
+                required: true
+            }
+        },
         data() {
             return {
                 zoom: 11,
@@ -82,13 +90,18 @@
                 marker: L.latLng(51.7142669290121, 5.3173828125),
                 buttonImage: "img/MapPage/button.png",
                 LeftDropDownButton: ['Projectnaam A', 'Projectnaam B', 'Projectnaam C'],
-                RightDropDownButton: ['Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks']
+                RightDropDownButton: ['Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks'],
+
+                popupContent: ' <button href="javascript:;" @click="console.log("wow")">terms</button>',
             }
         },
         methods: {
             disableInputEvents(element) {
                 L.DomEvent.disableClickPropagation(element.$el);
                 L.DomEvent.disableScrollPropagation(element.$el);
+            },
+            OpenProjectPagePressed: function (projectId) {
+                this.onProjectOpened(projectId);
             }
         },
         mounted() {

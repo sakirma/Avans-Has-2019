@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
+<head style="overflow: hidden;">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -16,11 +16,9 @@
 </head>
 
 <body>
-
 <div id="app">
     <v-app>
-        <first-page></first-page>
-        <map-page></map-page>
+        <main-page></main-page>
     </v-app>
 </div>
 <script src="../js/app.js"></script>

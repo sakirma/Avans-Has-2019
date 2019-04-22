@@ -46,6 +46,9 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue').default
 );
 
+Vue.component('main-page',
+    require('./MainPage').default);
+
 Vue.component('first-page',
     require('./components/FirstPage').default
 );

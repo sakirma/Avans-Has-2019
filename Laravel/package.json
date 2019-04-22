@@ -26,6 +26,7 @@
     "dependencies": {
         "leaflet": "^1.4.0",
         "leaflet-routing-machine": "^3.2.12",
+        "vue-scroll-snap": "^0.1.4",
         "vue2-leaflet": "^2.0.3",
         "vuetify": "^1.5.11"
     }
