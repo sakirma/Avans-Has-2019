@@ -3,10 +3,11 @@
         <first-page></first-page>
         <map-page id="mapPage" :onProjectOpened="OpenProjectPage"></map-page>
         <!-- TODO: DEBUGGING Replace false with true.  -->
-        <project-page id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
+        <project-page id="projectPage" v-if="selectedProjectPage.isSelected === false"></project-page>
     </v-app>
 </template>
 
+<!-- TODO: Scroll back to project page when the window is re-sized. -->
 <script>
     import MapPage from './components/MapPage';
     import FirstPage from './components/FirstPage';
@@ -35,8 +36,7 @@
                 };
 
                 // Debugging purpose
-                if (this.selectedProjectPage.projectId === projectId)
-                {
+                if (document.getElementById('projectPage') && this.selectedProjectPage.projectId === projectId) {
                     this.$vuetify.goTo("#projectPage");
                 }
             }
