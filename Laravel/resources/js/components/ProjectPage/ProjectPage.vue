@@ -8,10 +8,29 @@
 
                 <v-layout row fill-height>
                     <v-flex ma-3 style="background-color: white" grow>
+                        <v-layout align-space-between justify-center column fill-height>
+                            <!-- TEXT -->
+                            <v-layout align-center justify-center row>
+                                <v-flex xs12>
+                                    <v-card>
+                                        WOW
+                                    </v-card>
+                                </v-flex>
+                            </v-layout>
 
+                            <!-- MEDIA -->
+                            <v-layout align-center justify-center row>
+                                <v-flex xs12 fill-height>
+                                    <v-card height="100%" style="background-color: #9561e2">
+                                        WOW
+                                    </v-card>
+                                </v-flex>
+                            </v-layout>
+                        </v-layout>
                     </v-flex>
-                    <v-flex xs4 shrink style="background-color: blue">
-                        adasdsad
+
+                    <v-flex xs3 lg3 shrink style="background-color: blue">
+
                     </v-flex>
                 </v-layout>
             </v-flex>
