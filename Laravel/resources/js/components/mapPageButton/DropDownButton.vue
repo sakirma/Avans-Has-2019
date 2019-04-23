@@ -1,6 +1,7 @@
 <template>
     <div>
-        <v-btn style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" @click="expand = !expand">
+        <v-btn style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)"
+               @click="expand = !expand">
             <v-layout column>
                 <v-flex class="white--text font-weight-bold">
                     {{ buttonTitle }}
@@ -14,7 +15,8 @@
         <v-expand-transition>
             <v-layout row v-show="expand">
                 <v-flex xs12>
-                    <v-card :class="{'px-0': $vuetify.breakpoint.lgAndDown, 'px-5': $vuetify.breakpoint.xl}" class=" map-page-themes-list pt-4" color="rgb(217, 217, 217, 1)">
+                    <v-card :class="{'px-0': $vuetify.breakpoint.lgAndDown, 'px-5': $vuetify.breakpoint.xl}"
+                            class=" map-page-themes-list pt-4" color="rgb(217, 217, 217, 1)">
                         <div class="title text-xs-center pb-2">
                             {{ title }}
                         </div>
@@ -22,18 +24,18 @@
 
                         <v-layout justify-center>
                             <v-card
-                                    style="background-color: #d9d9d9;"
-                                    class="text-xs-center scroll-y"
-                                    flat
-                                    max-height="30vh"
+                                style="background-color: #d9d9d9;"
+                                class="text-xs-center scroll-y"
+                                flat
+                                max-height="30vh"
                             >
                                 <template v-for="(item, index) in items">
-                                    <v-list-tile >
-                                        <v-list-tile-action >
+                                    <v-list-tile>
+                                        <v-list-tile-action>
                                             <v-checkbox></v-checkbox>
                                         </v-list-tile-action>
 
-                                        <v-list-tile-action-text >
+                                        <v-list-tile-action-text>
                                             {{ item }}
                                         </v-list-tile-action-text>
                                     </v-list-tile>

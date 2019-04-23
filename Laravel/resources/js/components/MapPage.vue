@@ -42,11 +42,14 @@
 
 
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                    <l-marker :lat-lng="marker">
-                        <l-popup>
-                            <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>
-                        </l-popup>
-                    </l-marker>
+
+                    <template v-for="(marker, index) in markers">
+                        <l-marker :lat-lng="marker">
+                            <l-popup>
+                                <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>
+                            </l-popup>
+                        </l-marker>
+                    </template>
                 </l-map>
             </v-flex>
 
@@ -87,7 +90,7 @@
                 center: L.latLng(51.7142669290121, 5.3173828125),
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                marker: L.latLng(51.7142669290121, 5.3173828125),
+                markers: [L.latLng(51.7142669290121, 5.3173828125), L.latLng(51.7142669290121, 5.3153828125), L.latLng(51.7142669290121, 5.33828125)],
                 buttonImage: "img/MapPage/button.png",
                 LeftDropDownButton: ['Projectnaam A', 'Projectnaam B', 'Projectnaam C'],
                 RightDropDownButton: ['Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks'],

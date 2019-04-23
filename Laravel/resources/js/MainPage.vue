@@ -3,7 +3,7 @@
         <first-page></first-page>
         <map-page id="mapPage" :onProjectOpened="OpenProjectPage"></map-page>
         <!-- TODO: DEBUGGING Replace false with true.  -->
-        <project-page id="projectPage" v-if="selectedProjectPage.isSelected === false"></project-page>
+        <project-page id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
     </v-app>
 </template>
 
