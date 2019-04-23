@@ -41,5 +41,13 @@ Route::get('/admin/home', 'HomeController@index');
 Route::group(['prefix' => 'admin'], function () {
     Auth::routes();
 });
+Route::get('/media', "MediaController@index")->name('media');
+
+Route::post('/media', "MediaController@saveMedia")->name('media.save');
+
+Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
+
+Route::get('details/{id}', "ProjectPointsController@GetDetails");
+
 
 Route::get('/beheer/project/aanmaken', 'ProjectController@create');
