@@ -7,10 +7,11 @@
     <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/navbar.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <div id="mysidenav" class="sidenav">
+    {{-- <div id="mysidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="{{ url('/home')}}"> Home</a>
         <a href="{{ url('/about')}}"> About</a>
@@ -29,7 +30,15 @@
             <a class="btn btn-success" href="{{url('/home')}}/#map-container" role="button">{{ $route->name }} {{ $route->length }}</a>
             @endforeach
         </div>
-    </div>
+    </div> --}}
+    <div id="app">
+            <v-app>
+        
+                <route-list></route-list>
+            </v-app>
+        </div>
+
+        <script src="../js/app.js"></script>
 </body>
 
 </html>

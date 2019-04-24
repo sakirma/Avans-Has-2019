@@ -49,6 +49,7 @@
                             <v-text-field
                                 class="mx-3"
                                 solo
+                            
                                 prepend-inner-icon="search"
                             ></v-text-field>
                         </v-flex>
@@ -56,13 +57,13 @@
 
 
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                    <l-marker :lat-lng="marker"></l-marker>
+                    <l-marker v-for="marker, index in markers" :key=index :lat-lng="marker"></l-marker>
                 </l-map>
             </v-flex>
 
             <v-flex xs1>
                 <v-card height="100%" color="rgb(137, 162, 38, 1)">
-                    sadasdasdasd
+                    
                 </v-card>
             </v-flex>
         </v-layout>
@@ -70,9 +71,10 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
+    import {LMap, LTileLayer, LMarker, LControl} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
     import MapPageHeader from "./map-page-header";
+ 
 
     export default {
         name: 'MapPage',
@@ -89,7 +91,11 @@
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 marker: L.latLng(47.413220, -1.219482),
-                buttonImage: "img/MapPage/button.png"
+                buttonImage: "img/MapPage/button.png",
+                markers: [
+        L.latLng(51.758065435566195, 5.3166961669921875), L.latLng(51.76065435566195, 5.3166961669921875)
+      ]
+
             }
         },
         methods: {
@@ -100,8 +106,6 @@
             }
         },
         mounted() {
-            this.$refs.map.mapObject.zoomControl.remove();
-            this.$refs.map.mapObject.scrollWheelZoom.disable();
         }
     }
 </script>

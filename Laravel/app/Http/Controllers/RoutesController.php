@@ -10,9 +10,13 @@ class RoutesController extends Controller
 {
   public function index()
   {
-      $routes = Route::all();   
-      return view('routes.routeList', compact('routes'));
+    $routes = Route::all();  
+  //  $routes = Route::find(1);
+
+  
+return view('routes.routeList', compact('routes'));
   }
+
 
 
 }

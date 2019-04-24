@@ -50,6 +50,10 @@ Vue.component('first-page',
     require('./components/FirstPage').default
 );
 
+Vue.component('route-list',
+    require('./components/Routes').default
+);
+
 Vue.component('map-page',
     require('./components/MapPage').default
 );
