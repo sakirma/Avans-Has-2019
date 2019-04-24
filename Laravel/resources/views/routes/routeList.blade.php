@@ -7,7 +7,17 @@
     <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/navbar.js') }}"></script>
+<<<<<<< HEAD
     <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+=======
+    <script>
+        
+        var element = document.getElementById("map-container")
+        function scroll(){
+            element.scrollIntoView();
+        }
+    </script>
+>>>>>>> f40b6146ba6ca14accd852b212a0ae1a23e648e2
 </head>
 
 <body>
@@ -27,7 +37,8 @@
         <!-- fetched css from the project page and combined it with bootstraps --> 
         <div id="project-exp">
             @foreach ($routes as $route)
-            <a class="btn btn-success" href="{{url('/home')}}/#map-container" role="button">{{ $route->name }} {{ $route->length }}</a>
+            {{ $route->name }} {{ $route->length }}
+            <a class="btn btn-success" href="{{url('/')}}/#map-container" role="button">Volgen</a>
             @endforeach
         </div>
     </div> --}}

@@ -106,6 +106,10 @@
             }
         },
         mounted() {
+<<<<<<< HEAD
+=======
+
+>>>>>>> f40b6146ba6ca14accd852b212a0ae1a23e648e2
         }
     }
 </script>
