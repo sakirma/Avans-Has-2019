@@ -11,7 +11,6 @@
 |
 */
 Route::get('/', 'MainPageController@index');
-Route::post('/hello', 'MainPageController@hello');
 Route::get('details/{id}', "ProjectPointsController@getDetails");
 
 Route::post('/location', "ProjectPointsController@getLocationData");
@@ -52,3 +51,5 @@ Route::post('/media', "MediaController@saveMedia")->name('media.save');
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
 Route::get('details/{id}', "ProjectPointsController@GetDetails");
+
+Route::get('/hello ', 'MainPageController@hello');

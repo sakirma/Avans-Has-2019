@@ -55,7 +55,7 @@
             }
         },
         mounted() {
-            window.axios.post('http://127.0.0.1:8000/hello', {
+            window.axios.get('http://localhost:8000/hello ', {
                 wow: 'wow'
             }).then(response => {
                console.log(response.data);

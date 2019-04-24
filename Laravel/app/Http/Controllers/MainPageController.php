@@ -18,8 +18,8 @@ class MainPageController extends Controller
         return view('mainPage');
     }
 
-    function hello(Request $request)
+    function hello()
     {
-        echo $request->wow;
+        echo 'wow';
     }
 }
