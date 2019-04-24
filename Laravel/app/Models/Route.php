@@ -8,4 +8,12 @@ class Route extends Model
 {
     protected $table = 'route';
     protected $id = 'id';
+
+    // Table does not have timestamps
+    public $timestamps = false;
+
+    public function project_points()
+    {
+        return $this->hasMany('App\Models\ProjectPoint');
+    }
 }

@@ -16,7 +16,7 @@
     <body>
         <div id="mysidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="{{ url('/home')}}"> Home</a>
+            <a href="{{ url('/')}}"> Home</a>
             <a href="{{ url('/about')}}"> About</a>
         </div>
         <span class="navbtn" style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776;</span>
@@ -26,15 +26,49 @@
                 <h1>Project: Vergroening</h1>
             </div>
             <div id="project-exp">
-                <h1>Bomen in het bos</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere vestibulum pharetra. Phasellus sollicitudin libero in malesuada accumsan. Nullam nulla risus, accumsan sed fringilla quis, feugiat eget lorem. Etiam id porttitor felis, non ultrices diam. Morbi urna turpis, facilisis vitae ligula non, congue condimentum nulla. Sed eros nunc, dignissim efficitur porttitor non, laoreet malesuada lorem. Duis egestas scelerisque velit, eget posuere velit scelerisque at. Morbi porta, massa eu placerat convallis, nulla enim efficitur metus, vel viverra ex nunc sit amet justo. Morbi ac mi quis libero mollis egestas quis ac risus. Ut blandit augue in posuere posuere. In hac habitasse platea dictumst. Phasellus sed malesuada lorem, in euismod ex. Nam molestie turpis et nulla malesuada consectetur. Integer non semper ante.<p>
-                <br>
-                <p>Donec lacus nulla, vulputate vitae mollis aliquam, molestie quis leo. Aliquam eu pellentesque justo. Aliquam facilisis turpis ligula, vel rutrum ante ultrices in. Pellentesque ac eleifend metus, at condimentum ex. Praesent eleifend pharetra erat et eleifend. Suspendisse diam turpis, ultrices sed iaculis vel, eleifend nec nunc. Donec malesuada imperdiet cursus. Nunc elementum elit at ex vestibulum lacinia. Curabitur molestie pulvinar quam ut ullamcorper. Vestibulum malesuada odio non quam varius fermentum. <p>
-                <div class="img-container">
-                    <img src="{{ asset('img/three1.jpg') }}">
-                    <img src="{{ asset('img/three2.jpg') }}">
-                    <img src="{{ asset('img/three3.jpg') }}">
-                </div>
+                @if(isset($project) && !empty($project))
+                    <h1>{{ $project->name }}</h1>
+                    <p>{{ $project->information }}</p>
+
+                    <?php
+                        if(!isset($facet_id)) $facet_id = 0;
+                        
+                        if(isset($direction)){
+                            if($direction == "next"){
+                                $facet_id++;
+                                if($facet_id >= count($project->facets))
+                                    $facet_id = 0;
+                            }else{
+                                $facet_id--;
+                                if($facet_id < 0)
+                                    $facet_id = count($project->facets) - 1;
+                            }
+                        }
+                    ?>
+
+                    <form id="facet-form" action="/project/info/{{$project->id}}" method="POST">
+                        @csrf
+                        <input type="hidden" name="facet_id" value="{{ $facet_id }}">
+                        <input type="hidden" name="project" value="{{ $project->id }}">
+                        <input type="hidden" id="direction" name="direction">
+                        <div>
+                            <input onclick="event.preventDefault(); document.getElementById('direction').value = 'back'; document.getElementById('facet-form').submit();" type="image" name="back" src="{{ asset('img/left_arrow.png') }}">
+                        </div>
+                        <p><strong>{{ $project->sortedFacets()[$facet_id]->route->name }}</strong></p>
+                        <p>{{ $project->sortedFacets()[$facet_id]->information }}</p>
+                        <div>
+                            <input onclick="event.preventDefault(); document.getElementById('direction').value = 'next'; document.getElementById('facet-form').submit();" type="image" name="next" src="{{ asset('img/right_arrow.png') }}">
+                        </div>
+                    </form>
+
+                    <div class="img-container">
+                        @foreach($project->images() as $image)
+                            <img src="{{ route('media.get', ['name' => $image->name]) }}">
+                        @endforeach
+                    </div>
+                @else
+                    <p>Could not find any information about this project or project does not exist</p>
+                @endif
             </div>
         </div>
     </body>
