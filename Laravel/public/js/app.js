@@ -1996,34 +1996,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2033,7 +2005,8 @@ __webpack_require__.r(__webpack_exports__);
     MapPageHeader: _map_page_header__WEBPACK_IMPORTED_MODULE_2__["default"],
     LMap: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LMap"],
     LTileLayer: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LTileLayer"],
-    LMarker: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LMarker"]
+    LMarker: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LMarker"],
+    LPopup: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LPopup"]
   },
   data: function data() {
     return {
@@ -2046,15 +2019,14 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    mounted: function mounted() {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 250);
+    mark: function mark() {
+      console.log("hello");
     }
   },
   mounted: function mounted() {
-    this.$refs.map.mapObject.zoomControl.remove();
-    this.$refs.map.mapObject.scrollWheelZoom.disable();
+    this.$refs.eenElement.mapObject.on('click', function (e) {
+      console.log(e.latlng);
+    });
   }
 });
 
@@ -53558,17 +53530,60 @@ var render = function() {
         "v-layout",
         {
           staticStyle: { "background-color": "#89a226" },
-          attrs: { column: "", "fill-height": "" }
+          attrs: {
+            "align-center": "",
+            "justify-space-around": "",
+            row: "",
+            "fill-height": ""
+          }
         },
         [
           _c(
             "v-flex",
             [
               _c(
+                "v-form",
+                { attrs: { "lazy-validation": "" } },
+                [
+                  _c("v-text-field", { attrs: { label: "Naam" } }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: { label: "Beschrijving", required: "" }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "warning" },
+                      on: { click: function($event) {} }
+                    },
+                    [_vm._v("Media Uploaden")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "succes" },
+                      on: { click: function($event) {} }
+                    },
+                    [_vm._v("klaar")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { attrs: { "fill-height": "" } },
+            [
+              _c(
                 "l-map",
                 {
-                  ref: "map",
-                  staticStyle: { width: "50%", height: "50%" },
+                  ref: "eenElement",
+                  staticStyle: { width: "100%", height: "100%" },
                   attrs: { zoom: _vm.zoom, center: _vm.center }
                 },
                 [
@@ -53576,70 +53591,10 @@ var render = function() {
                     attrs: { url: _vm.url, attribution: _vm.attribution }
                   }),
                   _vm._v(" "),
-                  _c("l-marker", { attrs: { "lat-lng": _vm.marker } })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-form",
-                {
-                  ref: "form",
-                  attrs: { "lazy-validation": "" },
-                  model: {
-                    value: _vm.valid,
-                    callback: function($$v) {
-                      _vm.valid = $$v
-                    },
-                    expression: "valid"
-                  }
-                },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      counter: 10,
-                      rules: _vm.nameRules,
-                      label: "Naam",
-                      required: ""
-                    },
-                    model: {
-                      value: _vm.name,
-                      callback: function($$v) {
-                        _vm.name = $$v
-                      },
-                      expression: "name"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: {
-                      rules: _vm.emailRules,
-                      label: "Beschrijving",
-                      required: ""
-                    },
-                    model: {
-                      value: _vm.inforamtion,
-                      callback: function($$v) {
-                        _vm.inforamtion = $$v
-                      },
-                      expression: "inforamtion"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      attrs: { color: "warning" },
-                      on: { click: _vm.validate }
-                    },
-                    [_vm._v("\n    Media Uploaden\n  ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    { attrs: { color: "succes" }, on: { click: _vm.reset } },
-                    [_vm._v("\n    klaar\n  ")]
-                  )
+                  _c("l-marker", {
+                    attrs: { "lat-lng": _vm.marker },
+                    on: { click: _vm.mark }
+                  })
                 ],
                 1
               )
@@ -105146,8 +105101,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\PHPProjects\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\PHPProjects\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\gitkrakenRepos\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\gitkrakenRepos\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
