@@ -93,7 +93,4 @@
         top: -10px;
     }
 
-    ::-webkit-scrollbar {
-        display: none;
-    }
 </style>

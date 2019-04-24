@@ -5,7 +5,7 @@
                 src="img/FirstPage/wet-rainy-road-leaf-fallen-hd-gl.jpg">
             <v-layout justify-end row fill-height style="transition: none;">
                 <v-flex xs12 sm4 lg5 xl4>
-                    <v-card height="100vh" color="rgb(136, 176, 0, 0.5)"
+                    <v-card height="100vh" color="rgb(100, 130, 0, 0.5)"
                             style="transition: none" class="text-xs-center white--text">
 
                         <v-layout align-center justify-center column fill-height>
@@ -17,7 +17,7 @@
                                     ROADLEAF
                                 </v-card-text>
 
-                                <v-card-text class="first-page-text display-1">
+                                <v-card-text class="first-page-text display-2">
                                     Ontdek Brabant op een andere wijze
                                 </v-card-text>
                             </v-flex>
