@@ -1996,6 +1996,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2015,12 +2018,30 @@ __webpack_require__.r(__webpack_exports__);
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       marker: L.latLng(47.413220, -1.219482),
-      buttonImage: "img/MapPage/button.png"
+      markers: [],
+      buttonImage: "img/MapPage/button.png",
+      id: 0
     };
   },
   methods: {
     mark: function mark() {
       console.log("hello");
+    },
+    add: function add(event) {
+      this.id++;
+      var coord = event.latlng;
+      var lat = coord.lat;
+      var lng = coord.lng;
+      console.log("lat: " + lat + " lng: " + lng);
+      this.markers.push({
+        id: this.id,
+        latlng: L.latLng(parseFloat(lat), parseFloat(lng)),
+        content: 'hoi!'
+      });
+      console.log("marked at " + event.latlng);
+    },
+    remove: function remove() {
+      this.markers.splice(-1, 1);
     }
   },
   mounted: function mounted() {
@@ -53584,19 +53605,28 @@ var render = function() {
                 {
                   ref: "eenElement",
                   staticStyle: { width: "100%", height: "100%" },
-                  attrs: { zoom: _vm.zoom, center: _vm.center }
+                  attrs: { zoom: _vm.zoom, center: _vm.center },
+                  on: {
+                    click: function($event) {
+                      return _vm.add($event)
+                    }
+                  }
                 },
                 [
                   _c("l-tile-layer", {
                     attrs: { url: _vm.url, attribution: _vm.attribution }
                   }),
                   _vm._v(" "),
-                  _c("l-marker", {
-                    attrs: { "lat-lng": _vm.marker },
-                    on: { click: _vm.mark }
+                  _c("l-marker", { attrs: { "lat-lng": _vm.marker } }),
+                  _vm._v(" "),
+                  _vm._l(_vm.markers, function(item) {
+                    return _c("l-marker", {
+                      key: item.id,
+                      attrs: { "lat-lng": item.latlng }
+                    })
                   })
                 ],
-                1
+                2
               )
             ],
             1
@@ -105101,8 +105131,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\gitkrakenRepos\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\gitkrakenRepos\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\PHPProjects\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\PHPProjects\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
