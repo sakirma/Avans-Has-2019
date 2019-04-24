@@ -2156,6 +2156,35 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Routes.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Routes.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MapPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MapPage */ "./resources/js/components/MapPage.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "RoutesComponent"
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/map-page-header.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/map-page-header.vue?vue&type=script&lang=js& ***!
@@ -53983,10 +54012,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Routes.vue?vue&type=template&id=9c1adf16&":
-/*!*********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Routes.vue?vue&type=template&id=9c1adf16& ***!
-  \*********************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Routes.vue?vue&type=template&id=9c1adf16&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Routes.vue?vue&type=template&id=9c1adf16&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -53998,7 +54027,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("map-page")], 1)
+  return _c(
+    "v-app",
+    [
+      _c("first-page"),
+      _vm._v(" "),
+      _c("map-page", {
+        attrs: { id: "mapPage", onProjectOpened: _vm.OpenProjectPage }
+      }),
+      _vm._v(" "),
+      _vm.selectedProjectPage.isSelected === true
+        ? _c("project-page", { attrs: { id: "projectPage" } })
+        : _vm._e(),
+      _vm._v(" "),
+      _c("h1", [_vm._v("hi")])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -67845,6 +67890,7 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
+    this.$emit('ready', this.mapObject);
   },
   methods: {}
 };
@@ -68391,6 +68437,7 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
+    this.$emit('ready', this.mapObject);
   }
 };
 
@@ -68652,6 +68699,7 @@ var script = {
     this.parentContainer = findRealParent(this.$parent);
     this.mapObject.setElement(this.$el);
     this.mapObject.addTo(this.parentContainer.mapObject);
+    this.$emit('ready', this.mapObject);
   }
 };
 
@@ -68895,6 +68943,7 @@ var script = {
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["control"].attribution(options);
     propsBinder(this, this.mapObject, this.$options.props);
     this.mapObject.addTo(this.$parent.mapObject);
+    this.$emit('ready', this.mapObject);
   },
   render: function render () {
     return null;
@@ -69159,6 +69208,7 @@ var script = {
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["control"].layers(null, null, options);
     propsBinder(this, this.mapObject, this.$options.props);
     this.$parent.registerLayerControl(this);
+    this.$emit('ready', this.mapObject);
   },
   methods: {
     addLayer: function addLayer (layer) {
@@ -69430,6 +69480,7 @@ var script = {
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["control"].scale(options);
     propsBinder(this, this.mapObject, this.$options.props);
     this.mapObject.addTo(this.$parent.mapObject);
+    this.$emit('ready', this.mapObject);
   },
   render: function render () {
     return null;
@@ -69689,6 +69740,7 @@ var script = {
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["control"].zoom(options);
     propsBinder(this, this.mapObject, this.$options.props);
     this.mapObject.addTo(this.$parent.mapObject);
+    this.$emit('ready', this.mapObject);
   },
   render: function render () {
     return null;
@@ -69995,6 +70047,7 @@ var script = {
     if (this.visible) {
       this.parentContainer.addLayer(this);
     }
+    this.$emit('ready', this.mapObject);
   }
 };
 
@@ -70341,6 +70394,7 @@ var script = {
     propsBinder(this, this.mapObject, this.$options.props);
     this.parentContainer = findRealParent(this.$parent, true);
     this.parentContainer.addLayer(this, !this.visible);
+    this.$emit('ready', this.mapObject);
   },
   beforeDestroy: function beforeDestroy () {
     this.parentContainer.mapObject.removeLayer(this.mapObject);
@@ -70741,6 +70795,7 @@ var script = {
     this.mapObject.createTile = this.createTile;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
+    this.$emit('ready', this.mapObject);
   },
   beforeDestroy: function beforeDestroy () {
     this.parentContainer.removeLayer(this.mapObject);
@@ -71089,6 +71144,7 @@ var script = {
     );
 
     this.scheduleCreateIcon();
+    this.$emit('ready', this.mapObject);
   },
 
   beforeDestroy: function beforeDestroy () {
@@ -71383,6 +71439,7 @@ var script = {
   mounted: function mounted () {
     leaflet__WEBPACK_IMPORTED_MODULE_0__["Icon"].Default.imagePath = this.imagePath;
     propsBinder(this, this.mapObject, this.$options.props);
+    this.$emit('ready', this.mapObject);
   },
   methods: {
     setImagePath: function setImagePath (newVal, oldVal) {
@@ -71792,6 +71849,7 @@ var script = {
     propsBinder(this, this.mapObject, this.$options.props);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
+    this.$emit('ready', this.mapObject);
   },
   render: function render () {
     return null;
@@ -72098,6 +72156,7 @@ var script = {
     if (this.visible) {
       this.parentContainer.addLayer(this);
     }
+    this.$emit('ready', this.mapObject);
   }
 };
 
@@ -72474,7 +72533,9 @@ var script = {
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
     propsBinder(this, this.mapObject, this.$options.props);
     this.ready = true;
+    // DEPRECATED leaflet:load
     this.$emit('leaflet:load');
+    this.$emit('ready', this.mapObject);
   },
   methods: {
     registerLayerControl: function registerLayerControl (lControlLayers) {
@@ -72715,7 +72776,7 @@ var __vue_staticRenderFns__ = [];
   /* style */
   var __vue_inject_styles__ = function (inject) {
     if (!inject) { return }
-    inject("data-v-4db03556_0", { source: ".vue2leaflet-map{height:100%;width:100%}", map: undefined, media: undefined });
+    inject("data-v-33ad31f6_0", { source: ".vue2leaflet-map{height:100%;width:100%}", map: undefined, media: undefined });
 
   };
   /* scoped */
@@ -72985,6 +73046,7 @@ var script = {
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
     this.ready = true;
+    this.$emit('ready', this.mapObject);
   },
   methods: {
     setDraggable: function setDraggable (newVal, oldVal) {
@@ -73596,6 +73658,7 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
+    this.$emit('ready', this.mapObject);
   }
 };
 
@@ -74161,6 +74224,7 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
+    this.$emit('ready', this.mapObject);
   }
 };
 
@@ -74428,6 +74492,7 @@ var script = {
     this.mapObject.setContent(this.content || this.$el);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.mapObject.bindPopup(this.mapObject);
+    this.$emit('ready', this.mapObject);
   },
   beforeDestroy: function beforeDestroy () {
     if (this.parentContainer) {
@@ -75015,6 +75080,7 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
+    this.$emit('ready', this.mapObject);
   }
 };
 
@@ -75396,6 +75462,7 @@ var script = {
     propsBinder(this, this.mapObject, this.$options.props);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
+    this.$emit('ready', this.mapObject);
   }
 };
 
@@ -75654,6 +75721,7 @@ var script = {
     this.mapObject.setContent(this.content || this.$el);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.mapObject.bindTooltip(this.mapObject);
+    this.$emit('ready', this.mapObject);
   },
   beforeDestroy: function beforeDestroy () {
     if (this.parentContainer) {
@@ -76075,6 +76143,7 @@ var script = {
     propsBinder(this, this.mapObject, this.$options.props);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
+    this.$emit('ready', this.mapObject);
   }
 };
 
@@ -85352,7 +85421,7 @@ var __assign = undefined && undefined.__assign || function () {
                 var el = activator && activator.elm;
                 if (el) return el;
             }
-            Object(_util_console__WEBPACK_IMPORTED_MODULE_10__["consoleError"])('No activator found');
+            return null;
         },
         genActivator: function genActivator() {
             var _this = this;
@@ -98082,7 +98151,7 @@ var Vuetify = {
             return false;
         })(opts.components);
     },
-    version: '1.5.12'
+    version: '1.5.13'
 };
 function checkVueVersion(Vue, requiredVue) {
     var vueDep = requiredVue || '^2.5.18';
@@ -99768,7 +99837,7 @@ var Vuetify = {
         Vue.use(_components_Vuetify__WEBPACK_IMPORTED_MODULE_1__["default"], __assign({ components: _components__WEBPACK_IMPORTED_MODULE_2__,
             directives: _directives__WEBPACK_IMPORTED_MODULE_3__["default"] }, args));
     },
-    version: '1.5.12'
+    version: '1.5.13'
 };
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(Vuetify);
@@ -105427,21 +105496,23 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Routes_vue_vue_type_template_id_9c1adf16___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Routes.vue?vue&type=template&id=9c1adf16& */ "./resources/js/components/Routes.vue?vue&type=template&id=9c1adf16&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _Routes_vue_vue_type_template_id_9c1adf16_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Routes.vue?vue&type=template&id=9c1adf16&scoped=true& */ "./resources/js/components/Routes.vue?vue&type=template&id=9c1adf16&scoped=true&");
+/* harmony import */ var _Routes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Routes.vue?vue&type=script&lang=js& */ "./resources/js/components/Routes.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
-  script,
-  _Routes_vue_vue_type_template_id_9c1adf16___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Routes_vue_vue_type_template_id_9c1adf16___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Routes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Routes_vue_vue_type_template_id_9c1adf16_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Routes_vue_vue_type_template_id_9c1adf16_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  null,
+  "9c1adf16",
   null
   
 )
@@ -105453,19 +105524,33 @@ component.options.__file = "resources/js/components/Routes.vue"
 
 /***/ }),
 
-/***/ "./resources/js/components/Routes.vue?vue&type=template&id=9c1adf16&":
-/*!***************************************************************************!*\
-  !*** ./resources/js/components/Routes.vue?vue&type=template&id=9c1adf16& ***!
-  \***************************************************************************/
+/***/ "./resources/js/components/Routes.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/Routes.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Routes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Routes.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Routes.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Routes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Routes.vue?vue&type=template&id=9c1adf16&scoped=true&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/Routes.vue?vue&type=template&id=9c1adf16&scoped=true& ***!
+  \***************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Routes_vue_vue_type_template_id_9c1adf16___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Routes.vue?vue&type=template&id=9c1adf16& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Routes.vue?vue&type=template&id=9c1adf16&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Routes_vue_vue_type_template_id_9c1adf16___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Routes_vue_vue_type_template_id_9c1adf16_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Routes.vue?vue&type=template&id=9c1adf16&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Routes.vue?vue&type=template&id=9c1adf16&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Routes_vue_vue_type_template_id_9c1adf16_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Routes_vue_vue_type_template_id_9c1adf16___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Routes_vue_vue_type_template_id_9c1adf16_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
