@@ -14,6 +14,7 @@
             </v-flex>
 
             <v-flex fill-height>
+                // v-on:click="add($event)"  calls the mouse listener and $event gets the click event with latlng
                 <l-map ref="eenElement" v-on:click="add($event)"
                        :zoom="zoom"
                        :center="center"
@@ -21,8 +22,10 @@
 
                 >
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+                    // single marker ----remove later---------------
                     <l-marker :lat-lng="marker"></l-marker>
 
+                    // markers that are added with clicking on the map
                     <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng"></l-marker>
 
                 </l-map>
@@ -53,18 +56,16 @@
                 center: L.latLng(47.413220, -1.219482),
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+                // test marker
                 marker:  L.latLng(47.413220, -1.219482),
+                // here will come the added markers
                 markers: [],
                 buttonImage: "img/MapPage/button.png",
                 id: 0,
             }
         },
         methods: {
-
-            mark: function () {
-                console.log("hello");
-            },
-
+            // adds a marker to the markers array. the event.latlng needs to be converted to floats because they are delivered as strings
             add(event) {
                 this.id++;
                 var coord = event.latlng;
@@ -84,6 +85,7 @@
 
 
         },
+        // test method
         mounted() {
             this.$refs.eenElement.mapObject.on('click', function (e) {
                 console.log(e.latlng);

@@ -1999,6 +1999,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2017,16 +2020,16 @@ __webpack_require__.r(__webpack_exports__);
       center: L.latLng(47.413220, -1.219482),
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      // test marker
       marker: L.latLng(47.413220, -1.219482),
+      // here will come the added markers
       markers: [],
       buttonImage: "img/MapPage/button.png",
       id: 0
     };
   },
   methods: {
-    mark: function mark() {
-      console.log("hello");
-    },
+    // adds a marker to the markers array. the event.latlng needs to be converted to floats because they are delivered as strings
     add: function add(event) {
       this.id++;
       var coord = event.latlng;
@@ -2044,6 +2047,7 @@ __webpack_require__.r(__webpack_exports__);
       this.markers.splice(-1, 1);
     }
   },
+  // test method
   mounted: function mounted() {
     this.$refs.eenElement.mapObject.on('click', function (e) {
       console.log(e.latlng);
@@ -53600,6 +53604,9 @@ var render = function() {
             "v-flex",
             { attrs: { "fill-height": "" } },
             [
+              _vm._v(
+                '\n            // v-on:click="add($event)"  calls the mouse listener and $event gets the click event with latlng\n            '
+              ),
               _c(
                 "l-map",
                 {
@@ -53616,9 +53623,13 @@ var render = function() {
                   _c("l-tile-layer", {
                     attrs: { url: _vm.url, attribution: _vm.attribution }
                   }),
-                  _vm._v(" "),
+                  _vm._v(
+                    "\n                // single marker ----remove later---------------\n                "
+                  ),
                   _c("l-marker", { attrs: { "lat-lng": _vm.marker } }),
-                  _vm._v(" "),
+                  _vm._v(
+                    "\n\n                // markers that are added with clicking on the map\n                "
+                  ),
                   _vm._l(_vm.markers, function(item) {
                     return _c("l-marker", {
                       key: item.id,
