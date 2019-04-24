@@ -26,9 +26,6 @@
                     isSelected: false,
                     projectId: undefined
                 },
-
-                pageState: { "startPage":1, "mapPage":2, "projectPage":3, },
-                currentPageState: undefined,
             }
         },
         methods: {
@@ -43,15 +40,29 @@
                 if (document.getElementById('projectPage') && this.selectedProjectPage.projectId === projectId) {
                     this.$vuetify.goTo("#projectPage");
                 }
+                this.UpdateScreen();
             },
 
-            UpdateScreen()
-            {
-
+            UpdateScreen() {
+                switch (this.currentPageState) {
+                    case this.pageState.startPage:
+                        console.log('tasdasd');
+                        break;
+                    case this.pageState.projectPage:
+                        console.log('project PAge');
+                        break;
+                }
             }
         },
         mounted() {
-            this.currentPageState = this.pageState.startPage;
+            window.axios.post('http://127.0.0.1:8000/hello', {
+                wow: 'wow'
+            }).then(response => {
+               console.log(response.data);
+            });
+
+            //this.currentPageState = this.pageState.startPage;
+            //this.UpdateScreen();
         }
     }
 </script>

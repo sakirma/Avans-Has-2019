@@ -17,4 +17,9 @@ class MainPageController extends Controller
     {
         return view('mainPage');
     }
+
+    function hello(Request $request)
+    {
+        echo $request->wow;
+    }
 }

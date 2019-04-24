@@ -29,6 +29,10 @@ L.Icon.Default.mergeOptions({
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+import Vuex from 'vuex';
+Vue.use(Vuex);
+// import store from './store/store'
+
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 Vue.component(
@@ -67,4 +71,5 @@ Vue.use(Vuetify);
 const app = new Vue({
     el: '#app',
     Vuetify,
+    // store,
 });

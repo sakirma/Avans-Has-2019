@@ -11,6 +11,7 @@
 |
 */
 Route::get('/', 'MainPageController@index');
+Route::post('/hello', 'MainPageController@hello');
 Route::get('details/{id}', "ProjectPointsController@getDetails");
 
 Route::post('/location', "ProjectPointsController@getLocationData");
