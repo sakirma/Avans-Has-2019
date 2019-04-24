@@ -18,6 +18,7 @@ class MediaController extends Controller
     }
     
     //Needs a name for the file that the user wants to save + a folder (projects/projectpoints) (you can find these folders in public/img/) + the request needs an image as well
+    //this function does not add project_has_image/point_has_image entries in the tables...
     public function saveMedia(Request $request){
         $image = $request->file('image');
         if(isset($request['name']) && isset($request['folder']) && $image){
