@@ -17,9 +17,4 @@ class MainPageController extends Controller
     {
         return view('mainPage');
     }
-
-    function hello()
-    {
-        echo 'wow';
-    }
 }

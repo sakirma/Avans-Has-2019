@@ -81,7 +81,6 @@
         props: {
             onProjectOpened: {
                 type: Function,
-                required: true
             }
         },
         data() {

@@ -10,6 +10,7 @@ window.Vue = require('vue');
 window.Vuetify = require('vuetify');
 
 import L from 'leaflet';
+
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -29,9 +30,8 @@ L.Icon.Default.mergeOptions({
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-import Vuex from 'vuex';
-Vue.use(Vuex);
-// import store from './store/store'
+
+import store from './store/session-store'
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
@@ -71,5 +71,5 @@ Vue.use(Vuetify);
 const app = new Vue({
     el: '#app',
     Vuetify,
-    // store,
+    store,
 });

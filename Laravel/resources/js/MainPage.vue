@@ -1,10 +1,10 @@
 <template>
-    <v-app>
-        <first-page></first-page>
+    <div v-resize="UpdateScreen">
+        <first-page id="firstPage"></first-page>
         <map-page id="mapPage" :onProjectOpened="OpenProjectPage"></map-page>
         <!-- TODO: DEBUGGING Replace false with true.  -->
         <project-page id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
-    </v-app>
+    </div>
 </template>
 
 <!-- TODO: Scroll back to project page when the window is re-sized. -->
@@ -35,37 +35,41 @@
                     projectId: projectId
                 };
 
-                this.currentPageState = this.pageState.projectPage;
                 // Debugging purpose
                 if (document.getElementById('projectPage') && this.selectedProjectPage.projectId === projectId) {
                     this.$vuetify.goTo("#projectPage");
                 }
-                this.UpdateScreen();
+
+                let pageStates = this.$store.getters.pageStates;
+                this.$store.commit('setPageState', pageStates.projectPage);
             },
 
             UpdateScreen() {
-                switch (this.currentPageState) {
-                    case this.pageState.startPage:
-                        console.log('tasdasd');
+                let currentPageState = this.$store.getters.getCurrentPageState;
+                let pageStates = this.$store.getters.pageStates;
+
+                switch (currentPageState) {
+                    case pageStates.startPage:
+                        this.GoToSection('#firstPage');
                         break;
-                    case this.pageState.projectPage:
-                        console.log('project PAge');
+                    case pageStates.mapPage:
+                        this.GoToSection('#mapPage');
+                        break;
+                    case pageStates.projectPage:
+                        this.GoToSection('#projectPage');
                         break;
                 }
-            }
+            },
+            GoToSection(id) {
+                this.$vuetify.goTo(id, { duration: 500 } );
+            },
         },
         mounted() {
-            window.axios.get('http://localhost:8000/hello ', {
-                wow: 'wow'
-            }).then(response => {
-               console.log(response.data);
-            });
-
-            //this.currentPageState = this.pageState.startPage;
-            //this.UpdateScreen();
+            this.UpdateScreen();
         }
     }
 </script>
 
 <style scoped>
+
 </style>
