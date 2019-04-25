@@ -23,7 +23,7 @@
                             </v-flex>
 
                             <v-flex shrink pa-3>
-                                <v-btn color="rgb(0, 0, 0, 1)" outline large fab @click="$vuetify.goTo('#mapPage')">
+                                <v-btn color="rgb(0, 0, 0, 1)" outline large fab @click="GoToMapPage">
                                     <v-icon>arrow_drop_down_circle</v-icon>
                                 </v-btn>
                             </v-flex>
@@ -39,8 +39,12 @@
 <script>
     export default {
         name: "FirstPage",
-        mounted() {
-
+        methods: {
+            GoToMapPage() {
+                this.$vuetify.goTo('#mapPage');
+                let pageStates = this.$store.getters.pageStates;
+                this.$store.commit('setPageState', pageStates.mapPage);
+            },
         }
     }
 </script>
