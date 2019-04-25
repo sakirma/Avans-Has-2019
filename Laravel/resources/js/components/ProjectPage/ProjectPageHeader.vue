@@ -8,9 +8,10 @@
                    style="filter: brightness(0) invert(1);"
                    width="150px"/>
         </v-flex>
-        <v-flex grow>
-
-        </v-flex>
+        <v-spacer></v-spacer>
+        <v-btn>
+            WOW
+        </v-btn>
     </v-layout>
 </template>
 
