@@ -11,58 +11,50 @@
                        :center="center"
                        style="height:100%;">
                     <v-layout align-start justify-start row fill-height mt-0>
-                        <!--TODO: Make a component from this-->
                         <!--Leaflet map's z-index is 1000-->
-                        <v-flex style="z-index: 1001" xs12 md3 lg2
+                        <v-flex style="z-index: 701" xs12 md3 lg2
                                 :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}">
-                            <v-btn class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
-                                <v-layout xs3 column>
-                                    <v-flex class="white--text font-weight-bold">
-                                        IK WIL MEER ZIEN!
-                                    </v-flex>
-                                    <v-icon style="height: 10px;" large color="white">
-                                        expand_more
-                                    </v-icon>
-                                </v-layout>
-                            </v-btn>
+
+                            <drop-down-button buttonTitle="IK WIL MEER ZIEN!"
+                                              title="NATUURLIEFHEBER, DIT HEBBEN WE VOOR JE"
+                                              :items="LeftDropDownButton"></drop-down-button>
                         </v-flex>
 
                         <!--Leaflet map's z-index is 1000-->
-                        <v-flex style="z-index: 1001" xs12 md3 lg2
+                        <v-flex style="z-index: 701" xs12 md3 lg2
                                 :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-3': $vuetify.breakpoint.lgAndUp}">
-                            <v-btn class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
-                                <v-layout xs3 column>
-                                    <v-flex class="white--text font-weight-bold">
-                                        IK WIL RECREËREN!
-                                    </v-flex>
-                                    <v-icon style="height: 10px;" large color="white">
-                                        expand_more
-                                    </v-icon>
-                                </v-layout>
-                            </v-btn>
-
+                            <drop-down-button buttonTitle="IK WIL RECREËEREN!"
+                                              title="GENIET VAN HET LEVEN DOORMIDDEL VAN"
+                                              :items="RightDropDownButton"></drop-down-button>
                         </v-flex>
                         <v-spacer></v-spacer>
 
                         <!--Leaflet map's z-index is 1000-->
-                        <v-flex style="z-index: 1001" shrink pt-1>
+                        <!--TODO: Remove the events handler from searchbar. -->
+                        <v-flex style="z-index: 701" shrink pt-1>
                             <v-text-field
-                                class="mx-3"
-                                solo
-                                prepend-inner-icon="search"
+                                    class="mx-3"
+                                    solo
+                                    prepend-inner-icon="search"
                             ></v-text-field>
                         </v-flex>
                     </v-layout>
 
 
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                    <l-marker :lat-lng="marker"></l-marker>
+
+                    <template v-for="(marker, index) in markers">
+                        <l-marker :lat-lng="marker">
+                            <l-popup>
+                                <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>
+                            </l-popup>
+                        </l-marker>
+                    </template>
                 </l-map>
             </v-flex>
 
             <v-flex xs1>
                 <v-card height="100%" color="rgb(137, 162, 38, 1)">
-                    sadasdasdasd
                 </v-card>
             </v-flex>
         </v-layout>
@@ -70,33 +62,49 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
+    import {LMap, LTileLayer, LMarker, LPopup} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
+
     import MapPageHeader from "./map-page-header";
+    import DropDownButton from "./mapPageButton/DropDownButton"
 
     export default {
         name: 'MapPage',
         components: {
             MapPageHeader,
+            DropDownButton,
             LMap,
             LTileLayer,
-            LMarker
+            LMarker,
+            LPopup
+        },
+        props: {
+            onProjectOpened: {
+                type: Function,
+                required: true
+            }
         },
         data() {
             return {
-                zoom: 13,
-                center: L.latLng(47.413220, -1.219482),
+                zoom: 11,
+                center: L.latLng(51.7142669290121, 5.3173828125),
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                marker: L.latLng(47.413220, -1.219482),
-                buttonImage: "img/MapPage/button.png"
+                markers: [L.latLng(51.7142669290121, 5.3173828125), L.latLng(51.7142669290121, 5.3153828125), L.latLng(51.7142669290121, 5.33828125)],
+                buttonImage: "img/MapPage/button.png",
+                LeftDropDownButton: ['Projectnaam A', 'Projectnaam B', 'Projectnaam C'],
+                RightDropDownButton: ['Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks'],
+
+                popupContent: ' <button href="javascript:;" @click="console.log("wow")">terms</button>',
             }
         },
         methods: {
-            mounted() {
-                setTimeout(function () {
-                    window.dispatchEvent(new Event('resize'))
-                }, 250);
+            disableInputEvents(element) {
+                L.DomEvent.disableClickPropagation(element.$el);
+                L.DomEvent.disableScrollPropagation(element.$el);
+            },
+            OpenProjectPagePressed: function (projectId) {
+                this.onProjectOpened(projectId);
             }
         },
         mounted() {
@@ -107,10 +115,5 @@
 </script>
 
 <style scoped>
-    .rounded-bottom-card {
-        margin: 0px 0px 0px 0px;
-        border-radius: 0px 0px 10px 10px;
-        height: 50px;
-        width: 100%;
-    }
+
 </style>
