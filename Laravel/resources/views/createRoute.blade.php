@@ -16,10 +16,7 @@
     {!! HTML::style('css/leaflet/leaflet-routing-machine.css') !!}
 
     {!! HTML::script('js/leaflet.js')!!}
-    {!! HTML::script('js/leaflet/leaflet-routing-machine.js')!!}
-
-
-
+    {!! HTML::script('js/leaflet/leaflet-routing-machine.js') !!}
 </head>
 
 <body>
