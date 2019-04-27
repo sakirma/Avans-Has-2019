@@ -2165,7 +2165,42 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _MapPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MapPage */ "./resources/js/components/MapPage.vue");
+/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/vue2-leaflet.es.js");
+/* harmony import */ var leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! leaflet/dist/leaflet.css */ "./node_modules/leaflet/dist/leaflet.css");
+/* harmony import */ var leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _map_page_header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./map-page-header */ "./resources/js/components/map-page-header.vue");
+/* harmony import */ var _mapPageButton_DropDownButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mapPageButton/DropDownButton */ "./resources/js/components/mapPageButton/DropDownButton.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2179,8 +2214,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "RoutesComponent"
+  name: 'MapPage',
+  components: {
+    MapPageHeader: _map_page_header__WEBPACK_IMPORTED_MODULE_2__["default"],
+    DropDownButton: _mapPageButton_DropDownButton__WEBPACK_IMPORTED_MODULE_3__["default"],
+    LMap: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LMap"],
+    LTileLayer: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LTileLayer"],
+    LMarker: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LMarker"],
+    LPopup: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LPopup"]
+  },
+  props: {
+    onProjectOpened: {
+      type: Function,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      zoom: 11,
+      center: L.latLng(51.7142669290121, 5.3173828125),
+      url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      markers: [L.latLng(51.7142669290121, 5.3173828125), L.latLng(51.7142669290121, 5.3153828125), L.latLng(51.7142669290121, 5.33828125)]
+    };
+  },
+  methods: {
+    OpenProjectPagePressed: function OpenProjectPagePressed(projectId) {
+      this.onProjectOpened(projectId);
+    }
+  },
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -54028,19 +54095,118 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-app",
+    "div",
+    { staticStyle: { height: "100vh" }, attrs: { id: "mapPage" } },
     [
-      _c("first-page"),
-      _vm._v(" "),
-      _c("map-page", {
-        attrs: { id: "mapPage", onProjectOpened: _vm.OpenProjectPage }
-      }),
-      _vm._v(" "),
-      _vm.selectedProjectPage.isSelected === true
-        ? _c("project-page", { attrs: { id: "projectPage" } })
-        : _vm._e(),
-      _vm._v(" "),
-      _c("h1", [_vm._v("hi")])
+      _c(
+        "v-layout",
+        {
+          staticStyle: { "background-color": "#89a226" },
+          attrs: { column: "", "fill-height": "" }
+        },
+        [
+          _c("v-flex", { attrs: { xs1: "", "ma-3": "" } }),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            [
+              _c(
+                "l-map",
+                {
+                  ref: "map",
+                  staticStyle: { height: "100%" },
+                  attrs: { zoom: _vm.zoom, center: _vm.center }
+                },
+                [
+                  _c(
+                    "v-layout",
+                    {
+                      attrs: {
+                        "align-start": "",
+                        "justify-start": "",
+                        row: "",
+                        "fill-height": "",
+                        "mt-0": ""
+                      }
+                    },
+                    [
+                      _c(
+                        "v-flex",
+                        {
+                          class: {
+                            "ml-0": _vm.$vuetify.breakpoint.smAndDown,
+                            "ml-5": _vm.$vuetify.breakpoint.lgAndUp
+                          },
+                          staticStyle: { "z-index": "701" },
+                          attrs: { xs12: "", md3: "", lg2: "" }
+                        },
+                        [
+                          _c("drop-down-button", {
+                            attrs: {
+                              buttonTitle: "Routes",
+                              title: "hi",
+                              items: _vm.LeftDropDownButton
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("l-tile-layer", {
+                    attrs: { url: _vm.url, attribution: _vm.attribution }
+                  }),
+                  _vm._v(" "),
+                  _vm._l(_vm.markers, function(marker, index) {
+                    return [
+                      _c(
+                        "l-marker",
+                        { attrs: { "lat-lng": marker } },
+                        [
+                          _c(
+                            "l-popup",
+                            [
+                              _c(
+                                "v-btn",
+                                {
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.OpenProjectPagePressed(1)
+                                    }
+                                  }
+                                },
+                                [_vm._v(" To Project Page")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ]
+                  })
+                ],
+                2
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { attrs: { xs1: "" } },
+            [
+              _c("v-card", {
+                attrs: { height: "100%", color: "rgb(137, 162, 38, 1)" }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
     ],
     1
   )
