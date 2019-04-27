@@ -8,7 +8,7 @@
                        contain
                        style="filter: brightness(0) invert(1);"
                        width="150px"/>
-                <v-btn fab dark class="ml-5">
+                <v-btn fab dark class="ml-5" @click="GoBackToMapPage">
                     <v-icon>
                         arrow_upward
                     </v-icon>
@@ -23,7 +23,15 @@
 
 <script>
     export default {
-        name: "ProjectPageHeader"
+        name: "ProjectPageHeader",
+        methods: {
+            GoBackToMapPage() {
+                let pageStates = this.$store.getters.pageStates;
+                this.$store.commit('setPageState', pageStates.mapPage);
+
+                this.$parent.$parent.UpdateScreen();
+            }
+        }
     }
 </script>
 
