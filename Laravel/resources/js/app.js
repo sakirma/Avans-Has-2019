@@ -10,6 +10,7 @@ window.Vue = require('vue');
 window.Vuetify = require('vuetify');
 
 import L from 'leaflet';
+
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -18,6 +19,8 @@ L.Icon.Default.mergeOptions({
     shadowUrl: require('leaflet/dist/images/marker-shadow.png')
 });
 
+import Vuebar from 'vuebar';
+Vue.use(Vuebar);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -28,6 +31,9 @@ L.Icon.Default.mergeOptions({
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
+
+import store from './store/session-store'
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
@@ -67,4 +73,5 @@ Vue.use(Vuetify);
 const app = new Vue({
     el: '#app',
     Vuetify,
+    store,
 });
