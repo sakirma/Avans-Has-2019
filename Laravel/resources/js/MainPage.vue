@@ -1,9 +1,10 @@
 <template>
     <div v-resize="UpdateScreen">
         <first-page id="firstPage"></first-page>
-        <map-page id="mapPage" :onProjectOpened="OpenProjectPage"></map-page>
+        <map-page id="mapPage" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
         <!-- TODO: DEBUGGING Replace false with true.  -->
-        <project-page id="projectPage" v-if="selectedProjectPage.isSelected === false"></project-page>
+        <project-page id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
+        <RoutePage v-else-if="selectedRoutePage === true"></RoutePage>
     </div>
 </template>
 
@@ -12,6 +13,7 @@
     import MapPage from './components/MapPage';
     import FirstPage from './components/FirstPage';
     import ProjectPage from './components/ProjectPage/ProjectPage';
+    import RoutePage from './components/RoutePage';
 
     export default {
         name: "MainPage",
@@ -19,6 +21,7 @@
             MapPage,
             FirstPage,
             ProjectPage,
+            RoutePage,
         },
         data() {
             return {
@@ -26,6 +29,7 @@
                     isSelected: false,
                     projectId: undefined
                 },
+                selectedRoutePage: false,
             }
         },
         methods: {
@@ -34,6 +38,7 @@
                     isSelected: true,
                     projectId: projectId
                 };
+                this.selectedRoutePage = false;
 
                 // Debugging purpose
                 if (document.getElementById('projectPage') && this.selectedProjectPage.projectId === projectId) {
@@ -42,6 +47,11 @@
 
                 let pageStates = this.$store.getters.pageStates;
                 this.$store.commit('setPageState', pageStates.projectPage);
+            },
+
+            OpenRoutePage() {
+                this.selectedRoutePage = true;
+                this.selectedProjectPage.isSelected = false;
             },
 
             UpdateScreen() {
