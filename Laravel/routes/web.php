@@ -15,20 +15,12 @@ Route::get('details/{id}', "ProjectPointsController@getDetails");
 
 Route::post('/location', "ProjectPointsController@getLocationData");
 
-Route::get('/leaflet', function(){
-    return view('leafletExample');
-});
-
 Route::get('/about', function(){
     return view('about');
 });
 
     Route::get('/project', function(){
     return view('project');
-});
-
-Route::get('details', function() {
-    abort(404);
 });
 
 Route::get('routelist', "RoutesController@index");
@@ -39,7 +31,6 @@ Route::post('GetProjectWithinDistance', "ProjectController@GetProjectLocations")
 Route::get('/project/info/{id}', "ProjectController@index")->name("project.info");
 Route::post('/project/info/{id}', "ProjectController@facetInfo")->name("project.info.facet");
 
-Route::get('/getCategories', 'MainPageController@GetCatagories');
 Route::get('/admin/home', 'HomeController@index');
 Route::group(['prefix' => 'admin'], function () {
     Auth::routes();
@@ -52,5 +43,18 @@ Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
 Route::get('details/{id}', "ProjectPointsController@GetDetails");
 
-
+// Crud
 Route::get('/beheer/project/aanmaken', 'ProjectController@create');
+Route::get('/beheer/project/overzicht', 'ProjectController@viewProjects');
+
+// Return only data
+Route::get('/getCategories', 'MainPageController@GetCatagories');
+
+// Unnecessary : Could be deleted
+Route::get('details', function() {
+    abort(404);
+});
+
+Route::get('/leaflet', function(){
+    return view('leafletExample');
+});

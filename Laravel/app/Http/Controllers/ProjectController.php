@@ -35,6 +35,9 @@ class ProjectController extends Controller
         return view('createProject');
     }
 
+    public function viewProjects() {
+        return view('viewProjects');
+    }
 
     /**
      * @param Request $request
