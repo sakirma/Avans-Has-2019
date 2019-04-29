@@ -1,5 +1,5 @@
 <template>
-    <div id="mapPage" style="height: 100vh;">
+    <div style="height: 100vh;">
         <v-layout column fill-height style="background-color: #89a226">
             <v-flex xs1 ma-3>
                 <map-page-header></map-page-header>
@@ -14,22 +14,17 @@
                         <v-layout align-start justify-start row mt-0>
                             <!--Leaflet map's z-index is 1000-->
                             <v-flex style="z-index: 701" xs12 md3 lg2>
-                                <drop-down-button buttonTitle="IK WIL MEER ZIEN!"
-                                                  title="NATUURLIEFHEBER, DIT HEBBEN WE VOOR JE"
-                                                  :items="LeftDropDownButton"></drop-down-button>
+
                             </v-flex>
 
                             <!--Leaflet map's z-index is 1000-->
                             <v-flex style="z-index: 701" xs12 md3 lg2
                                     :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-3': $vuetify.breakpoint.lgAndUp}">
-                                <drop-down-button buttonTitle="IK WIL RECREËEREN!"
-                                                  title="GENIET VAN HET LEVEN DOORMIDDEL VAN"
-                                                  :items="RightDropDownButton"></drop-down-button>
+
                             </v-flex>
                             <v-spacer></v-spacer>
 
                             <!--Leaflet map's z-index is 1000-->
-                            <!--TODO: Remove the events handler from searchbar. -->
                             <v-flex style="z-index: 701" shrink pt-1>
                                 <v-text-field
                                         class="mx-3"
@@ -38,25 +33,10 @@
                                 ></v-text-field>
                             </v-flex>
                         </v-layout>
-                        <v-layout pb-3 align-end justify-start row>
-                            <v-btn style="z-index: 1001" fab @click="OpenRoutePagePressed">
-                                <v-icon color="blue">
-                                    near_me
-                                </v-icon>
-                            </v-btn>
-                        </v-layout>
                     </v-layout>
 
 
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-
-                    <template v-for="(marker, index) in markers">
-                        <l-marker :lat-lng="marker">
-                            <l-popup>
-                                <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>
-                            </l-popup>
-                        </l-marker>
-                    </template>
                 </l-map>
             </v-flex>
 
@@ -76,22 +56,9 @@
     import DropDownButton from "./mapPageButton/DropDownButton"
 
     export default {
-        name: 'MapPage',
-        components: {
-            MapPageHeader,
-            DropDownButton,
-            LMap,
-            LTileLayer,
-            LMarker,
-            LPopup
-        },
-        props: {
-            onProjectOpened: {
-                type: Function,
-            },
-            onRoutePageOpened: {
-                type: Function,
-            }
+        name: "RoutePage",
+        mounted() {
+            this.$vuetify.goTo('#routePage');
         },
         data() {
             return {
@@ -107,17 +74,14 @@
                 popupContent: ' <button href="javascript:;" @click="console.log("wow")">terms</button>',
             }
         },
-        methods: {
-            disableInputEvents(element) {
-                this.$parent.disableInputEvents(element);
-            },
-            OpenProjectPagePressed: function (projectId) {
-                this.onProjectOpened(projectId);
-            },
-            OpenRoutePagePressed: function () {
-                this.onRoutePageOpened();
-            }
-        },
+        components: {
+            MapPageHeader,
+            DropDownButton,
+            LMap,
+            LTileLayer,
+            LMarker,
+            LPopup
+        }
     }
 </script>
 
