@@ -9,14 +9,14 @@
                 <v-layout row fill-height>
                     <v-layout column fill-height>
                         <v-flex d-flex style="width: 75%">
-                            <v-card flat  style="background-color: #A0B550; position:relative; overflow-y: auto;">
+                            <v-card flat style="background-color: #A0B550; position:relative; overflow-y: auto;" v-bar>
                                 <v-card-text style="position: absolute;">
                                     {{ Wows }}
                                 </v-card-text>
                             </v-card>
                         </v-flex>
                         <v-flex d-flex style="width: 75%" align-self-end>
-                            <v-card flat class="primary" style="position:relative; overflow-y: auto;">
+                            <v-card flat class="primary" style="position:relative; overflow-y: auto;" v-bar>
                                 <v-card-text style="position: absolute;">
                                     {{ Wows }}
                                 </v-card-text>
@@ -80,6 +80,6 @@
     }
 </script>
 
-<style scoped>
+<style>
 
 </style>

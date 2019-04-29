@@ -10,34 +10,41 @@
                        :zoom="zoom"
                        :center="center"
                        style="height:100%;">
-                    <v-layout align-start justify-start row fill-height mt-0>
-                        <!--Leaflet map's z-index is 1000-->
-                        <v-flex style="z-index: 701" xs12 md3 lg2
-                                :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}">
+                    <v-layout :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}"  column fill-height>
+                        <v-layout align-start justify-start row mt-0>
+                            <!--Leaflet map's z-index is 1000-->
+                            <v-flex style="z-index: 701" xs12 md3 lg2>
+                                <drop-down-button buttonTitle="IK WIL MEER ZIEN!"
+                                                  title="NATUURLIEFHEBER, DIT HEBBEN WE VOOR JE"
+                                                  :items="LeftDropDownButton"></drop-down-button>
+                            </v-flex>
 
-                            <drop-down-button buttonTitle="IK WIL MEER ZIEN!"
-                                              title="NATUURLIEFHEBER, DIT HEBBEN WE VOOR JE"
-                                              :items="LeftDropDownButton"></drop-down-button>
-                        </v-flex>
+                            <!--Leaflet map's z-index is 1000-->
+                            <v-flex style="z-index: 701" xs12 md3 lg2
+                                    :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-3': $vuetify.breakpoint.lgAndUp}">
+                                <drop-down-button buttonTitle="IK WIL RECREËEREN!"
+                                                  title="GENIET VAN HET LEVEN DOORMIDDEL VAN"
+                                                  :items="RightDropDownButton"></drop-down-button>
+                            </v-flex>
+                            <v-spacer></v-spacer>
 
-                        <!--Leaflet map's z-index is 1000-->
-                        <v-flex style="z-index: 701" xs12 md3 lg2
-                                :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-3': $vuetify.breakpoint.lgAndUp}">
-                            <drop-down-button buttonTitle="IK WIL RECREËEREN!"
-                                              title="GENIET VAN HET LEVEN DOORMIDDEL VAN"
-                                              :items="RightDropDownButton"></drop-down-button>
-                        </v-flex>
-                        <v-spacer></v-spacer>
-
-                        <!--Leaflet map's z-index is 1000-->
-                        <!--TODO: Remove the events handler from searchbar. -->
-                        <v-flex style="z-index: 701" shrink pt-1>
-                            <v-text-field
-                                    class="mx-3"
-                                    solo
-                                    prepend-inner-icon="search"
-                            ></v-text-field>
-                        </v-flex>
+                            <!--Leaflet map's z-index is 1000-->
+                            <!--TODO: Remove the events handler from searchbar. -->
+                            <v-flex style="z-index: 701" shrink pt-1>
+                                <v-text-field
+                                        class="mx-3"
+                                        solo
+                                        prepend-inner-icon="search"
+                                ></v-text-field>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout pb-3 align-end justify-start row>
+                            <v-btn style="z-index: 1001" fab @click="OpenRoutePagePressed">
+                                <v-icon color="blue">
+                                    near_me
+                                </v-icon>
+                            </v-btn>
+                        </v-layout>
                     </v-layout>
 
 
@@ -81,7 +88,9 @@
         props: {
             onProjectOpened: {
                 type: Function,
-                required: true
+            },
+            onRoutePageOpened: {
+                type: Function,
             }
         },
         data() {
@@ -105,7 +114,11 @@
             },
             OpenProjectPagePressed: function (projectId) {
                 this.onProjectOpened(projectId);
+            },
+            OpenRoutePagePressed: function () {
+                this.onRoutePageOpened();
             }
+
         },
         mounted() {
             this.$refs.map.mapObject.zoomControl.remove();

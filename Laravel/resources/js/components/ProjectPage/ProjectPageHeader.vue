@@ -1,12 +1,19 @@
 <template>
-    <v-layout align-center justify-center row fill-height>
+    <v-layout align-center justify-center row fill-height ml-3>
         <v-flex shrink class="hidden-sm-and-down v-card--reveal">
-            <v-img src="img/RoadLeaf-Logo.png"
-                   height="100%"
-                   max-height="100px"
-                   contain
-                   style="filter: brightness(0) invert(1);"
-                   width="150px"/>
+            <v-layout align-center justify-center fill-height>
+                <v-img src="img/RoadLeaf-Logo.png"
+                       height="100%"
+                       max-height="100px"
+                       contain
+                       style="filter: brightness(0) invert(1);"
+                       width="150px"/>
+                <v-btn fab dark class="ml-5" @click="GoBackToMapPage">
+                    <v-icon>
+                        arrow_upward
+                    </v-icon>
+                </v-btn>
+            </v-layout>
         </v-flex>
         <v-flex grow>
 
@@ -16,7 +23,15 @@
 
 <script>
     export default {
-        name: "ProjectPageHeader"
+        name: "ProjectPageHeader",
+        methods: {
+            GoBackToMapPage() {
+                let pageStates = this.$store.getters.pageStates;
+                this.$store.commit('setPageState', pageStates.mapPage);
+
+                this.$parent.$parent.UpdateScreen();
+            }
+        }
     }
 </script>
 

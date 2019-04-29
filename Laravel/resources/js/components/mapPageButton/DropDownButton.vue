@@ -22,10 +22,10 @@
                         </div>
                         <v-divider class="mx-3"></v-divider>
 
-                        <v-layout justify-center>
+                        <v-layout justify-center v-bar>
                             <v-card
                                 style="background-color: #d9d9d9;"
-                                class="text-xs-center scroll-y"
+                                class="text-xs-center removeScrollBar"
                                 flat
                                 max-height="30vh"
                             >
@@ -79,7 +79,7 @@
     }
 </script>
 
-<style scoped>
+<style>
     .rounded-bottom-card {
         margin: 0px 0px 0px 0px;
         border-radius: 0px 0px 10px 10px;
@@ -93,4 +93,14 @@
         top: -10px;
     }
 
+    .removeScrollBar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .vb-dragger {
+    }
+
+    .removeScrollBar {
+        scrollbar-width: none;
+    }
 </style>
