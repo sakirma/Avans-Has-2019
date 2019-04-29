@@ -1,24 +1,24 @@
 <template>
 
 
-    <div id="markProject" style="height: 100vh;">
-        <v-layout align-center justify-space-around row fill-height style="background-color: #89a226">
+    <div id="markProject" justify-space-between style="height: 100vh;">
+        <v-layout align-center justify-space-around  row fill-height style="background-color: #89a226">
             <v-flex>
                 <v-form lazy-validation>
                     <v-text-field label="Naam"></v-text-field>
+                    <v-text-field label="Beschrijving"  required></v-text-field>
+                    <v-text-field label="coordinaten" :value="cords" required></v-text-field>
 
-                    <v-text-field label="Beschrijving" required></v-text-field>
                     <v-btn color="warning" @click="">Media Uploaden</v-btn>
                     <v-btn color="succes" @click="">klaar</v-btn>
                 </v-form>
             </v-flex>
 
-            <v-flex fill-height>
-                // v-on:click="add($event)"  calls the mouse listener and $event gets the click event with latlng
-                <l-map ref="eenElement" v-on:click="add($event)"
+            <v-flex fill-height align-center>
+                <l-map  ref="eenElement" v-on:click="add($event)"
                        :zoom="zoom"
                        :center="center"
-                       style="width:100%; height:100%"
+                       style="width:100%; height:80%"
 
                 >
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
@@ -60,6 +60,7 @@
                 marker:  L.latLng(47.413220, -1.219482),
                 // here will come the added markers
                 markers: [],
+                cords: "Lat: "+ 0+ " Lng: "+ 0,
                 buttonImage: "img/MapPage/button.png",
                 id: 0,
             }
@@ -67,10 +68,14 @@
         methods: {
             // adds a marker to the markers array. the event.latlng needs to be converted to floats because they are delivered as strings
             add(event) {
+                if(this.markers.length > 0){
+                    this.markers.splice(-1, 1);
+                }
                 this.id++;
                 var coord = event.latlng;
                 var lat = coord.lat;
                 var lng = coord.lng;
+                this.cords = "Lat: "+ lat + " Lng: "+ lng
                 console.log("lat: "+ lat + " lng: " + lng)
                 this.markers.push({
                     id: this.id,
