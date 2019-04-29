@@ -52,8 +52,8 @@
             LTileLayer,
             LMarker,
             LPopup,
-
         },
+
         data() {
             return {
                 zoom: 13,
@@ -73,6 +73,7 @@
                 categories: [],
             }
         },
+
         methods: {
             // adds a marker to the markers array. the event.latlng needs to be converted to floats because they are delivered as strings
             add(event) {
@@ -99,6 +100,7 @@
 
 
         },
+
         // test method
         mounted() {
             this.$refs.eenElement.mapObject.on('click', function (e) {

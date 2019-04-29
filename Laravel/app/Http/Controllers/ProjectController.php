@@ -6,7 +6,6 @@ use App\Models\Project;
 use Grimzy\LaravelMysqlSpatial\Types\Geometry;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
 {
@@ -39,6 +38,11 @@ class ProjectController extends Controller
         return view('viewProjects');
     }
 
+    public function getProjects() {
+        $projects = Project::all();
+        return $projects->toJson();
+    }
+
     /**
      * @param Request $request
      *      pointWKT: Well Known Text for Point
@@ -46,8 +50,7 @@ class ProjectController extends Controller
      *
      * @return Return Point Models
      */
-    public function GetProjectWithinDistance(Request $request)
-    {
+    public function GetProjectWithinDistance(Request $request) {
         $usersPosition = Point::fromWKT($request->pointWKT);
         $containsPoint = Project::distance('location', $usersPosition, $request->withinDistance)->get();
 

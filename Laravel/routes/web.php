@@ -49,6 +49,7 @@ Route::get('/beheer/project/overzicht', 'ProjectController@viewProjects');
 
 // Return only data
 Route::get('/getCategories', 'MainPageController@GetCatagories');
+Route::get('/getProjects', 'ProjectController@getProjects');
 
 // Unnecessary : Could be deleted
 Route::get('details', function() {
