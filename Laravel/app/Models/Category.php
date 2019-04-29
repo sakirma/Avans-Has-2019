@@ -11,6 +11,7 @@ class Category extends Model
 
     // Table does not have timestamps
     public $timestamps = false;
+    public $incrementing = false;
 
     protected $primaryKey = 'name';
 

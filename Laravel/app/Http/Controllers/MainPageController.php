@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Category;
 
 class MainPageController extends Controller
 {
     function GetCatagories(){
-
-        $categories = DB::select('SELECT name FROM project_category');
-        return view('/home', ['categories' => $categories]);
+        $categories = Category::all();
+        return $categories->toJson();
     }
 
     function index()
