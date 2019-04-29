@@ -5,9 +5,11 @@
         <v-layout align-center justify-space-around  row fill-height style="background-color: #89a226">
             <v-flex>
                 <v-form lazy-validation>
-                    <v-text-field label="Naam"></v-text-field>
+                    <v-text-field label="Project punt naam"></v-text-field>
                     <v-text-field label="Beschrijving"  required></v-text-field>
-                    <v-text-field label="coordinaten" :value="cords" required></v-text-field>
+                    <v-text-field label="Latidude" :value="lat" required></v-text-field>
+                    <v-text-field label="Longitude" :value="long" required></v-text-field>
+
 
                     <v-btn color="warning" @click="">Media Uploaden</v-btn>
                     <v-btn color="succes" @click="">klaar</v-btn>
@@ -60,7 +62,8 @@
                 marker:  L.latLng(47.413220, -1.219482),
                 // here will come the added markers
                 markers: [],
-                cords: "Lat: "+ 0+ " Lng: "+ 0,
+                long: 0,
+                lat: 0,
                 buttonImage: "img/MapPage/button.png",
                 id: 0,
             }
@@ -75,7 +78,8 @@
                 var coord = event.latlng;
                 var lat = coord.lat;
                 var lng = coord.lng;
-                this.cords = "Lat: "+ lat + " Lng: "+ lng
+                this.long = lng;
+                this.lat = lat;
                 console.log("lat: "+ lat + " lng: " + lng)
                 this.markers.push({
                     id: this.id,

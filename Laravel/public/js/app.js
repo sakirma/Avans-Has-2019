@@ -2085,6 +2085,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2107,7 +2109,8 @@ __webpack_require__.r(__webpack_exports__);
       marker: L.latLng(47.413220, -1.219482),
       // here will come the added markers
       markers: [],
-      cords: "Lat: " + 0 + " Lng: " + 0,
+      "long": 0,
+      lat: 0,
       buttonImage: "img/MapPage/button.png",
       id: 0
     };
@@ -2123,7 +2126,8 @@ __webpack_require__.r(__webpack_exports__);
       var coord = event.latlng;
       var lat = coord.lat;
       var lng = coord.lng;
-      this.cords = "Lat: " + lat + " Lng: " + lng;
+      this["long"] = lng;
+      this.lat = lat;
       console.log("lat: " + lat + " lng: " + lng);
       this.markers.push({
         id: this.id,
@@ -53926,18 +53930,18 @@ var render = function() {
                 "v-form",
                 { attrs: { "lazy-validation": "" } },
                 [
-                  _c("v-text-field", { attrs: { label: "Naam" } }),
+                  _c("v-text-field", { attrs: { label: "Project punt naam" } }),
                   _vm._v(" "),
                   _c("v-text-field", {
                     attrs: { label: "Beschrijving", required: "" }
                   }),
                   _vm._v(" "),
                   _c("v-text-field", {
-                    attrs: {
-                      label: "coordinaten",
-                      value: _vm.cords,
-                      required: ""
-                    }
+                    attrs: { label: "Latidude", value: _vm.lat, required: "" }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: { label: "Longitude", value: _vm.long, required: "" }
                   }),
                   _vm._v(" "),
                   _c(
