@@ -1,8 +1,8 @@
 <template>
     <div style="height: 100vh;">
-        <v-layout column fill-height style="background-color: #89a226">
-            <v-flex xs1 ma-3>
-                <map-page-header></map-page-header>
+        <v-layout column fill-height style="background-color: #C3D091">
+            <v-flex xs1>
+                <route-page-header></route-page-header>
             </v-flex>
 
             <v-flex>
@@ -10,31 +10,12 @@
                        :zoom="zoom"
                        :center="center"
                        style="height:100%;">
-                    <v-layout :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}"  column fill-height>
-                        <v-layout align-start justify-start row mt-0>
-                            <!--Leaflet map's z-index is 1000-->
-                            <v-flex style="z-index: 701" xs12 md3 lg2>
 
-                            </v-flex>
-
-                            <!--Leaflet map's z-index is 1000-->
-                            <v-flex style="z-index: 701" xs12 md3 lg2
-                                    :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-3': $vuetify.breakpoint.lgAndUp}">
-
-                            </v-flex>
-                            <v-spacer></v-spacer>
-
-                            <!--Leaflet map's z-index is 1000-->
-                            <v-flex style="z-index: 701" shrink pt-1>
-                                <v-text-field
-                                        class="mx-3"
-                                        solo
-                                        prepend-inner-icon="search"
-                                ></v-text-field>
-                            </v-flex>
+                    <v-container ma-0 pa-0 fluid grid-list-md>
+                        <v-layout align-start justify-end row fill-height>
+                            <list-routes></list-routes>
                         </v-layout>
-                    </v-layout>
-
+                    </v-container>
 
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                 </l-map>
@@ -52,8 +33,8 @@
     import {LMap, LTileLayer, LMarker, LPopup} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
 
-    import MapPageHeader from "./map-page-header";
-    import DropDownButton from "./mapPageButton/DropDownButton"
+    import RoutePageHeader from "./route-page-header";
+    import ListRoutes from "./list-routes";
 
     export default {
         name: "RoutePage",
@@ -75,8 +56,8 @@
             }
         },
         components: {
-            MapPageHeader,
-            DropDownButton,
+            RoutePageHeader,
+            ListRoutes,
             LMap,
             LTileLayer,
             LMarker,
