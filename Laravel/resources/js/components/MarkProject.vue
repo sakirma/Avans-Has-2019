@@ -17,7 +17,7 @@
                 <l-map ref="eenElement" v-on:click="add($event)"
                        :zoom="zoom"
                        :center="center"
-                       style="width:100%; height:100%"
+                       style="width:100%; height:80%"
 
                 >
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
@@ -59,6 +59,7 @@
                 marker: L.latLng(47.413220, -1.219482),
                 // here will come the added markers
                 markers: [],
+                cords: "Lat: "+ 0+ " Lng: "+ 0,
                 buttonImage: "img/MapPage/button.png",
                 id: 0,
 
@@ -69,6 +70,9 @@
         methods: {
             // adds a marker to the markers array. the event.latlng needs to be converted to floats because they are delivered as strings
             add(event) {
+                if(this.markers.length > 0){
+                    this.markers.splice(-1, 1);
+                }
                 this.id++;
                 var coord = event.latlng;
                 var lat = coord.lat;

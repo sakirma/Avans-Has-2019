@@ -2106,6 +2106,7 @@ __webpack_require__.r(__webpack_exports__);
       marker: L.latLng(47.413220, -1.219482),
       // here will come the added markers
       markers: [],
+      cords: "Lat: " + 0 + " Lng: " + 0,
       buttonImage: "img/MapPage/button.png",
       id: 0,
       select: null,
@@ -2115,10 +2116,15 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     // adds a marker to the markers array. the event.latlng needs to be converted to floats because they are delivered as strings
     add: function add(event) {
+      if (this.markers.length > 0) {
+        this.markers.splice(-1, 1);
+      }
+
       this.id++;
       var coord = event.latlng;
       var lat = coord.lat;
       var lng = coord.lng;
+      this.cords = "Lat: " + lat + " Lng: " + lng;
       console.log("lat: " + lat + " lng: " + lng);
       this.markers.push({
         id: this.id,
@@ -53908,7 +53914,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticStyle: { height: "100vh" }, attrs: { id: "markProject" } },
+    {
+      staticStyle: { height: "100vh" },
+      attrs: { id: "markProject", "justify-space-between": "" }
+    },
     [
       _c(
         "v-layout",
@@ -53949,6 +53958,14 @@ var render = function() {
                     attrs: { label: "Beschrijving", required: "" }
                   }),
                   _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "coordinaten",
+                      value: _vm.cords,
+                      required: ""
+                    }
+                  }),
+                  _vm._v(" "),
                   _c(
                     "v-btn",
                     {
@@ -53975,7 +53992,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-flex",
-            { attrs: { "fill-height": "" } },
+            { attrs: { "fill-height": "", "align-center": "" } },
             [
               _vm._v(
                 '\n            // v-on:click="add($event)" calls the mouse listener and $event gets the click event with latlng\n            '
@@ -53984,7 +54001,7 @@ var render = function() {
                 "l-map",
                 {
                   ref: "eenElement",
-                  staticStyle: { width: "100%", height: "100%" },
+                  staticStyle: { width: "100%", height: "80%" },
                   attrs: { zoom: _vm.zoom, center: _vm.center },
                   on: {
                     click: function($event) {
