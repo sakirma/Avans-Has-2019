@@ -1,12 +1,13 @@
 <template>
 
-
-    <div id="markProject" justify-space-between style="height: 100vh;">
-        <v-layout align-center justify-space-around  row fill-height style="background-color: #89a226">
+    <div id="markProject" style="height: 100vh;">
+        <v-layout align-center justify-space-around row fill-height style="background-color: #89a226">
             <v-flex>
                 <v-form lazy-validation>
+                    <v-text-field label="Naam"></v-text-field>
+                    <v-combobox label="Kies een categorie" v-model="select" :items="categories"></v-combobox>
+                    <v-text-field label="Beschrijving" required></v-text-field>
                     <v-text-field label="Project punt naam"></v-text-field>
-                    <v-text-field label="Beschrijving"  required></v-text-field>
                     <v-text-field label="Latidude" :value="lat" required></v-text-field>
                     <v-text-field label="Longitude" :value="long" required></v-text-field>
 
@@ -16,8 +17,9 @@
                 </v-form>
             </v-flex>
 
-            <v-flex fill-height align-center>
-                <l-map  ref="eenElement" v-on:click="add($event)"
+            <v-flex fill-height>
+                // v-on:click="add($event)" calls the mouse listener and $event gets the click event with latlng
+                <l-map ref="eenElement" v-on:click="add($event)"
                        :zoom="zoom"
                        :center="center"
                        style="width:100%; height:80%"
@@ -59,13 +61,16 @@
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 // test marker
-                marker:  L.latLng(47.413220, -1.219482),
+                marker: L.latLng(47.413220, -1.219482),
                 // here will come the added markers
                 markers: [],
                 long: 0,
                 lat: 0,
                 buttonImage: "img/MapPage/button.png",
                 id: 0,
+
+                select: null,
+                categories: [],
             }
         },
         methods: {
@@ -100,8 +105,17 @@
                 console.log(e.latlng);
 
             });
-        }
 
+            window.axios.get('http://127.0.0.1:8000/getCategories').then(response => {
+                let temp = response.data;
+
+                for (let i = 0; i < temp.length; i++) {
+                    this.categories.push(temp[i].name);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
     }
 
 </script>
