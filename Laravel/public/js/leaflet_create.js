@@ -9,42 +9,47 @@ addEventListener('core_finished', function (e) {
         waypoints: [null],
         routeWhileDragging: true,
         createMarker: function() { return null; }
-    }).on('routesfound', updateMaker).addTo(map);
+    }).on('routesfound', updateMarkersToRoute).addTo(map);
 
     map.doubleClickZoom.disable();
 });
 
 function placeMarker(e) {
-    L.marker(e.latlng).addTo(placedMarkers);
+
+    L.marker(e.latlng,{
+        draggable: true,
+        riseOnHover:true
+    }).on('dragend', calculateRoute).addTo(placedMarkers);
+
     if (placedMarkers.getLayers().length > 1) {
+        console.log(placedMarkers);
         calculateRoute();
     }
 }
 
-function updateMaker(e) {
+function updateMarkersToRoute(e) {
     placedMarkers.clearLayers();
-
     for (let i = 0; i < e.waypoints.length; i++) {
-        L.marker(e.waypoints[i].latLng).addTo(placedMarkers);
+        L.marker(e.waypoints[i].latLng, {
+            draggable: true,
+            riseOnHover:true
+        }).on('dragend', calculateRoute).addTo(placedMarkers);
     }
 }
 
-//TODO remove machine markers when normal one is removed
 function removeMarker(e) {
-    map.removeLayer(e.layer);
+    placedMarkers.removeLayer(e.layer);
 
     let routes = routingControl.getWaypoints();
     let newRoutes = [];
 
-    if(routes.length < 1) return;
-
     for (let i = 0; i < routes.length; i++) {
-        console.log(routes[i]);
-        if(routes[i].latLng !== e.latlng) { newRoutes.push(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng)); }
-    }
 
+        if((routes[i].latLng !== e.latlng) && (routes[i].latLng !== null)) {
+            newRoutes.push(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng));
+        }
+    }
     routingControl.setWaypoints(newRoutes);
-    console.log(e.latlng);
 }
 
 function calculateRoute() {
