@@ -3,17 +3,19 @@
     <div id="markProject" style="height: 100vh;">
         <v-layout align-center justify-space-around row fill-height style="background-color: #89a226">
             <v-flex>
+                <v-btn color="orange darken-2" href="/beheer/project/overzicht" dark>
+                    <v-icon dark left>arrow_back</v-icon>Back
+                </v-btn>
                 <v-form lazy-validation>
-                    <v-text-field label="Naam"></v-text-field>
-                    <v-combobox label="Kies een categorie" v-model="select" :items="categories"></v-combobox>
-                    <v-text-field label="Beschrijving" required></v-text-field>
-                    <v-text-field label="Project punt naam"></v-text-field>
-                    <v-text-field label="Latidude" :value="lat" required></v-text-field>
-                    <v-text-field label="Longitude" :value="long" required></v-text-field>
+                    <v-text-field label="Naam" dark></v-text-field>
+                    <v-combobox label="Kies een categorie" v-model="select" :items="categories" dark></v-combobox>
+                    <v-text-field label="Beschrijving" required dark></v-text-field>
+                    <v-text-field label="Latidude" :value="lat" required dark></v-text-field>
+                    <v-text-field label="Longitude" :value="long" required dark></v-text-field>
 
 
                     <v-btn color="warning" @click="">Media Uploaden</v-btn>
-                    <v-btn color="succes" @click="">klaar</v-btn>
+                    <v-btn color="succes" @click="" >klaar</v-btn>
                 </v-form>
             </v-flex>
 

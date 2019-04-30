@@ -1,5 +1,7 @@
 <template>
-    
+    <v-btn fab dark color="green" href="/beheer/project/aanmaken">
+        <v-icon dark>add</v-icon>
+    </v-btn>
 </template>
 
 <script>

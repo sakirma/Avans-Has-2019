@@ -2135,6 +2135,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2196,7 +2198,6 @@ __webpack_require__.r(__webpack_exports__);
 
     this.$refs.eenElement.mapObject.on('click', function (e) {
       console.log(e.latlng);
-      addMarker(e);
     });
     window.axios.get('http://127.0.0.1:8000/getCategories').then(function (response) {
       var temp = response.data;
@@ -2380,6 +2381,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -54165,15 +54168,34 @@ var render = function() {
             "v-flex",
             [
               _c(
+                "v-btn",
+                {
+                  attrs: {
+                    color: "orange darken-2",
+                    href: "/beheer/project/overzicht",
+                    dark: ""
+                  }
+                },
+                [
+                  _c("v-icon", { attrs: { dark: "", left: "" } }, [
+                    _vm._v("arrow_back")
+                  ]),
+                  _vm._v("Back\n            ")
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
                 "v-form",
                 { attrs: { "lazy-validation": "" } },
                 [
-                  _c("v-text-field", { attrs: { label: "Naam" } }),
+                  _c("v-text-field", { attrs: { label: "Naam", dark: "" } }),
                   _vm._v(" "),
                   _c("v-combobox", {
                     attrs: {
                       label: "Kies een categorie",
-                      items: _vm.categories
+                      items: _vm.categories,
+                      dark: ""
                     },
                     model: {
                       value: _vm.select,
@@ -54185,17 +54207,25 @@ var render = function() {
                   }),
                   _vm._v(" "),
                   _c("v-text-field", {
-                    attrs: { label: "Beschrijving", required: "" }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", { attrs: { label: "Project punt naam" } }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: { label: "Latidude", value: _vm.lat, required: "" }
+                    attrs: { label: "Beschrijving", required: "", dark: "" }
                   }),
                   _vm._v(" "),
                   _c("v-text-field", {
-                    attrs: { label: "Longitude", value: _vm.long, required: "" }
+                    attrs: {
+                      label: "Latidude",
+                      value: _vm.lat,
+                      required: "",
+                      dark: ""
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Longitude",
+                      value: _vm.long,
+                      required: "",
+                      dark: ""
+                    }
                   }),
                   _vm._v(" "),
                   _c(
@@ -54613,7 +54643,19 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c(
+    "v-btn",
+    {
+      attrs: {
+        fab: "",
+        dark: "",
+        color: "green",
+        href: "/beheer/project/aanmaken"
+      }
+    },
+    [_c("v-icon", { attrs: { dark: "" } }, [_vm._v("add")])],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -68456,6 +68498,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.circleOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["circle"])(this.latLng, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -68463,7 +68507,9 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   methods: {}
 };
@@ -69003,6 +69049,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.circleOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["circleMarker"])(this.latLng, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -69010,7 +69058,9 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -69257,6 +69307,8 @@ var script = {
   name: 'LControl',
   mixins: [ControlMixin, Options],
   mounted: function mounted () {
+    var this$1 = this;
+
     var LControl = leaflet__WEBPACK_IMPORTED_MODULE_0__["Control"].extend({
       element: undefined,
       onAdd: function onAdd () {
@@ -69272,7 +69324,9 @@ var script = {
     this.parentContainer = findRealParent(this.$parent);
     this.mapObject.setElement(this.$el);
     this.mapObject.addTo(this.parentContainer.mapObject);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -69511,12 +69565,16 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(Object.assign({}, this.controlOptions,
       {prefix: this.prefix}), this);
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["control"].attribution(options);
     propsBinder(this, this.mapObject, this.$options.props);
     this.mapObject.addTo(this.$parent.mapObject);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   render: function render () {
     return null;
@@ -69772,6 +69830,8 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(Object.assign({}, this.controlOptions,
       {collapsed: this.collapsed,
       autoZIndex: this.autoZIndex,
@@ -69781,7 +69841,9 @@ var script = {
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["control"].layers(null, null, options);
     propsBinder(this, this.mapObject, this.$options.props);
     this.$parent.registerLayerControl(this);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   methods: {
     addLayer: function addLayer (layer) {
@@ -70045,6 +70107,8 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(Object.assign({}, this.controlOptions,
       {maxWidth: this.maxWidth,
       metric: this.metric,
@@ -70053,7 +70117,9 @@ var script = {
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["control"].scale(options);
     propsBinder(this, this.mapObject, this.$options.props);
     this.mapObject.addTo(this.$parent.mapObject);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   render: function render () {
     return null;
@@ -70305,6 +70371,8 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(Object.assign({}, this.controlOptions,
       {zoomInText: this.zoomInText,
       zoomInTitle: this.zoomInTitle,
@@ -70313,7 +70381,9 @@ var script = {
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["control"].zoom(options);
     propsBinder(this, this.mapObject, this.$options.props);
     this.mapObject.addTo(this.$parent.mapObject);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   render: function render () {
     return null;
@@ -70612,6 +70682,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["featureGroup"])();
     propsBinder(this, this.mapObject, this.$options.props);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -70620,7 +70692,9 @@ var script = {
     if (this.visible) {
       this.parentContainer.addLayer(this);
     }
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -70962,12 +71036,16 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["geoJSON"])(this.geojson, this.mergedOptions);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
     propsBinder(this, this.mapObject, this.$options.props);
     this.parentContainer = findRealParent(this.$parent, true);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   beforeDestroy: function beforeDestroy () {
     this.parentContainer.mapObject.removeLayer(this.mapObject);
@@ -71359,6 +71437,8 @@ var script = {
   },
 
   mounted: function mounted () {
+    var this$1 = this;
+
     var GLayer = leaflet__WEBPACK_IMPORTED_MODULE_1__["GridLayer"].extend({});
     var options = optionsMerger(this.gridLayerOptions, this);
     this.mapObject = new GLayer(options);
@@ -71368,7 +71448,9 @@ var script = {
     this.mapObject.createTile = this.createTile;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   beforeDestroy: function beforeDestroy () {
     this.parentContainer.removeLayer(this.mapObject);
@@ -71715,9 +71797,7 @@ var script = {
       this.$el,
       { attributes: true, childList: true, characterData: true, subtree: true }
     );
-
     this.scheduleCreateIcon();
-    this.$emit('ready', this.mapObject);
   },
 
   beforeDestroy: function beforeDestroy () {
@@ -72011,11 +72091,10 @@ var script = {
   },
   mounted: function mounted () {
     leaflet__WEBPACK_IMPORTED_MODULE_0__["Icon"].Default.imagePath = this.imagePath;
-    propsBinder(this, this.mapObject, this.$options.props);
-    this.$emit('ready', this.mapObject);
+    propsBinder(this, {}, this.$options.props);
   },
   methods: {
-    setImagePath: function setImagePath (newVal, oldVal) {
+    setImagePath: function setImagePath (newVal) {
       leaflet__WEBPACK_IMPORTED_MODULE_0__["Icon"].Default.imagePath = newVal;
     }
   },
@@ -72416,13 +72495,17 @@ var script = {
   name: 'LImageOverlay',
   mixins: [ImageOverlayMixin],
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.imageOverlayOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["imageOverlay"])(this.url, this.bounds, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
     propsBinder(this, this.mapObject, this.$options.props);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   render: function render () {
     return null;
@@ -72721,6 +72804,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["layerGroup"])();
     propsBinder(this, this.mapObject, this.$options.props);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -72729,7 +72814,9 @@ var script = {
     if (this.visible) {
       this.parentContainer.addLayer(this);
     }
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -73082,6 +73169,8 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger({
       minZoom: this.minZoom,
       maxZoom: this.maxZoom,
@@ -73108,7 +73197,9 @@ var script = {
     this.ready = true;
     // DEPRECATED leaflet:load
     this.$emit('leaflet:load');
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   methods: {
     registerLayerControl: function registerLayerControl (lControlLayers) {
@@ -73349,7 +73440,7 @@ var __vue_staticRenderFns__ = [];
   /* style */
   var __vue_inject_styles__ = function (inject) {
     if (!inject) { return }
-    inject("data-v-33ad31f6_0", { source: ".vue2leaflet-map{height:100%;width:100%}", map: undefined, media: undefined });
+    inject("data-v-09897586_0", { source: ".vue2leaflet-map{height:100%;width:100%}", map: undefined, media: undefined });
 
   };
   /* scoped */
@@ -73608,6 +73699,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(Object.assign({}, this.layerOptions,
       {icon: this.icon,
       zIndexOffset: this.zIndexOffset,
@@ -73619,7 +73712,9 @@ var script = {
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
     this.ready = true;
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   methods: {
     setDraggable: function setDraggable (newVal, oldVal) {
@@ -74224,6 +74319,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.polygonOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["polygon"])(this.latLngs, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -74231,7 +74328,9 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -74790,6 +74889,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.polyLineOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["polyline"])(this.latLngs, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -74797,7 +74898,9 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -75055,6 +75158,8 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.popperOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["popup"])(options);
     if (this.latLng !== undefined) {
@@ -75065,7 +75170,9 @@ var script = {
     this.mapObject.setContent(this.content || this.$el);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.mapObject.bindPopup(this.mapObject);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   beforeDestroy: function beforeDestroy () {
     if (this.parentContainer) {
@@ -75646,6 +75753,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.polygonOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["rectangle"])(this.bounds, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -75653,7 +75762,9 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -76029,13 +76140,17 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.tileLayerOptions, this);
     this.mapObject = this.tileLayerClass(this.url, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
     propsBinder(this, this.mapObject, this.$options.props);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -76287,6 +76402,8 @@ var script = {
   name: 'LTooltip',
   mixins: [Popper, Options],
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.popperOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["tooltip"])(options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -76294,7 +76411,9 @@ var script = {
     this.mapObject.setContent(this.content || this.$el);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.mapObject.bindTooltip(this.mapObject);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   beforeDestroy: function beforeDestroy () {
     if (this.parentContainer) {
@@ -76710,13 +76829,17 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.tileLayerWMSOptions, this);
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["tileLayer"].wms(this.baseUrl, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
     propsBinder(this, this.mapObject, this.$options.props);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -79296,7 +79419,7 @@ var findRealParent = function (firstVueParent) {
 /*!***********************************************************!*\
   !*** ./node_modules/vue2-leaflet/dist/vue2-leaflet.es.js ***!
   \***********************************************************/
-/*! exports provided: debounce, capitalizeFirstLetter, propsBinder, collectionCleaner, optionsMerger, findRealParent, CircleMixin, ControlMixin, GridLayerMixin, ImageOverlayMixin, InteractiveLayerMixin, LayerMixin, LayerGroupMixin, OptionsMixin, PathMixin, PolygonMixin, PolylineMixin, PopperMixin, TileLayerMixin, TileLayerWMSMixin, LCircle, LCircleMarker, LControl, LControlAttribution, LControlLayers, LControlScale, LControlZoom, LFeatureGroup, LGeoJson, LGridLayer, LIcon, LIconDefault, LImageOverlay, LLayerGroup, LMap, LMarker, LPolygon, LPolyline, LPopup, LRectangle, LTileLayer, LTooltip, LWMSTileLayer */
+/*! exports provided: CircleMixin, ControlMixin, GridLayerMixin, ImageOverlayMixin, InteractiveLayerMixin, LayerMixin, LayerGroupMixin, OptionsMixin, PathMixin, PolygonMixin, PolylineMixin, PopperMixin, TileLayerMixin, TileLayerWMSMixin, LCircle, LCircleMarker, LControl, LControlAttribution, LControlLayers, LControlScale, LControlZoom, LFeatureGroup, LGeoJson, LGridLayer, LIcon, LIconDefault, LImageOverlay, LLayerGroup, LMap, LMarker, LPolygon, LPolyline, LPopup, LRectangle, LTileLayer, LTooltip, LWMSTileLayer, debounce, capitalizeFirstLetter, propsBinder, collectionCleaner, optionsMerger, findRealParent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -108728,8 +108851,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\Git Projects\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\Git Projects\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\Git repos\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\Git repos\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

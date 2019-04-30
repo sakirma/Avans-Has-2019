@@ -43,8 +43,6 @@ class ProjectPointsController extends Controller
             return view('details', ['model' => $model, 'project' => $project]);
         }
 
-
-
         return abort(404);
     }
 }
