@@ -15,7 +15,7 @@
 
 
                     <v-btn color="warning" @click="">Media Uploaden</v-btn>
-                    <v-btn color="succes" @click="" >klaar</v-btn>
+                    <v-btn color="succes" @click="" >Klaar</v-btn>
                 </v-form>
             </v-flex>
 
@@ -44,7 +44,7 @@
 <script>
     import {LMap, LTileLayer, LMarker, LPopup,} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
-    import MapPageHeader from "./map-page-header";
+    import MapPageHeader from "./../map-page-header";
 
     export default {
         name: 'MarkProject',

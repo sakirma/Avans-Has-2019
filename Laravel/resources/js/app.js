@@ -63,8 +63,8 @@ Vue.component('map-page',
     require('./components/MapPage').default
 );
 
-Vue.component('mark-project',
-    require('./components/AddProject').default
+Vue.component('add-project',
+    require('./components/crudProject/AddProject').default
 );
 
 Vue.component('view-projects',

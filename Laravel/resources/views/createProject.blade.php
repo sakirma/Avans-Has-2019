@@ -20,7 +20,7 @@
 <div id="app">
     <v-app>
    
-        <mark-project></mark-project>
+        <add-project></add-project>
    
     </v-app>
 </div>
