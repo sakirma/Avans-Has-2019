@@ -44,7 +44,7 @@
 <script>
     import {LMap, LTileLayer, LMarker, LPopup,} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
-    import MapPageHeader from "./map-page-header";
+    import MapPageHeader from "../map-page-header";
 
     export default {
         name: 'MarkProject',
