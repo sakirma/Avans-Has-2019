@@ -2196,6 +2196,7 @@ __webpack_require__.r(__webpack_exports__);
 
     this.$refs.eenElement.mapObject.on('click', function (e) {
       console.log(e.latlng);
+      addMarker(e);
     });
     window.axios.get('http://127.0.0.1:8000/getCategories').then(function (response) {
       var temp = response.data;
