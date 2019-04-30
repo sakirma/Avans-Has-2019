@@ -4,7 +4,7 @@
         <map-page id="mapPage" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
         <!-- TODO: DEBUGGING Replace false with true.  -->
         <project-page id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
-        <RoutePage id="routePage" v-else-if="selectedRoutePage === false"></RoutePage>
+        <RoutePage id="routePage" v-else-if="selectedRoutePage === true"></RoutePage>
     </div>
 </template>
 
@@ -47,6 +47,14 @@
             OpenRoutePage() {
                 this.selectedRoutePage = true;
                 this.selectedProjectPage.isSelected = false;
+
+                let pageStates = this.$store.getters.pageStates;
+                this.$store.commit('setPageState', pageStates.routePage);
+                this.GoToSection('#routePage');
+            },
+
+            OpenMapPage() {
+                this.GoToSection('#mapPage');
             },
 
             UpdateScreen() {
@@ -63,6 +71,9 @@
                     case pageStates.projectPage:
                         this.GoToSection('#projectPage');
                         break;
+                    case pageStates.routePage:
+                        this.GoToSection('#routePage');
+                        break;
                 }
             },
             GoToSection(id) {
@@ -71,11 +82,10 @@
             disableInputEvents(element) {
                 L.DomEvent.disableClickPropagation(element.$el);
                 L.DomEvent.disableScrollPropagation(element.$el);
-            },
+            }
         },
         mounted() {
             this.UpdateScreen();
-            this.$vuetify.goTo("#routePage");
         }
     }
 </script>

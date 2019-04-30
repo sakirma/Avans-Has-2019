@@ -1,5 +1,10 @@
 <template>
     <v-layout align-end justify-end row fill-height >
+        <v-flex>
+            <v-btn @click="GoToMapPage">
+                Back
+            </v-btn>
+        </v-flex>
         <v-flex fill-height xs5 py-4 style="background-color: #89a226">
             <v-card style="" flat color="transparent" class="white--text text-xs-center display-2 font-weight-black first-page-title">
                 MAAK JE EIGEN ROUTE!
@@ -10,7 +15,12 @@
 
 <script>
     export default {
-        name: "route-page-header"
+        name: "route-page-header",
+        methods: {
+            GoToMapPage() {
+                this.$parent.GoToMapPage();
+            },
+        }
     }
 </script>
 

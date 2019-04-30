@@ -62,6 +62,11 @@
             LTileLayer,
             LMarker,
             LPopup
+        },
+        methods: {
+            GoToMapPage() {
+                this.$parent.OpenMapPage();
+            }
         }
     }
 </script>
