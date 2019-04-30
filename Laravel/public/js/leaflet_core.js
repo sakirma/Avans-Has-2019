@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     //map.locate({setView: true, maxZoom: 16});
     console.log('Leaflet is initialized!');
-
     dispatchEvent(complete);
 });
 
