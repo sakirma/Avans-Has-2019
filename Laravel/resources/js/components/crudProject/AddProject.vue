@@ -15,7 +15,7 @@
 
 
                     <v-btn color="warning" @click="">Media Uploaden</v-btn>
-                    <v-btn color="succes" @click="" >klaar</v-btn>
+                    <v-btn color="succes" @click="" >Klaar</v-btn>
                 </v-form>
             </v-flex>
 
