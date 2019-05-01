@@ -42,9 +42,7 @@
         name: "FirstPage",
         methods: {
             GoToMapPage() {
-                this.$vuetify.goTo('#mapPage');
-                let pageStates = this.$store.getters.pageStates;
-                this.$store.commit('setPageState', pageStates.mapPage);
+                this.$parent.OpenMapPage();
             },
         }
     }
