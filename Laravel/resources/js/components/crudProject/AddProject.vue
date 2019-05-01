@@ -138,8 +138,6 @@
             window.axios.get('http://127.0.0.1:8000/getCategories').then(response => {
                 let temp = response.data;
 
-                console.log(response);
-
                 for (let i = 0; i < temp.length; i++) {
                     this.categories.push(temp[i].name);
                 }

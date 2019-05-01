@@ -37,16 +37,15 @@ class ProjectController extends Controller
         $project = new Project();
 
         $point = new Point($request->lat, $request->long);
-        $geometryCollection = new GeometryCollection([$point, $point]);
-        echo json_encode($geometryCollection);
+        $geometryCollection = new GeometryCollection([$point]);
 
-//        $project->name = $request->name;
-//        $project->information = $request->information;
-//        $project->category = $request->category;
-//        $project->location = $point;
-//        $project->geo_json =
+        $project->name = $request->name;
+        $project->information = $request->information;
+        $project->category = $request->category;
+        $project->location = $point;
+        $project->geo_json = $geometryCollection;
 
-
+        $project->save();
     }
     public function create() {
         return view('createProject');
