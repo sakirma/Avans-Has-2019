@@ -2456,7 +2456,8 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.projects.push({
           name: temp[i].name,
-          _id: temp[i].id
+          _id: temp[i].id,
+          text: temp[i].information
         });
       }
 
@@ -57611,6 +57612,10 @@ var render = function() {
                   _vm._v(_vm._s(p.name))
                 ]),
                 _vm._v(" "),
+                _c("p", { staticClass: "text-sm-center" }, [
+                  _vm._v(_vm._s(p.text))
+                ]),
+                _vm._v(" "),
                 _c(
                   "v-list-item",
                   [
@@ -57628,10 +57633,6 @@ var render = function() {
                             }
                           },
                           [
-                            _c("v-btn", { attrs: { color: "success" } }, [
-                              _vm._v("Details")
-                            ]),
-                            _vm._v(" "),
                             _c("v-btn", { attrs: { color: "warning" } }, [
                               _vm._v("Bewerken")
                             ]),

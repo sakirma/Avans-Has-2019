@@ -55,6 +55,8 @@ class ProjectController extends Controller
         return view('viewProjects');
     }
 
+
+
     public function getProjects() {
         $projects = Project::all();
         return $projects->toJson();

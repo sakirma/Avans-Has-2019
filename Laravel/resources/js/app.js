@@ -71,6 +71,7 @@ Vue.component('view-projects',
     require('./components/crudProject/ViewProjects').default
 );
 
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

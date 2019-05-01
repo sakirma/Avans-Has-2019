@@ -6,10 +6,10 @@
             </v-btn>
             <v-card v-for="p in projects" :key="projects.id"    style="width:30%; height:100%">
                 <p class="text-sm-center">{{ p.name}}</p>
+                <p class="text-sm-center">{{ p.text}}</p>
                 <v-list-item>
                     <v-list-item-content >
                         <v-container align-center justify-center row fill-height >
-                            <v-btn color="success" >Details</v-btn>
                             <v-btn color="warning">Bewerken</v-btn>
                             <v-btn color="error" @click="deleteItem(p._id)">Wissen</v-btn>
                         </v-container>
@@ -60,7 +60,7 @@
                 for (let i = 0; i < temp.length; i++) {
                     this.projectNames.push( temp[i].name);
                     this.projectIds.push( temp[i].id);
-                    this.projects.push({name: temp[i].name,_id: temp[i].id});
+                    this.projects.push({name: temp[i].name,_id: temp[i].id , text: temp[i].information});
                 }
                 for (let i = 0; i < temp.length; i++) {
 
