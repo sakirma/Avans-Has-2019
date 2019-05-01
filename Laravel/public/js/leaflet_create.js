@@ -33,8 +33,18 @@ function updateMarkersToRoute(e) {
         L.marker(e.waypoints[i].latLng, {
             draggable: true,
             riseOnHover:true
-        }).on('dragend', calculateRoute).addTo(placedMarkers);
+        }).on('dragend', calculateRoute)
+            .bindPopup( '<p>' + e.waypoints[i].latLng.lat + ' , ' + e.waypoints[i].latLng.lng + '</p>' +
+                        'Naam: <input type="text" name="mName">' +
+                        '<button onclick="validateForm()">Click me</button>'
+            ).addTo(placedMarkers);
     }
+}
+
+function validateForm(latlng){
+    /*let form = document.forms["MarkerInfo"];
+    let name = form["mName"].value;*/
+    console.log(latlng);
 }
 
 function removeMarker(e) {
