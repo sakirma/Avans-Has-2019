@@ -1,21 +1,22 @@
 <template>
     <v-layout align-start fill-height row style="background-color: #89a226">
         <v-flex >
-            <v-card v-for="p in projects" :key="names"    style="width:30%; height:100%">
+            <v-btn fab dark color="green" href="/beheer/project/aanmaken">
+                <v-icon dark>add</v-icon>
+            </v-btn>
+            <v-card v-for="p in projects" :key="projects.id"    style="width:30%; height:100%">
                 <p class="text-sm-center">{{ p.name}}</p>
                 <v-list-item>
                     <v-list-item-content >
                         <v-container align-center justify-center row fill-height >
                             <v-btn color="success" >Details</v-btn>
                             <v-btn color="warning">Bewerken</v-btn>
-                            <v-btn color="error" @click="deleteItem(p._id)">{{p._id}}</v-btn>
+                            <v-btn color="error" @click="deleteItem(p._id)">Wissen</v-btn>
                         </v-container>
                     </v-list-item-content>
                 </v-list-item>
             </v-card>
-            <v-btn fab dark color="green" href="/beheer/project/aanmaken">
-                <v-icon dark>add</v-icon>
-            </v-btn>
+
         </v-flex>
 
     </v-layout>
@@ -36,13 +37,18 @@
         methods:{
 
             deleteItem (id) {
-                console.log(id);
-                if(confirm(id)){
+                if(confirm(' wil je dit project zeker verwijderen?')){
                     axios({
-                        method: 'delete',
-                        url: '/beheer/project/',
+                        method: 'post',
+                        url: '/beheer/DeleteProject',
+                        data: {
+                            id: id,
 
+                        }
                     });
+
+                    window.location.reload();
+
                 };
 
             },

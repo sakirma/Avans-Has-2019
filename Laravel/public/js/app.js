@@ -2308,6 +2308,7 @@ __webpack_require__.r(__webpack_exports__);
       }, function (v) {
         return v && v.length <= 65.535 || 'Tekst mag niet langer zijn dan 65.535 karakters zijn';
       }],
+      valid: false,
       zoom: 13,
       center: L.latLng(47.413220, -1.219482),
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
@@ -2325,17 +2326,19 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     // adds a marker to the markers array. the event.latlng needs to be converted to floats because they are delivered as strings
     validate: function validate() {
-      axios({
-        method: 'post',
-        url: '/beheer/AddProject',
-        data: {
-          name: this.name,
-          category: this.select,
-          information: this.text,
-          lat: this.lat,
-          "long": this["long"]
-        }
-      });
+      if (this.$refs.form.validate()) {
+        axios({
+          method: 'post',
+          url: '/beheer/AddProject',
+          data: {
+            name: this.name,
+            category: this.select,
+            information: this.text,
+            lat: this.lat,
+            "long": this["long"]
+          }
+        });
+      }
     },
     add: function add(event) {
       if (this.markers.length > 0) {
@@ -2414,6 +2417,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "viewProjects",
   data: function data() {
@@ -2425,13 +2429,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     deleteItem: function deleteItem(id) {
-      console.log(id);
-
-      if (confirm(id)) {
+      if (confirm(' wil je dit project zeker verwijderen?')) {
         axios({
-          method: 'delete',
-          url: '/beheer/project/'
+          method: 'post',
+          url: '/beheer/DeleteProject',
+          data: {
+            id: id
+          }
         });
+        window.location.reload();
       }
 
       ;
@@ -57381,7 +57387,16 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-form",
-                { attrs: { "lazy-validation": "" } },
+                {
+                  ref: "form",
+                  model: {
+                    value: _vm.valid,
+                    callback: function($$v) {
+                      _vm.valid = $$v
+                    },
+                    expression: "valid"
+                  }
+                },
                 [
                   _c("v-text-field", {
                     attrs: { label: "Naam", rules: _vm.nameRules, dark: "" },
@@ -57476,7 +57491,10 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "v-btn",
-                    { attrs: { color: "succes" }, on: { click: _vm.validate } },
+                    {
+                      class: { red: !_vm.valid, green: _vm.valid },
+                      on: { click: _vm.validate }
+                    },
                     [_vm._v("Klaar")]
                   )
                 ],
@@ -57567,10 +57585,27 @@ var render = function() {
       _c(
         "v-flex",
         [
+          _c(
+            "v-btn",
+            {
+              attrs: {
+                fab: "",
+                dark: "",
+                color: "green",
+                href: "/beheer/project/aanmaken"
+              }
+            },
+            [_c("v-icon", { attrs: { dark: "" } }, [_vm._v("add")])],
+            1
+          ),
+          _vm._v(" "),
           _vm._l(_vm.projects, function(p) {
             return _c(
               "v-card",
-              { key: _vm.names, staticStyle: { width: "30%", height: "100%" } },
+              {
+                key: _vm.projects.id,
+                staticStyle: { width: "30%", height: "100%" }
+              },
               [
                 _c("p", { staticClass: "text-sm-center" }, [
                   _vm._v(_vm._s(p.name))
@@ -57611,7 +57646,7 @@ var render = function() {
                                   }
                                 }
                               },
-                              [_vm._v(_vm._s(p._id))]
+                              [_vm._v("Wissen")]
                             )
                           ],
                           1
@@ -57625,21 +57660,7 @@ var render = function() {
               ],
               1
             )
-          }),
-          _vm._v(" "),
-          _c(
-            "v-btn",
-            {
-              attrs: {
-                fab: "",
-                dark: "",
-                color: "green",
-                href: "/beheer/project/aanmaken"
-              }
-            },
-            [_c("v-icon", { attrs: { dark: "" } }, [_vm._v("add")])],
-            1
-          )
+          })
         ],
         2
       )

@@ -94,7 +94,6 @@ class ProjectController extends Controller
     {
         $project = Project::findOrFail($request->id);
         $project->delete();
-        return '';
     }
 
 
