@@ -1,8 +1,8 @@
 <template>
 
     <v-flex xs12 sm4 md3 py-3 style="background-color: #D9DECD; z-index: 1001;">
-        <v-card flat color="#D9DECD" style="min-height: 250px; ">
-            <v-responsive max-height="250px" style="overflow-y: scroll">
+        <v-card flat color="#D9DECD" style="min-height: 250px;" v-bar>
+            <v-responsive max-height="250px" >
                 <draggable tag="ul" v-model="selectedPoints" v-bind="dragOptions" @start="drag=true" @end="drag=false">
                     <transition-group type="transition">
                         <selected-list-route v-for="item in selectedPoints" :key="item[1]"
