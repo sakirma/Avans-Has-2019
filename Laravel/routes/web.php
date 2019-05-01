@@ -24,9 +24,7 @@ Route::get('/about', function(){
 });
 
 Route::get('routelist', "RoutesController@index");
-
-Route::post('AddProject', "ProjectController@SetPointLocation");
-Route::post('GetProjectWithinDistance', "ProjectController@GetProjectLocations");
+Route::post('GetProjectWithinDistance', "ProjectController@getProjectWithinDistance");
 
 Route::get('/project/info/{id}', "ProjectController@index")->name("project.info");
 Route::post('/project/info/{id}', "ProjectController@facetInfo")->name("project.info.facet");
@@ -41,14 +39,13 @@ Route::post('/media', "MediaController@saveMedia")->name('media.save');
 
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
-Route::get('details/{id}', "ProjectPointsController@GetDetails");
-
 // Crud
 Route::get('/beheer/project/aanmaken', 'ProjectController@create');
+Route::post('beheer/AddProject', 'ProjectController@addProject');
 Route::get('/beheer/project/overzicht', 'ProjectController@viewProjects');
 
 // Return only data
-Route::get('/getCategories', 'MainPageController@GetCatagories');
+Route::get('/getCategories', 'MainPageController@getCatagories');
 Route::get('/getProjects', 'ProjectController@getProjects');
 
 // Unnecessary : Could be deleted

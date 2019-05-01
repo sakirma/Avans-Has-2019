@@ -6,7 +6,7 @@ use App\Models\Category;
 
 class MainPageController extends Controller
 {
-    function GetCatagories(){
+    function getCatagories(){
         $categories = Category::all();
         return $categories->toJson();
     }

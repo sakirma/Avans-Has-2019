@@ -4,7 +4,7 @@
         <map-page id="mapPage" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
         <!-- TODO: DEBUGGING Replace false with true.  -->
         <project-page id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
-        <RoutePage v-else-if="selectedRoutePage === true"></RoutePage>
+        <RoutePage id="routePage" v-else-if="selectedRoutePage === true"></RoutePage>
     </div>
 </template>
 
@@ -13,7 +13,7 @@
     import MapPage from './components/MapPage';
     import FirstPage from './components/FirstPage';
     import ProjectPage from './components/ProjectPage/ProjectPage';
-    import RoutePage from './components/RoutePage';
+    import RoutePage from './components/routePage/RoutePage';
 
     export default {
         name: "MainPage",
@@ -40,11 +40,6 @@
                 };
                 this.selectedRoutePage = false;
 
-                // Debugging purpose
-                if (document.getElementById('projectPage') && this.selectedProjectPage.projectId === projectId) {
-                    this.$vuetify.goTo("#projectPage");
-                }
-
                 let pageStates = this.$store.getters.pageStates;
                 this.$store.commit('setPageState', pageStates.projectPage);
             },
@@ -52,6 +47,14 @@
             OpenRoutePage() {
                 this.selectedRoutePage = true;
                 this.selectedProjectPage.isSelected = false;
+
+                let pageStates = this.$store.getters.pageStates;
+                this.$store.commit('setPageState', pageStates.routePage);
+                this.GoToSection('#routePage');
+            },
+
+            OpenMapPage() {
+                this.GoToSection('#mapPage');
             },
 
             UpdateScreen() {
@@ -68,11 +71,18 @@
                     case pageStates.projectPage:
                         this.GoToSection('#projectPage');
                         break;
+                    case pageStates.routePage:
+                        this.GoToSection('#routePage');
+                        break;
                 }
             },
             GoToSection(id) {
                 this.$vuetify.goTo(id, { duration: 500 } );
             },
+            disableInputEvents(element) {
+                L.DomEvent.disableClickPropagation(element.$el);
+                L.DomEvent.disableScrollPropagation(element.$el);
+            }
         },
         mounted() {
             this.UpdateScreen();

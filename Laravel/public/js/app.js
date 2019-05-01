@@ -2310,6 +2310,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      // Data form
+      name: '',
+      nameRules: [function (v) {
+        return !!v || 'Naam is vereist';
+      }, function (v) {
+        return v && v.length <= 191 || 'Naam mag niet langer zijn dan 190 karakters';
+      }],
+      select: null,
+      categories: [],
+      text: '',
+      textRules: [function (v) {
+        return !!v || 'Beschreiving is vereist';
+      }, function (v) {
+        return v && v.length <= 65.535 || 'Tekst mag niet langer zijn dan 65.535 karakters zijn';
+      }],
       zoom: 13,
       center: L.latLng(47.413220, -1.219482),
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
@@ -2318,16 +2333,27 @@ __webpack_require__.r(__webpack_exports__);
       marker: L.latLng(47.413220, -1.219482),
       // here will come the added markers
       markers: [],
-      "long": 0,
-      lat: 0,
+      "long": '',
+      lat: '',
       buttonImage: "img/MapPage/button.png",
-      id: 0,
-      select: null,
-      categories: []
+      id: 0
     };
   },
   methods: {
     // adds a marker to the markers array. the event.latlng needs to be converted to floats because they are delivered as strings
+    validate: function validate() {
+      axios({
+        method: 'post',
+        url: '/beheer/AddProject',
+        data: {
+          name: this.name,
+          category: this.select,
+          information: this.text,
+          lat: this.lat,
+          "long": this["long"]
+        }
+      });
+    },
     add: function add(event) {
       if (this.markers.length > 0) {
         this.markers.splice(-1, 1);
@@ -2360,6 +2386,7 @@ __webpack_require__.r(__webpack_exports__);
     });
     window.axios.get('http://127.0.0.1:8000/getCategories').then(function (response) {
       var temp = response.data;
+      console.log(response);
 
       for (var i = 0; i < temp.length; i++) {
         _this.categories.push(temp[i].name);
@@ -54544,12 +54571,27 @@ var render = function() {
                 "v-form",
                 { attrs: { "lazy-validation": "" } },
                 [
-                  _c("v-text-field", { attrs: { label: "Naam", dark: "" } }),
+                  _c("v-text-field", {
+                    attrs: { label: "Naam", rules: _vm.nameRules, dark: "" },
+                    model: {
+                      value: _vm.name,
+                      callback: function($$v) {
+                        _vm.name = $$v
+                      },
+                      expression: "name"
+                    }
+                  }),
                   _vm._v(" "),
-                  _c("v-combobox", {
+                  _c("v-select", {
                     attrs: {
                       label: "Kies een categorie",
                       items: _vm.categories,
+                      rules: [
+                        function(v) {
+                          return !!v || "Categorie is vereist"
+                        }
+                      ],
+                      required: "",
                       dark: ""
                     },
                     model: {
@@ -54561,14 +54603,34 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: { label: "Beschrijving", required: "", dark: "" }
+                  _c("v-textarea", {
+                    attrs: {
+                      label: "Beschrijving",
+                      rules: _vm.textRules,
+                      required: "",
+                      dark: ""
+                    },
+                    model: {
+                      value: _vm.text,
+                      callback: function($$v) {
+                        _vm.text = $$v
+                      },
+                      expression: "text"
+                    }
                   }),
                   _vm._v(" "),
                   _c("v-text-field", {
                     attrs: {
                       label: "Latidude",
                       value: _vm.lat,
+                      rules: [
+                        function(v) {
+                          return (
+                            !!v || "Punt moet op de mag geselecteerd worden"
+                          )
+                        }
+                      ],
+                      readonly: "",
                       required: "",
                       dark: ""
                     }
@@ -54578,6 +54640,14 @@ var render = function() {
                     attrs: {
                       label: "Longitude",
                       value: _vm.long,
+                      rules: [
+                        function(v) {
+                          return (
+                            !!v || "Punt moet op de mag geselecteerd worden"
+                          )
+                        }
+                      ],
+                      readonly: "",
                       required: "",
                       dark: ""
                     }

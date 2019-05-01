@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Grimzy\LaravelMysqlSpatial\Types\Geometry;
+use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
+use function MongoDB\BSON\toJSON;
 
 class ProjectController extends Controller
 {
@@ -14,7 +16,8 @@ class ProjectController extends Controller
      * featureCollection: JSON format of featureCollection GeoJson
      * pointWKT: Well Known Text for Point
      */
-    public function AddProject(Request $request)
+/*
+    public function addProject(Request $request)
     {
         $project = new Project;
 
@@ -29,7 +32,22 @@ class ProjectController extends Controller
 
         $project->save();
     }
+ */
+    public function addProject (Request $request) {
+        $project = new Project();
 
+        $point = new Point($request->lat, $request->long);
+        $geometryCollection = new GeometryCollection([$point, $point]);
+        echo json_encode($geometryCollection);
+
+//        $project->name = $request->name;
+//        $project->information = $request->information;
+//        $project->category = $request->category;
+//        $project->location = $point;
+//        $project->geo_json =
+
+
+    }
     public function create() {
         return view('createProject');
     }
@@ -50,7 +68,7 @@ class ProjectController extends Controller
      *
      * @return Return Point Models
      */
-    public function GetProjectWithinDistance(Request $request) {
+    public function getProjectWithinDistance(Request $request) {
         $usersPosition = Point::fromWKT($request->pointWKT);
         $containsPoint = Project::distance('location', $usersPosition, $request->withinDistance)->get();
 
