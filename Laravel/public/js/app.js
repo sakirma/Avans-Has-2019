@@ -54598,7 +54598,7 @@ var render = function() {
                       attrs: { color: "succes" },
                       on: { click: function($event) {} }
                     },
-                    [_vm._v("klaar")]
+                    [_vm._v("Klaar")]
                   )
                 ],
                 1
@@ -54691,7 +54691,7 @@ var render = function() {
           _vm._l(_vm.projects, function(p) {
             return _c(
               "v-card",
-              { staticStyle: { width: "30%", height: "100%" } },
+              { key: _vm._proj, staticStyle: { width: "30%", height: "100%" } },
               [
                 _c("p", { staticClass: "text-sm-center" }, [
                   _vm._v(_vm._s(p.name))
@@ -89756,7 +89756,7 @@ var __assign = undefined && undefined.__assign || function () {
             tag = _a.tag,
             data = _a.data;
         data.attrs = Object.assign({}, data.attrs, this.$attrs);
-        return h('div', this.setTextColor(!this.disabled && this.color, {
+        return h('div', this.setTextColor(!this.disabled && this.isActive && this.color, {
             class: this.listClasses,
             attrs: {
                 disabled: this.disabled,
@@ -93515,7 +93515,8 @@ var __values = undefined && undefined.__values || function (o) {
                     avatar: avatar,
                     disabled: disabled,
                     ripple: true,
-                    value: value
+                    value: value,
+                    color: this.color
                 }
             };
             if (!this.$scopedSlots.item) {
@@ -99859,7 +99860,7 @@ var Vuetify = {
             return false;
         })(opts.components);
     },
-    version: '1.5.13'
+    version: '1.5.14'
 };
 function checkVueVersion(Vue, requiredVue) {
     var vueDep = requiredVue || '^2.5.18';
@@ -101545,7 +101546,7 @@ var Vuetify = {
         Vue.use(_components_Vuetify__WEBPACK_IMPORTED_MODULE_1__["default"], __assign({ components: _components__WEBPACK_IMPORTED_MODULE_2__,
             directives: _directives__WEBPACK_IMPORTED_MODULE_3__["default"] }, args));
     },
-    version: '1.5.13'
+    version: '1.5.14'
 };
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(Vuetify);
@@ -108963,8 +108964,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\Git repos\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\Git repos\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\PHPProjects\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\PHPProjects\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

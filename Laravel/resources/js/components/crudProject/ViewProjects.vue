@@ -1,7 +1,7 @@
 <template>
     <v-layout align-start fill-height row style="background-color: #89a226">
         <v-flex >
-            <v-card v-for="p in projects"     style="width:30%; height:100%">
+            <v-card v-for="p in projects" :key="_proj"    style="width:30%; height:100%">
                 <p class="text-sm-center">{{ p.name }}</p>
 
                 <v-list-item>
