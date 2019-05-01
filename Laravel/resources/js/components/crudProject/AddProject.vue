@@ -7,15 +7,15 @@
                     <v-icon dark left>arrow_back</v-icon>Back
                 </v-btn>
                 <v-form lazy-validation>
-                    <v-text-field label="Naam" dark></v-text-field>
-                    <v-combobox label="Kies een categorie" v-model="select" :items="categories" dark></v-combobox>
-                    <v-text-field label="Beschrijving" required dark></v-text-field>
-                    <v-text-field label="Latidude" :value="lat" required dark></v-text-field>
-                    <v-text-field label="Longitude" :value="long" required dark></v-text-field>
+                    <v-text-field label="Naam" v-model="name" :rules="nameRules" dark></v-text-field>
+                    <v-select label="Kies een categorie" v-model="select" :items="categories" :rules="[v => !!v || 'Categorie is vereist']" required dark></v-select>
+                    <v-textarea label="Beschrijving" v-model="text"  :rules="textRules" required dark></v-textarea>
+                    <v-text-field label="Latidude" :value="lat" :rules="[v => !!v || 'Punt moet op de mag geselecteerd worden']" readonly required dark></v-text-field>
+                    <v-text-field label="Longitude" :value="long" :rules="[v => !!v || 'Punt moet op de mag geselecteerd worden']" readonly required dark></v-text-field>
 
 
                     <v-btn color="warning" @click="">Media Uploaden</v-btn>
-                    <v-btn color="succes" @click="" >Klaar</v-btn>
+                    <v-btn color="succes" @click="validate" >Klaar</v-btn>
                 </v-form>
             </v-flex>
 
@@ -58,6 +58,20 @@
 
         data() {
             return {
+                // Data form
+                name: '',
+                nameRules: [
+                    v => !!v || 'Naam is vereist',
+                    v => (v && v.length <= 191) || 'Naam mag niet langer zijn dan 190 karakters'
+                ],
+                select: null,
+                categories: [],
+                text: '',
+                textRules: [
+                    v => !!v || 'Beschreiving is vereist',
+                    v => (v && v.length <= 65.535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
+                ],
+
                 zoom: 13,
                 center: L.latLng(47.413220, -1.219482),
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
@@ -66,18 +80,29 @@
                 marker: L.latLng(47.413220, -1.219482),
                 // here will come the added markers
                 markers: [],
-                long: 0,
-                lat: 0,
+                long: '',
+                lat: '',
                 buttonImage: "img/MapPage/button.png",
                 id: 0,
-
-                select: null,
-                categories: [],
             }
         },
 
         methods: {
             // adds a marker to the markers array. the event.latlng needs to be converted to floats because they are delivered as strings
+            validate () {
+                axios({
+                    method: 'post',
+                    url: '/beheer/AddProject',
+                    data: {
+                        name: this.name,
+                        category: this.select,
+                        information: this.text,
+                        lat: this.lat,
+                        long: this.long,
+                    }
+                });
+            },
+
             add(event) {
                 if(this.markers.length > 0){
                     this.markers.splice(-1, 1);
@@ -112,6 +137,8 @@
 
             window.axios.get('http://127.0.0.1:8000/getCategories').then(response => {
                 let temp = response.data;
+
+                console.log(response);
 
                 for (let i = 0; i < temp.length; i++) {
                     this.categories.push(temp[i].name);
