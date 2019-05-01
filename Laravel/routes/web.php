@@ -42,6 +42,7 @@ Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 // Crud
 Route::get('/beheer/project/aanmaken', 'ProjectController@create');
 Route::post('beheer/AddProject', 'ProjectController@addProject');
+Route::post('beheer/project/overzicht', 'ProjectController@destroy');
 Route::get('/beheer/project/overzicht', 'ProjectController@viewProjects');
 
 // Return only data

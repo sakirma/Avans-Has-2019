@@ -22,5 +22,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('welcome', function() {
         return view('welcome');
     });
+
+    Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], function () {
+        Route::resource('projects', 'ProjectController', ['except' => ['create', 'edit']]);
+    });
 });
 

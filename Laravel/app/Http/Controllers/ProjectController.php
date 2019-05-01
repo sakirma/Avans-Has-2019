@@ -89,4 +89,13 @@ class ProjectController extends Controller
         $project = Project::find($request['project']);
         return view('project')->with(["project" => $project, "facet_id" => $request['facet_id'], "direction" => $request['direction']]);
     }
+
+    public function destroy(Request $request)
+    {
+        $project = Project::findOrFail($request->id);
+        $project->delete();
+        return '';
+    }
+
+
 }

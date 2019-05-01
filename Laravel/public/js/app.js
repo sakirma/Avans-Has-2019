@@ -2369,7 +2369,6 @@ __webpack_require__.r(__webpack_exports__);
     });
     window.axios.get('http://127.0.0.1:8000/getCategories').then(function (response) {
       var temp = response.data;
-      console.log(response);
 
       for (var i = 0; i < temp.length; i++) {
         _this.categories.push(temp[i].name);
@@ -2415,38 +2414,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "viewProjects",
   data: function data() {
     return {
+      projectNames: [],
+      projectIds: [],
       projects: []
     };
   },
   methods: {
     deleteItem: function deleteItem(id) {
-      var _this = this;
+      console.log(id);
 
-      axios.post('/vueitems/' + item.id).then(function (response) {
-        _this.getVueItems();
+      if (confirm(id)) {
+        axios({
+          method: 'delete',
+          url: '/beheer/project/'
+        });
+      }
 
-        _this.hasDeleted = false;
-      });
+      ;
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this = this;
 
     window.axios.get('http://127.0.0.1:8000/getProjects').then(function (response) {
       var temp = response.data;
-      console.log(response);
 
       for (var i = 0; i < temp.length; i++) {
-        _this2.projects.push({
-          name: temp[i].name
-        }, {
-          id: temp[i].id
+        _this.projectNames.push(temp[i].name);
+
+        _this.projectIds.push(temp[i].id);
+
+        _this.projects.push({
+          name: temp[i].name,
+          _id: temp[i].id
         });
+      }
+
+      for (var _i = 0; _i < temp.length; _i++) {
+        console.log(_this.projects[_i].name + " - " + _this.projects[_i]._id);
       }
     })["catch"](function (error) {
       console.log(error);
@@ -57561,7 +57570,7 @@ var render = function() {
           _vm._l(_vm.projects, function(p) {
             return _c(
               "v-card",
-              { key: _vm._proj, staticStyle: { width: "30%", height: "100%" } },
+              { key: _vm.names, staticStyle: { width: "30%", height: "100%" } },
               [
                 _c("p", { staticClass: "text-sm-center" }, [
                   _vm._v(_vm._s(p.name))
@@ -57598,12 +57607,11 @@ var render = function() {
                                 attrs: { color: "error" },
                                 on: {
                                   click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.deleteItem(_vm.id)
+                                    return _vm.deleteItem(p._id)
                                   }
                                 }
                               },
-                              [_vm._v("Wissen")]
+                              [_vm._v(_vm._s(p._id))]
                             )
                           ],
                           1
