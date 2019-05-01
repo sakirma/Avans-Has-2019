@@ -3,8 +3,9 @@
         <first-page id="firstPage"></first-page>
         <map-page id="mapPage" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
         <!-- TODO: DEBUGGING Replace false with true.  -->
-        <project-page id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
-        <RoutePage id="routePage" v-else-if="selectedRoutePage === true"></RoutePage>
+        <project-page ref="projectPage" id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
+        <RoutePage ref="routePage" id="routePage" v-else-if="selectedRoutePage === true"></RoutePage>
+        <div v-else></div>
     </div>
 </template>
 
@@ -42,6 +43,11 @@
 
                 let pageStates = this.$store.getters.pageStates;
                 this.$store.commit('setPageState', pageStates.projectPage);
+
+                if(this.$refs.projectPage !== undefined)
+                {
+                    this.UpdateScreen();
+                }
             },
 
             OpenRoutePage() {
@@ -50,7 +56,11 @@
 
                 let pageStates = this.$store.getters.pageStates;
                 this.$store.commit('setPageState', pageStates.routePage);
-                this.GoToSection('#routePage');
+
+                if(this.$refs.routePage !== undefined)
+                {
+                    this.UpdateScreen();
+                }
             },
 
             OpenMapPage() {

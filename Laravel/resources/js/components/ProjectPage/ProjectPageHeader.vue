@@ -1,5 +1,10 @@
 <template>
     <v-layout align-center justify-center row fill-height ml-3>
+        <v-flex class="hidden-sm-and-up">
+            <v-btn @click="GoBackToMapPage">
+                Go back
+            </v-btn>
+        </v-flex>
         <v-flex shrink class="hidden-sm-and-down v-card--reveal">
             <v-layout align-center justify-center fill-height>
                 <v-img src="img/RoadLeaf-Logo.png"
