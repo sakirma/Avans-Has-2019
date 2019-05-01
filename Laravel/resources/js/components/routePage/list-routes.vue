@@ -1,15 +1,15 @@
 <template>
 
     <v-flex xs12 sm4 md3 py-3 style="background-color: #D9DECD; z-index: 1001;">
-        <v-card flat color="#D9DECD" style="min-height: 250px;">
-            <!--                    <v-list dense style="background-color: #D9DECD" v-for="(item, index) in selectedPoints" v-bind:key="index">-->
-            <!--                    </v-list>-->
-            <draggable tag="ul" v-model="selectedPoints" v-bind="dragOptions" @start="drag=true" @end="drag=false">
-                <transition-group type="transition">
-                    <selected-list-route v-for="item in selectedPoints" :key="item[1]"
-                                         :projectName="item[0]"></selected-list-route>
-                </transition-group>
-            </draggable>
+        <v-card flat color="#D9DECD" style="min-height: 250px; ">
+            <v-responsive max-height="250px" style="overflow-y: scroll">
+                <draggable tag="ul" v-model="selectedPoints" v-bind="dragOptions" @start="drag=true" @end="drag=false">
+                    <transition-group type="transition">
+                        <selected-list-route v-for="item in selectedPoints" :key="item[1]"
+                                             :projectName="item[0]"></selected-list-route>
+                    </transition-group>
+                </draggable>
+            </v-responsive>
         </v-card>
     </v-flex>
 </template>
@@ -39,6 +39,13 @@
                 ['hehd', 3, 'lat', 'lng'],
                 ['hsasd', 4, 'lat', 'lng'],
                 ['fuak', 5, 'lat', 'lng'],
+                ['fuak', 6, 'lat', 'lng'],
+                ['wow', 7, 'lat', 'lng'],
+                ['lol', 8, 'lat', 'lng'],
+                ['hehd', 9, 'lat', 'lng'],
+                ['hsasd', 10, 'lat', 'lng'],
+                ['fuak', 11, 'lat', 'lng'],
+                ['fuak', 12, 'lat', 'lng'],
             ];
         },
         computed: {
