@@ -10,7 +10,7 @@
                 <v-list-item>
                     <v-list-item-content >
                         <v-container align-center justify-center row fill-height >
-                            <v-btn color="warning">Bewerken</v-btn>
+                            <v-btn color="warning" href="/beheer/project/bewerken/{{p.id}}">Bewerken </v-btn>
                             <v-btn color="error" @click="deleteItem(p._id)">Wissen</v-btn>
                         </v-container>
                     </v-list-item-content>
@@ -20,6 +20,7 @@
         </v-flex>
 
     </v-layout>
+    <edit-projects id="editprojects" v-if="selectedEditPage.isSelected === true"></edit-projects>
 
 </template>
 
@@ -28,6 +29,12 @@
         name: "viewProjects",
         data() {
             return {
+                selectedEditPage: {
+                    isSelected: false,
+                    projectId: undefined
+                },
+
+
                 projectNames: [],
                 projectIds: [],
                 projects: [],
@@ -35,6 +42,44 @@
             }
         },
         methods:{
+
+            OpenEditPage(projectId) {
+                this.selectedEditPage = {
+                    isSelected: true,
+                    projectId: projectId
+                };
+
+                let pageStates = this.$store.getters.pageStates;
+                this.$store.commit('setPageState', pageStates.editprojects);
+            },
+            UpdateScreen() {
+                let currentPageState = this.$store.getters.getCurrentPageState;
+                let pageStates = this.$store.getters.pageStates;
+
+                switch (currentPageState) {
+                    case pageStates.mapPage:
+                        this.GoToSection('#editprojects');
+                        break;
+                }
+            },
+            GoToSection(id) {
+                this.$vuetify.goTo(id, { duration: 500 } );
+            },
+            editItem (id) {
+
+                    axios({
+                        method: 'get',
+                        url: '/beheer/project/bewerken',
+                        data: {
+                            id: id,
+
+                        }
+                    });
+
+
+
+
+            },
 
             deleteItem (id) {
                 if(confirm(' wil je dit project zeker verwijderen?')){

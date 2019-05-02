@@ -51,6 +51,11 @@ class ProjectController extends Controller
         return view('createProject');
     }
 
+    public function edit(Request $request) {
+        $project = Project::find($request['id']);
+        return view('editProject')->with(["project" => $project]);
+    }
+
     public function viewProjects() {
         return view('viewProjects');
     }
