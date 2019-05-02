@@ -48,14 +48,14 @@
         },
         methods: {
             GoToMapPage() {
+                document.removeEventListener('touchmove', this.touchHandler);
+                document.removeEventListener('touchstart', this.touchStart);
                 this.$parent.OpenMapPage();
             },
             touchHandler(e) {
                 let te = e.touches[0].clientY;
                 if (this.ts > te) {
                     if ((this.ts - te) > 60) {
-                        document.removeEventListener('touchmove', this.touchHandler);
-                        document.removeEventListener('touchstart', this.touchStart);
 
                         this.GoToMapPage();
                     }
