@@ -22,7 +22,7 @@
                                 </v-card-text>
                             </v-flex>
 
-                            <v-flex shrink pa-3>
+                            <v-flex shrink pa-3 :class="{'mb-5': $vuetify.breakpoint.smAndDown, 'ma-0': $vuetify.breakpoint.mdAndUp}">
                                 <v-btn color="rgb(0, 0, 0, 1)" large fab @click="GoToMapPage">
                                     <v-icon x-large color="white">arrow_drop_down_circle</v-icon>
                                 </v-btn>
