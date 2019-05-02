@@ -21,12 +21,27 @@
 
 <body>
 
-<div id="leaflet" style="height: 100vh">
+<div id="leaflet" style="height: 80vh">
     <script type="text/javascript" src="{{ asset('js/leaflet_core.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/leaflet_create.js') }}"></script>
 </div>
-
-
+<div id="points">
+    @foreach($locations as $l)
+        <div class="point" style="width: 100px; margin: 20px; display: inline-block;">
+            <label>
+                Project Name:
+                <input type="text" name="project_id" value="{{$l->name}}" readonly>
+            </label>
+            <label>Location:
+                <input type="text" name="latlng" value="{{$l->location}}" readonly>
+            </label>
+            <label>
+                Placed:
+                <input type="checkbox" id="button-{{ $id = random_int(0, getrandmax()) }}" name="placed" onclick="onCheckbox( '{{$l->location}}', '{{$id}}' );">
+            </label>
+        </div>
+    @endforeach
+</div>
 
 </body>
 </html>

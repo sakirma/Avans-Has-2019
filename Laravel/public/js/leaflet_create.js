@@ -14,7 +14,7 @@ addEventListener('core_finished', function (e) {
     map.doubleClickZoom.disable();
 });
 
-function placeMarker(e) {
+function mousePlaceMarker(e) {
 
     L.marker(e.latlng,{
         draggable: true,
@@ -25,6 +25,56 @@ function placeMarker(e) {
         console.log(placedMarkers);
         calculateRoute();
     }
+}
+
+function placeMarker(latlng){
+
+    L.marker(latlng,{
+        draggable: true,
+        riseOnHover:true
+    }).on('dragend', calculateRoute).addTo(placedMarkers);
+
+    if (placedMarkers.getLayers().length > 1) { calculateRoute(); }
+}
+
+//TODO if marker is removed with mouse set checkmark on false
+//TODO (Maybe) let the user change the order of the points
+
+function removeMarker(latling){
+
+    let routes = routingControl.getWaypoints();
+    let layers = placedMarkers.getLayers();
+    let newRoutes = [];
+
+    console.log(placedMarkers);
+
+    for (let i = 0; i < layers.length; i++) {
+       let l = layers[i].getLatLng();
+        if(l.equals(latling)) {
+            placedMarkers.removeLayer(layers[i]);
+        }
+    }
+
+    for (let i = 0; i < routes.length; i++) {
+
+        if((!routes[i].latLng.equals(latling)) && (routes[i].latLng !== null)) {
+            newRoutes.push(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng));
+        }
+    }
+    routingControl.setWaypoints(newRoutes);
+}
+
+function onCheckbox(location, buttonId){
+
+    console.log(location);
+    console.log(buttonId);
+
+    let checkbox = document.getElementById("button-"+buttonId).checked;
+    let splited = location.split(" ");
+    let latlng = L.latLng(parseFloat(splited[1]), parseFloat(splited[0]));
+
+    if(checkbox) { placeMarker(latlng); }
+    else { removeMarker(latlng); }
 }
 
 function updateMarkersToRoute(e) {
@@ -47,7 +97,7 @@ function validateForm(latlng){
     console.log(latlng);
 }
 
-function removeMarker(e) {
+function mouseRemoveMarker(e) {
     placedMarkers.removeLayer(e.layer);
 
     let routes = routingControl.getWaypoints();
@@ -73,5 +123,5 @@ function calculateRoute() {
     routingControl.setWaypoints(latlngs);
 }
 
-map.on('dblclick', placeMarker);
-placedMarkers.on('dblclick', removeMarker);
+map.on('dblclick', mousePlaceMarker);
+placedMarkers.on('dblclick', mouseRemoveMarker);
