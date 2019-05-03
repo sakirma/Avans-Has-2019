@@ -51,3 +51,5 @@ Route::post('/media', "MediaController@saveMedia")->name('media.save');
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
 Route::get('details/{id}', "ProjectPointsController@GetDetails");
+
+Route::get('getAllRoutes', "RoutesController@getAllRoutes");

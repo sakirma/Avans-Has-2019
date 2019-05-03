@@ -17,6 +17,10 @@ class RoutesController extends Controller
 return view('routes.routeList', compact('routes'));
   }
 
+  public function getAllRoutes(){
+    return Route::all();  
+  }
+
 
 
 }

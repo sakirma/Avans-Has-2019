@@ -9,17 +9,12 @@
                        :zoom="zoom"
                        :center="center"
                        style="height:100%;">
-                    <v-layout align-start justify-start row fill-height mt-0>
-<v-flex style="z-index: 701" xs12 md3 lg2
-                                :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}">
 
-                            <drop-down-button buttonTitle="Routes"
-                                              title="hi"
-                                              :items="LeftDropDownButton"></drop-down-button>
-                        </v-flex>
-                   
-                    </v-layout>
-
+        <v-container ma-0 pa-0 fluid grid-list-md>
+                        <v-layout align-start justify-end row fill-height>
+                            <list-routes></list-routes>
+                        </v-layout>
+                    </v-container>
 
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
@@ -44,6 +39,7 @@
 <script>
     import {LMap, LTileLayer, LMarker, LControl, LPopup} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
+    import ListRoutes from "./routePage/list-routes";
 
     import MapPageHeader from "./map-page-header";
     import DropDownButton from "./mapPageButton/DropDownButton"
@@ -56,14 +52,10 @@
             LMap,
             LTileLayer,
             LMarker,
-            LPopup
+            LPopup,
+            ListRoutes
         },
-        props: {
-            onProjectOpened: {
-                type: Function,
-                required: true
-            }
-        },
+    
         data() {
             return {
                 zoom: 11,
@@ -71,7 +63,7 @@
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 markers: [L.latLng(51.7142669290121, 5.3173828125), L.latLng(51.7142669290121, 5.3153828125), L.latLng(51.7142669290121, 5.33828125)],
-               
+
 
             }
         },
