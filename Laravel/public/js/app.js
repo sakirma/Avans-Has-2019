@@ -2003,6 +2003,9 @@ __webpack_require__.r(__webpack_exports__);
     onProjectOpened: {
       type: Function,
       required: true
+    },
+    points: {
+      Array: Array
     }
   },
   data: function data() {
@@ -2025,6 +2028,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     OpenProjectPagePressed: function OpenProjectPagePressed(projectId) {
       this.onProjectOpened(projectId);
+    },
+    addMarkerToMap: function addMarkerToMap(lat, lng) {
+      markerGroup = L.layerGroup().addTo(mymap);
+      new L.marker([lat, lng]).addTo(markerGroup);
+    },
+    removeMarkers: function removeMarkers() {
+      mymap.removeLayer(markerGroup);
     }
   },
   mounted: function mounted() {}
@@ -2174,13 +2184,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "RoutesComponent"
+  name: "RoutesComponent",
+  data: function data() {
+    return {
+      routeList: [],
+      projectPoints: []
+    };
+  },
+  methods: {
+    getProjectPoint: function getProjectPoint($id) {
+      var _this = this;
+
+      window.axios.get('http://127.0.0.1:8000/getProjectPoint/' + $id).then(function (response) {
+        console.log(response.data);
+
+        _this.projectPoints.push(response.data);
+      })["catch"](function (e) {
+        console.log(e);
+      });
+    }
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    window.axios.get('http://127.0.0.1:8000/getProjectPointIDs').then(function (response) {
+      console.log(response.data);
+      _this2.routeList = response.data;
+    })["catch"](function (e) {
+      console.log(e);
+    });
+  }
 });
 
 /***/ }),
@@ -54028,21 +54063,24 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-app",
-    [
-      _c("first-page"),
-      _vm._v(" "),
-      _c("map-page", {
-        attrs: { id: "mapPage", onProjectOpened: _vm.OpenProjectPage }
-      }),
-      _vm._v(" "),
-      _vm.selectedProjectPage.isSelected === true
-        ? _c("project-page", { attrs: { id: "projectPage" } })
-        : _vm._e(),
-      _vm._v(" "),
-      _c("h1", [_vm._v("hi")])
-    ],
-    1
+    "ul",
+    _vm._l(_vm.routeList, function(route) {
+      return _c("li", [
+        _vm._v(_vm._s(route.project_point_id)),
+        _c(
+          "button",
+          {
+            on: {
+              click: function($event) {
+                return _vm.getProjectPoint(route.project_point_id)
+              }
+            }
+          },
+          [_vm._v("Volg route")]
+        )
+      ])
+    }),
+    0
   )
 }
 var staticRenderFns = []
@@ -106009,8 +106047,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Ruben\Documents\GitHub\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Ruben\Documents\GitHub\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Gijs\Documents\GitHub\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Gijs\Documents\GitHub\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

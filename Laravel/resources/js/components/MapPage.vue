@@ -82,6 +82,9 @@
             onProjectOpened: {
                 type: Function,
                 required: true
+            },
+            points: {
+                Array
             }
         },
         data() {
@@ -105,6 +108,13 @@
             },
             OpenProjectPagePressed: function (projectId) {
                 this.onProjectOpened(projectId);
+            },
+            addMarkerToMap(lat, lng) {
+                markerGroup = L.layerGroup().addTo(mymap);
+                new L.marker([lat, lng]).addTo(markerGroup);
+            },
+            removeMarkers() {
+                mymap.removeLayer(markerGroup);
             }
         },
         mounted() {
