@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\Route;
 use App\Models\route_has_project_point;
 
@@ -19,4 +20,11 @@ class RoutesController extends Controller
     $ppids = route_has_project_point::all();
     return $ppids;
   }
+
+  public function getAllRoutes(){
+    return Route::all();  
+  }
+
+
+
 }
