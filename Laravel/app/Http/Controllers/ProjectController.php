@@ -51,9 +51,22 @@ class ProjectController extends Controller
         return view('createProject');
     }
 
-    public function edit(Request $request) {
-        $project = Project::find($request['id']);
-        return view('editProject')->with(["project" => $project]);
+    public function edit ($id) {
+        $project = Project::find($id);
+        return $project->toJson();
+    }
+
+    public function update( Request $request)
+    {
+        $project = Project::find($request->id);
+        $point = new Point($request->lat, $request->long);
+        $geometryCollection = new GeometryCollection([$point]);
+        $project->name = $request->name;
+        $project->information = $request->information;
+        $project->category = $request->category;
+        $project->location = $point;
+        $project->geo_json = $geometryCollection;
+        $project->update($request->all());
     }
 
     public function viewProjects() {
@@ -90,6 +103,10 @@ class ProjectController extends Controller
     public function index(Request $request){
         $project = Project::find($request['id']);
         return view('project')->with(["project" => $project]);
+    }
+
+    public function main(){
+        return view('mainCrudPage');
     }
 
     public function facetInfo(Request $request){

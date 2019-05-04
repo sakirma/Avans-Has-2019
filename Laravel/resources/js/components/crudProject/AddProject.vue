@@ -3,42 +3,30 @@
     <div id="markProject" style="height: 100vh;">
         <v-layout align-center justify-space-around row fill-height style="background-color: #89a226">
             <v-flex>
-                <v-btn color="orange darken-2" href="/beheer/project/overzicht" dark>
+                <v-btn color="orange darken-2" @click=" goToHome" dark>
                     <v-icon dark left>arrow_back</v-icon>Back
                 </v-btn>
                 <v-form v-model="valid" ref="form">
                     <v-text-field label="Naam" v-model="name" :rules="nameRules" dark></v-text-field>
                     <v-select label="Kies een categorie" v-model="select" :items="categories" :rules="[v => !!v || 'Categorie is vereist']" required dark></v-select>
                     <v-textarea label="Beschrijving" v-model="text"  :rules="textRules" required dark></v-textarea>
-                    <v-text-field label="Latidude" :value="lat" :rules="[v => !!v || 'Punt moet op de mag geselecteerd worden']" readonly required dark></v-text-field>
-                    <v-text-field label="Longitude" :value="long" :rules="[v => !!v || 'Punt moet op de mag geselecteerd worden']" readonly required dark></v-text-field>
-
-
-                    <v-btn color="warning" @click="">Media Uploaden</v-btn>
+                    <v-text-field label="Latidude" :value="lat" :rules="[v => !!v || 'Punt moet op de map geselecteerd worden']" readonly required dark></v-text-field>
+                    <v-text-field label="Longitude" :value="long" :rules="[v => !!v || 'Punt moet op de map geselecteerd worden']" readonly required dark></v-text-field>
                     <v-btn @click="validate" :class="{ red: !valid, green: valid }">Klaar</v-btn>
                 </v-form>
             </v-flex>
-
             <v-flex fill-height>
-                // v-on:click="add($event)" calls the mouse listener and $event gets the click event with latlng
                 <l-map ref="eenElement" v-on:click="add($event)"
                        :zoom="zoom"
                        :center="center"
                        style="width:100%; height:80%"
-
                 >
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                    // single marker ----remove later---------------
-                    <l-marker :lat-lng="marker"></l-marker>
-
-                    // markers that are added with clicking on the map
                     <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng"></l-marker>
-
                 </l-map>
             </v-flex>
         </v-layout>
     </div>
-
 </template>
 
 <script>
@@ -47,7 +35,7 @@
     import MapPageHeader from "../map-page-header";
 
     export default {
-        name: 'MarkProject',
+        name: 'AddProject',
         components: {
             MapPageHeader,
             LMap,
@@ -77,9 +65,6 @@
                 center: L.latLng(47.413220, -1.219482),
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                // test marker
-                marker: L.latLng(47.413220, -1.219482),
-                // here will come the added markers
                 markers: [],
                 long: '',
                 lat: '',
@@ -89,7 +74,6 @@
         },
 
         methods: {
-            // adds a marker to the markers array. the event.latlng needs to be converted to floats because they are delivered as strings
             validate () {
                 if(this.$refs.form.validate()) {
                     axios({
@@ -105,7 +89,15 @@
                     });
                 }
             },
+            goToHome(){
+                window.location.reload();
 
+                this.$vuetify.goTo('#view-projects');
+                this.$parent.selectedAddPage = false;
+
+
+
+            },
             add(event) {
                 if(this.markers.length > 0){
                     this.markers.splice(-1, 1);
@@ -133,14 +125,13 @@
 
         // test method
         mounted() {
+            this.$vuetify.goTo('#addProject');
             this.$refs.eenElement.mapObject.on('click', function (e) {
                 console.log(e.latlng);
-
             });
 
             window.axios.get('http://127.0.0.1:8000/getCategories').then(response => {
                 let temp = response.data;
-
                 for (let i = 0; i < temp.length; i++) {
                     this.categories.push(temp[i].name);
                 }
@@ -149,7 +140,6 @@
             });
         }
     }
-
 </script>
 
 <style scoped>

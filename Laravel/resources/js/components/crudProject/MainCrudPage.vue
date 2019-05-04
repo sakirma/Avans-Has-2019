@@ -1,26 +1,26 @@
 <template>
-    <div v-resize="UpdateScreen">
-        <view-projects id="view-projects" :onAddOpened="OpenEditPage" :onEditPageOpened="OpenAddPage"></view-projects>
-        <add-project id="addProject" ></add-project>
-        <!-- TODO: DEBUGGING Replace false with true.  -->
-        <edit-projects id="editProjects" v-if="selectedEditPage.isSelected === true"></edit-projects>
+    <div  style="height: 100vh">
+        <view-projects id="view-projects" :onAddOpened="OpenAddPage" :onEditPageOpened="OpenEditPage"></view-projects>
+        <add-project id="addProject"  v-if="selectedAddPage === true" ></add-project>
+        <edit-projects id="editProjects" v-if="selectedEditPage.isSelected === true" :_id="Edit().toString()"></edit-projects>
     </div>
 </template>
 
-<!-- TODO: Scroll back to project page when the window is re-sized. -->
 <script>
-    import MapPage from './components/MapPage';
-    import FirstPage from './components/FirstPage';
-    import ProjectPage from './components/ProjectPage/ProjectPage';
-    import RoutePage from './components/routePage/RoutePage';
+    import AddProject from './AddProject';
+    import MainCrudProject from './MainCrudPage';
+    import EditProjects from './EditProjects';
+    import ViewProjects from './ViewProjects';
+
+
 
     export default {
-        name: "MainPage",
+        name: 'MainCrudPage',
         components: {
-            MapPage,
-            FirstPage,
-            ProjectPage,
-            RoutePage,
+            AddProject,
+            MainCrudProject,
+            EditProjects,
+            ViewProjects,
         },
         data() {
             return {
@@ -39,47 +39,20 @@
                 };
                 this.selectedAddPage = false;
 
-                let pageStates = this.$store.getters.pageStates;
-                this.$store.commit('setPageState', pageStates.editProjects);
+            },
+
+            Edit(){
+                return this.selectedEditPage.projectId.toString();
             },
 
             OpenAddPage() {
                 this.selectedAddPage = true;
                 this.selectedEditPage.isSelected = false;
 
-                let pageStates = this.$store.getters.pageStates;
-                this.$store.commit('setPageState', pageStates.addProject);
-                this.GoToSection('#routePage');
+
             },
-
-
-
-            UpdateScreen() {
-                let currentPageState = this.$store.getters.getCurrentPageState;
-                let pageStates = this.$store.getters.pageStates;
-
-                switch (currentPageState) {
-                    case pageStates.view-projects:
-                        this.GoToSection('#view-projects');
-                        break;
-                    case pageStates.addProject:
-                        this.GoToSection('#addProject');
-                        break;
-                    case pageStates.editProjects:
-                        this.GoToSection('#editProjects');
-                        break;
-                }
-            },
-            GoToSection(id) {
-                this.$vuetify.goTo(id, { duration: 500 } );
-            },
-            disableInputEvents(element) {
-                L.DomEvent.disableClickPropagation(element.$el);
-                L.DomEvent.disableScrollPropagation(element.$el);
-            }
         },
         mounted() {
-            this.UpdateScreen();
         }
     }
 </script>

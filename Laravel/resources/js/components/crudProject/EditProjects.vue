@@ -3,7 +3,7 @@
     <div id="markProject" style="height: 100vh;">
         <v-layout align-center justify-space-around row fill-height style="background-color: #89a226">
             <v-flex>
-                <v-btn color="orange darken-2" href="/beheer/project/overzicht" dark>
+                <v-btn color="orange darken-2" @click="goToHome" dark>
                     <v-icon dark left>arrow_back</v-icon>Back
                 </v-btn>
                 <v-form v-model="valid" ref="form">
@@ -12,33 +12,21 @@
                     <v-textarea label="Beschrijving" v-model="text"  :rules="textRules" required dark></v-textarea>
                     <v-text-field label="Latidude" :value="lat" :rules="[v => !!v || 'Punt moet op de mag geselecteerd worden']" readonly required dark></v-text-field>
                     <v-text-field label="Longitude" :value="long" :rules="[v => !!v || 'Punt moet op de mag geselecteerd worden']" readonly required dark></v-text-field>
-
-
-                    <v-btn color="warning" @click="">Media Uploaden</v-btn>
                     <v-btn @click="validate" :class="{ red: !valid, green: valid }">Klaar</v-btn>
                 </v-form>
             </v-flex>
-
             <v-flex fill-height>
-                // v-on:click="add($event)" calls the mouse listener and $event gets the click event with latlng
                 <l-map ref="eenElement" v-on:click="add($event)"
                        :zoom="zoom"
                        :center="center"
                        style="width:100%; height:80%"
-
                 >
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                    // single marker ----remove later---------------
-                    <l-marker :lat-lng="marker"></l-marker>
-
-                    // markers that are added with clicking on the map
                     <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng"></l-marker>
-
                 </l-map>
             </v-flex>
         </v-layout>
     </div>
-
 </template>
 
 <script>
@@ -54,6 +42,9 @@
             LTileLayer,
             LMarker,
             LPopup,
+        },
+        props: {
+            _id: { type: String}
         },
 
         data() {
@@ -77,14 +68,12 @@
                 center: L.latLng(47.413220, -1.219482),
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                // test marker
-                marker: L.latLng(47.413220, -1.219482),
-                // here will come the added markers
                 markers: [],
                 long: '',
                 lat: '',
                 buttonImage: "img/MapPage/button.png",
                 id: 0,
+                projects: [],
             }
         },
 
@@ -94,8 +83,9 @@
                 if(this.$refs.form.validate()) {
                     axios({
                         method: 'post',
-                        url: '/beheer/AddProject',
+                        url: '/beheer/updateProject/',
                         data: {
+                            id: this.id,
                             name: this.name,
                             category: this.select,
                             information: this.text,
@@ -106,44 +96,63 @@
                 }
             },
 
+            goToHome(){
+                window.location.reload();
+
+                this.$vuetify.goTo('#view-projects');
+                this.$parent.selectedEditPage.isSelected = false;
+                this.$parent.selectedEditPage.projectId = undefined;
+            },
             add(event) {
                 if(this.markers.length > 0){
                     this.markers.splice(-1, 1);
                 }
-                this.id++;
                 var coord = event.latlng;
                 var lat = coord.lat;
                 var lng = coord.lng;
                 this.long = lng;
                 this.lat = lat;
-                console.log("lat: "+ lat + " lng: " + lng)
                 this.markers.push({
                     id: this.id,
                     latlng: L.latLng(parseFloat(lat), parseFloat(lng)),
-                    content: 'hoi!'
+                    content: ''
                 });
-                console.log("marked at " + event.latlng);
             },
             remove() {
                 this.markers.splice(-1, 1);
             }
-
-
         },
-
-        // test method
         mounted() {
+            setTimeout(function() { window.dispatchEvent(new Event('resize')) }, 250);
+            this.$vuetify.goTo('#editProjects');
             this.$refs.eenElement.mapObject.on('click', function (e) {
                 console.log(e.latlng);
 
             });
-
             window.axios.get('http://127.0.0.1:8000/getCategories').then(response => {
+
                 let temp = response.data;
 
                 for (let i = 0; i < temp.length; i++) {
                     this.categories.push(temp[i].name);
                 }
+            }).catch(function (error) {
+                console.log(error);
+            });
+            console.log(this._id + " sfsdafgsf")
+            window.axios.get('http://127.0.0.1:8000/beheer/edit/'+this._id ).then(response => {
+                let temp = response.data;
+                this.name = temp.name;
+                this.select = temp.category;
+                this.text = temp.information;
+                this.lat = temp.location.coordinates[1];
+                this.long = temp.location.coordinates[0];
+                this.id = temp.id;
+                this.markers.push({
+                    id: this.id,
+                    latlng: L.latLng(parseFloat(this.lat), parseFloat(this.long)),
+                    content: 'hoi!'
+                });
             }).catch(function (error) {
                 console.log(error);
             });

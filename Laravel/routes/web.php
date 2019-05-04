@@ -40,14 +40,14 @@ Route::post('/media', "MediaController@saveMedia")->name('media.save');
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
 // Crud
-
-
+Route::get('/beheer', 'ProjectController@main');
 Route::get('/beheer/project/aanmaken', 'ProjectController@create');
-Route::get('/beheer/project/bewerken/{id}', 'ProjectController@edit');
 
 Route::post('beheer/AddProject', 'ProjectController@addProject');
+Route::post('beheer/updateProject', 'ProjectController@update');
 Route::post('beheer/DeleteProject', 'ProjectController@destroy');
-Route::get('/beheer/project/overzicht', 'ProjectController@viewProjects');
+Route::get('/beheer/edit/{id}','ProjectController@edit');
+
 
 // Return only data
 Route::get('/getCategories', 'MainPageController@getCatagories');

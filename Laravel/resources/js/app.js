@@ -74,7 +74,9 @@ Vue.component('view-projects',
 Vue.component('edit-projects',
     require('./components/crudProject/EditProjects').default
 );
-
+Vue.component('main-crud-page',
+    require('./components/crudProject/MainCrudPage').default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
