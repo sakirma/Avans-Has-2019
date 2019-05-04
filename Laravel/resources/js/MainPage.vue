@@ -3,8 +3,9 @@
         <first-page id="firstPage"></first-page>
         <map-page id="mapPage" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
         <!-- TODO: DEBUGGING Replace false with true.  -->
-        <project-page id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
-        <RoutePage id="routePage" v-else-if="selectedRoutePage === true"></RoutePage>
+        <project-page ref="projectPage" id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
+        <RoutePage ref="routePage" id="routePage" v-else-if="selectedRoutePage === true"></RoutePage>
+        <div v-else></div>
     </div>
 </template>
 
@@ -30,6 +31,8 @@
                     projectId: undefined
                 },
                 selectedRoutePage: false,
+
+                scrolledOnFirstPage: false,
             }
         },
         methods: {
@@ -42,6 +45,10 @@
 
                 let pageStates = this.$store.getters.pageStates;
                 this.$store.commit('setPageState', pageStates.projectPage);
+
+                if (this.$refs.projectPage !== undefined) {
+                    this.UpdateScreen();
+                }
             },
 
             OpenRoutePage() {
@@ -50,11 +57,17 @@
 
                 let pageStates = this.$store.getters.pageStates;
                 this.$store.commit('setPageState', pageStates.routePage);
-                this.GoToSection('#routePage');
+
+                if (this.$refs.routePage !== undefined) {
+                    this.UpdateScreen();
+                }
             },
 
             OpenMapPage() {
-                this.GoToSection('#mapPage');
+                let pageStates = this.$store.getters.pageStates;
+                this.$store.commit('setPageState', pageStates.mapPage);
+
+                this.UpdateScreen();
             },
 
             UpdateScreen() {
@@ -77,15 +90,27 @@
                 }
             },
             GoToSection(id) {
-                this.$vuetify.goTo(id, { duration: 500 } );
+                this.$vuetify.goTo(id, {duration: 500});
             },
             disableInputEvents(element) {
                 L.DomEvent.disableClickPropagation(element.$el);
                 L.DomEvent.disableScrollPropagation(element.$el);
+            },
+
+            ScrollOnWheelEvent(e) {
+                if(this.scrolledOnFirstPage === false && e.deltaY > 0)
+                {
+                    this.OpenMapPage();
+                    document.removeEventListener("wheel", this.ScrollOnWheelEvent);
+
+                    this.scrolledOnFirstPage = true;
+                }
             }
         },
         mounted() {
             this.UpdateScreen();
+
+            document.addEventListener("wheel", this.ScrollOnWheelEvent);
         }
     }
 </script>
@@ -100,16 +125,14 @@
     .vb > .vb-dragger > .vb-dragger-styler {
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
-        -webkit-transform: rotate3d(0,0,0,0);
-        transform: rotate3d(0,0,0,0);
-        -webkit-transition:
-                background-color 100ms ease-out,
-                margin 100ms ease-out,
-                height 100ms ease-out;
-        transition:
-                background-color 100ms ease-out,
-                margin 100ms ease-out,
-                height 100ms ease-out;
+        -webkit-transform: rotate3d(0, 0, 0, 0);
+        transform: rotate3d(0, 0, 0, 0);
+        -webkit-transition: background-color 100ms ease-out,
+        margin 100ms ease-out,
+        height 100ms ease-out;
+        transition: background-color 100ms ease-out,
+        margin 100ms ease-out,
+        height 100ms ease-out;
         background-color: rgba(64, 64, 64, 0.64);
         margin: 5px 5px 5px 0;
         border-radius: 10px;
