@@ -26,7 +26,7 @@
     <script type="text/javascript" src="{{ asset('js/leaflet_create.js') }}"></script>
 </div>
 <div id="points">
-    @foreach($locations as $l)
+    @foreach($points as $l)
         <div class="point" style="width: 100px; margin: 20px; display: inline-block;">
             <label>
                 Project Name:
@@ -41,6 +41,7 @@
             </label>
         </div>
     @endforeach
+    <button onclick="uploadPlacedMarkers()">Upload points</button>
 </div>
 
 </body>

@@ -1,4 +1,8 @@
-let placedMarkers = L.featureGroup().addTo(map);
+let projectMarkers = L.featureGroup().addTo(map);
+let placedMarkers = {
+    latlng: [],
+    name: [],
+};
 let routingControl;
 
 addEventListener('core_finished', function (e) {
@@ -19,12 +23,31 @@ function mousePlaceMarker(e) {
     L.marker(e.latlng,{
         draggable: true,
         riseOnHover:true
-    }).on('dragend', calculateRoute).addTo(placedMarkers);
+    }).on('dragend', calculateRoute).addTo(projectMarkers);
 
-    if (placedMarkers.getLayers().length > 1) {
-        console.log(placedMarkers);
+    if (projectMarkers.getLayers().length > 1) {
+        console.log(projectMarkers);
         calculateRoute();
     }
+}
+
+function uploadPlacedMarkers(){
+    let layers = projectMarkers.getLayers();
+
+    for (i=0; i<layers.length; i++){
+        placedMarkers.latlng.push(layers[i].getLatLng());
+        placedMarkers.name.push("Testname1");
+    }
+
+    let xhttp = new XMLHttpRequest();
+    let token =  document.getElementsByName('csrf-token')[0].getAttribute('content');
+    let jmarkers = JSON.stringify(placedMarkers);
+    console.log(jmarkers);
+
+    xhttp.open('POST', '/admin/create');
+    xhttp.setRequestHeader('X-CSRF-Token', token);
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.send(jmarkers);
 }
 
 function placeMarker(latlng){
@@ -32,9 +55,9 @@ function placeMarker(latlng){
     L.marker(latlng,{
         draggable: true,
         riseOnHover:true
-    }).on('dragend', calculateRoute).addTo(placedMarkers);
+    }).on('dragend', calculateRoute).addTo(projectMarkers);
 
-    if (placedMarkers.getLayers().length > 1) { calculateRoute(); }
+    if (projectMarkers.getLayers().length > 1) { calculateRoute(); }
 }
 
 //TODO if marker is removed with mouse set checkmark on false
@@ -43,15 +66,15 @@ function placeMarker(latlng){
 function removeMarker(latling){
 
     let routes = routingControl.getWaypoints();
-    let layers = placedMarkers.getLayers();
+    let layers = projectMarkers.getLayers();
     let newRoutes = [];
 
-    console.log(placedMarkers);
+    console.log(projectMarkers);
 
     for (let i = 0; i < layers.length; i++) {
        let l = layers[i].getLatLng();
         if(l.equals(latling)) {
-            placedMarkers.removeLayer(layers[i]);
+            projectMarkers.removeLayer(layers[i]);
         }
     }
 
@@ -78,7 +101,7 @@ function onCheckbox(location, buttonId){
 }
 
 function updateMarkersToRoute(e) {
-    placedMarkers.clearLayers();
+    projectMarkers.clearLayers();
     for (let i = 0; i < e.waypoints.length; i++) {
         L.marker(e.waypoints[i].latLng, {
             draggable: true,
@@ -87,7 +110,7 @@ function updateMarkersToRoute(e) {
             .bindPopup( '<p>' + e.waypoints[i].latLng.lat + ' , ' + e.waypoints[i].latLng.lng + '</p>' +
                         'Naam: <input type="text" name="mName">' +
                         '<button onclick="validateForm()">Click me</button>'
-            ).addTo(placedMarkers);
+            ).addTo(projectMarkers);
     }
 }
 
@@ -98,7 +121,7 @@ function validateForm(latlng){
 }
 
 function mouseRemoveMarker(e) {
-    placedMarkers.removeLayer(e.layer);
+    projectMarkers.removeLayer(e.layer);
 
     let routes = routingControl.getWaypoints();
     let newRoutes = [];
@@ -114,7 +137,7 @@ function mouseRemoveMarker(e) {
 
 function calculateRoute() {
 
-    let layers = placedMarkers.getLayers();
+    let layers = projectMarkers.getLayers();
     let latlngs = [];
 
     for (let i = 0; i < layers.length; i++) {
@@ -124,4 +147,4 @@ function calculateRoute() {
 }
 
 map.on('dblclick', mousePlaceMarker);
-placedMarkers.on('dblclick', mouseRemoveMarker);
+projectMarkers.on('dblclick', mouseRemoveMarker);
