@@ -63,6 +63,21 @@ Vue.component('map-page',
     require('./components/MapPage').default
 );
 
+Vue.component('add-project',
+    require('./components/crudProject/AddProject').default
+);
+
+Vue.component('view-projects',
+    require('./components/crudProject/ViewProjects').default
+);
+
+Vue.component('edit-projects',
+    require('./components/crudProject/EditProjects').default
+);
+Vue.component('main-crud-page',
+    require('./components/crudProject/MainCrudPage').default
+);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
