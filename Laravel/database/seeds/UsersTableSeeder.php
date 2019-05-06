@@ -11,6 +11,10 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-
+        DB::table('users')->insert([
+            'name' => 'Beheerder',
+            'email' => 'eenmail@hotmail.com',
+            'password' => bcrypt('Roadleaf!@#123'),
+        ]);
     }
 }
