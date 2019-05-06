@@ -15,9 +15,9 @@ class RoutesController extends Controller
     return view('routes.routeList', compact('routes'));
   }
 
-  public function getProjectPointIDs()
+  public function getProjectPointIDs($id)
   {
-    $ppids = route_has_project_point::all();
+    $ppids = route_has_project_point::where('route_id', $id);
     return $ppids;
   }
 
