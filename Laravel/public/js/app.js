@@ -3485,7 +3485,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      allProjectPointIDs: []
+      allProjectPointIDs: [],
+      projectPoints: []
     };
   },
   methods: {
@@ -3497,15 +3498,14 @@ __webpack_require__.r(__webpack_exports__);
         _this.allProjectPointIDs = response.data;
       })["catch"](function (e) {
         console.log(e);
-      }); //   window.axios
-      //     .get("http://127.0.0.1:8000/getProjectPoint/")
-      //     .then(response => {
-      //       console.log(response.data);
-      //       this.projectPoints.push(response.data);
-      //     })
-      //     .catch(e => {
-      //       console.log(e);
-      //     });
+      });
+      window.axios.get("http://127.0.0.1:8000/getProjectPoint/" + 'hoi').then(function (response) {
+        console.log(response.data);
+
+        _this.projectPoints.push(response.data);
+      })["catch"](function (e) {
+        console.log(e);
+      });
     }
   }
 });
@@ -112046,8 +112046,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Gijs\Documents\GitHub\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Gijs\Documents\GitHub\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Ruben\Documents\GitHub\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Ruben\Documents\GitHub\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -38,6 +38,7 @@ export default {
   data ()  {
       return {
         allProjectPointIDs: [],
+           projectPoints: [],
       }
   },
   methods: {
@@ -50,15 +51,16 @@ export default {
                 console.log(e);
             }); 
     
-    //   window.axios
-    //     .get("http://127.0.0.1:8000/getProjectPoint/")
-    //     .then(response => {
-    //       console.log(response.data);
-    //       this.projectPoints.push(response.data);
-    //     })
-    //     .catch(e => {
-    //       console.log(e);
-    //     });
+
+      window.axios
+        .get("http://127.0.0.1:8000/getProjectPoint/" + 'hoi')
+        .then(response => {
+          console.log(response.data);
+          this.projectPoints.push(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     }
   }
 };
