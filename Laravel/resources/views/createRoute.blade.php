@@ -42,6 +42,13 @@
         </div>
     @endforeach
     <button onclick="uploadPlacedMarkers()">Upload points</button>
+
+    <select id="selectedRoute">
+        @foreach($routes as $route)
+            <option value="{{ $route->id }}">{{ $route->name }}</option>
+        @endforeach
+    </select>
+    <button onclick="deleteRoute()">Delete route</button>
 </div>
 
 </body>

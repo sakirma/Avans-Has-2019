@@ -43,6 +43,7 @@ Route::get('/home', 'MainPageController@GetCatagories');
 Route::get('/admin/home', 'HomeController@index');
 Route::get('/admin/route', 'AdminRouteController@getDataPoints');
 Route::post('/admin/create', 'AdminRouteController@setDataPoints');
+Route::post('/admin/remove/route', 'AdminRouteController@removeRoute');
 
 Route::group(['prefix' => 'admin'], function () {
     Auth::routes();
