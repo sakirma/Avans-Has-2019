@@ -53,7 +53,7 @@ class AdminRouteController extends Controller
         if (count($latlngs) < 2) {
             return "Not enough markers to create a route!";
         }
-        //TODO check if route already exists
+        //TODO check if route has changed (has less markers) compaired to the current route in database
         $route = Route::where('name', $routeName)->first();
         $newRoute = null;
 
