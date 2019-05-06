@@ -29,8 +29,7 @@
                             <v-spacer></v-spacer>
 
                             <!--Leaflet map's z-index is 1000-->
-                            <!--TODO: Remove the events handler from searchbar. -->
-                            <v-flex style="z-index: 701" shrink pt-1>
+                            <v-flex style="z-index: 701" shrink pt-1 v-if="$vuetify.breakpoint.smAndUp">
                                 <v-text-field
                                         class="mx-3"
                                         solo
@@ -38,12 +37,31 @@
                                 ></v-text-field>
                             </v-flex>
                         </v-layout>
-                        <v-layout pb-3 align-end justify-start row>
-                            <v-btn style="z-index: 1001" fab @click="OpenRoutePagePressed">
-                                <v-icon color="blue">
-                                    near_me
-                                </v-icon>
-                            </v-btn>
+
+                        <v-layout align-end justify-start row>
+                            <v-flex xs12 md3 lg2>
+                                <v-btn style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" @click="OpenRoutePagePressed">
+                                    <v-layout column>
+                                        <v-flex class="white--text font-weight-bold">
+                                            ROUTES MAKEN
+                                        </v-flex>
+                                    </v-layout>
+                                </v-btn>
+                            </v-flex>
+
+                            <v-flex xs12 md3 lg2 v-if="$vuetify.breakpoint.xsOnly">
+                                <v-card style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
+                                    <v-layout column>
+                                        <v-flex class="white--text font-weight-bold">
+                                            <v-text-field
+                                                    class="mx-3"
+                                                    style="padding-top: 8px;"
+                                                    prepend-inner-icon="search"
+                                            ></v-text-field>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-card>
+                            </v-flex>
                         </v-layout>
                     </v-layout>
 
@@ -122,5 +140,10 @@
 </script>
 
 <style scoped>
-
+    .rounded-bottom-card {
+        margin: 0px 0px 0px 0px;
+        border-radius: 10px 10px 0px 0px;
+        height: 50px;
+        width: 100%;
+    }
 </style>

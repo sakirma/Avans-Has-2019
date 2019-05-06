@@ -1,6 +1,6 @@
 <template>
     <v-layout align-center justify-center row fill-height ml-3>
-        <v-flex class="hidden-sm-and-up">
+        <v-flex class="hidden-md-and-up">
             <v-btn @click="GoBackToMapPage">
                 Go back
             </v-btn>
