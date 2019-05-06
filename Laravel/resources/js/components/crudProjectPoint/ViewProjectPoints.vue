@@ -1,15 +1,16 @@
 <template>
     <v-layout align-start justify-sapce-between row fill-height  style="background-color: #89a226">
         <v-flex >
-                <v-btn   dark color="green" @click="OpenAddPressed" style="margin-left:1%"> Nieuw Project </v-btn>
-                <v-card v-for="p in projects" :key="projects.id" style="width:30%; height:100%; margin-left: 1%; margin-bottom: 1% ">
+            <h2>Project Points</h2>
+            <v-btn   dark color="green" @click="OpenAddPressed" style="margin-left:1%"> Nieuw Project </v-btn>
+            <v-card v-for="p in projects" :key="projects.id" style="width:30%; height:100%; margin-left: 1%; margin-bottom: 1% ">
                 <p class="text-sm-center">{{ p.name}}</p>
                 <p class="text-sm-center">{{ p.text}}</p>
                 <v-list>
                     <v-list-tile>
                         <v-list-tile-content >
                             <v-container align-center justify-center row fill-height >
-                                <v-btn @click="OpenEditPagePressed(p._id)">bewerken</v-btn>
+                                <v-btn @click="OpenEditPagePressed(p._id)">{{p._id}}</v-btn>
                                 <v-btn color="error" @click="deleteItem(p._id)">Wissen</v-btn>
                             </v-container>
                         </v-list-tile-content>
@@ -62,7 +63,7 @@
             },
         },
         mounted() {
-            window.axios.get('http://127.0.0.1:8000/getProjects').then(response => {
+            window.axios.get('http://127.0.0.1:8000/getProjectPoints').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
                     this.projects.push({name: temp[i].name,_id: temp[i].id , text: temp[i].information});
