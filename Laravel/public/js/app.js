@@ -1778,6 +1778,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -1796,7 +1797,8 @@ __webpack_require__.r(__webpack_exports__);
         isSelected: false,
         projectId: undefined
       },
-      selectedRoutePage: false
+      selectedRoutePage: false,
+      scrolledOnFirstPage: false
     };
   },
   methods: {
@@ -1808,16 +1810,25 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedRoutePage = false;
       var pageStates = this.$store.getters.pageStates;
       this.$store.commit('setPageState', pageStates.projectPage);
+
+      if (this.$refs.projectPage !== undefined) {
+        this.UpdateScreen();
+      }
     },
     OpenRoutePage: function OpenRoutePage() {
       this.selectedRoutePage = true;
       this.selectedProjectPage.isSelected = false;
       var pageStates = this.$store.getters.pageStates;
       this.$store.commit('setPageState', pageStates.routePage);
-      this.GoToSection('#routePage');
+
+      if (this.$refs.routePage !== undefined) {
+        this.UpdateScreen();
+      }
     },
     OpenMapPage: function OpenMapPage() {
-      this.GoToSection('#mapPage');
+      var pageStates = this.$store.getters.pageStates;
+      this.$store.commit('setPageState', pageStates.mapPage);
+      this.UpdateScreen();
     },
     UpdateScreen: function UpdateScreen() {
       var currentPageState = this.$store.getters.getCurrentPageState;
@@ -1849,10 +1860,18 @@ __webpack_require__.r(__webpack_exports__);
     disableInputEvents: function disableInputEvents(element) {
       L.DomEvent.disableClickPropagation(element.$el);
       L.DomEvent.disableScrollPropagation(element.$el);
+    },
+    ScrollOnWheelEvent: function ScrollOnWheelEvent(e) {
+      if (this.scrolledOnFirstPage === false && e.deltaY > 0) {
+        this.OpenMapPage();
+        document.removeEventListener("wheel", this.ScrollOnWheelEvent);
+        this.scrolledOnFirstPage = true;
+      }
     }
   },
   mounted: function mounted() {
     this.UpdateScreen();
+    document.addEventListener("wheel", this.ScrollOnWheelEvent);
   }
 });
 
@@ -1938,14 +1957,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "FirstPage",
+  data: function data() {
+    return {
+      ts: 0
+    };
+  },
   methods: {
     GoToMapPage: function GoToMapPage() {
-      this.$vuetify.goTo('#mapPage');
-      var pageStates = this.$store.getters.pageStates;
-      this.$store.commit('setPageState', pageStates.mapPage);
+      document.removeEventListener('touchmove', this.touchHandler);
+      document.removeEventListener('touchstart', this.touchStart);
+      this.$parent.OpenMapPage();
+    },
+    touchHandler: function touchHandler(e) {
+      var te = e.touches[0].clientY;
+
+      if (this.ts > te) {
+        if (this.ts - te > 60) {
+          this.GoToMapPage();
+        }
+      }
+    },
+    touchStart: function touchStart(e) {
+      this.ts = e.touches[0].clientY;
     }
+  },
+  mounted: function mounted() {
+    document.addEventListener('touchmove', this.touchHandler, false);
+    document.addEventListener('touchstart', this.touchStart, false);
   }
 });
 
@@ -1965,6 +2006,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _map_page_header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./map-page-header */ "./resources/js/components/map-page-header.vue");
 /* harmony import */ var _mapPageButton_DropDownButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mapPageButton/DropDownButton */ "./resources/js/components/mapPageButton/DropDownButton.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2149,6 +2208,59 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2187,6 +2299,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2519,7 +2636,7 @@ __webpack_require__.r(__webpack_exports__);
     this.$refs.eenElement.mapObject.on('click', function (e) {
       console.log(e.latlng);
     });
-    window.axios.get('http://127.0.0.1:8000/getCategories').then(function (response) {
+    window.axios.get('getCategories').then(function (response) {
       var temp = response.data;
 
       for (var i = 0; i < temp.length; i++) {
@@ -2764,6 +2881,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -3748,7 +3867,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var mainPageComponent = this.$parent.$parent.$parent;
     mainPageComponent.disableInputEvents(this);
-    this.selectedPoints = [['wow', 1, 'lat', 'lng'], ['lol', 2, 'lat', 'lng'], ['hehd', 3, 'lat', 'lng'], ['hsasd', 4, 'lat', 'lng'], ['fuak', 5, 'lat', 'lng']];
+    this.selectedPoints = [['wow', 1, 'lat', 'lng'], ['lol', 2, 'lat', 'lng'], ['hehd', 3, 'lat', 'lng'], ['hsasd', 4, 'lat', 'lng'], ['fuak', 5, 'lat', 'lng'], ['fuak', 6, 'lat', 'lng'], ['wow', 7, 'lat', 'lng'], ['lol', 8, 'lat', 'lng'], ['hehd', 9, 'lat', 'lng'], ['hsasd', 10, 'lat', 'lng'], ['fuak', 11, 'lat', 'lng'], ['fuak', 12, 'lat', 'lng']];
   },
   computed: {
     dragOptions: function dragOptions() {
@@ -3773,6 +3892,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -8327,7 +8447,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, "\n.vb > .vb-dragger {\n    z-index: 5;\n    width: 12px;\n    right: 0;\n}\n.vb > .vb-dragger > .vb-dragger-styler {\n    -webkit-backface-visibility: hidden;\n    backface-visibility: hidden;\n    -webkit-transform: rotate3d(0,0,0,0);\n    transform: rotate3d(0,0,0,0);\n    transition:\n            background-color 100ms ease-out,\n            margin 100ms ease-out,\n            height 100ms ease-out;\n    background-color: rgba(64, 64, 64, 0.64);\n    margin: 5px 5px 5px 0;\n    border-radius: 10px;\n    height: calc(100% - 10px);\n    display: block;\n}\n.vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n}\n.vb > .vb-dragger:hover > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n    height: 100%;\n}\n.vb.vb-dragging > .vb-dragger > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n    height: 100%;\n}\n.vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n}\n", ""]);
+exports.push([module.i, "\n.vb > .vb-dragger {\n    z-index: 5;\n    width: 12px;\n    right: 0;\n}\n.vb > .vb-dragger > .vb-dragger-styler {\n    -webkit-backface-visibility: hidden;\n    backface-visibility: hidden;\n    -webkit-transform: rotate3d(0, 0, 0, 0);\n    transform: rotate3d(0, 0, 0, 0);\n    transition: background-color 100ms ease-out,\n    margin 100ms ease-out,\n    height 100ms ease-out;\n    background-color: rgba(64, 64, 64, 0.64);\n    margin: 5px 5px 5px 0;\n    border-radius: 10px;\n    height: calc(100% - 10px);\n    display: block;\n}\n.vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n}\n.vb > .vb-dragger:hover > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n    height: 100%;\n}\n.vb.vb-dragging > .vb-dragger > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n    height: 100%;\n}\n.vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n}\n", ""]);
 
 // exports
 
@@ -8347,6 +8467,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, "\n.first-page-title[data-v-628e97f8] {\n    font-family: \"Market Deco\", Market_Deco !important;\n    font-weight: bold !important;\n}\n.first-page-text[data-v-628e97f8] {\n    font-family: \"FlorenceRegular\", FlorenceRegular !important;\n    font-weight: bold !important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MapPage.vue?vue&type=style&index=0&id=3c92cc20&scoped=true&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MapPage.vue?vue&type=style&index=0&id=3c92cc20&scoped=true&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.rounded-bottom-card[data-v-3c92cc20] {\n    margin: 0px 0px 0px 0px;\n    border-radius: 10px 10px 0px 0px;\n    height: 50px;\n    width: 100%;\n}\n", ""]);
 
 // exports
 
@@ -8441,7 +8580,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.rounded-bottom-card {\n    margin: 0px 0px 0px 0px;\n    border-radius: 0px 0px 10px 10px;\n    height: 50px;\n    width: 100%;\n}\n.map-page-themes-list {\n    border-radius: 0px 0px 10px 10px;\n    position: relative;\n    top: -10px;\n}\n.removeScrollBar::-webkit-scrollbar {\n    display: none;\n}\n.vb-dragger {\n}\n.removeScrollBar {\n    scrollbar-width: none;\n}\n", ""]);
+exports.push([module.i, "\n.rounded-bottom-card {\n    margin: 0px 0px 0px 0px;\n    border-radius: 0px 0px 10px 10px;\n    height: 50px;\n    width: 100%;\n}\n.map-page-themes-list {\n    border-radius: 0px 0px 10px 10px;\n    position: relative;\n    top: -10px;\n}\n.removeScrollBar::-webkit-scrollbar {\n    display: none;\n}\n.vb-dragger {\n}\n.removeScrollBar {\n    scrollbar-width: none;\n}\n#arrow_down { /* Safari */\n    transition: -webkit-transform 0.2s;\n    transition: transform 0.2s;\n    transition: transform 0.2s, -webkit-transform 0.2s;\n}\n#arrow_down.rotateArrow {\n    -webkit-transform: rotate(180deg); /* Safari */\n    transform: rotate(180deg);\n}\n", ""]);
 
 // exports
 
@@ -8536,7 +8675,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.first-page-title[data-v-14c31d35] {\n    font-family: \"Market Deco\", Market_Deco !important;\n    font-weight: bold !important;\n}\n.first-page-text[data-v-14c31d35] {\n    font-family: \"FlorenceRegular\", FlorenceRegular !important;\n    font-weight: bold !important;\n}\n", ""]);
+exports.push([module.i, "\n.first-page-title[data-v-14c31d35] {\n    font-family: \"Market Deco\", Market_Deco !important;\n    font-weight: bold !important;\n}\n.first-page-text[data-v-14c31d35] {\n    font-family: \"FlorenceRegular\", FlorenceRegular !important;\n    font-weight: bold !important;\n}\n.createOwnRouteTitle[data-v-14c31d35] {\n    font-size: 14px!important;\n    line-height: 16px !important;\n}\n", ""]);
 
 // exports
 
@@ -55984,6 +56123,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MapPage.vue?vue&type=style&index=0&id=3c92cc20&scoped=true&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MapPage.vue?vue&type=style&index=0&id=3c92cc20&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./MapPage.vue?vue&type=style&index=0&id=3c92cc20&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MapPage.vue?vue&type=style&index=0&id=3c92cc20&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/crudProject/AddProject.vue?vue&type=style&index=0&id=d7eb3412&scoped=true&lang=css&":
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/crudProject/AddProject.vue?vue&type=style&index=0&id=d7eb3412&scoped=true&lang=css& ***!
@@ -56937,10 +57106,13 @@ var render = function() {
       }),
       _vm._v(" "),
       _vm.selectedProjectPage.isSelected === true
-        ? _c("project-page", { attrs: { id: "projectPage" } })
+        ? _c("project-page", {
+            ref: "projectPage",
+            attrs: { id: "projectPage" }
+          })
         : _vm.selectedRoutePage === true
-        ? _c("RoutePage", { attrs: { id: "routePage" } })
-        : _vm._e()
+        ? _c("RoutePage", { ref: "routePage", attrs: { id: "routePage" } })
+        : _c("div")
     ],
     1
   )
@@ -57093,7 +57265,13 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-flex",
-                            { attrs: { shrink: "", "pa-3": "" } },
+                            {
+                              class: {
+                                "mb-5": _vm.$vuetify.breakpoint.smAndDown,
+                                "ma-0": _vm.$vuetify.breakpoint.mdAndUp
+                              },
+                              attrs: { shrink: "", "pa-3": "" }
+                            },
                             [
                               _c(
                                 "v-btn",
@@ -57253,23 +57431,25 @@ var render = function() {
                           _vm._v(" "),
                           _c("v-spacer"),
                           _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            {
-                              staticStyle: { "z-index": "701" },
-                              attrs: { shrink: "", "pt-1": "" }
-                            },
-                            [
-                              _c("v-text-field", {
-                                staticClass: "mx-3",
-                                attrs: {
-                                  solo: "",
-                                  "prepend-inner-icon": "search"
-                                }
-                              })
-                            ],
-                            1
-                          )
+                          _vm.$vuetify.breakpoint.smAndUp
+                            ? _c(
+                                "v-flex",
+                                {
+                                  staticStyle: { "z-index": "701" },
+                                  attrs: { shrink: "", "pt-1": "" }
+                                },
+                                [
+                                  _c("v-text-field", {
+                                    staticClass: "mx-3",
+                                    attrs: {
+                                      solo: "",
+                                      "prepend-inner-icon": "search"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            : _vm._e()
                         ],
                         1
                       ),
@@ -57278,7 +57458,6 @@ var render = function() {
                         "v-layout",
                         {
                           attrs: {
-                            "pb-3": "",
                             "align-end": "",
                             "justify-start": "",
                             row: ""
@@ -57286,21 +57465,90 @@ var render = function() {
                         },
                         [
                           _c(
-                            "v-btn",
-                            {
-                              staticStyle: { "z-index": "1001" },
-                              attrs: { fab: "" },
-                              on: { click: _vm.OpenRoutePagePressed }
-                            },
+                            "v-flex",
+                            { attrs: { xs12: "", md3: "", lg2: "" } },
                             [
-                              _c("v-icon", { attrs: { color: "blue" } }, [
-                                _vm._v(
-                                  "\n                                near_me\n                            "
-                                )
-                              ])
+                              _c(
+                                "v-btn",
+                                {
+                                  staticClass: "rounded-bottom-card",
+                                  staticStyle: { "z-index": "1005" },
+                                  attrs: { color: "rgb(160, 181, 80, 1)" },
+                                  on: { click: _vm.OpenRoutePagePressed }
+                                },
+                                [
+                                  _c(
+                                    "v-layout",
+                                    { attrs: { column: "" } },
+                                    [
+                                      _c(
+                                        "v-flex",
+                                        {
+                                          staticClass:
+                                            "white--text font-weight-bold"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                        ROUTES MAKEN\n                                    "
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
                             ],
                             1
-                          )
+                          ),
+                          _vm._v(" "),
+                          _vm.$vuetify.breakpoint.xsOnly
+                            ? _c(
+                                "v-flex",
+                                { attrs: { xs12: "", md3: "", lg2: "" } },
+                                [
+                                  _c(
+                                    "v-card",
+                                    {
+                                      staticClass: "rounded-bottom-card",
+                                      staticStyle: { "z-index": "1005" },
+                                      attrs: { color: "rgb(160, 181, 80, 1)" }
+                                    },
+                                    [
+                                      _c(
+                                        "v-layout",
+                                        { attrs: { column: "" } },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              staticClass:
+                                                "white--text font-weight-bold"
+                                            },
+                                            [
+                                              _c("v-text-field", {
+                                                staticClass: "mx-3",
+                                                staticStyle: {
+                                                  "padding-top": "8px"
+                                                },
+                                                attrs: {
+                                                  "prepend-inner-icon": "search"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e()
                         ],
                         1
                       )
@@ -57401,16 +57649,196 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c(
-            "v-container",
-            {
-              staticStyle: { "background-color": "white" },
-              attrs: { "ml-0": "", "pl-0": "", fluid: "", "grid-list-md": "" }
-            },
-            [
-              _c(
-                "v-layout",
-                { attrs: { row: "", "fill-height": "" } },
+          !_vm.$vuetify.breakpoint.xsOnly
+            ? _c(
+                "v-container",
+                {
+                  staticStyle: { "background-color": "white" },
+                  attrs: {
+                    "ml-0": "",
+                    "pl-0": "",
+                    fluid: "",
+                    "grid-list-md": ""
+                  }
+                },
+                [
+                  _c(
+                    "v-layout",
+                    { attrs: { row: "", "fill-height": "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { column: "", "fill-height": "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            {
+                              style: [
+                                _vm.$vuetify.breakpoint.mdAndDown
+                                  ? { width: "100%" }
+                                  : { width: "75%" }
+                              ],
+                              attrs: { "d-flex": "" }
+                            },
+                            [
+                              _c(
+                                "v-card",
+                                {
+                                  directives: [
+                                    { name: "bar", rawName: "v-bar" }
+                                  ],
+                                  staticStyle: {
+                                    "background-color": "#A0B550",
+                                    position: "relative",
+                                    "overflow-y": "hidden"
+                                  },
+                                  attrs: { flat: "" }
+                                },
+                                [
+                                  _c(
+                                    "v-card-text",
+                                    { staticStyle: { position: "absolute" } },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(_vm.Wows) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            {
+                              style: [
+                                _vm.$vuetify.breakpoint.mdAndDown
+                                  ? { width: "100%" }
+                                  : { width: "75%" }
+                              ],
+                              attrs: { "d-flex": "", "align-self-end": "" }
+                            },
+                            [
+                              _c(
+                                "v-card",
+                                {
+                                  directives: [
+                                    { name: "bar", rawName: "v-bar" }
+                                  ],
+                                  staticClass: "primary",
+                                  staticStyle: {
+                                    position: "relative",
+                                    "overflow-y": "hidden"
+                                  },
+                                  attrs: { flat: "" }
+                                },
+                                [
+                                  _c(
+                                    "v-card-text",
+                                    { staticStyle: { position: "absolute" } },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(_vm.Wows) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        { attrs: { lg4: "" } },
+                        [
+                          _c(
+                            "v-card",
+                            { attrs: { height: "100%" } },
+                            [
+                              _c(
+                                "l-map",
+                                {
+                                  ref: "map",
+                                  staticStyle: { height: "100%" },
+                                  attrs: { zoom: _vm.zoom, center: _vm.center }
+                                },
+                                [
+                                  _c("l-tile-layer", {
+                                    attrs: {
+                                      url: _vm.url,
+                                      attribution: _vm.attribution
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.markers, function(marker, index) {
+                                    return [
+                                      _c(
+                                        "l-marker",
+                                        { attrs: { "lat-lng": marker } },
+                                        [
+                                          _c(
+                                            "l-popup",
+                                            [
+                                              _c(
+                                                "v-btn",
+                                                {
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.OpenProjectPagePressed(
+                                                        1
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [_vm._v(" To Project Page")]
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ]
+                                  })
+                                ],
+                                2
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            : _c(
+                "v-container",
+                {
+                  staticStyle: { "background-color": "white" },
+                  attrs: {
+                    "ma-0": "",
+                    "pa-0": "",
+                    "pt-1": "",
+                    fluid: "",
+                    "grid-list-md": ""
+                  }
+                },
                 [
                   _c(
                     "v-layout",
@@ -57419,7 +57847,11 @@ var render = function() {
                       _c(
                         "v-flex",
                         {
-                          staticStyle: { width: "75%" },
+                          style: [
+                            _vm.$vuetify.breakpoint.mdAndDown
+                              ? { width: "100%" }
+                              : { width: "75%" }
+                          ],
                           attrs: { "d-flex": "" }
                         },
                         [
@@ -57430,7 +57862,7 @@ var render = function() {
                               staticStyle: {
                                 "background-color": "#A0B550",
                                 position: "relative",
-                                "overflow-y": "auto"
+                                "overflow-y": "hidden"
                               },
                               attrs: { flat: "" }
                             },
@@ -57440,9 +57872,9 @@ var render = function() {
                                 { staticStyle: { position: "absolute" } },
                                 [
                                   _vm._v(
-                                    "\n                                " +
+                                    "\n                            " +
                                       _vm._s(_vm.Wows) +
-                                      "\n                            "
+                                      "\n                        "
                                   )
                                 ]
                               )
@@ -57456,7 +57888,11 @@ var render = function() {
                       _c(
                         "v-flex",
                         {
-                          staticStyle: { width: "75%" },
+                          style: [
+                            _vm.$vuetify.breakpoint.mdAndDown
+                              ? { width: "100%" }
+                              : { width: "75%" }
+                          ],
                           attrs: { "d-flex": "", "align-self-end": "" }
                         },
                         [
@@ -57467,7 +57903,7 @@ var render = function() {
                               staticClass: "primary",
                               staticStyle: {
                                 position: "relative",
-                                "overflow-y": "auto"
+                                "overflow-y": "hidden"
                               },
                               attrs: { flat: "" }
                             },
@@ -57477,11 +57913,74 @@ var render = function() {
                                 { staticStyle: { position: "absolute" } },
                                 [
                                   _vm._v(
-                                    "\n                                " +
+                                    "\n                            " +
                                       _vm._s(_vm.Wows) +
-                                      "\n                            "
+                                      "\n                        "
                                   )
                                 ]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        { attrs: { lg4: "" } },
+                        [
+                          _c(
+                            "v-card",
+                            { attrs: { height: "100%" } },
+                            [
+                              _c(
+                                "l-map",
+                                {
+                                  ref: "map",
+                                  staticStyle: { height: "100%" },
+                                  attrs: { zoom: _vm.zoom, center: _vm.center }
+                                },
+                                [
+                                  _c("l-tile-layer", {
+                                    attrs: {
+                                      url: _vm.url,
+                                      attribution: _vm.attribution
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.markers, function(marker, index) {
+                                    return [
+                                      _c(
+                                        "l-marker",
+                                        { attrs: { "lat-lng": marker } },
+                                        [
+                                          _c(
+                                            "l-popup",
+                                            [
+                                              _c(
+                                                "v-btn",
+                                                {
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.OpenProjectPagePressed(
+                                                        1
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [_vm._v(" To Project Page")]
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ]
+                                  })
+                                ],
+                                2
                               )
                             ],
                             1
@@ -57491,73 +57990,18 @@ var render = function() {
                       )
                     ],
                     1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { lg4: "" } },
-                    [
-                      _c(
-                        "v-card",
-                        { attrs: { height: "100%" } },
-                        [
-                          _c(
-                            "l-map",
-                            {
-                              ref: "map",
-                              staticStyle: { height: "100%" },
-                              attrs: { zoom: _vm.zoom, center: _vm.center }
-                            },
-                            [
-                              _c("l-tile-layer", {
-                                attrs: {
-                                  url: _vm.url,
-                                  attribution: _vm.attribution
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm._l(_vm.markers, function(marker, index) {
-                                return [
-                                  _c(
-                                    "l-marker",
-                                    { attrs: { "lat-lng": marker } },
-                                    [
-                                      _c(
-                                        "l-popup",
-                                        [
-                                          _c(
-                                            "v-btn",
-                                            {
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.OpenProjectPagePressed(
-                                                    1
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v(" To Project Page")]
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ]
-                              })
-                            ],
-                            2
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
                   )
                 ],
                 1
-              )
+              ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { attrs: { xs1: "" } },
+            [
+              _c("v-card", {
+                attrs: { height: "100%", color: "rgb(137, 162, 38, 1)" }
+              })
             ],
             1
           )
@@ -57602,6 +58046,17 @@ var render = function() {
       }
     },
     [
+      _c(
+        "v-flex",
+        { staticClass: "hidden-md-and-up" },
+        [
+          _c("v-btn", { on: { click: _vm.GoBackToMapPage } }, [
+            _vm._v("\n            Go back\n        ")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c(
         "v-flex",
         {
@@ -58422,12 +58877,24 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c(
-                "v-icon",
-                {
-                  staticStyle: { height: "10px" },
-                  attrs: { large: "", color: "white" }
-                },
-                [_vm._v("\n                expand_more\n            ")]
+                "transition",
+                { attrs: { name: "fade" } },
+                [
+                  _c(
+                    "v-icon",
+                    {
+                      class: { rotateArrow: _vm.expand },
+                      staticStyle: { height: "10px" },
+                      attrs: { id: "arrow_down", large: "", color: "white" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                    expand_more\n                "
+                      )
+                    ]
+                  )
+                ],
+                1
               )
             ],
             1
@@ -59738,45 +60205,53 @@ var render = function() {
       _c(
         "v-card",
         {
+          directives: [{ name: "bar", rawName: "v-bar" }],
           staticStyle: { "min-height": "250px" },
           attrs: { flat: "", color: "#D9DECD" }
         },
         [
           _c(
-            "draggable",
-            _vm._b(
-              {
-                attrs: { tag: "ul" },
-                on: {
-                  start: function($event) {
-                    _vm.drag = true
-                  },
-                  end: function($event) {
-                    _vm.drag = false
-                  }
-                },
-                model: {
-                  value: _vm.selectedPoints,
-                  callback: function($$v) {
-                    _vm.selectedPoints = $$v
-                  },
-                  expression: "selectedPoints"
-                }
-              },
-              "draggable",
-              _vm.dragOptions,
-              false
-            ),
+            "v-responsive",
+            { attrs: { "max-height": "250px" } },
             [
               _c(
-                "transition-group",
-                { attrs: { type: "transition" } },
-                _vm._l(_vm.selectedPoints, function(item) {
-                  return _c("selected-list-route", {
-                    key: item[1],
-                    attrs: { projectName: item[0] }
-                  })
-                }),
+                "draggable",
+                _vm._b(
+                  {
+                    attrs: { tag: "ul" },
+                    on: {
+                      start: function($event) {
+                        _vm.drag = true
+                      },
+                      end: function($event) {
+                        _vm.drag = false
+                      }
+                    },
+                    model: {
+                      value: _vm.selectedPoints,
+                      callback: function($$v) {
+                        _vm.selectedPoints = $$v
+                      },
+                      expression: "selectedPoints"
+                    }
+                  },
+                  "draggable",
+                  _vm.dragOptions,
+                  false
+                ),
+                [
+                  _c(
+                    "transition-group",
+                    { attrs: { type: "transition" } },
+                    _vm._l(_vm.selectedPoints, function(item) {
+                      return _c("selected-list-route", {
+                        key: item[1],
+                        attrs: { projectName: item[0] }
+                      })
+                    }),
+                    1
+                  )
+                ],
                 1
               )
             ],
@@ -59839,6 +60314,7 @@ var render = function() {
             {
               staticClass:
                 "white--text text-xs-center display-2 font-weight-black first-page-title",
+              class: { createOwnRouteTitle: _vm.$vuetify.breakpoint.xsOnly },
               attrs: { flat: "", color: "transparent" }
             },
             [_vm._v("\n            MAAK JE EIGEN ROUTE!\n        ")]
@@ -93621,7 +94097,7 @@ var __assign = undefined && undefined.__assign || function () {
             tag = _a.tag,
             data = _a.data;
         data.attrs = Object.assign({}, data.attrs, this.$attrs);
-        return h('div', this.setTextColor(!this.disabled && this.isActive && this.color, {
+        return h('div', this.setTextColor(!this.disabled && this.color, {
             class: this.listClasses,
             attrs: {
                 disabled: this.disabled,
@@ -97380,8 +97856,7 @@ var __values = undefined && undefined.__values || function (o) {
                     avatar: avatar,
                     disabled: disabled,
                     ripple: true,
-                    value: value,
-                    color: this.color
+                    value: value
                 }
             };
             if (!this.$scopedSlots.item) {
@@ -103725,7 +104200,7 @@ var Vuetify = {
             return false;
         })(opts.components);
     },
-    version: '1.5.14'
+    version: '1.5.13'
 };
 function checkVueVersion(Vue, requiredVue) {
     var vueDep = requiredVue || '^2.5.18';
@@ -105411,7 +105886,7 @@ var Vuetify = {
         Vue.use(_components_Vuetify__WEBPACK_IMPORTED_MODULE_1__["default"], __assign({ components: _components__WEBPACK_IMPORTED_MODULE_2__,
             directives: _directives__WEBPACK_IMPORTED_MODULE_3__["default"] }, args));
     },
-    version: '1.5.14'
+    version: '1.5.13'
 };
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(Vuetify);
@@ -111715,6 +112190,7 @@ try {
 
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+window.axios.defaults.baseURL = "http://127.0.0.1:8000/";
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -111912,7 +112388,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MapPage_vue_vue_type_template_id_3c92cc20_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MapPage.vue?vue&type=template&id=3c92cc20&scoped=true& */ "./resources/js/components/MapPage.vue?vue&type=template&id=3c92cc20&scoped=true&");
 /* harmony import */ var _MapPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MapPage.vue?vue&type=script&lang=js& */ "./resources/js/components/MapPage.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _MapPage_vue_vue_type_style_index_0_id_3c92cc20_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MapPage.vue?vue&type=style&index=0&id=3c92cc20&scoped=true&lang=css& */ "./resources/js/components/MapPage.vue?vue&type=style&index=0&id=3c92cc20&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -111920,7 +112398,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _MapPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _MapPage_vue_vue_type_template_id_3c92cc20_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
   _MapPage_vue_vue_type_template_id_3c92cc20_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -111949,6 +112427,22 @@ component.options.__file = "resources/js/components/MapPage.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MapPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./MapPage.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MapPage.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MapPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/MapPage.vue?vue&type=style&index=0&id=3c92cc20&scoped=true&lang=css&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/MapPage.vue?vue&type=style&index=0&id=3c92cc20&scoped=true&lang=css& ***!
+  \******************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_MapPage_vue_vue_type_style_index_0_id_3c92cc20_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./MapPage.vue?vue&type=style&index=0&id=3c92cc20&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MapPage.vue?vue&type=style&index=0&id=3c92cc20&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_MapPage_vue_vue_type_style_index_0_id_3c92cc20_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_MapPage_vue_vue_type_style_index_0_id_3c92cc20_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_MapPage_vue_vue_type_style_index_0_id_3c92cc20_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_MapPage_vue_vue_type_style_index_0_id_3c92cc20_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_MapPage_vue_vue_type_style_index_0_id_3c92cc20_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -113267,8 +113761,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\PHPProjects\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\PHPProjects\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
