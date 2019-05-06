@@ -6,7 +6,8 @@
             </v-btn>
         </v-flex>
         <v-flex fill-height xs5 py-4 style="background-color: #89a226">
-            <v-card style="" flat color="transparent" class="white--text text-xs-center display-2 font-weight-black first-page-title">
+            <v-card style="" flat color="transparent" class="white--text text-xs-center display-2 font-weight-black first-page-title"
+                    :class="{'createOwnRouteTitle': $vuetify.breakpoint.xsOnly}">
                 MAAK JE EIGEN ROUTE!
             </v-card>
         </v-flex>
@@ -33,5 +34,10 @@
     .first-page-text {
         font-family: "FlorenceRegular", FlorenceRegular !important;
         font-weight: bold !important;
+    }
+
+    .createOwnRouteTitle {
+        font-size: 14px!important;
+        line-height: 16px !important;
     }
 </style>
