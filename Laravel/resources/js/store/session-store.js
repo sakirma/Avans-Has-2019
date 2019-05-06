@@ -8,7 +8,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        pageState: {"startPage": 1, "mapPage": 2, "projectPage": 3,},
+        pageState: {"startPage": 1, "mapPage": 2, "projectPage": 3, "routePage": 4},
         currentPageState: 1, //StartPage
     },
     getters: {

@@ -15,10 +15,6 @@ Route::get('details/{id}', "ProjectPointsController@getDetails");
 
 Route::post('/location', "ProjectPointsController@getLocationData");
 
-Route::get('/leaflet', function(){
-    return view('leafletExample');
-});
-
 Route::get('/about', function(){
     return view('about');
 });
@@ -27,19 +23,12 @@ Route::get('/project', function(){
     return view('project');
 });
 
-Route::get('details', function() {
-    abort(404);
-});
-
 Route::get('routelist', "RoutesController@index");
-
-Route::post('AddProject', "ProjectController@SetPointLocation");
-Route::post('GetProjectWithinDistance', "ProjectController@GetProjectLocations");
+Route::post('GetProjectWithinDistance', "ProjectController@getProjectWithinDistance");
 
 Route::get('/project/info/{id}', "ProjectController@index")->name("project.info");
 Route::post('/project/info/{id}', "ProjectController@facetInfo")->name("project.info.facet");
 
-Route::get('/home', 'MainPageController@GetCatagories');
 Route::get('/admin/home', 'HomeController@index');
 
 Route::get('/admin/route', 'AdminRouteController@getRouteData');
@@ -56,4 +45,27 @@ Route::post('/media', "MediaController@saveMedia")->name('media.save');
 
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
-Route::get('details/{id}', "ProjectPointsController@GetDetails");
+// Crud
+Route::get('/beheer/projecten', 'ProjectController@main')->middleware('auth');
+Route::get('/beheer/project/aanmaken', 'ProjectController@create')->middleware('auth');
+
+Route::post('beheer/AddProject', 'ProjectController@addProject')->middleware('auth');
+Route::post('beheer/updateProject', 'ProjectController@update')->middleware('auth');
+Route::post('beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
+Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
+
+
+Route::get('beheer/projectpoints/', 'ProjectPointsController@index');
+
+// Return only data
+Route::get('/getCategories', 'MainPageController@getCatagories');
+Route::get('/getProjects', 'ProjectController@getProjects');
+
+// Unnecessary : Could be deleted
+Route::get('details', function() {
+    abort(404);
+});
+
+Route::get('/leaflet', function(){
+    return view('leafletExample');
+});
