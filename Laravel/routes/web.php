@@ -40,7 +40,7 @@ Route::post('/media', "MediaController@saveMedia")->name('media.save');
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
 // Crud
-Route::get('/beheer', 'ProjectController@main');
+Route::get('/beheer/projecten', 'ProjectController@main');
 Route::get('/beheer/project/aanmaken', 'ProjectController@create');
 
 Route::post('beheer/AddProject', 'ProjectController@addProject');
@@ -48,6 +48,8 @@ Route::post('beheer/updateProject', 'ProjectController@update');
 Route::post('beheer/DeleteProject', 'ProjectController@destroy');
 Route::get('/beheer/edit/{id}','ProjectController@edit');
 
+
+Route::get('beheer/projectpoints/', 'ProjectPointsController@index');
 
 // Return only data
 Route::get('/getCategories', 'MainPageController@getCatagories');
