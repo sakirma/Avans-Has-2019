@@ -40,6 +40,7 @@ function mouseRemoveMarker(e) {
         }
     }
     routingControl.setWaypoints(newRoutes);
+    resetCheckbox(e.layer.options.id);
 }
 
 function uploadPlacedMarkers(){
@@ -116,7 +117,7 @@ function removeMarker(latling, id){
     }
     //Update routing machine
     for (let i = 0; i < routes.length; i++) {
-        if((!routes[i].latLng.equals(latling)) && (routes[i].latLng !== null)) {
+        if((routes[i].latLng !== null) && (!routes[i].latLng.equals(latling))){
             newRoutes.push(L.routing.waypoint(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng), routes[i].name, routes[i].name));
         }
     }
@@ -131,6 +132,13 @@ function onCheckbox(location, id){
 
     if(checkbox) { placeMarker(latlng, id); }
     else { removeMarker(latlng, id); }
+}
+
+function resetCheckbox(id){
+    let checkbox = document.getElementById('button-'+id);
+    if ( checkbox === null ) return;
+
+    checkbox.checked = false;
 }
 
 function updateMarkersToRoute(e) {

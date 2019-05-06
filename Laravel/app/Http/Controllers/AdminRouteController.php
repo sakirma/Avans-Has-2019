@@ -11,7 +11,6 @@ use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
 
 
-//TODO (bug) getDatapoints only gets one spatial point ?
 class AdminRouteController extends Controller
 {
     function getRouteData()
@@ -43,8 +42,7 @@ class AdminRouteController extends Controller
         }
     }
 
-    function createRoute(Request $request)
-    {
+    function createRoute(Request $request){
 
         $ids = $request->ids;
         $latlngs = $request->latlngs;
@@ -56,20 +54,41 @@ class AdminRouteController extends Controller
             return "Not enough markers to create a route!";
         }
         //TODO check if route already exists
-        $route = new Route();
-        $route->name = $routeName;
-        $route->length = round($distance / 1000, 2);
-        $route->save();
-
         $route = Route::where('name', $routeName)->first();
+        $newRoute = null;
+
+        if($route === null){
+
+            $newRoute = new Route();
+
+            $newRoute->name = $routeName;
+            $newRoute->length = round($distance / 1000, 2);
+            $newRoute->save();
+
+            $route = Route::where('name', $routeName)->first();
+        } else {
+            $route->length = round($distance / 1000, 2);
+            $route->save();
+        }
+
         var_dump($route);
 
         for ($i = 0; $i < count($ids); $i++) {
-            $routepoints = new RouteHasProjectPoint();
-            $routepoints->project_point_id = $ids[$i];
-            $routepoints->route_id = $route->id;
-            $routepoints->save();
+
+            $routepoints = RouteHasProjectPoint::where('project_point_id', $ids[$i])
+                ->where('route_id', $route->id)
+                ->first();
+
+            if($routepoints === null) {
+
+                $routepoints = new RouteHasProjectPoint();
+
+                $routepoints->project_point_id = $ids[$i];
+                $routepoints->route_id = $route->id;
+                $routepoints->save();
+            }
         }
+        return 'Route added to database!';
     }
 
     function removeRoute(Request $request)
