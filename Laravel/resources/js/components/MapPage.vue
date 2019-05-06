@@ -29,8 +29,7 @@
                             <v-spacer></v-spacer>
 
                             <!--Leaflet map's z-index is 1000-->
-                            <!--TODO: Remove the events handler from searchbar. -->
-                            <v-flex style="z-index: 701" shrink pt-1>
+                            <v-flex style="z-index: 701" shrink pt-1 v-if="$vuetify.breakpoint.smAndUp">
                                 <v-text-field
                                         class="mx-3"
                                         solo
@@ -50,7 +49,7 @@
                                 </v-btn>
                             </v-flex>
 
-                            <v-flex xs12 md3 lg2>
+                            <v-flex xs12 md3 lg2 v-if="$vuetify.breakpoint.xsOnly">
                                 <v-card style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
                                     <v-layout column>
                                         <v-flex class="white--text font-weight-bold">
