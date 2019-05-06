@@ -1778,6 +1778,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -1796,7 +1797,8 @@ __webpack_require__.r(__webpack_exports__);
         isSelected: false,
         projectId: undefined
       },
-      selectedRoutePage: false
+      selectedRoutePage: false,
+      scrolledOnFirstPage: false
     };
   },
   methods: {
@@ -1808,16 +1810,25 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedRoutePage = false;
       var pageStates = this.$store.getters.pageStates;
       this.$store.commit('setPageState', pageStates.projectPage);
+
+      if (this.$refs.projectPage !== undefined) {
+        this.UpdateScreen();
+      }
     },
     OpenRoutePage: function OpenRoutePage() {
       this.selectedRoutePage = true;
       this.selectedProjectPage.isSelected = false;
       var pageStates = this.$store.getters.pageStates;
       this.$store.commit('setPageState', pageStates.routePage);
-      this.GoToSection('#routePage');
+
+      if (this.$refs.routePage !== undefined) {
+        this.UpdateScreen();
+      }
     },
     OpenMapPage: function OpenMapPage() {
-      this.GoToSection('#mapPage');
+      var pageStates = this.$store.getters.pageStates;
+      this.$store.commit('setPageState', pageStates.mapPage);
+      this.UpdateScreen();
     },
     UpdateScreen: function UpdateScreen() {
       var currentPageState = this.$store.getters.getCurrentPageState;
@@ -1849,10 +1860,18 @@ __webpack_require__.r(__webpack_exports__);
     disableInputEvents: function disableInputEvents(element) {
       L.DomEvent.disableClickPropagation(element.$el);
       L.DomEvent.disableScrollPropagation(element.$el);
+    },
+    ScrollOnWheelEvent: function ScrollOnWheelEvent(e) {
+      if (this.scrolledOnFirstPage === false && e.deltaY > 0) {
+        this.OpenMapPage();
+        document.removeEventListener("wheel", this.ScrollOnWheelEvent);
+        this.scrolledOnFirstPage = true;
+      }
     }
   },
   mounted: function mounted() {
     this.UpdateScreen();
+    document.addEventListener("wheel", this.ScrollOnWheelEvent);
   }
 });
 
@@ -1942,9 +1961,7 @@ __webpack_require__.r(__webpack_exports__);
   name: "FirstPage",
   methods: {
     GoToMapPage: function GoToMapPage() {
-      this.$vuetify.goTo('#mapPage');
-      var pageStates = this.$store.getters.pageStates;
-      this.$store.commit('setPageState', pageStates.mapPage);
+      this.$parent.OpenMapPage();
     }
   }
 });
@@ -2187,6 +2204,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2688,6 +2710,98 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     window.axios.get('http://127.0.0.1:8000/getProjects').then(function (response) {
+      var temp = response.data;
+
+      for (var i = 0; i < temp.length; i++) {
+        _this.projects.push({
+          name: temp[i].name,
+          _id: temp[i].id,
+          text: temp[i].information
+        });
+      }
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/crudProjectPoint/ViewProjectPoints.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/crudProjectPoint/ViewProjectPoints.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "ViewProjects",
+  props: {
+    onAddOpened: {
+      type: Function
+    },
+    onEditPageOpened: {
+      type: Function
+    }
+  },
+  data: function data() {
+    return {
+      selectedEditPage: {
+        isSelected: false,
+        projectId: undefined
+      },
+      projects: []
+    };
+  },
+  methods: {
+    OpenEditPagePressed: function OpenEditPagePressed(projectId) {
+      this.onEditPageOpened(projectId);
+    },
+    OpenAddPressed: function OpenAddPressed() {
+      this.onAddOpened();
+    },
+    deleteItem: function deleteItem(id) {
+      if (confirm(' wil je dit project zeker verwijderen?')) {
+        axios({
+          method: 'post',
+          url: '/beheer/DeleteProject',
+          data: {
+            id: id
+          }
+        });
+        window.location.reload();
+      }
+    }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    window.axios.get('http://127.0.0.1:8000/getProjectPoints').then(function (response) {
       var temp = response.data;
 
       for (var i = 0; i < temp.length; i++) {
@@ -3748,7 +3862,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var mainPageComponent = this.$parent.$parent.$parent;
     mainPageComponent.disableInputEvents(this);
-    this.selectedPoints = [['wow', 1, 'lat', 'lng'], ['lol', 2, 'lat', 'lng'], ['hehd', 3, 'lat', 'lng'], ['hsasd', 4, 'lat', 'lng'], ['fuak', 5, 'lat', 'lng']];
+    this.selectedPoints = [['wow', 1, 'lat', 'lng'], ['lol', 2, 'lat', 'lng'], ['hehd', 3, 'lat', 'lng'], ['hsasd', 4, 'lat', 'lng'], ['fuak', 5, 'lat', 'lng'], ['fuak', 6, 'lat', 'lng'], ['wow', 7, 'lat', 'lng'], ['lol', 8, 'lat', 'lng'], ['hehd', 9, 'lat', 'lng'], ['hsasd', 10, 'lat', 'lng'], ['fuak', 11, 'lat', 'lng'], ['fuak', 12, 'lat', 'lng']];
   },
   computed: {
     dragOptions: function dragOptions() {
@@ -8327,7 +8441,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, "\n.vb > .vb-dragger {\n    z-index: 5;\n    width: 12px;\n    right: 0;\n}\n.vb > .vb-dragger > .vb-dragger-styler {\n    -webkit-backface-visibility: hidden;\n    backface-visibility: hidden;\n    -webkit-transform: rotate3d(0,0,0,0);\n    transform: rotate3d(0,0,0,0);\n    transition:\n            background-color 100ms ease-out,\n            margin 100ms ease-out,\n            height 100ms ease-out;\n    background-color: rgba(64, 64, 64, 0.64);\n    margin: 5px 5px 5px 0;\n    border-radius: 10px;\n    height: calc(100% - 10px);\n    display: block;\n}\n.vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n}\n.vb > .vb-dragger:hover > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n    height: 100%;\n}\n.vb.vb-dragging > .vb-dragger > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n    height: 100%;\n}\n.vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n}\n", ""]);
+exports.push([module.i, "\n.vb > .vb-dragger {\n    z-index: 5;\n    width: 12px;\n    right: 0;\n}\n.vb > .vb-dragger > .vb-dragger-styler {\n    -webkit-backface-visibility: hidden;\n    backface-visibility: hidden;\n    -webkit-transform: rotate3d(0, 0, 0, 0);\n    transform: rotate3d(0, 0, 0, 0);\n    transition: background-color 100ms ease-out,\n    margin 100ms ease-out,\n    height 100ms ease-out;\n    background-color: rgba(64, 64, 64, 0.64);\n    margin: 5px 5px 5px 0;\n    border-radius: 10px;\n    height: calc(100% - 10px);\n    display: block;\n}\n.vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n}\n.vb > .vb-dragger:hover > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n    height: 100%;\n}\n.vb.vb-dragging > .vb-dragger > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n    height: 100%;\n}\n.vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {\n    background-color: rgba(64, 64, 64, 0.64);\n}\n", ""]);
 
 // exports
 
@@ -8716,7 +8830,7 @@ function isSlowBuffer (obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery JavaScript Library v3.4.0
+ * jQuery JavaScript Library v3.4.1
  * https://jquery.com/
  *
  * Includes Sizzle.js
@@ -8726,7 +8840,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2019-04-10T19:48Z
+ * Date: 2019-05-01T21:04Z
  */
 ( function( global, factory ) {
 
@@ -8859,7 +8973,7 @@ function toType( obj ) {
 
 
 var
-	version = "3.4.0",
+	version = "3.4.1",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -13215,8 +13329,12 @@ var documentElement = document.documentElement;
 		},
 		composed = { composed: true };
 
+	// Support: IE 9 - 11+, Edge 12 - 18+, iOS 10.0 - 10.2 only
 	// Check attachment across shadow DOM boundaries when possible (gh-3504)
-	if ( documentElement.attachShadow ) {
+	// Support: iOS 10.0-10.2 only
+	// Early iOS 10 versions support `attachShadow` but not `getRootNode`,
+	// leading to errors. We need to check for `getRootNode`.
+	if ( documentElement.getRootNode ) {
 		isAttached = function( elem ) {
 			return jQuery.contains( elem.ownerDocument, elem ) ||
 				elem.getRootNode( composed ) === elem.ownerDocument;
@@ -14076,8 +14194,7 @@ jQuery.event = {
 
 				// Claim the first handler
 				if ( rcheckableType.test( el.type ) &&
-					el.click && nodeName( el, "input" ) &&
-					dataPriv.get( el, "click" ) === undefined ) {
+					el.click && nodeName( el, "input" ) ) {
 
 					// dataPriv.set( el, "click", ... )
 					leverageNative( el, "click", returnTrue );
@@ -14094,8 +14211,7 @@ jQuery.event = {
 
 				// Force setup before triggering a click
 				if ( rcheckableType.test( el.type ) &&
-					el.click && nodeName( el, "input" ) &&
-					dataPriv.get( el, "click" ) === undefined ) {
+					el.click && nodeName( el, "input" ) ) {
 
 					leverageNative( el, "click" );
 				}
@@ -14136,7 +14252,9 @@ function leverageNative( el, type, expectSync ) {
 
 	// Missing expectSync indicates a trigger call, which must force setup through jQuery.event.add
 	if ( !expectSync ) {
-		jQuery.event.add( el, type, returnTrue );
+		if ( dataPriv.get( el, type ) === undefined ) {
+			jQuery.event.add( el, type, returnTrue );
+		}
 		return;
 	}
 
@@ -14151,9 +14269,13 @@ function leverageNative( el, type, expectSync ) {
 			if ( ( event.isTrigger & 1 ) && this[ type ] ) {
 
 				// Interrupt processing of the outer synthetic .trigger()ed event
-				if ( !saved ) {
+				// Saved data should be false in such cases, but might be a leftover capture object
+				// from an async native handler (gh-4350)
+				if ( !saved.length ) {
 
 					// Store arguments for use when handling the inner native event
+					// There will always be at least one argument (an event object), so this array
+					// will not be confused with a leftover capture object.
 					saved = slice.call( arguments );
 					dataPriv.set( this, type, saved );
 
@@ -14166,14 +14288,14 @@ function leverageNative( el, type, expectSync ) {
 					if ( saved !== result || notAsync ) {
 						dataPriv.set( this, type, false );
 					} else {
-						result = undefined;
+						result = {};
 					}
 					if ( saved !== result ) {
 
 						// Cancel the outer synthetic event
 						event.stopImmediatePropagation();
 						event.preventDefault();
-						return result;
+						return result.value;
 					}
 
 				// If this is an inner synthetic event for an event with a bubbling surrogate
@@ -14188,17 +14310,19 @@ function leverageNative( el, type, expectSync ) {
 
 			// If this is a native event triggered above, everything is now in order
 			// Fire an inner synthetic event with the original arguments
-			} else if ( saved ) {
+			} else if ( saved.length ) {
 
 				// ...and capture the result
-				dataPriv.set( this, type, jQuery.event.trigger(
+				dataPriv.set( this, type, {
+					value: jQuery.event.trigger(
 
-					// Support: IE <=9 - 11+
-					// Extend with the prototype to reset the above stopImmediatePropagation()
-					jQuery.extend( saved.shift(), jQuery.Event.prototype ),
-					saved,
-					this
-				) );
+						// Support: IE <=9 - 11+
+						// Extend with the prototype to reset the above stopImmediatePropagation()
+						jQuery.extend( saved[ 0 ], jQuery.Event.prototype ),
+						saved.slice( 1 ),
+						this
+					)
+				} );
 
 				// Abort handling of the native event
 				event.stopImmediatePropagation();
@@ -56937,10 +57061,13 @@ var render = function() {
       }),
       _vm._v(" "),
       _vm.selectedProjectPage.isSelected === true
-        ? _c("project-page", { attrs: { id: "projectPage" } })
+        ? _c("project-page", {
+            ref: "projectPage",
+            attrs: { id: "projectPage" }
+          })
         : _vm.selectedRoutePage === true
-        ? _c("RoutePage", { attrs: { id: "routePage" } })
-        : _vm._e()
+        ? _c("RoutePage", { ref: "routePage", attrs: { id: "routePage" } })
+        : _c("div")
     ],
     1
   )
@@ -57604,6 +57731,17 @@ var render = function() {
     [
       _c(
         "v-flex",
+        { staticClass: "hidden-sm-and-up" },
+        [
+          _c("v-btn", { on: { click: _vm.GoBackToMapPage } }, [
+            _vm._v("\n            Go back\n        ")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-flex",
         {
           staticClass: "hidden-sm-and-down v-card--reveal",
           attrs: { shrink: "" }
@@ -58154,6 +58292,143 @@ var render = function() {
       _c(
         "v-flex",
         [
+          _c(
+            "v-btn",
+            {
+              staticStyle: { "margin-left": "1%" },
+              attrs: { dark: "", color: "green" },
+              on: { click: _vm.OpenAddPressed }
+            },
+            [_vm._v(" Nieuw Project ")]
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.projects, function(p) {
+            return _c(
+              "v-card",
+              {
+                key: _vm.projects.id,
+                staticStyle: {
+                  width: "30%",
+                  height: "100%",
+                  "margin-left": "1%",
+                  "margin-bottom": "1%"
+                }
+              },
+              [
+                _c("p", { staticClass: "text-sm-center" }, [
+                  _vm._v(_vm._s(p.name))
+                ]),
+                _vm._v(" "),
+                _c("p", { staticClass: "text-sm-center" }, [
+                  _vm._v(_vm._s(p.text))
+                ]),
+                _vm._v(" "),
+                _c(
+                  "v-list",
+                  [
+                    _c(
+                      "v-list-tile",
+                      [
+                        _c(
+                          "v-list-tile-content",
+                          [
+                            _c(
+                              "v-container",
+                              {
+                                attrs: {
+                                  "align-center": "",
+                                  "justify-center": "",
+                                  row: "",
+                                  "fill-height": ""
+                                }
+                              },
+                              [
+                                _c(
+                                  "v-btn",
+                                  {
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.OpenEditPagePressed(p._id)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("bewerken")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { color: "error" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deleteItem(p._id)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Wissen")]
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          })
+        ],
+        2
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/crudProjectPoint/ViewProjectPoints.vue?vue&type=template&id=457a7730&scoped=true&":
+/*!*************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/crudProjectPoint/ViewProjectPoints.vue?vue&type=template&id=457a7730&scoped=true& ***!
+  \*************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-layout",
+    {
+      staticStyle: { "background-color": "#89a226" },
+      attrs: {
+        "align-start": "",
+        "justify-sapce-between": "",
+        row: "",
+        "fill-height": ""
+      }
+    },
+    [
+      _c(
+        "v-flex",
+        [
+          _c("h2", [_vm._v("Project Points")]),
+          _vm._v(" "),
           _c(
             "v-btn",
             {
@@ -59738,45 +60013,53 @@ var render = function() {
       _c(
         "v-card",
         {
+          directives: [{ name: "bar", rawName: "v-bar" }],
           staticStyle: { "min-height": "250px" },
           attrs: { flat: "", color: "#D9DECD" }
         },
         [
           _c(
-            "draggable",
-            _vm._b(
-              {
-                attrs: { tag: "ul" },
-                on: {
-                  start: function($event) {
-                    _vm.drag = true
-                  },
-                  end: function($event) {
-                    _vm.drag = false
-                  }
-                },
-                model: {
-                  value: _vm.selectedPoints,
-                  callback: function($$v) {
-                    _vm.selectedPoints = $$v
-                  },
-                  expression: "selectedPoints"
-                }
-              },
-              "draggable",
-              _vm.dragOptions,
-              false
-            ),
+            "v-responsive",
+            { attrs: { "max-height": "250px" } },
             [
               _c(
-                "transition-group",
-                { attrs: { type: "transition" } },
-                _vm._l(_vm.selectedPoints, function(item) {
-                  return _c("selected-list-route", {
-                    key: item[1],
-                    attrs: { projectName: item[0] }
-                  })
-                }),
+                "draggable",
+                _vm._b(
+                  {
+                    attrs: { tag: "ul" },
+                    on: {
+                      start: function($event) {
+                        _vm.drag = true
+                      },
+                      end: function($event) {
+                        _vm.drag = false
+                      }
+                    },
+                    model: {
+                      value: _vm.selectedPoints,
+                      callback: function($$v) {
+                        _vm.selectedPoints = $$v
+                      },
+                      expression: "selectedPoints"
+                    }
+                  },
+                  "draggable",
+                  _vm.dragOptions,
+                  false
+                ),
+                [
+                  _c(
+                    "transition-group",
+                    { attrs: { type: "transition" } },
+                    _vm._l(_vm.selectedPoints, function(item) {
+                      return _c("selected-list-route", {
+                        key: item[1],
+                        attrs: { projectName: item[0] }
+                      })
+                    }),
+                    1
+                  )
+                ],
                 1
               )
             ],
@@ -111672,6 +111955,7 @@ Vue.component('add-project', __webpack_require__(/*! ./components/crudProject/Ad
 Vue.component('view-projects', __webpack_require__(/*! ./components/crudProject/ViewProjects */ "./resources/js/components/crudProject/ViewProjects.vue")["default"]);
 Vue.component('edit-projects', __webpack_require__(/*! ./components/crudProject/EditProjects */ "./resources/js/components/crudProject/EditProjects.vue")["default"]);
 Vue.component('main-crud-page', __webpack_require__(/*! ./components/crudProject/MainCrudPage */ "./resources/js/components/crudProject/MainCrudPage.vue")["default"]);
+Vue.component('view-project-points', __webpack_require__(/*! ./components/crudProjectPoint/ViewProjectPoints */ "./resources/js/components/crudProjectPoint/ViewProjectPoints.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -112433,6 +112717,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewProjects_vue_vue_type_template_id_5c99bbbe_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewProjects_vue_vue_type_template_id_5c99bbbe_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/crudProjectPoint/ViewProjectPoints.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/crudProjectPoint/ViewProjectPoints.vue ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ViewProjectPoints_vue_vue_type_template_id_457a7730_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ViewProjectPoints.vue?vue&type=template&id=457a7730&scoped=true& */ "./resources/js/components/crudProjectPoint/ViewProjectPoints.vue?vue&type=template&id=457a7730&scoped=true&");
+/* harmony import */ var _ViewProjectPoints_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ViewProjectPoints.vue?vue&type=script&lang=js& */ "./resources/js/components/crudProjectPoint/ViewProjectPoints.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ViewProjectPoints_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ViewProjectPoints_vue_vue_type_template_id_457a7730_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ViewProjectPoints_vue_vue_type_template_id_457a7730_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "457a7730",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/crudProjectPoint/ViewProjectPoints.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/crudProjectPoint/ViewProjectPoints.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/crudProjectPoint/ViewProjectPoints.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewProjectPoints_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ViewProjectPoints.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/crudProjectPoint/ViewProjectPoints.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewProjectPoints_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/crudProjectPoint/ViewProjectPoints.vue?vue&type=template&id=457a7730&scoped=true&":
+/*!*******************************************************************************************************************!*\
+  !*** ./resources/js/components/crudProjectPoint/ViewProjectPoints.vue?vue&type=template&id=457a7730&scoped=true& ***!
+  \*******************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewProjectPoints_vue_vue_type_template_id_457a7730_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ViewProjectPoints.vue?vue&type=template&id=457a7730&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/crudProjectPoint/ViewProjectPoints.vue?vue&type=template&id=457a7730&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewProjectPoints_vue_vue_type_template_id_457a7730_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewProjectPoints_vue_vue_type_template_id_457a7730_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -113267,8 +113620,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\PHPProjects\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\PHPProjects\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\gitkrakenRepos\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\gitkrakenRepos\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
