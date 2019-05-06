@@ -169,5 +169,27 @@ function calculateRoute(id) {
     routingControl.setWaypoints(waypoints);
 }
 
+function deleteRoute(){
+    let sRoute = document.getElementById("selectedRoute");
+    let route = sRoute.options[sRoute.selectedIndex].value;
+    if(route){
+        let xhttp = new XMLHttpRequest();
+        let token =  document.getElementsByName('csrf-token')[0].getAttribute('content');
+    
+        xhttp.open('POST', '/admin/remove/route');
+        xhttp.onreadystatechange = function() {
+            if(xhttp.readyState == 4 && xhttp.status == 200){
+                alert(xhttp.response);
+                location.reload();
+            }
+        }
+        xhttp.setRequestHeader('X-CSRF-Token', token);
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhttp.send("routeID=" + route);
+    }else{
+        alert("You need to specify the route you want to delete");
+    }
+}
+
 map.on('dblclick', mousePlaceMarker);
 projectMarkers.on('dblclick', mouseRemoveMarker);

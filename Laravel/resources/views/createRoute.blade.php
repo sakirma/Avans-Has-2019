@@ -42,12 +42,22 @@
             </label>
         </div>
     @endforeach
+
     <label>
         Route Name:
         <input id="routename" type="text" name="routename" value="Route naam">
     </label>
 
     <button onclick="uploadRoute()">Upload route</button>
+
+    <select id="selectedRoute">
+    @foreach($routes as $route)
+        <option value="{{ $route->id }}">{{ $route->name }}</option>
+    @endforeach
+
+    </select>
+
+    <button onclick="deleteRoute()">Delete route</button>
 </div>
 
 </body>
