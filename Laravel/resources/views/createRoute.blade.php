@@ -29,6 +29,7 @@
     @foreach($points as $l)
         <div class="point" style="width: 100px; margin: 20px; display: inline-block;">
             <label>
+                ID: {{$l->id}} <br>
                 Project Name:
                 <input type="text" name="project_id" value="{{$l->name}}" readonly>
             </label>
@@ -37,11 +38,16 @@
             </label>
             <label>
                 Placed:
-                <input type="checkbox" id="button-{{ $id = random_int(0, getrandmax()) }}" name="placed" onclick="onCheckbox( '{{$l->location}}', '{{$id}}' );">
+                <input type="checkbox" id="button-{{$l->id}}" name="placed" onclick="onCheckbox( '{{$l->location}}', '{{$l->id}}' );">
             </label>
         </div>
     @endforeach
-    <button onclick="uploadPlacedMarkers()">Upload points</button>
+    <label>
+        Route Name:
+        <input id="routename" type="text" name="routename" value="Route naam">
+    </label>
+
+    <button onclick="uploadRoute()">Upload route</button>
 </div>
 
 </body>

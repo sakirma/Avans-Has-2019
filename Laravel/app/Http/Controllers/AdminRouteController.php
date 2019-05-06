@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProjectPoint;
+use App\Models\Route;
+use App\Models\RouteHasProjectPoint;
 use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
@@ -11,14 +13,14 @@ use Illuminate\Http\Request;
 //TODO (bug) getDatapoints only gets one spatial point ?
 class AdminRouteController extends Controller
 {
-    function getDataPoints(){
+    function getRouteData(){
         $points = ProjectPoint::all();
-        $geoLocations = [];
-        foreach ($points as $item) { array_push($geoLocations, $item->location); }
-        var_dump($geoLocations);
-        return view('createRoute')->with(['points' => $points, 'locations' => $geoLocations]);
+        $routes = Route::all();
+        $routePoints = RouteHasProjectPoint::all();
+
+        return view('createRoute')->with(['points' => $points, 'routes' => $routes, 'routePoints' => $routePoints]);
     }
-    function setDataPoints(Request $request){
+    function insertMarkers(Request $request){
         $latlng = $request->latlng;
         $markerNames = $request->name;
 
@@ -34,6 +36,31 @@ class AdminRouteController extends Controller
             $projectpoint->information = 'Test information';
 
             $projectpoint->save();
+        }
+    }
+    function createRoute(Request $request){
+
+        $ids = $request->ids;
+        $latlngs = $request->latlngs;
+
+        $distance = $request->distance;
+        $routeName = $request->name;
+
+        if(count($latlngs) < 2) { return "Not enough markers to create a route!"; }
+        //TODO check if route already exists
+        $route = new Route();
+        $route->name = $routeName;
+        $route->length = round($distance / 1000, 2);
+        $route->save();
+
+        $route = Route::where('name', $routeName)->first();
+        var_dump($route);
+
+        for ($i=0; $i<count($ids); $i++){
+            $routepoints = new RouteHasProjectPoint();
+            $routepoints->project_point_id = $ids[$i];
+            $routepoints->route_id = $route->id;
+            $routepoints->save();
         }
     }
 }

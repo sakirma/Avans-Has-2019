@@ -1,8 +1,4 @@
 let projectMarkers = L.featureGroup().addTo(map);
-let placedMarkers = {
-    latlng: [],
-    name: [],
-};
 let routingControl;
 
 addEventListener('core_finished', function (e) {
@@ -11,7 +7,7 @@ addEventListener('core_finished', function (e) {
     routingControl = L.Routing.control({
         router: L.Routing.mapbox('pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig'),
         waypoints: [null],
-        routeWhileDragging: true,
+        routeWhileDragging: false,
         createMarker: function() { return null; }
     }).on('routesfound', updateMarkersToRoute).addTo(map);
 
@@ -31,95 +27,6 @@ function mousePlaceMarker(e) {
     }
 }
 
-function uploadPlacedMarkers(){
-    let layers = projectMarkers.getLayers();
-
-    for (i=0; i<layers.length; i++){
-        placedMarkers.latlng.push(layers[i].getLatLng());
-        placedMarkers.name.push("Testname1");
-    }
-
-    let xhttp = new XMLHttpRequest();
-    let token =  document.getElementsByName('csrf-token')[0].getAttribute('content');
-    let jmarkers = JSON.stringify(placedMarkers);
-    console.log(jmarkers);
-
-    xhttp.open('POST', '/admin/create');
-    xhttp.setRequestHeader('X-CSRF-Token', token);
-    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp.send(jmarkers);
-}
-
-function placeMarker(latlng){
-
-    L.marker(latlng,{
-        draggable: true,
-        riseOnHover:true
-    }).on('dragend', calculateRoute).addTo(projectMarkers);
-
-    if (projectMarkers.getLayers().length > 1) { calculateRoute(); }
-}
-
-//TODO if marker is removed with mouse set checkmark on false
-//TODO (Maybe) let the user change the order of the points
-
-function removeMarker(latling){
-
-    let routes = routingControl.getWaypoints();
-    let layers = projectMarkers.getLayers();
-    let newRoutes = [];
-
-    console.log(projectMarkers);
-
-    for (let i = 0; i < layers.length; i++) {
-       let l = layers[i].getLatLng();
-        if(l.equals(latling)) {
-            projectMarkers.removeLayer(layers[i]);
-        }
-    }
-
-    for (let i = 0; i < routes.length; i++) {
-
-        if((!routes[i].latLng.equals(latling)) && (routes[i].latLng !== null)) {
-            newRoutes.push(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng));
-        }
-    }
-    routingControl.setWaypoints(newRoutes);
-}
-
-function onCheckbox(location, buttonId){
-
-    console.log(location);
-    console.log(buttonId);
-
-    let checkbox = document.getElementById("button-"+buttonId).checked;
-    let splited = location.split(" ");
-    let latlng = L.latLng(parseFloat(splited[1]), parseFloat(splited[0]));
-
-    if(checkbox) { placeMarker(latlng); }
-    else { removeMarker(latlng); }
-}
-
-function updateMarkersToRoute(e) {
-    projectMarkers.clearLayers();
-    for (let i = 0; i < e.waypoints.length; i++) {
-        L.marker(e.waypoints[i].latLng, {
-            draggable: true,
-            riseOnHover:true
-        }).on('dragend', calculateRoute)
-            .bindPopup( '<p>' + e.waypoints[i].latLng.lat + ' , ' + e.waypoints[i].latLng.lng + '</p>' +
-                        'Naam: <input type="text" name="mName">' +
-                        '<button onclick="validateForm()">Click me</button>'
-            ).addTo(projectMarkers);
-    }
-}
-
-function validateForm(latlng){
-    /*let form = document.forms["MarkerInfo"];
-    let name = form["mName"].value;*/
-    console.log(latlng);
-}
-
 function mouseRemoveMarker(e) {
     projectMarkers.removeLayer(e.layer);
 
@@ -135,15 +42,131 @@ function mouseRemoveMarker(e) {
     routingControl.setWaypoints(newRoutes);
 }
 
-function calculateRoute() {
+function uploadPlacedMarkers(){
+    let layers = projectMarkers.getLayers();
+    let placedMarkers = {
+        latlng: [],
+        name: [],
+    };
+
+    for (i=0; i<layers.length; i++){
+        placedMarkers.latlng.push(layers[i].getLatLng());
+        placedMarkers.name.push("Testname1");
+    }
+
+    /*let xhttp = new XMLHttpRequest();
+    let token =  document.getElementsByName('csrf-token')[0].getAttribute('content');
+    let jmarkers = JSON.stringify(placedMarkers);
+    console.log(jmarkers);
+
+    xhttp.open('POST', '/admin/create');
+    xhttp.setRequestHeader('X-CSRF-Token', token);
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.send(jmarkers);*/
+}
+//TODO if ID null add it to project_point in database.
+function uploadRoute(){
+
+    let routeName = document.getElementById("routename").value;
 
     let layers = projectMarkers.getLayers();
-    let latlngs = [];
+    let distance = layers[0].options.distance;
+
+    let route = {name: routeName, latlngs: [], ids: [], distance: distance};
+
+
+    for (i=0; i<layers.length; i++){
+        route.latlngs.push(layers[i].getLatLng());
+        route.ids.push(layers[i].options.id);
+    }
+
+    let xhttp = new XMLHttpRequest();
+    let token =  document.getElementsByName('csrf-token')[0].getAttribute('content');
+    let jroute = JSON.stringify(route);
+
+    xhttp.open('POST', '/admin/create');
+    xhttp.setRequestHeader('X-CSRF-Token', token);
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.send(jroute);
+}
+
+function placeMarker(latlng, id){
+
+    L.marker(latlng,{
+        draggable: true,
+        riseOnHover:true,
+        id: id
+    }).on('dragend', calculateRoute).addTo(projectMarkers);
+
+    if (projectMarkers.getLayers().length > 1) { calculateRoute(id); }
+}
+
+//TODO if marker is removed with mouse set checkmark on false
+//TODO (Maybe) let the user change the order of the points
+
+function removeMarker(latling, id){
+
+    let routes = routingControl.getWaypoints();
+    let layers = projectMarkers.getLayers();
+    let newRoutes = [];
+
+    //Update leaflet layer
+    for (let i = 0; i < layers.length; i++) {
+       if(layers[i].options.id === id) {projectMarkers.removeLayer(layers[i]);}
+    }
+    //Update routing machine
+    for (let i = 0; i < routes.length; i++) {
+        if((!routes[i].latLng.equals(latling)) && (routes[i].latLng !== null)) {
+            newRoutes.push(L.routing.waypoint(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng), routes[i].name, routes[i].name));
+        }
+    }
+    routingControl.setWaypoints(newRoutes);
+}
+
+function onCheckbox(location, id){
+
+    let checkbox = document.getElementById("button-"+id).checked;
+    let spliced = location.split(" ");
+    let latlng = L.latLng(parseFloat(spliced[1]), parseFloat(spliced[0]));
+
+    if(checkbox) { placeMarker(latlng, id); }
+    else { removeMarker(latlng, id); }
+}
+
+function updateMarkersToRoute(e) {
+    projectMarkers.clearLayers();
+    for (let i = 0; i < e.waypoints.length; i++) {
+
+        L.marker(e.waypoints[i].latLng, {
+            draggable: true,
+            riseOnHover:true,
+            id: e.waypoints[i].name,
+            distance: e.routes[0].summary.totalDistance,
+            travelTime: e.routes[0].summary.totalTime
+        }).on('dragend', calculateRoute)
+            .bindPopup( '<p>' + e.waypoints[i].latLng.lat + ' , ' + e.waypoints[i].latLng.lng + '</p>' +
+                        'Naam: <input type="text" name="mName">' +
+                        '<button onclick="validateForm('+e.waypoints[i].latLng+')">Click me</button>'
+            ).addTo(projectMarkers);
+
+    }
+}
+
+function validateForm(latlng){
+    /*let form = document.forms["MarkerInfo"];
+    let name = form["mName"].value;*/
+    console.log(latlng);
+}
+
+function calculateRoute(id) {
+
+    let layers = projectMarkers.getLayers();
+    let waypoints = [];
 
     for (let i = 0; i < layers.length; i++) {
-        latlngs.push(L.latLng(layers[i].getLatLng().lat, layers[i].getLatLng().lng));
+        waypoints.push(L.routing.waypoint(L.latLng(layers[i].getLatLng().lat, layers[i].getLatLng().lng), layers[i].options.id, layers[i].options.id));
     }
-    routingControl.setWaypoints(latlngs);
+    routingControl.setWaypoints(waypoints);
 }
 
 map.on('dblclick', mousePlaceMarker);
