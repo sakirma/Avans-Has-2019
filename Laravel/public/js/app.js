@@ -2221,98 +2221,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "ProjectPageHeader"
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Routes.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Routes.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _MapPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MapPage */ "./resources/js/components/MapPage.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "RoutesComponent",
-  data: function data() {
-    return {
-      routeList: [],
-      projectPoints: []
-    };
-  },
-  methods: {
-    getProjectPoint: function getProjectPoint($id) {
-      var _this = this;
-
-      window.axios.get('http://127.0.0.1:8000/getProjectPoint/' + $id).then(function (response) {
-        console.log(response.data);
-
-        _this.projectPoints.push(response.data);
-      })["catch"](function (e) {
-        console.log(e);
-      });
-    }
-  },
-  mounted: function mounted() {
-    var _this2 = this;
-
-    window.axios.get('http://127.0.0.1:8000/getProjectPointIDs').then(function (response) {
-      console.log(response.data);
-      _this2.routeList = response.data;
-    })["catch"](function (e) {
-      console.log(e);
-    });
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/map-page-header.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/map-page-header.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2347,12 +2255,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/vue2-leaflet.es.js");
-/* harmony import */ var leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! leaflet/dist/leaflet.css */ "./node_modules/leaflet/dist/leaflet.css");
-/* harmony import */ var leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _routePage_list_routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./routePage/list-routes */ "./resources/js/components/routePage/list-routes.vue");
-/* harmony import */ var _map_page_header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./map-page-header */ "./resources/js/components/map-page-header.vue");
-/* harmony import */ var _mapPageButton_DropDownButton__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./mapPageButton/DropDownButton */ "./resources/js/components/mapPageButton/DropDownButton.vue");
+/* harmony import */ var _MapPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MapPage */ "./resources/js/components/MapPage.vue");
+/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/vue2-leaflet.es.js");
+/* harmony import */ var leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! leaflet/dist/leaflet.css */ "./node_modules/leaflet/dist/leaflet.css");
+/* harmony import */ var leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _routePage_list_routes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./routePage/list-routes */ "./resources/js/components/routePage/list-routes.vue");
+/* harmony import */ var _map_page_header__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./map-page-header */ "./resources/js/components/map-page-header.vue");
+/* harmony import */ var _mapPageButton_DropDownButton__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./mapPageButton/DropDownButton */ "./resources/js/components/mapPageButton/DropDownButton.vue");
 //
 //
 //
@@ -2391,21 +2300,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'MapPage',
+  name: "RoutesComponent",
   components: {
-    MapPageHeader: _map_page_header__WEBPACK_IMPORTED_MODULE_3__["default"],
-    DropDownButton: _mapPageButton_DropDownButton__WEBPACK_IMPORTED_MODULE_4__["default"],
-    LMap: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LMap"],
-    LTileLayer: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LTileLayer"],
-    LMarker: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LMarker"],
-    LPopup: vue2_leaflet__WEBPACK_IMPORTED_MODULE_0__["LPopup"],
-    ListRoutes: _routePage_list_routes__WEBPACK_IMPORTED_MODULE_2__["default"]
+    MapPageHeader: _map_page_header__WEBPACK_IMPORTED_MODULE_4__["default"],
+    DropDownButton: _mapPageButton_DropDownButton__WEBPACK_IMPORTED_MODULE_5__["default"],
+    LMap: vue2_leaflet__WEBPACK_IMPORTED_MODULE_1__["LMap"],
+    LTileLayer: vue2_leaflet__WEBPACK_IMPORTED_MODULE_1__["LTileLayer"],
+    LMarker: vue2_leaflet__WEBPACK_IMPORTED_MODULE_1__["LMarker"],
+    LPopup: vue2_leaflet__WEBPACK_IMPORTED_MODULE_1__["LPopup"],
+    ListRoutes: _routePage_list_routes__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
@@ -2413,7 +2326,8 @@ __webpack_require__.r(__webpack_exports__);
       center: L.latLng(51.7142669290121, 5.3173828125),
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      markers: [L.latLng(51.7142669290121, 5.3173828125), L.latLng(51.7142669290121, 5.3153828125), L.latLng(51.7142669290121, 5.33828125)]
+      markers: [L.latLng(51.7142669290121, 5.3173828125), L.latLng(51.7142669290121, 5.3153828125), L.latLng(51.7142669290121, 5.33828125)],
+      projectPoints: []
     };
   },
   methods: {
@@ -3471,7 +3385,6 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     window.axios.get('http://127.0.0.1:8000/getAllRoutes').then(function (response) {
-      console.log(response.data);
       _this.routeList = response.data;
     })["catch"](function (e) {
       console.log(e);
@@ -3553,6 +3466,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "selected-list-route",
   props: {
@@ -3565,9 +3483,29 @@ __webpack_require__.r(__webpack_exports__);
       required: true
     }
   },
+  data: function data() {
+    return {
+      allProjectPointIDs: []
+    };
+  },
   methods: {
-    test: function test(id) {
-      console.log(id);
+    followRoute: function followRoute($id) {
+      var _this = this;
+
+      window.axios.get("http://127.0.0.1:8000/getProjectPointIDs/" + $id).then(function (response) {
+        console.log(response.data);
+        _this.allProjectPointIDs = response.data;
+      })["catch"](function (e) {
+        console.log(e);
+      }); //   window.axios
+      //     .get("http://127.0.0.1:8000/getProjectPoint/")
+      //     .then(response => {
+      //       console.log(response.data);
+      //       this.projectPoints.push(response.data);
+      //     })
+      //     .catch(e => {
+      //       console.log(e);
+      //     });
     }
   }
 });
@@ -8222,7 +8160,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.v-btn[data-v-72e48dfa]:hover:before {\n    color: transparent\n}\n.v-btn[data-v-72e48dfa]:focus:before {\n    color: transparent;\n}\n", ""]);
+exports.push([module.i, "\n.v-btn[data-v-72e48dfa]:hover:before {\r\n  color: transparent;\n}\n.v-btn[data-v-72e48dfa]:focus:before {\r\n  color: transparent;\n}\r\n", ""]);
 
 // exports
 
@@ -57282,23 +57220,6 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "ul",
-    _vm._l(_vm.routeList, function(route) {
-      return _c("li", [
-        _vm._v(_vm._s(route.project_point_id)),
-        _c(
-          "button",
-          {
-            on: {
-              click: function($event) {
-                return _vm.getProjectPoint(route.project_point_id)
-              }
-            }
-          },
-          [_vm._v("Volg route")]
-        )
-      ])
-    }),
     "div",
     { staticStyle: { height: "100vh" }, attrs: { id: "mapPage" } },
     [
@@ -59063,7 +58984,7 @@ var render = function() {
               },
               on: {
                 click: function($event) {
-                  return _vm.test(_vm.id)
+                  return _vm.followRoute(_vm.id)
                 }
               }
             },
@@ -59081,11 +59002,7 @@ var render = function() {
                 [
                   _c("v-flex", [
                     _c("div", { staticClass: "text-xs-left" }, [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(_vm.name) +
-                          "\n                    "
-                      )
+                      _vm._v(_vm._s(_vm.name))
                     ])
                   ])
                 ],

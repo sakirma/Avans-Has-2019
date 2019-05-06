@@ -34,7 +34,6 @@
 
             window.axios.get('http://127.0.0.1:8000/getAllRoutes')
             .then(response => {
-                console.log(response.data);
                 this.routeList = response.data;
             }).catch(e => {
                 console.log(e);

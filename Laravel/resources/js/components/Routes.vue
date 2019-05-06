@@ -66,7 +66,6 @@ export default {
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 markers: [L.latLng(51.7142669290121, 5.3173828125), L.latLng(51.7142669290121, 5.3153828125), L.latLng(51.7142669290121, 5.33828125)],
-            routeList: [],
             projectPoints: [],
         }
     },
@@ -74,23 +73,9 @@ export default {
         OpenProjectPagePressed: function (projectId) {
                 this.onProjectOpened(projectId);
             },
-        getProjectPoint($id){
-            window.axios.get('http://127.0.0.1:8000/getProjectPoint/' + $id).then(response => {
-                console.log(response.data);
-                this.projectPoints.push(response.data);
-            }).catch(e => {
-                console.log(e);
-            }); 
-        }
     },
-    mounted() {
-        window.axios.get('http://127.0.0.1:8000/getProjectPointIDs')
-            .then(response => {
-                console.log(response.data);
-                this.routeList = response.data;
-            }).catch(e => {
-                console.log(e);
-            }); 
+    mounted() { 
+        
     }
 }      
 </script>
