@@ -26,6 +26,7 @@ class AdminRouteController extends Controller
     {
         $latlng = $request->latlng;
         $markerNames = $request->name;
+        $markerInfo = $request->info;
 
         var_dump($latlng);
         for ($i = 0; $i < sizeof($latlng); $i++) {
@@ -36,7 +37,7 @@ class AdminRouteController extends Controller
             $projectpoint->location = $point;
             $projectpoint->geo_json = new GeometryCollection([$point]);
             $projectpoint->name = $markerNames[$i];
-            $projectpoint->information = 'Test information';
+            $projectpoint->information = 'Temporary information';
 
             $projectpoint->save();
         }
@@ -71,22 +72,15 @@ class AdminRouteController extends Controller
             $route->save();
         }
 
-        var_dump($route);
+        //Delete old route before adding the new one
+        RouteHasProjectPoint::where('route_id', $route->id)->delete();
 
         for ($i = 0; $i < count($ids); $i++) {
+            $routepoints = new RouteHasProjectPoint();
 
-            $routepoints = RouteHasProjectPoint::where('project_point_id', $ids[$i])
-                ->where('route_id', $route->id)
-                ->first();
-
-            if($routepoints === null) {
-
-                $routepoints = new RouteHasProjectPoint();
-
-                $routepoints->project_point_id = $ids[$i];
-                $routepoints->route_id = $route->id;
-                $routepoints->save();
-            }
+            $routepoints->project_point_id = $ids[$i];
+            $routepoints->route_id = $route->id;
+            $routepoints->save();
         }
         return 'Route added to database!';
     }

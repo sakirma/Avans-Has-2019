@@ -1,5 +1,6 @@
 let projectMarkers = L.featureGroup().addTo(map);
 let routingControl;
+let newMarkers = [];
 
 addEventListener('core_finished', function (e) {
     console.log('Leaflet core is finished loading');
@@ -143,27 +144,35 @@ function resetCheckbox(id){
 
 function updateMarkersToRoute(e) {
     projectMarkers.clearLayers();
+
     for (let i = 0; i < e.waypoints.length; i++) {
+        let mId = e.waypoints[i].name;
+
+        if(mId === undefined){ mId = Math.random().toString(36).substring(7); }
 
         L.marker(e.waypoints[i].latLng, {
             draggable: true,
             riseOnHover:true,
-            id: e.waypoints[i].name,
+            id: mId,
             distance: e.routes[0].summary.totalDistance,
             travelTime: e.routes[0].summary.totalTime
         }).on('dragend', calculateRoute)
             .bindPopup( '<p>' + e.waypoints[i].latLng.lat + ' , ' + e.waypoints[i].latLng.lng + '</p>' +
-                        'Naam: <input type="text" name="mName">' +
-                        '<button onclick="validateForm('+e.waypoints[i].latLng+')">Click me</button>'
+                        'Naam: <input type="text" name="mName"><br>' +
+                        'Info: <textarea style="border: solid gray;"> </textarea>' +
+                        '<button onclick="saveMarker(`'+ mId +'`)">Click me</button>'
             ).addTo(projectMarkers);
-
     }
 }
 
-function validateForm(latlng){
-    /*let form = document.forms["MarkerInfo"];
-    let name = form["mName"].value;*/
-    console.log(latlng);
+function saveMarker(id){
+    let layers = projectMarkers.getLayers();
+    for(i=0; i<layers.length; i++){
+        if(layers[i].options.id === id){
+            let content = layers[i].getPopup().getContent();
+            console.log(content);
+        }
+    }
 }
 
 function calculateRoute(id) {
