@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin/home';
+    protected $redirectTo = '/beheer/projecten';
 
     /**
      * Create a new controller instance.
@@ -45,10 +45,10 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             // Authentication passed...
-            return 'OK';
+            return view('mainCrudPage');
         }
 
-        return 'NO';
+        return 'NOPE';
     }
 
     public function username() {

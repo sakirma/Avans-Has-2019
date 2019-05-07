@@ -29,7 +29,7 @@ Route::post('GetProjectWithinDistance', "ProjectController@getProjectWithinDista
 Route::get('/project/info/{id}', "ProjectController@index")->name("project.info");
 Route::post('/project/info/{id}', "ProjectController@facetInfo")->name("project.info.facet");
 
-Route::get('/admin/login', 'Auth\LoginController@showLoginForm');
+Route::get('admin/login', 'Auth\LoginController@showLoginForm');
 Route::post('admin/authenticate', 'Auth\LoginController@authenticate');
 
 Route::get('/media', "MediaController@index")->name('media');
