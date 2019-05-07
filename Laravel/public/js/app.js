@@ -2297,12 +2297,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2324,15 +2318,35 @@ __webpack_require__.r(__webpack_exports__);
     return {
       zoom: 11,
       center: L.latLng(51.7142669290121, 5.3173828125),
-      url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      markers: [L.latLng(51.7142669290121, 5.3173828125), L.latLng(51.7142669290121, 5.3153828125), L.latLng(51.7142669290121, 5.33828125)],
+      markers: [],
       projectPoints: []
     };
   },
   methods: {
+    disableInputEvents: function disableInputEvents(element) {
+      this.$parent.disableInputEvents(element);
+    },
     OpenProjectPagePressed: function OpenProjectPagePressed(projectId) {
-      this.onProjectOpened(projectId);
+      this.$root.onProjectOpened(projectId);
+    },
+    drawPoints: function drawPoints($arr) {
+      this.markers = [];
+
+      for (var i = 0; i < $arr.length; i++) {
+        this.projectPoints.push({
+          location: $arr[i].location
+        });
+        var pointId = this.projectPoints[i].id;
+        var lat = this.projectPoints[i].location.coordinates[0];
+        var lng = this.projectPoints[i].location.coordinates[1];
+        this.markers.push({
+          id: pointId,
+          latlng: L.latLng(parseFloat(lat), parseFloat(lng)),
+          content: "hoi!"
+        });
+      }
     }
   },
   mounted: function mounted() {}
@@ -3367,6 +3381,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3374,6 +3399,12 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     SelectedListRoute: _selected_list_route__WEBPACK_IMPORTED_MODULE_0__["default"],
     draggable: vuedraggable__WEBPACK_IMPORTED_MODULE_1___default.a
+  },
+  props: {
+    routesParent: {
+      type: Object,
+      required: true
+    }
   },
   data: function data() {
     return {
@@ -3384,8 +3415,15 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    window.axios.get('http://127.0.0.1:8000/getAllRoutes').then(function (response) {
-      _this.routeList = response.data;
+    this.$root.disableInputEvents(this);
+    window.axios.get("http://127.0.0.1:8000/getAllRoutes").then(function (response) {
+      for (var i = 0; i < response.data.length; i++) {
+        _this.routeList.push({
+          name: response.data[i].name,
+          id: response.data[i].id,
+          parent: _this.routesParent
+        });
+      }
     })["catch"](function (e) {
       console.log(e);
     });
@@ -3481,30 +3519,25 @@ __webpack_require__.r(__webpack_exports__);
     id: {
       type: Number,
       required: true
+    },
+    routesParent: {
+      type: Object,
+      required: true
     }
   },
   data: function data() {
     return {
       allProjectPointIDs: [],
-      projectPoints: []
+      projectPoints: [],
+      parent: undefined
     };
   },
   methods: {
     followRoute: function followRoute($id) {
       var _this = this;
 
-      window.axios.get("http://127.0.0.1:8000/getProjectPointIDs/" + $id).then(function (response) {
-        console.log(response.data);
-        _this.allProjectPointIDs = response.data;
-      })["catch"](function (e) {
-        console.log(e);
-      });
-      window.axios.get("http://127.0.0.1:8000/getProjectPoint/" + 'hoi').then(function (response) {
-        console.log(response.data);
-
-        _this.projectPoints.push(response.data);
-      })["catch"](function (e) {
-        console.log(e);
+      axios.get("http://127.0.0.1:8000/getProjectPointOfRoute/" + $id).then(function (response) {
+        _this.routesParent.drawPoints(response.data);
       });
     }
   }
@@ -8122,7 +8155,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.button[data-v-51aa1607] {\n    margin-top: 35px;\n}\n.flip-list-move[data-v-51aa1607] {\n    transition: -webkit-transform 0.5s;\n    transition: transform 0.5s;\n    transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.no-move[data-v-51aa1607] {\n    transition: -webkit-transform 0s;\n    transition: transform 0s;\n    transition: transform 0s, -webkit-transform 0s;\n}\n.ghost[data-v-51aa1607] {\n    opacity: 0.5;\n    background: #c8ebfb;\n}\n.list-group[data-v-51aa1607] {\n    min-height: 20px;\n}\n.list-group-item[data-v-51aa1607] {\n    cursor: move;\n}\n.list-group-item i[data-v-51aa1607] {\n    cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.button[data-v-51aa1607] {\r\n  margin-top: 35px;\n}\n.flip-list-move[data-v-51aa1607] {\r\n  transition: -webkit-transform 0.5s;\r\n  transition: transform 0.5s;\r\n  transition: transform 0.5s, -webkit-transform 0.5s;\n}\n.no-move[data-v-51aa1607] {\r\n  transition: -webkit-transform 0s;\r\n  transition: transform 0s;\r\n  transition: transform 0s, -webkit-transform 0s;\n}\n.ghost[data-v-51aa1607] {\r\n  opacity: 0.5;\r\n  background: #c8ebfb;\n}\n.list-group[data-v-51aa1607] {\r\n  min-height: 20px;\n}\n.list-group-item[data-v-51aa1607] {\r\n  cursor: move;\n}\n.list-group-item i[data-v-51aa1607] {\r\n  cursor: pointer;\n}\r\n", ""]);
 
 // exports
 
@@ -57264,7 +57297,7 @@ var render = function() {
                             "fill-height": ""
                           }
                         },
-                        [_c("list-routes")],
+                        [_c("list-routes", { attrs: { routesParent: this } })],
                         1
                       )
                     ],
@@ -57279,7 +57312,7 @@ var render = function() {
                     return [
                       _c(
                         "l-marker",
-                        { attrs: { "lat-lng": marker } },
+                        { key: index, attrs: { "lat-lng": marker.latlng } },
                         [
                           _c(
                             "l-popup",
@@ -57293,7 +57326,7 @@ var render = function() {
                                     }
                                   }
                                 },
-                                [_vm._v(" To Project Page")]
+                                [_vm._v("To Project Page")]
                               )
                             ],
                             1
@@ -58851,13 +58884,21 @@ var render = function() {
                   _c(
                     "transition-group",
                     { attrs: { type: "transition" } },
-                    _vm._l(_vm.routeList, function(route) {
-                      return _c("selected-list-route", {
-                        key: route.id,
-                        attrs: { name: route.name, id: route.id }
+                    [
+                      _vm._l(_vm.routeList, function(route, index) {
+                        return [
+                          _c("selected-list-route", {
+                            key: index,
+                            attrs: {
+                              name: route.name,
+                              id: route.id,
+                              routesParent: route.parent
+                            }
+                          })
+                        ]
                       })
-                    }),
-                    1
+                    ],
+                    2
                   )
                 ],
                 1
@@ -110722,7 +110763,16 @@ Vue.use(Vuetify);
 var app = new Vue({
   el: '#app',
   Vuetify: Vuetify,
-  store: _store_session_store__WEBPACK_IMPORTED_MODULE_2__["default"]
+  store: _store_session_store__WEBPACK_IMPORTED_MODULE_2__["default"],
+  methods: {
+    disableInputEvents: function disableInputEvents(element) {
+      leaflet__WEBPACK_IMPORTED_MODULE_0___default.a.DomEvent.disableClickPropagation(element.$el);
+      leaflet__WEBPACK_IMPORTED_MODULE_0___default.a.DomEvent.disableScrollPropagation(element.$el);
+    },
+    onProjectOpened: function onProjectOpened(projectId) {
+      console.log('app.js: wooow');
+    }
+  }
 });
 
 /***/ }),
@@ -112046,8 +112096,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Ruben\Documents\GitHub\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Ruben\Documents\GitHub\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Gijs\Documents\GitHub\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Gijs\Documents\GitHub\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -55,3 +55,4 @@ Route::get('details/{id}', "ProjectPointsController@GetDetails");
 Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
 Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
 Route::get('getAllRoutes', "RoutesController@getAllRoutes");
+Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");

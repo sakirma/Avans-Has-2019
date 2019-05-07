@@ -50,10 +50,9 @@ class ProjectPointsController extends Controller
     }
 
     public function getProjectPointByID($projectPointId){
-        return $projectPointId;
-        // $model = ProjectPoint::find();
-        // if(empty($model)) { echo '$model'; }
+        $model = ProjectPoint::find($projectPointId);
+        if(empty($model)) { echo '$model'; }
 
-        // return $model->toJson();
+        return json_encode($model);
     }
 }

@@ -78,4 +78,13 @@ const app = new Vue({
     el: '#app',
     Vuetify,
     store,
+    methods: {
+        disableInputEvents(element) {
+            L.DomEvent.disableClickPropagation(element.$el);
+            L.DomEvent.disableScrollPropagation(element.$el);
+        },
+        onProjectOpened(projectId) {
+            console.log('app.js: wooow');
+        }
+    }
 });

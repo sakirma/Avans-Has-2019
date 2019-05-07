@@ -33,33 +33,26 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+
+    routesParent: {
+      type: Object,
+      required: true
     }
   },
-  data ()  {
-      return {
-        allProjectPointIDs: [],
-           projectPoints: [],
-      }
+  data() {
+    return {
+      allProjectPointIDs: [],
+      projectPoints: [],
+      parent: undefined
+    };
   },
   methods: {
     followRoute($id) {
-        window.axios.get("http://127.0.0.1:8000/getProjectPointIDs/" + $id)
-            .then(response => {
-                console.log(response.data);
-                this.allProjectPointIDs = response.data;
-            }).catch(e => {
-                console.log(e);
-            }); 
-    
-
-      window.axios
-        .get("http://127.0.0.1:8000/getProjectPoint/" + 'hoi')
+      axios
+        .get("http://127.0.0.1:8000/getProjectPointOfRoute/" + $id)
         .then(response => {
-          console.log(response.data);
-          this.projectPoints.push(response.data);
-        })
-        .catch(e => {
-          console.log(e);
+          this.routesParent.drawPoints(response.data);
         });
     }
   }
