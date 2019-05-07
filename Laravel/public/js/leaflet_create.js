@@ -92,6 +92,7 @@ function removeMarker(latling, id){
 
     //Update leaflet layer
     for (let i = 0; i < layers.length; i++) {
+        //TODO (bug) options.id is sometimes int sometimes string (temp workaround)
        if(layers[i].options.id == id) {projectMarkers.removeLayer(layers[i]);}
     }
     //Update routing machine
