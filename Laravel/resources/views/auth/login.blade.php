@@ -11,14 +11,14 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
 
-    <link href='./Fonts/Market_Deco.css' rel='stylesheet' type='text/css'>
-    <link href='./Fonts/FlorenceRegular.css' rel='stylesheet' type='text/css'>
+    <link href={{asset('Fonts/Market_Deco.css')}} rel='stylesheet' type='text/css'>
+    <link href={{asset('Fonts/FlorenceRegular.css')}} rel='stylesheet' type='text/css'>
 </head>
 
 <body>
 <div id="app">
     <v-app>
-        <main-page></main-page>
+        <login-screen></login-screen>
     </v-app>
 </div>
 <script src="../../../js/app.js"></script>
