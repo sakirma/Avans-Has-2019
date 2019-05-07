@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use Grimzy\LaravelMysqlSpatial\Types\Geometry;
 use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
-use function MongoDB\BSON\toJSON;
 
 class ProjectController extends Controller
 {
@@ -16,23 +14,7 @@ class ProjectController extends Controller
      * featureCollection: JSON format of featureCollection GeoJson
      * pointWKT: Well Known Text for Point
      */
-/*
-    public function addProject(Request $request)
-    {
-        $project = new Project;
 
-        $featureCollection = Geometry::fromJson($request->featureCollection);
-        $location = Point::fromWKT($request->pointWKT);
-
-        $project->geo_json = $featureCollection;
-        $project->location = $location;
-        $project->category = "c_lol";
-        $project->name = "gebruiker";
-        $project->information = "information_lol";
-
-        $project->save();
-    }
- */
     public function addProject (Request $request) {
         $project = new Project();
 
@@ -72,9 +54,6 @@ class ProjectController extends Controller
     public function viewProjects() {
         return view('viewProjects');
     }
-
-
-
     public function getProjects() {
         $projects = Project::all();
         return $projects->toJson();

@@ -48,13 +48,12 @@
                 this.onAddOpened();
             },
             deleteItem (id) {
-                if(confirm(' wil je dit project zeker verwijderen?')){
+                if(confirm('Weet je zeker dat je zit project wilt verwijderen?')){
                     axios({
                         method: 'post',
                         url: '/beheer/DeleteProject',
                         data: {
                             id: id,
-
                         }
                     });
                     window.location.reload();
