@@ -2393,8 +2393,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "loginScreen"
+  name: "loginScreen",
+  data: function data() {
+    return {
+      show1: false,
+      password: undefined,
+      username: undefined
+    };
+  },
+  methods: {
+    authenticate: function authenticate() {
+      axios.post('/admin/authenticate', {
+        name: this.username,
+        password: this.password
+      }).then(function (response) {
+        console.log(response.data);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -57389,12 +57412,13 @@ var render = function() {
             [
               _c(
                 "v-flex",
-                { attrs: { xs12: "", sm5: "", md4: "", lg3: "" } },
+                { attrs: { xs12: "", sm5: "", md4: "", lg4: "" } },
                 [
                   _c(
                     "v-card",
                     {
                       staticClass: "pa-4",
+                      staticStyle: { "max-width": "500px" },
                       attrs: {
                         color: "rgba(160, 181, 80, 0.9)",
                         height: "100%",
@@ -57434,6 +57458,13 @@ var render = function() {
                                   flat: "",
                                   "hide-details": "",
                                   color: "green"
+                                },
+                                model: {
+                                  value: _vm.username,
+                                  callback: function($$v) {
+                                    _vm.username = $$v
+                                  },
+                                  expression: "username"
                                 }
                               })
                             ],
@@ -57450,22 +57481,56 @@ var render = function() {
                               _c("v-text-field", {
                                 attrs: {
                                   "prepend-inner-icon": "lock",
+                                  "append-icon": _vm.show1
+                                    ? "visibility"
+                                    : "visibility_off",
+                                  type: _vm.show1 ? "text" : "password",
                                   "single-line": "",
                                   "full-width": "",
                                   flat: "",
                                   "hide-details": "",
                                   color: "green"
+                                },
+                                on: {
+                                  "click:append": function($event) {
+                                    _vm.show1 = !_vm.show1
+                                  }
+                                },
+                                model: {
+                                  value: _vm.password,
+                                  callback: function($$v) {
+                                    _vm.password = $$v
+                                  },
+                                  expression: "password"
                                 }
                               })
                             ],
                             1
                           ),
                           _vm._v(" "),
-                          _c("v-btn", [
-                            _vm._v(
-                              "\n                            LOG IN\n                        "
-                            )
-                          ])
+                          _c(
+                            "v-btn",
+                            {
+                              staticClass: "mt-4",
+                              staticStyle: { "border-radius": "8px" },
+                              attrs: { large: "" }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "light-green--text display-1 font-weight-black",
+                                  on: { click: _vm.authenticate }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                LOGIN\n                            "
+                                  )
+                                ]
+                              )
+                            ]
+                          )
                         ],
                         1
                       )
