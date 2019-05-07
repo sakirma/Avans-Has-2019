@@ -58,6 +58,7 @@
     </select>
 
     <button onclick="deleteRoute()">Delete route</button>
+    <button onclick="showRoute()">Show route</button>
 </div>
 
 </body>

@@ -43,6 +43,24 @@ class AdminRouteController extends Controller
         }
     }
 
+    //TODO (bug) spatial data word niet geconverd met een join
+    function getPoints(Request $request){
+        $routeId = $request->routeId;
+        $response = [];
+
+        $ids = RouteHasProjectPoint::select('project_point_id')
+            ->where('route_id', $routeId)
+            ->get();
+        //Twee querys voor de spatial data
+        $routePoints = ProjectPoint::whereIn('id', $ids)->get();
+
+        foreach($routePoints as $r){
+             array_push($response, [$r->id, $r->location]);
+        }
+
+        return $response;
+    }
+
     function createRoute(Request $request){
 
         $ids = $request->ids;

@@ -32,8 +32,9 @@ Route::post('/project/info/{id}', "ProjectController@facetInfo")->name("project.
 Route::get('/admin/home', 'HomeController@index');
 
 Route::get('/admin/route', 'AdminRouteController@getRouteData');
-Route::post('/admin/create', 'AdminRouteController@createRoute');
+Route::post('/admin/create/route', 'AdminRouteController@createRoute');
 Route::post('/admin/remove/route', 'AdminRouteController@removeRoute');
+Route::post('/admin/get/points', 'AdminRouteController@getPoints');
 
 
 Route::group(['prefix' => 'admin'], function () {

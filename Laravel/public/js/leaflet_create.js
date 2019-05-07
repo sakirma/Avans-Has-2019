@@ -2,6 +2,10 @@ let projectMarkers = L.featureGroup().addTo(map);
 let routingControl;
 let newMarkers = [];
 
+//TODO if ID null add it to project_point in database.
+//TODO (Maybe) let the user change the order of the points
+//TODO (Check) let route recalculate in right order
+
 addEventListener('core_finished', function (e) {
     console.log('Leaflet core is finished loading');
 
@@ -44,29 +48,6 @@ function mouseRemoveMarker(e) {
     resetCheckbox(e.layer.options.id);
 }
 
-function uploadPlacedMarkers(){
-    let layers = projectMarkers.getLayers();
-    let placedMarkers = {
-        latlng: [],
-        name: [],
-    };
-
-    for (i=0; i<layers.length; i++){
-        placedMarkers.latlng.push(layers[i].getLatLng());
-        placedMarkers.name.push("Testname1");
-    }
-
-    /*let xhttp = new XMLHttpRequest();
-    let token =  document.getElementsByName('csrf-token')[0].getAttribute('content');
-    let jmarkers = JSON.stringify(placedMarkers);
-    console.log(jmarkers);
-
-    xhttp.open('POST', '/admin/create');
-    xhttp.setRequestHeader('X-CSRF-Token', token);
-    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp.send(jmarkers);*/
-}
-//TODO if ID null add it to project_point in database.
 function uploadRoute(){
 
     let routeName = document.getElementById("routename").value;
@@ -86,7 +67,7 @@ function uploadRoute(){
     let token =  document.getElementsByName('csrf-token')[0].getAttribute('content');
     let jroute = JSON.stringify(route);
 
-    xhttp.open('POST', '/admin/create');
+    xhttp.open('POST', '/admin/create/route');
     xhttp.setRequestHeader('X-CSRF-Token', token);
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(jroute);
@@ -103,9 +84,6 @@ function placeMarker(latlng, id){
     if (projectMarkers.getLayers().length > 1) { calculateRoute(id); }
 }
 
-//TODO if marker is removed with mouse set checkmark on false
-//TODO (Maybe) let the user change the order of the points
-
 function removeMarker(latling, id){
 
     let routes = routingControl.getWaypoints();
@@ -114,7 +92,7 @@ function removeMarker(latling, id){
 
     //Update leaflet layer
     for (let i = 0; i < layers.length; i++) {
-       if(layers[i].options.id === id) {projectMarkers.removeLayer(layers[i]);}
+       if(layers[i].options.id === parseInt(id)) {projectMarkers.removeLayer(layers[i]);}
     }
     //Update routing machine
     for (let i = 0; i < routes.length; i++) {
@@ -125,6 +103,7 @@ function removeMarker(latling, id){
     routingControl.setWaypoints(newRoutes);
 }
 
+//TODO refactor for vue
 function onCheckbox(location, id){
 
     let checkbox = document.getElementById("button-"+id).checked;
@@ -140,6 +119,13 @@ function resetCheckbox(id){
     if ( checkbox === null ) return;
 
     checkbox.checked = false;
+}
+
+function checkCheckbox(id){
+    let checkbox = document.getElementById('button-'+id);
+    if ( checkbox === null ) return;
+
+    checkbox.checked = true;
 }
 
 function updateMarkersToRoute(e) {
@@ -167,6 +153,7 @@ function updateMarkersToRoute(e) {
 
 function saveMarker(id){
     let layers = projectMarkers.getLayers();
+
     for(i=0; i<layers.length; i++){
         if(layers[i].options.id === id){
             let content = layers[i].getPopup().getContent();
@@ -175,7 +162,7 @@ function saveMarker(id){
     }
 }
 
-function calculateRoute(id) {
+function calculateRoute() {
 
     let layers = projectMarkers.getLayers();
     let waypoints = [];
@@ -184,6 +171,44 @@ function calculateRoute(id) {
         waypoints.push(L.routing.waypoint(L.latLng(layers[i].getLatLng().lat, layers[i].getLatLng().lng), layers[i].options.id, layers[i].options.id));
     }
     routingControl.setWaypoints(waypoints);
+}
+
+function showRoute(){
+    projectMarkers.clearLayers();
+
+    let sRoute = document.getElementById("selectedRoute");
+    let route = sRoute.options[sRoute.selectedIndex].value;
+
+    let token =  document.getElementsByName('csrf-token')[0].getAttribute('content');
+
+    fetch('/admin/get/points', {
+        method: 'post',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+            'X-CSRF-Token': token,
+        },
+        body: 'routeId=' + route,
+
+    })
+        .then(function(res){ return res.json(); })
+        .then(function(data){
+
+            let points = JSON.parse(JSON.stringify(data));
+            for (let i=0; i<points.length; i++){
+
+                let id = points[i][0];
+                let location = points[i][1];
+                let latlng = L.latLng(location.coordinates[1] , location.coordinates[0]);
+
+                console.log(id);
+
+               placeMarker(latlng, id);
+               checkCheckbox(id);
+            }
+        })
+        .catch(function (error) {
+        console.log('Request failed', error);
+    });
 }
 
 function deleteRoute(){
