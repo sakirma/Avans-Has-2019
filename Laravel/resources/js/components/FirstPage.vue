@@ -2,7 +2,7 @@
     <div>
         <v-img
                 height="100vh"
-                src="img/FirstPage/wet-rainy-road-leaf-fallen-hd-gl.jpg">
+                src="/img/FirstPage/wet-rainy-road-leaf-fallen-hd-gl.jpg">
             <v-layout justify-end row fill-height style="transition: none;">
                 <v-flex xs12 sm4 lg5 xl4>
                     <v-card height="100vh" color="rgb(100, 130, 0, 0.5)"

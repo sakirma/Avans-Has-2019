@@ -29,10 +29,9 @@ Route::post('GetProjectWithinDistance', "ProjectController@getProjectWithinDista
 Route::get('/project/info/{id}', "ProjectController@index")->name("project.info");
 Route::post('/project/info/{id}', "ProjectController@facetInfo")->name("project.info.facet");
 
-Route::get('/admin/home', 'HomeController@index');
-Route::group(['prefix' => 'admin'], function () {
-    Auth::routes();
-});
+Route::get('admin/login', 'Auth\LoginController@showLoginForm');
+Route::post('admin/authenticate', 'Auth\LoginController@authenticate');
+
 Route::get('/media', "MediaController@index")->name('media');
 
 Route::post('/media', "MediaController@saveMedia")->name('media.save');

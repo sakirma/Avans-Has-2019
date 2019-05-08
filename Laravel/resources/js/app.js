@@ -37,20 +37,6 @@ import store from './store/session-store'
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
-Vue.component(
-    'passport-clients',
-    require('./components/passport/Clients.vue').default
-);
-
-Vue.component(
-    'passport-authorized-clients',
-    require('./components/passport/AuthorizedClients.vue').default
-);
-
-Vue.component(
-    'passport-personal-access-tokens',
-    require('./components/passport/PersonalAccessTokens.vue').default
-);
 
 Vue.component('main-page',
     require('./MainPage').default);
@@ -80,6 +66,10 @@ Vue.component('main-crud-page',
 
 Vue.component('view-project-points',
     require('./components/crudProjectPoint/ViewProjectPoints').default
+);
+
+Vue.component('login-screen',
+    require('./components/auth/loginScreen').default
 );
 
 /**
