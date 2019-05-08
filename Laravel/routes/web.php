@@ -40,8 +40,8 @@ Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
 // Crud
 Route::get('beheer', 'ProjectController@main')->middleware('auth');
-// TODO: Include projecten page features in com ponent
-//Route::get('/beheer/projecten', 'ProjectController@main')->middleware('auth');
+
+Route::get('/beheer/projecten', 'ProjectController@createProjectPage')->middleware('auth');
 Route::get('/beheer/project/aanmaken', 'ProjectController@create')->middleware('auth');
 
 Route::post('beheer/AddProject', 'ProjectController@addProject')->middleware('auth');
@@ -51,6 +51,7 @@ Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
 
 
 Route::get('beheer/projectpoints/', 'ProjectPointsController@index');
+/////////////////
 
 // Return only data
 Route::get('/getCategories', 'MainPageController@getCatagories');

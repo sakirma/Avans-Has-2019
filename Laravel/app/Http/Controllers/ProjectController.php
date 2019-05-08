@@ -109,6 +109,10 @@ class ProjectController extends Controller
         return view('beheerder.MainModeratorPage');
     }
 
+    public function createProjectPage(){
+        return view('mainCrudPage');
+    }
+
     public function facetInfo(Request $request){
         $project = Project::find($request['project']);
         return view('project')->with(["project" => $project, "facet_id" => $request['facet_id'], "direction" => $request['direction']]);
