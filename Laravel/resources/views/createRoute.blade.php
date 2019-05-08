@@ -29,35 +29,40 @@
     @foreach($points as $l)
         <div class="point" style="width: 100px; margin: 20px; display: inline-block;">
             <label>
-                Project Name:
-                <input type="text" name="project_id" value="{{$l->name}}" readonly>
+                <b>
+                    <input type="text" name="project_id" value="{{$l->name}}" readonly>
+                </b>
             </label>
-            <label>Location:
+            <label>
                 <input type="text" name="latlng" value="{{$l->location}}" readonly>
             </label>
             <label>
-                Placed:
+                Neerzetten:
                 <input type="checkbox" id="button-{{$l->id}}" name="placed" onclick="onCheckbox( '{{$l->location}}', '{{$l->id}}');">
             </label>
         </div>
     @endforeach
+    <div id="travel-info" style="margin-left: 20px; margin-bottom: 5px;">
+        <p>Totale km: 0</p>
+        <p>Totale reistijd: 0:00</p>
+    </div>
+    <div id="options" style="margin: 20px;">
+        <label>
+            <b>Route naam:</b>
+            <input id="routename" type="text" name="routename" value="Route naam">
+        </label>
 
-    <label>
-        Route Name:
-        <input id="routename" type="text" name="routename" value="Route naam">
-    </label>
+        <button style="background-color: gray; padding: 10px;" onclick="uploadRoute()">Upload route</button>
 
-    <button style="background-color: gray" onclick="uploadRoute()">Upload route</button>
+        <select id="selectedRoute">
+            @foreach($routes as $route)
+                <option value="{{ $route->id }}">{{ $route->name }}</option>
+            @endforeach
+        </select>
 
-    <select id="selectedRoute">
-    @foreach($routes as $route)
-        <option value="{{ $route->id }}">{{ $route->name }}</option>
-    @endforeach
-
-    </select>
-
-    <button onclick="deleteRoute()">Delete route</button>
-    <button onclick="showRoute()">Show route</button>
+        <button style="background-color: gray; padding: 10px;" onclick="deleteRoute()">Verwijder route</button>
+        <button style="background-color: gray; padding: 10px;" onclick="showRoute()">Laat route zien</button>
+    </div>
 </div>
 
 </body>

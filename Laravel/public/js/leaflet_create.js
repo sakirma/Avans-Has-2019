@@ -159,6 +159,8 @@ function updateMarkersToRoute(e) {
     projectMarkers.clearLayers();
 
     for (let i = 0; i < e.waypoints.length; i++) {
+
+        let elem = document.getElementById("travel-info");
         let mId = e.waypoints[i].name;
         let projectInfo = e.waypoints[i].options.info;
 
@@ -178,7 +180,22 @@ function updateMarkersToRoute(e) {
                 '<p> Informatie: '+ projectInfo[0].information + '</p>'
             ).addTo(projectMarkers);
         //.on('dragend', calculateRoute)
+
+        let c = elem.childNodes;
+        c[1].innerHTML = "Totale km: " + Math.round((e.routes[0].summary.totalDistance / 1000) * 100) / 100;
+        c[3].innerHTML = "Totale reistijd: " + (timeConvert(e.routes[0].summary.totalTime));
     }
+}
+
+function timeConvert(n) {
+    let num = n;
+    let min = (num / 60);
+    let rmin = Math.floor(min);
+    let hours = (rmin / 60);
+    let rhours = Math.floor(hours);
+    let minutes = (hours - rhours) * 60;
+    let rminutes = Math.round(minutes);
+    return rhours + " uur(en) en " + rminutes + " minuut(en).";
 }
 
 function saveMarker(id){
@@ -201,6 +218,8 @@ function calculateRoute() {
         waypoints.push(L.routing.waypoint(L.latLng(layers[i].getLatLng().lat, layers[i].getLatLng().lng), layers[i].options.id, { id: layers[i].options.id, info: layers[i].options.info}));
     }
     routingControl.setWaypoints(waypoints);
+
+
 }
 
 function showRoute(){
