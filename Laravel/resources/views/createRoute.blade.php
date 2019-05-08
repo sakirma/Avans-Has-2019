@@ -48,7 +48,7 @@
         <input id="routename" type="text" name="routename" value="Route naam">
     </label>
 
-    <button onclick="uploadRoute()">Upload route</button>
+    <button style="background-color: gray" onclick="uploadRoute()">Upload route</button>
 
     <select id="selectedRoute">
     @foreach($routes as $route)
