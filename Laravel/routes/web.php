@@ -39,7 +39,9 @@ Route::post('/media', "MediaController@saveMedia")->name('media.save');
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
 // Crud
-Route::get('/beheer/projecten', 'ProjectController@main')->middleware('auth');
+Route::get('beheer', 'ProjectController@main')->middleware('auth');
+// TODO: Include projecten page features in com ponent
+//Route::get('/beheer/projecten', 'ProjectController@main')->middleware('auth');
 Route::get('/beheer/project/aanmaken', 'ProjectController@create')->middleware('auth');
 
 Route::post('beheer/AddProject', 'ProjectController@addProject')->middleware('auth');

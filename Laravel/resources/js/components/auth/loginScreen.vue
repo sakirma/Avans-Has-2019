@@ -61,7 +61,7 @@
         methods: {
             authenticate() {
                 axios.post('/admin/authenticate', {name: this.username, password: this.password}).then(response => {
-                    console.log(response.data);
+                    window.location.href = '/beheer';
                 });
             }
         }
