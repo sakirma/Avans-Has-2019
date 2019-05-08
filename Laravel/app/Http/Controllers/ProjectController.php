@@ -106,7 +106,7 @@ class ProjectController extends Controller
     }
 
     public function main(){
-        return view('mainCrudPage');
+        return view('beheerder.MainModeratorPage');
     }
 
     public function facetInfo(Request $request){
