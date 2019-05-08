@@ -34,7 +34,8 @@ Route::get('/admin/home', 'HomeController@index');
 Route::get('/admin/route', 'AdminRouteController@getRouteData');
 Route::post('/admin/create/route', 'AdminRouteController@createRoute');
 Route::post('/admin/remove/route', 'AdminRouteController@removeRoute');
-Route::post('/admin/get/points', 'AdminRouteController@getPoints');
+Route::post('/admin/get/points', 'AdminRouteController@getRoutePoints');
+Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint');
 
 
 Route::group(['prefix' => 'admin'], function () {

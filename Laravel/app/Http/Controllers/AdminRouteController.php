@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\ProjectPoint;
 use App\Models\Route;
 
@@ -17,13 +18,21 @@ class AdminRouteController extends Controller
     {
         $points = ProjectPoint::all();
         $routes = Route::all();
-
         $routePoints = RouteHasProjectPoint::all();
+
         return view('createRoute')->with(['points' => $points, 'routes' => $routes, 'routePoints' => $routePoints]);
     }
 
-    function insertMarkers(Request $request)
-    {
+    function getProjectPoint(Request $request){
+
+        $id = $request->id;
+        $project = ProjectPoint::where('id', $id)->get();
+
+        return $project;
+    }
+
+    function insertMarkers(Request $request){
+
         $latlng = $request->latlng;
         $markerNames = $request->name;
         $markerInfo = $request->info;
@@ -44,7 +53,7 @@ class AdminRouteController extends Controller
     }
 
     //TODO (bug) spatial data word niet geconverd met een join
-    function getPoints(Request $request){
+    function getRoutePoints(Request $request){
         $routeId = $request->routeId;
         $response = [];
 
