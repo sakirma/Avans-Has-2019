@@ -29,7 +29,6 @@
     @foreach($points as $l)
         <div class="point" style="width: 100px; margin: 20px; display: inline-block;">
             <label>
-                ID: {{$l->id}} <br>
                 Project Name:
                 <input type="text" name="project_id" value="{{$l->name}}" readonly>
             </label>
@@ -38,7 +37,7 @@
             </label>
             <label>
                 Placed:
-                <input type="checkbox" id="button-{{$l->id}}" name="placed" onclick="onCheckbox( '{{$l->location}}', '{{$l->id}}' );">
+                <input type="checkbox" id="button-{{$l->id}}" name="placed" onclick="onCheckbox( '{{$l->location}}', '{{$l->id}}');">
             </label>
         </div>
     @endforeach

@@ -13,13 +13,14 @@ addEventListener('core_finished', function (e) {
         router: L.Routing.mapbox('pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig'),
         waypoints: [null],
         routeWhileDragging: false,
+        addWaypoints: false,
         createMarker: function() { return null; }
     }).on('routesfound', updateMarkersToRoute).addTo(map);
 
     map.doubleClickZoom.disable();
 });
 
-function mousePlaceMarker(e) {
+/*function mousePlaceMarker(e) {
 
     L.marker(e.latlng,{
         draggable: true,
@@ -30,7 +31,7 @@ function mousePlaceMarker(e) {
         console.log(projectMarkers);
         calculateRoute();
     }
-}
+}*/
 
 function mouseRemoveMarker(e) {
     projectMarkers.removeLayer(e.layer);
@@ -73,15 +74,40 @@ function uploadRoute(){
     xhttp.send(jroute);
 }
 
-function placeMarker(latlng, id){
+async function placeMarker(latlng, id){
 
-    L.marker(latlng,{
-        draggable: true,
+    let projectInfo = await getProjectInfo(id);
+    let marker = L.marker(latlng,{
+        draggable: false,
         riseOnHover:true,
-        id: id
-    }).on('dragend', calculateRoute).addTo(projectMarkers);
+        id: id,
+        info: projectInfo
+    }).bindPopup(
+                '<p>' + latlng + '</p>' +
+                '<p> Naam: '+ projectInfo[0].name + '</p>' +
+                '<p> Informatie: '+ projectInfo[0].information + '</p>'
+                )
+        .addTo(projectMarkers);
+        // .on('dragend', calculateRoute)
+    console.log(marker);
 
     if (projectMarkers.getLayers().length > 1) { calculateRoute(id); }
+}
+
+function getProjectInfo(id) {
+
+    let token =  document.getElementsByName('csrf-token')[0].getAttribute('content');
+
+    return fetch('/admin/get/project', {
+        method: 'post',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+            'X-CSRF-Token': token,
+        },
+        body: 'id='+id,
+    })
+        .then(function(res){ return res.json(); })
+        .catch(function(err){ console.log(err) });
 }
 
 function removeMarker(latling, id){
@@ -98,7 +124,7 @@ function removeMarker(latling, id){
     //Update routing machine
     for (let i = 0; i < routes.length; i++) {
         if((routes[i].latLng !== null) && (!routes[i].latLng.equals(latling))){
-            newRoutes.push(L.routing.waypoint(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng), routes[i].name, routes[i].name));
+            newRoutes.push(L.routing.waypoint(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng), routes[i].name, { name: routes[i].name,  info: routes[i].options.info } ));
         }
     }
     routingControl.setWaypoints(newRoutes);
@@ -134,21 +160,24 @@ function updateMarkersToRoute(e) {
 
     for (let i = 0; i < e.waypoints.length; i++) {
         let mId = e.waypoints[i].name;
+        let projectInfo = e.waypoints[i].options.info;
 
         if(mId === undefined){ mId = Math.random().toString(36).substring(7); }
 
         L.marker(e.waypoints[i].latLng, {
-            draggable: true,
+            draggable: false,
             riseOnHover:true,
             id: mId,
+            info: projectInfo,
             distance: e.routes[0].summary.totalDistance,
             travelTime: e.routes[0].summary.totalTime
-        }).on('dragend', calculateRoute)
-            .bindPopup( '<p>' + e.waypoints[i].latLng.lat + ' , ' + e.waypoints[i].latLng.lng + '</p>' +
-                        'Naam: <input type="text" name="mName"><br>' +
-                        'Info: <textarea style="border: solid gray;"> </textarea>' +
-                        '<button onclick="saveMarker(`'+ mId +'`)">Click me</button>'
+        })
+            .bindPopup(
+                '<p>' + e.waypoints[i].latLng.lat + ' , ' + e.waypoints[i].latLng.lng + '</p>' +
+                '<p> Naam: '+ projectInfo[0].name + '</p>' +
+                '<p> Informatie: '+ projectInfo[0].information + '</p>'
             ).addTo(projectMarkers);
+        //.on('dragend', calculateRoute)
     }
 }
 
@@ -169,12 +198,13 @@ function calculateRoute() {
     let waypoints = [];
 
     for (let i = 0; i < layers.length; i++) {
-        waypoints.push(L.routing.waypoint(L.latLng(layers[i].getLatLng().lat, layers[i].getLatLng().lng), layers[i].options.id, layers[i].options.id));
+        waypoints.push(L.routing.waypoint(L.latLng(layers[i].getLatLng().lat, layers[i].getLatLng().lng), layers[i].options.id, { id: layers[i].options.id, info: layers[i].options.info}));
     }
     routingControl.setWaypoints(waypoints);
 }
 
 function showRoute(){
+
     projectMarkers.clearLayers();
 
     let sRoute = document.getElementById("selectedRoute");
@@ -234,5 +264,5 @@ function deleteRoute(){
     }
 }
 
-map.on('dblclick', mousePlaceMarker);
+//map.on('dblclick', mousePlaceMarker);
 projectMarkers.on('dblclick', mouseRemoveMarker);
