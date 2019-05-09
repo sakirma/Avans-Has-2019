@@ -1,94 +1,102 @@
 <template>
-  <!-- <ul>
-        <li v-for="route in routeList">{{ route.project_point_id }}<button @click="getProjectPoint(route.project_point_id)">Volg route</button> </li>
-  </ul>-->
-  <div id="mapPage" style="height: 100vh;">
-    <v-layout column fill-height style="background-color: #89a226">
-      <v-flex xs1 ma-3></v-flex>
+    <div id="mapPage" style="height: 100vh;">
+        <v-layout column fill-height style="background-color: #89a226">
+            <v-flex ma-3 xs1></v-flex>
 
-      <v-flex>
-        <l-map ref="map" :zoom="zoom" :center="center" style="height:100%;">
-          <v-container ma-0 pa-0 fluid grid-list-md>
-            <v-layout align-start justify-end row fill-height>
-              <list-routes :routesParent="this"></list-routes>
-            </v-layout>
-          </v-container>
+            <v-flex>
+                <l-map :center="center" :zoom="zoom" id="map" ref="map" style="height:100%;">
+                    <v-container fluid grid-list-md ma-0 pa-0>
+                        <v-layout align-start fill-height justify-end row>
+                            <list-routes :routesParent="this"></list-routes>
+                        </v-layout>
+                    </v-container>
 
-          <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+                    <l-tile-layer :attribution="attribution" :url="url"></l-tile-layer>
 
-          <template v-for="(marker, index) in markers">
-            <l-marker :lat-lng="marker.latlng" :key="index">
-              <l-popup>
-                <v-btn @click="OpenProjectPagePressed(1)">To Project Page</v-btn>
-              </l-popup>
-            </l-marker>
-          </template>
-        </l-map>
-      </v-flex>
+                    <template v-for="(marker, index) in markers">
+                        <l-marker :key="index" :lat-lng="marker.latlng">
+                            <l-popup>
+                                <v-btn @click="OpenProjectPagePressed(1)">To Project Page</v-btn>
+                            </l-popup>
+                        </l-marker>
+                    </template>
+                </l-map>
+            </v-flex>
 
-      <v-flex xs1>
-        <v-card height="100%" color="rgb(137, 162, 38, 1)"></v-card>
-      </v-flex>
-    </v-layout>
-  </div>
+            <v-flex xs1>
+                <v-card color="rgb(137, 162, 38, 1)" height="100%"></v-card>
+            </v-flex>
+        </v-layout>
+    </div>
 </template>
 
 <script>
-import MapPage from "./MapPage";
-import { LMap, LTileLayer, LMarker, LControl, LPopup } from "vue2-leaflet";
-import "leaflet/dist/leaflet.css";
-import ListRoutes from "./routePage/list-routes";
+    import MapPage from "./MapPage";
+    import {LMap, LTileLayer, LMarker, LControl, LPopup} from "vue2-leaflet";
+    import "leaflet/dist/leaflet.css";
+    import ListRoutes from "./routePage/list-routes";
 
-import MapPageHeader from "./map-page-header";
-import DropDownButton from "./mapPageButton/DropDownButton";
+    import MapPageHeader from "./map-page-header";
+    import DropDownButton from "./mapPageButton/DropDownButton";
 
-export default {
-  name: "RoutesComponent",
-  components: {
-    MapPageHeader,
-    DropDownButton,
-    LMap,
-    LTileLayer,
-    LMarker,
-    LPopup,
-    ListRoutes
-  },
-  data() {
-    return {
-      zoom: 11,
-      center: L.latLng(51.7142669290121, 5.3173828125),
-      url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
-      attribution:
-        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      markers: [],
-      projectPoints: []
+    import routing from "leaflet-routing-machine";
+    import * as routeList from "./routeList.js";
+
+    export default {
+        name: "RoutesComponent",
+        components: {
+            MapPageHeader,
+            DropDownButton,
+            LMap,
+            LTileLayer,
+            LMarker,
+            LPopup,
+            LControl,
+            ListRoutes
+        },
+        data() {
+            return {
+                zoom: 11,
+                center: L.latLng(51.7142669290121, 5.3173828125),
+                url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+                attribution:
+                    '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+                markers: [],
+                projectPoints: [],
+                routingControl: null,
+                map: null,
+            };
+        },
+        methods: {
+            disableInputEvents(element) {
+                this.$parent.disableInputEvents(element);
+            },
+            OpenProjectPagePressed: function (projectId) {
+                this.$root.onProjectOpened(projectId);
+            },
+            drawPoints: function ($arr) {
+                this.markers = [];
+                this.projectPoints = [];
+                for (let i = 0; i < $arr.length; i++) {
+                    this.projectPoints.push({location: $arr[i].location});
+                    var pointId = this.projectPoints[i].id;
+                    var lat = this.projectPoints[i].location.coordinates[0];
+                    var lng = this.projectPoints[i].location.coordinates[1];
+                    this.markers.push({
+                        id: pointId,
+                        latlng: L.latLng(parseFloat(lat), parseFloat(lng)),
+                        content: ""
+                    });
+                }
+                console.log(this.projectPoints);
+                routeList.routeClicked(this.$refs.map.mapObject, this.projectPoints);
+            }
+        },
     };
-  },
-  methods: {
-    disableInputEvents(element) {
-      this.$parent.disableInputEvents(element);
-    },  
-    OpenProjectPagePressed: function(projectId) {
-      this.$root.onProjectOpened(projectId);
-    },
-    drawPoints: function($arr) {
-      this.markers = [];
-      for (let i = 0; i < $arr.length; i++) {
-        this.projectPoints.push({ location: $arr[i].location });
-        var pointId = this.projectPoints[i].id;
-        var lat = this.projectPoints[i].location.coordinates[0];
-        var lng = this.projectPoints[i].location.coordinates[1];
-        this.markers.push({
-          id: pointId,
-          latlng: L.latLng(parseFloat(lat), parseFloat(lng)),
-          content: "hoi!"
-        });
-      }
-    }
-  },
-  mounted() {}
-};
 </script>
 
-<style scoped>
+<style>
+    .leaflet-top.leaflet-right {
+        display: none;
+    }
 </style>
