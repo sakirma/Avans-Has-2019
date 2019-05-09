@@ -35,28 +35,16 @@ Vue.use(Vuebar);
 
 import store from './store/session-store'
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-Vue.component(
-    'passport-clients',
-    require('./components/passport/Clients.vue').default
-);
-
-Vue.component(
-    'passport-authorized-clients',
-    require('./components/passport/AuthorizedClients.vue').default
-);
-
-Vue.component(
-    'passport-personal-access-tokens',
-    require('./components/passport/PersonalAccessTokens.vue').default
-);
 
 Vue.component('main-page',
     require('./MainPage').default);
 
 Vue.component('first-page',
     require('./components/FirstPage').default
+);
+
+Vue.component('route-list',
+    require('./components/Routes').default
 );
 
 Vue.component('map-page',
@@ -78,6 +66,14 @@ Vue.component('main-crud-page',
     require('./components/crudProject/MainCrudPage').default
 );
 
+Vue.component('view-project-points',
+    require('./components/crudProjectPoint/ViewProjectPoints').default
+);
+
+Vue.component('login-screen',
+    require('./components/auth/loginScreen').default
+);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -89,4 +85,13 @@ const app = new Vue({
     el: '#app',
     Vuetify,
     store,
+    methods: {
+        disableInputEvents(element) {
+            L.DomEvent.disableClickPropagation(element.$el);
+            L.DomEvent.disableScrollPropagation(element.$el);
+        },
+        onProjectOpened(projectId) {
+            console.log('app.js: wooow');
+        }
+    }
 });

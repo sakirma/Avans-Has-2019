@@ -85,6 +85,10 @@ class ProjectController extends Controller
     }
 
     public function main(){
+        return view('beheerder.MainModeratorPage');
+    }
+
+    public function createProjectPage(){
         return view('mainCrudPage');
     }
 

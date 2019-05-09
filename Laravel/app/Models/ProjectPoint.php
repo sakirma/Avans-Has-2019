@@ -2,11 +2,18 @@
 
 namespace App\Models;
 
+use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class ProjectPoint extends Model
 {
+    use SpatialTrait;
+
     protected $table = 'project_point';
+    protected $spatialFields = [
+        'location',
+        'geo_json'
+    ];
 
     // Table does not have timestamps
     public $timestamps = false;

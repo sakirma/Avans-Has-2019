@@ -19,7 +19,7 @@ Route::get('/about', function(){
     return view('about');
 });
 
-    Route::get('/project', function(){
+Route::get('/project', function(){
     return view('project');
 });
 
@@ -29,25 +29,50 @@ Route::post('GetProjectWithinDistance', "ProjectController@getProjectWithinDista
 Route::get('/project/info/{id}', "ProjectController@index")->name("project.info");
 Route::post('/project/info/{id}', "ProjectController@facetInfo")->name("project.info.facet");
 
-Route::get('/admin/home', 'HomeController@index');
+
+
+
+
 Route::group(['prefix' => 'admin'], function () {
     Auth::routes();
 });
+
+Route::get('admin/login', 'Auth\LoginController@showLoginForm');
+Route::post('admin/authenticate', 'Auth\LoginController@authenticate');
+
+
 Route::get('/media', "MediaController@index")->name('media');
 
 Route::post('/media', "MediaController@saveMedia")->name('media.save');
 
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
-// Crud
-Route::get('/beheer', 'ProjectController@main');
-Route::get('/beheer/project/aanmaken', 'ProjectController@create');
-Route::get('/beheer/edit/{id}','ProjectController@edit');
+Route::get('details/{id}', "ProjectPointsController@GetDetails");
 
-Route::post('beheer/AddProject', 'ProjectController@addProject');
-Route::post('beheer/updateProject', 'ProjectController@update');
-Route::post('beheer/DeleteProject', 'ProjectController@destroy');
-Route::get('/beheer/edit/{id}','ProjectController@edit');
+Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
+Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
+Route::get('getAllRoutes', "RoutesController@getAllRoutes");
+Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");
+// Crud
+// TODO: Change beheer to admin.
+Route::get('beheer', 'ProjectController@main')->middleware('auth');
+
+Route::get('/beheer/projecten', 'ProjectController@createProjectPage')->middleware('auth');
+Route::get('/beheer/project/aanmaken', 'ProjectController@create')->middleware('auth');
+
+Route::post('/beheer/AddProject', 'ProjectController@addProject')->middleware('auth');
+Route::post('/beheer/updateProject', 'ProjectController@update')->middleware('auth');
+Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
+Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
+Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
+
+
+Route::get('/admin/route', 'AdminRouteController@getRouteData')->middleware('auth');
+Route::post('/admin/create/route', 'AdminRouteController@createRoute')->middleware('auth');
+Route::post('/admin/remove/route', 'AdminRouteController@removeRoute')->middleware('auth');
+Route::post('/admin/get/points', 'AdminRouteController@getRoutePoints')->middleware('auth');
+Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint')->middleware('auth');
+/////////////////
 
 
 // Return only data

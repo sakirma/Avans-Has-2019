@@ -13,9 +13,9 @@ return [
     */
    
     'supportsCredentials' => false,
-    'allowedOrigins' => ['*'], // TODO: Specify an origin (which is the host of the server).
+    'allowedOrigins' => ['*'],
     'allowedOriginsPatterns' => [],
-    'allowedHeaders' => ['X-Requested-With'],
+    'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
     'exposedHeaders' => [],
     'maxAge' => 0,
