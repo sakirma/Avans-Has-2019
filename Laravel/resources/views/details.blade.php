@@ -50,7 +50,8 @@
                 </tr>
             </table>
 
-            <table>
+            <p>Comments:</p>
+            <table border="2">
                 @foreach($model->comments as $comment)
                     <tr>
                         <td>{{ $comment->text }}</td>
