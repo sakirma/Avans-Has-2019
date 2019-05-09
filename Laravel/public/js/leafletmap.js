@@ -1,12 +1,7 @@
 var mymap = L.map('leaflet').setView([52.143438, 6.215206], 7.5);
 var markerGroup = [];
 
-
 $(document).ready(function () {
-    initMap();
-});
-
-function initMap(){
 
     // TODO: This has to be done through the database. Retrieve the GeoJSON data and convert it using json_encode().
     /*L.geoJSON(example).addTo(mymap).on('click', () => {
@@ -30,7 +25,8 @@ function initMap(){
     }).addTo(mymap);
 
     mymap.locate({setView: true, maxZoom: 16});
-}
+
+});
 
 mymap.on('locationfound',onLocationFound);
 mymap.on('locationerror', onLocationError);
