@@ -19,6 +19,7 @@ class CommentController extends Controller
         $comment->fill(["point_id" => $request["point_id"],
                         "text" => $request["text"]]);
         $comment->save();
+        return redirect()->back();
     }
 
     /**
@@ -31,5 +32,6 @@ class CommentController extends Controller
         if(isset($comment) && !empty($comment)){
             $comment->delete();
         }
-    
+        return redirect()->back();
+    }
 }
