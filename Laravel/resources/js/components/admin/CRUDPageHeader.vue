@@ -13,7 +13,9 @@
         <v-flex pl-3>
             <v-btn @click="openEditProjectPage"> Projecten </v-btn>
         </v-flex>
-
+        <v-flex>
+            <v-btn @click="openEditRoutesPage"> Routes </v-btn>
+        </v-flex>
         <v-flex grow>
 
         </v-flex>
@@ -26,6 +28,9 @@
         methods: {
             openEditProjectPage() {
                 window.location.href = '/beheer/projecten';
+            },
+            openEditRoutesPage() {
+                window.location.href = '/admin/route';
             }
         }
     }

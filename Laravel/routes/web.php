@@ -48,6 +48,7 @@ Route::post('/media', "MediaController@saveMedia")->name('media.save');
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
 // Crud
+// TODO: Change beheer to admin.
 Route::get('beheer', 'ProjectController@main')->middleware('auth');
 
 Route::get('/beheer/projecten', 'ProjectController@createProjectPage')->middleware('auth');
@@ -59,7 +60,6 @@ Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('a
 Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
 Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
 
-Route::get('/admin/home', 'HomeController@index');
 
 Route::get('/admin/route', 'AdminRouteController@getRouteData')->middleware('auth');
 Route::post('/admin/create/route', 'AdminRouteController@createRoute')->middleware('auth');

@@ -8168,7 +8168,7 @@ function isSlowBuffer (obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery JavaScript Library v3.4.1
+ * jQuery JavaScript Library v3.4.0
  * https://jquery.com/
  *
  * Includes Sizzle.js
@@ -8178,7 +8178,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2019-05-01T21:04Z
+ * Date: 2019-04-10T19:48Z
  */
 ( function( global, factory ) {
 
@@ -8311,7 +8311,7 @@ function toType( obj ) {
 
 
 var
-	version = "3.4.1",
+	version = "3.4.0",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -12667,12 +12667,8 @@ var documentElement = document.documentElement;
 		},
 		composed = { composed: true };
 
-	// Support: IE 9 - 11+, Edge 12 - 18+, iOS 10.0 - 10.2 only
 	// Check attachment across shadow DOM boundaries when possible (gh-3504)
-	// Support: iOS 10.0-10.2 only
-	// Early iOS 10 versions support `attachShadow` but not `getRootNode`,
-	// leading to errors. We need to check for `getRootNode`.
-	if ( documentElement.getRootNode ) {
+	if ( documentElement.attachShadow ) {
 		isAttached = function( elem ) {
 			return jQuery.contains( elem.ownerDocument, elem ) ||
 				elem.getRootNode( composed ) === elem.ownerDocument;
@@ -13532,7 +13528,8 @@ jQuery.event = {
 
 				// Claim the first handler
 				if ( rcheckableType.test( el.type ) &&
-					el.click && nodeName( el, "input" ) ) {
+					el.click && nodeName( el, "input" ) &&
+					dataPriv.get( el, "click" ) === undefined ) {
 
 					// dataPriv.set( el, "click", ... )
 					leverageNative( el, "click", returnTrue );
@@ -13549,7 +13546,8 @@ jQuery.event = {
 
 				// Force setup before triggering a click
 				if ( rcheckableType.test( el.type ) &&
-					el.click && nodeName( el, "input" ) ) {
+					el.click && nodeName( el, "input" ) &&
+					dataPriv.get( el, "click" ) === undefined ) {
 
 					leverageNative( el, "click" );
 				}
@@ -13590,9 +13588,7 @@ function leverageNative( el, type, expectSync ) {
 
 	// Missing expectSync indicates a trigger call, which must force setup through jQuery.event.add
 	if ( !expectSync ) {
-		if ( dataPriv.get( el, type ) === undefined ) {
-			jQuery.event.add( el, type, returnTrue );
-		}
+		jQuery.event.add( el, type, returnTrue );
 		return;
 	}
 
@@ -13607,13 +13603,9 @@ function leverageNative( el, type, expectSync ) {
 			if ( ( event.isTrigger & 1 ) && this[ type ] ) {
 
 				// Interrupt processing of the outer synthetic .trigger()ed event
-				// Saved data should be false in such cases, but might be a leftover capture object
-				// from an async native handler (gh-4350)
-				if ( !saved.length ) {
+				if ( !saved ) {
 
 					// Store arguments for use when handling the inner native event
-					// There will always be at least one argument (an event object), so this array
-					// will not be confused with a leftover capture object.
 					saved = slice.call( arguments );
 					dataPriv.set( this, type, saved );
 
@@ -13626,14 +13618,14 @@ function leverageNative( el, type, expectSync ) {
 					if ( saved !== result || notAsync ) {
 						dataPriv.set( this, type, false );
 					} else {
-						result = {};
+						result = undefined;
 					}
 					if ( saved !== result ) {
 
 						// Cancel the outer synthetic event
 						event.stopImmediatePropagation();
 						event.preventDefault();
-						return result.value;
+						return result;
 					}
 
 				// If this is an inner synthetic event for an event with a bubbling surrogate
@@ -13648,19 +13640,17 @@ function leverageNative( el, type, expectSync ) {
 
 			// If this is a native event triggered above, everything is now in order
 			// Fire an inner synthetic event with the original arguments
-			} else if ( saved.length ) {
+			} else if ( saved ) {
 
 				// ...and capture the result
-				dataPriv.set( this, type, {
-					value: jQuery.event.trigger(
+				dataPriv.set( this, type, jQuery.event.trigger(
 
-						// Support: IE <=9 - 11+
-						// Extend with the prototype to reset the above stopImmediatePropagation()
-						jQuery.extend( saved[ 0 ], jQuery.Event.prototype ),
-						saved.slice( 1 ),
-						this
-					)
-				} );
+					// Support: IE <=9 - 11+
+					// Extend with the prototype to reset the above stopImmediatePropagation()
+					jQuery.extend( saved.shift(), jQuery.Event.prototype ),
+					saved,
+					this
+				) );
 
 				// Abort handling of the native event
 				event.stopImmediatePropagation();
@@ -71386,6 +71376,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.circleOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["circle"])(this.latLng, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -71393,7 +71385,9 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   methods: {}
 };
@@ -71933,6 +71927,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.circleOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["circleMarker"])(this.latLng, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -71940,7 +71936,9 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -72187,6 +72185,8 @@ var script = {
   name: 'LControl',
   mixins: [ControlMixin, Options],
   mounted: function mounted () {
+    var this$1 = this;
+
     var LControl = leaflet__WEBPACK_IMPORTED_MODULE_0__["Control"].extend({
       element: undefined,
       onAdd: function onAdd () {
@@ -72202,7 +72202,9 @@ var script = {
     this.parentContainer = findRealParent(this.$parent);
     this.mapObject.setElement(this.$el);
     this.mapObject.addTo(this.parentContainer.mapObject);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -72441,12 +72443,16 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(Object.assign({}, this.controlOptions,
       {prefix: this.prefix}), this);
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["control"].attribution(options);
     propsBinder(this, this.mapObject, this.$options.props);
     this.mapObject.addTo(this.$parent.mapObject);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   render: function render () {
     return null;
@@ -72702,6 +72708,8 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(Object.assign({}, this.controlOptions,
       {collapsed: this.collapsed,
       autoZIndex: this.autoZIndex,
@@ -72711,7 +72719,9 @@ var script = {
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["control"].layers(null, null, options);
     propsBinder(this, this.mapObject, this.$options.props);
     this.$parent.registerLayerControl(this);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   methods: {
     addLayer: function addLayer (layer) {
@@ -72975,6 +72985,8 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(Object.assign({}, this.controlOptions,
       {maxWidth: this.maxWidth,
       metric: this.metric,
@@ -72983,7 +72995,9 @@ var script = {
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["control"].scale(options);
     propsBinder(this, this.mapObject, this.$options.props);
     this.mapObject.addTo(this.$parent.mapObject);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   render: function render () {
     return null;
@@ -73235,6 +73249,8 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(Object.assign({}, this.controlOptions,
       {zoomInText: this.zoomInText,
       zoomInTitle: this.zoomInTitle,
@@ -73243,7 +73259,9 @@ var script = {
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["control"].zoom(options);
     propsBinder(this, this.mapObject, this.$options.props);
     this.mapObject.addTo(this.$parent.mapObject);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   render: function render () {
     return null;
@@ -73542,6 +73560,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["featureGroup"])();
     propsBinder(this, this.mapObject, this.$options.props);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -73550,7 +73570,9 @@ var script = {
     if (this.visible) {
       this.parentContainer.addLayer(this);
     }
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -73892,12 +73914,16 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["geoJSON"])(this.geojson, this.mergedOptions);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
     propsBinder(this, this.mapObject, this.$options.props);
     this.parentContainer = findRealParent(this.$parent, true);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   beforeDestroy: function beforeDestroy () {
     this.parentContainer.mapObject.removeLayer(this.mapObject);
@@ -74289,6 +74315,8 @@ var script = {
   },
 
   mounted: function mounted () {
+    var this$1 = this;
+
     var GLayer = leaflet__WEBPACK_IMPORTED_MODULE_1__["GridLayer"].extend({});
     var options = optionsMerger(this.gridLayerOptions, this);
     this.mapObject = new GLayer(options);
@@ -74298,7 +74326,9 @@ var script = {
     this.mapObject.createTile = this.createTile;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   beforeDestroy: function beforeDestroy () {
     this.parentContainer.removeLayer(this.mapObject);
@@ -74645,9 +74675,7 @@ var script = {
       this.$el,
       { attributes: true, childList: true, characterData: true, subtree: true }
     );
-
     this.scheduleCreateIcon();
-    this.$emit('ready', this.mapObject);
   },
 
   beforeDestroy: function beforeDestroy () {
@@ -74941,11 +74969,10 @@ var script = {
   },
   mounted: function mounted () {
     leaflet__WEBPACK_IMPORTED_MODULE_0__["Icon"].Default.imagePath = this.imagePath;
-    propsBinder(this, this.mapObject, this.$options.props);
-    this.$emit('ready', this.mapObject);
+    propsBinder(this, {}, this.$options.props);
   },
   methods: {
-    setImagePath: function setImagePath (newVal, oldVal) {
+    setImagePath: function setImagePath (newVal) {
       leaflet__WEBPACK_IMPORTED_MODULE_0__["Icon"].Default.imagePath = newVal;
     }
   },
@@ -75346,13 +75373,17 @@ var script = {
   name: 'LImageOverlay',
   mixins: [ImageOverlayMixin],
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.imageOverlayOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["imageOverlay"])(this.url, this.bounds, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
     propsBinder(this, this.mapObject, this.$options.props);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   render: function render () {
     return null;
@@ -75651,6 +75682,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["layerGroup"])();
     propsBinder(this, this.mapObject, this.$options.props);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -75659,7 +75692,9 @@ var script = {
     if (this.visible) {
       this.parentContainer.addLayer(this);
     }
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -76012,6 +76047,8 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger({
       minZoom: this.minZoom,
       maxZoom: this.maxZoom,
@@ -76038,7 +76075,9 @@ var script = {
     this.ready = true;
     // DEPRECATED leaflet:load
     this.$emit('leaflet:load');
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   methods: {
     registerLayerControl: function registerLayerControl (lControlLayers) {
@@ -76279,7 +76318,7 @@ var __vue_staticRenderFns__ = [];
   /* style */
   var __vue_inject_styles__ = function (inject) {
     if (!inject) { return }
-    inject("data-v-33ad31f6_0", { source: ".vue2leaflet-map{height:100%;width:100%}", map: undefined, media: undefined });
+    inject("data-v-09897586_0", { source: ".vue2leaflet-map{height:100%;width:100%}", map: undefined, media: undefined });
 
   };
   /* scoped */
@@ -76538,6 +76577,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(Object.assign({}, this.layerOptions,
       {icon: this.icon,
       zIndexOffset: this.zIndexOffset,
@@ -76549,7 +76590,9 @@ var script = {
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
     this.ready = true;
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   methods: {
     setDraggable: function setDraggable (newVal, oldVal) {
@@ -77154,6 +77197,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.polygonOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["polygon"])(this.latLngs, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -77161,7 +77206,9 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -77720,6 +77767,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.polyLineOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["polyline"])(this.latLngs, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -77727,7 +77776,9 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -77985,6 +78036,8 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.popperOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["popup"])(options);
     if (this.latLng !== undefined) {
@@ -77995,7 +78048,9 @@ var script = {
     this.mapObject.setContent(this.content || this.$el);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.mapObject.bindPopup(this.mapObject);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   beforeDestroy: function beforeDestroy () {
     if (this.parentContainer) {
@@ -78576,6 +78631,8 @@ var script = {
     };
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.polygonOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["rectangle"])(this.bounds, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -78583,7 +78640,9 @@ var script = {
     this.ready = true;
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -78959,13 +79018,17 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.tileLayerOptions, this);
     this.mapObject = this.tileLayerClass(this.url, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
     propsBinder(this, this.mapObject, this.$options.props);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -79217,6 +79280,8 @@ var script = {
   name: 'LTooltip',
   mixins: [Popper, Options],
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.popperOptions, this);
     this.mapObject = Object(leaflet__WEBPACK_IMPORTED_MODULE_0__["tooltip"])(options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
@@ -79224,7 +79289,9 @@ var script = {
     this.mapObject.setContent(this.content || this.$el);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.mapObject.bindTooltip(this.mapObject);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   },
   beforeDestroy: function beforeDestroy () {
     if (this.parentContainer) {
@@ -79640,13 +79707,17 @@ var script = {
     }
   },
   mounted: function mounted () {
+    var this$1 = this;
+
     var options = optionsMerger(this.tileLayerWMSOptions, this);
     this.mapObject = leaflet__WEBPACK_IMPORTED_MODULE_0__["tileLayer"].wms(this.baseUrl, options);
     leaflet__WEBPACK_IMPORTED_MODULE_0__["DomEvent"].on(this.mapObject, this.$listeners);
     propsBinder(this, this.mapObject, this.$options.props);
     this.parentContainer = findRealParent(this.$parent);
     this.parentContainer.addLayer(this, !this.visible);
-    this.$emit('ready', this.mapObject);
+    this.$nextTick(function () {
+      this$1.$emit('ready', this$1.mapObject);
+    });
   }
 };
 
@@ -82226,7 +82297,7 @@ var findRealParent = function (firstVueParent) {
 /*!***********************************************************!*\
   !*** ./node_modules/vue2-leaflet/dist/vue2-leaflet.es.js ***!
   \***********************************************************/
-/*! exports provided: debounce, capitalizeFirstLetter, propsBinder, collectionCleaner, optionsMerger, findRealParent, CircleMixin, ControlMixin, GridLayerMixin, ImageOverlayMixin, InteractiveLayerMixin, LayerMixin, LayerGroupMixin, OptionsMixin, PathMixin, PolygonMixin, PolylineMixin, PopperMixin, TileLayerMixin, TileLayerWMSMixin, LCircle, LCircleMarker, LControl, LControlAttribution, LControlLayers, LControlScale, LControlZoom, LFeatureGroup, LGeoJson, LGridLayer, LIcon, LIconDefault, LImageOverlay, LLayerGroup, LMap, LMarker, LPolygon, LPolyline, LPopup, LRectangle, LTileLayer, LTooltip, LWMSTileLayer */
+/*! exports provided: CircleMixin, ControlMixin, GridLayerMixin, ImageOverlayMixin, InteractiveLayerMixin, LayerMixin, LayerGroupMixin, OptionsMixin, PathMixin, PolygonMixin, PolylineMixin, PopperMixin, TileLayerMixin, TileLayerWMSMixin, LCircle, LCircleMarker, LControl, LControlAttribution, LControlLayers, LControlScale, LControlZoom, LFeatureGroup, LGeoJson, LGridLayer, LIcon, LIconDefault, LImageOverlay, LLayerGroup, LMap, LMarker, LPolygon, LPolyline, LPopup, LRectangle, LTileLayer, LTooltip, LWMSTileLayer, debounce, capitalizeFirstLetter, propsBinder, collectionCleaner, optionsMerger, findRealParent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -92463,7 +92534,7 @@ var __assign = undefined && undefined.__assign || function () {
             tag = _a.tag,
             data = _a.data;
         data.attrs = Object.assign({}, data.attrs, this.$attrs);
-        return h('div', this.setTextColor(!this.disabled && this.isActive && this.color, {
+        return h('div', this.setTextColor(!this.disabled && this.color, {
             class: this.listClasses,
             attrs: {
                 disabled: this.disabled,
@@ -96222,8 +96293,7 @@ var __values = undefined && undefined.__values || function (o) {
                     avatar: avatar,
                     disabled: disabled,
                     ripple: true,
-                    value: value,
-                    color: this.color
+                    value: value
                 }
             };
             if (!this.$scopedSlots.item) {
@@ -102567,7 +102637,7 @@ var Vuetify = {
             return false;
         })(opts.components);
     },
-    version: '1.5.14'
+    version: '1.5.13'
 };
 function checkVueVersion(Vue, requiredVue) {
     var vueDep = requiredVue || '^2.5.18';
@@ -104253,7 +104323,7 @@ var Vuetify = {
         Vue.use(_components_Vuetify__WEBPACK_IMPORTED_MODULE_1__["default"], __assign({ components: _components__WEBPACK_IMPORTED_MODULE_2__,
             directives: _directives__WEBPACK_IMPORTED_MODULE_3__["default"] }, args));
     },
-    version: '1.5.14'
+    version: '1.5.13'
 };
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(Vuetify);
@@ -111934,8 +112004,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Storm\Desktop\Roadleaf\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Storm\Desktop\Roadleaf\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
