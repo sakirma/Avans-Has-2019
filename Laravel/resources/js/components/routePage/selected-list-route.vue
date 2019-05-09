@@ -50,7 +50,7 @@ export default {
   methods: {
     followRoute($id) {
       axios
-        .get("http://127.0.0.1:8000/getProjectPointOfRoute/" + $id)
+        .get("getProjectPointOfRoute/" + $id)
         .then(response => {
           this.routesParent.drawPoints(response.data);
         });

@@ -50,7 +50,7 @@ export default {
   mounted() {
     this.$root.disableInputEvents(this);
     window.axios
-      .get("http://127.0.0.1:8000/getAllRoutes")
+      .get("getAllRoutes")
       .then(response => {
         for (let i = 0; i < response.data.length; i++) {
           this.routeList.push({
