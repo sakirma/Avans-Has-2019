@@ -38,16 +38,25 @@
                 </tr>
                 <tr>
                     <th>Category:</th>
-                    <td>{{ $project->category }}</td>
+                    <td>{{ $model->project->category }}</td>
                 </tr>
                 <tr>
                     <th>Name:</th>
-                    <td>{{ $project->name }}</td>
+                    <td>{{ $model->project->name }}</td>
                 </tr>
                 <tr>
                     <th>Category informatie:</th>
-                    <td>{{ $project->information }}</td>
+                    <td>{{ $model->project->information }}</td>
                 </tr>
+            </table>
+
+            <table>
+                @foreach($model->comments as $comment)
+                    <tr>
+                        <td>{{ $comment->text }}</td>
+                        <td>{{ $comment->created_at }}</td>
+                    </tr>
+                @endforeach
             </table>
         </div>
     </body>
