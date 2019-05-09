@@ -43,6 +43,10 @@ Vue.component('first-page',
     require('./components/FirstPage').default
 );
 
+Vue.component('route-list',
+    require('./components/Routes').default
+);
+
 Vue.component('map-page',
     require('./components/MapPage').default
 );
@@ -81,4 +85,13 @@ const app = new Vue({
     el: '#app',
     Vuetify,
     store,
+    methods: {
+        disableInputEvents(element) {
+            L.DomEvent.disableClickPropagation(element.$el);
+            L.DomEvent.disableScrollPropagation(element.$el);
+        },
+        onProjectOpened(projectId) {
+            console.log('app.js: wooow');
+        }
+    }
 });
