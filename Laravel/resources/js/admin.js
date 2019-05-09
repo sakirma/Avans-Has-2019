@@ -35,43 +35,8 @@ Vue.use(Vuebar);
 
 import store from './store/session-store'
 
-
-Vue.component('main-page',
-    require('./MainPage').default);
-
-Vue.component('first-page',
-    require('./components/FirstPage').default
-);
-
-Vue.component('route-list',
-    require('./components/Routes').default
-);
-
-Vue.component('map-page',
-    require('./components/MapPage').default
-);
-
-Vue.component('add-project',
-    require('./components/crudProject/AddProject').default
-);
-
-Vue.component('view-projects',
-    require('./components/crudProject/ViewProjects').default
-);
-
-Vue.component('edit-projects',
-    require('./components/crudProject/EditProjects').default
-);
 Vue.component('main-crud-page',
-    require('./components/crudProject/MainCrudPage').default
-);
-
-Vue.component('view-project-points',
-    require('./components/crudProjectPoint/ViewProjectPoints').default
-);
-
-Vue.component('login-screen',
-    require('./components/auth/loginScreen').default
+    require('./components/admin/MainCrudPage').default
 );
 
 /**
@@ -85,13 +50,4 @@ const app = new Vue({
     el: '#app',
     Vuetify,
     store,
-    methods: {
-        disableInputEvents(element) {
-            L.DomEvent.disableClickPropagation(element.$el);
-            L.DomEvent.disableScrollPropagation(element.$el);
-        },
-        onProjectOpened(projectId) {
-            console.log('app.js: wooow');
-        }
-    }
 });

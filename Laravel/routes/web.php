@@ -47,25 +47,32 @@ Route::post('/media', "MediaController@saveMedia")->name('media.save');
 
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
+Route::get('details/{id}', "ProjectPointsController@GetDetails");
+
+Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
+Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
+Route::get('getAllRoutes', "RoutesController@getAllRoutes");
+Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");
 // Crud
+// TODO: Change beheer to admin.
 Route::get('beheer', 'ProjectController@main')->middleware('auth');
-// TODO: Include projecten page features in com ponent
-//Route::get('/beheer/projecten', 'ProjectController@main')->middleware('auth');
+
+Route::get('/beheer/projecten', 'ProjectController@createProjectPage')->middleware('auth');
 Route::get('/beheer/project/aanmaken', 'ProjectController@create')->middleware('auth');
 
-Route::post('beheer/AddProject', 'ProjectController@addProject')->middleware('auth');
-Route::post('beheer/updateProject', 'ProjectController@update')->middleware('auth');
-Route::post('beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
+Route::post('/beheer/AddProject', 'ProjectController@addProject')->middleware('auth');
+Route::post('/beheer/updateProject', 'ProjectController@update')->middleware('auth');
+Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
 Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
-Route::get('beheer/projectpoints/', 'ProjectPointsController@index');
+Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
 
-Route::get('/admin/home', 'HomeController@index');
 
 Route::get('/admin/route', 'AdminRouteController@getRouteData')->middleware('auth');
 Route::post('/admin/create/route', 'AdminRouteController@createRoute')->middleware('auth');
 Route::post('/admin/remove/route', 'AdminRouteController@removeRoute')->middleware('auth');
 Route::post('/admin/get/points', 'AdminRouteController@getRoutePoints')->middleware('auth');
 Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint')->middleware('auth');
+/////////////////
 
 
 // Return only data

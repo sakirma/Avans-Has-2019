@@ -14,14 +14,14 @@ class CreatePointsHasImageTable extends Migration
     public function up()
     {
         Schema::create('points_has_image', function (Blueprint $table) {
-            $table->unsignedInteger('project_id');
+            $table->unsignedInteger('point_id');
             $table->string('media_name');
 
-            $table->primary(['project_id', 'media_name']);
+            $table->primary(['point_id', 'media_name']);
         });
 
         Schema::table('points_has_image', function (Blueprint $table) {
-            $table->foreign('project_id')->references('id')->on('project')->onDelete('cascade');
+            $table->foreign('point_id')->references('id')->on('project_point')->onDelete('cascade');
             $table->foreign('media_name')->references('name')->on('media')->onDelete('cascade');
         });
     }

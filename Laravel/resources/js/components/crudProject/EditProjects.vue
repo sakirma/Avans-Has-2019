@@ -140,7 +140,7 @@
                 console.log(error);
             });
             console.log(this._id + " sfsdafgsf")
-            window.axios.get('http://127.0.0.1:8000/beheer/edit/'+this._id ).then(response => {
+            window.axios.get('/beheer/edit/'+this._id ).then(response => {
                 let temp = response.data;
                 this.name = temp.name;
                 this.select = temp.category;

@@ -87,7 +87,7 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker, LPopup} from 'vue2-leaflet';
+    import {LMap, LTileLayer, LMarker, LControl, LPopup} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
 
     import MapPageHeader from "./map-page-header";
@@ -136,6 +136,8 @@
                 this.onRoutePageOpened();
             }
         },
+        mounted() {
+        }
     }
 </script>
 

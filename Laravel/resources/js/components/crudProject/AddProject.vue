@@ -130,7 +130,7 @@
                 console.log(e.latlng);
             });
 
-            window.axios.get('http://127.0.0.1:8000/getCategories').then(response => {
+            window.axios.get('/getCategories').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
                     this.categories.push(temp[i].name);
