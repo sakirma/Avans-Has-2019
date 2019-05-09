@@ -1787,6 +1787,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProjectPageHeader",
   methods: {
@@ -1795,6 +1798,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     openEditRoutesPage: function openEditRoutesPage() {
       window.location.href = '/admin/route';
+    },
+    openMediaPage: function openMediaPage() {
+      window.location.href = '/media';
     }
   }
 });
@@ -51256,6 +51262,14 @@ var render = function() {
           _c("v-btn", { on: { click: _vm.openEditRoutesPage } }, [
             _vm._v(" Routes ")
           ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-flex",
+        [
+          _c("v-btn", { on: { click: _vm.openMediaPage } }, [_vm._v(" Media ")])
         ],
         1
       ),
