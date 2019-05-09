@@ -1,8 +1,8 @@
 <template>
     <v-layout align-start justify-sapce-between row fill-height  style="background-color: #89a226">
         <v-flex >
-            <v-btn dark color="green" @click="OpenAddPressed" style="margin-left:1%"> Nieuw Project </v-btn>
-            <v-btn dark color="green" @click="GoBack"> back </v-btn>
+            <v-btn dark color="green" @click="OpenAddPressed" style="margin-left:1%">Nieuw Project</v-btn>
+            <v-btn dark color="green" @click="GoBack">Back</v-btn>
                 <v-card v-for="p in projects" :key="projects.id" style="width:30%; height:100%; margin-left: 1%; margin-bottom: 1% ">
                 <p class="text-sm-center">{{ p.name}}</p>
                 <p class="text-sm-center">{{ p.text}}</p>
@@ -10,7 +10,7 @@
                     <v-list-tile>
                         <v-list-tile-content >
                             <v-container align-center justify-center row fill-height >
-                                <v-btn @click="OpenEditPagePressed(p._id)">bewerken</v-btn>
+                                <v-btn @click="OpenEditPagePressed(p._id)">Bewerken</v-btn>
                                 <v-btn color="error" @click="deleteItem(p._id)">Wissen</v-btn>
                             </v-container>
                         </v-list-tile-content>
@@ -52,7 +52,7 @@
                 window.location.href = '/beheer';
             },
             deleteItem (id) {
-                if(confirm('Weet je zeker dat je zit project wilt verwijderen?')){
+                if(confirm('Weet u zeker dat je dit project wilt verwijderen?')){
                     axios({
                         method: 'post',
                         url: '/beheer/DeleteProject',

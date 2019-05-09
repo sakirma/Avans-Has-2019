@@ -59,8 +59,8 @@
                 categories: [],
                 text: '',
                 textRules: [
-                    v => !!v || 'Beschreiving is vereist',
-                    v => (v && v.length <= 65.535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
+                    v => !!v || 'Beschrijving is vereist',
+                    v => (v && v.length <= 65.535) || 'Beschrijving mag niet langer zijn dan 65.535 karakters zijn'
                 ],
                 valid: false,
 
@@ -139,7 +139,7 @@
             }).catch(function (error) {
                 console.log(error);
             });
-            console.log(this._id + " sfsdafgsf")
+
             window.axios.get('/beheer/edit/'+this._id ).then(response => {
                 let temp = response.data;
                 this.name = temp.name;
