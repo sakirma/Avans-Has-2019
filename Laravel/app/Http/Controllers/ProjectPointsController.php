@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\ProjectPoint;
@@ -43,8 +42,6 @@ class ProjectPointsController extends Controller
         if (!empty($model)) {
             return view('details', ['model' => $model, 'project' => $project]);
         }
-
-
 
         return abort(404);
     }

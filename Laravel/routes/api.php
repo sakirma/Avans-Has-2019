@@ -22,5 +22,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('welcome', function() {
         return view('welcome');
     });
+
+
 });
 

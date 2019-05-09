@@ -37,20 +37,6 @@ import store from './store/session-store'
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
-Vue.component(
-    'passport-clients',
-    require('./components/passport/Clients.vue').default
-);
-
-Vue.component(
-    'passport-authorized-clients',
-    require('./components/passport/AuthorizedClients.vue').default
-);
-
-Vue.component(
-    'passport-personal-access-tokens',
-    require('./components/passport/PersonalAccessTokens.vue').default
-);
 
 Vue.component('main-page',
     require('./MainPage').default);
@@ -65,6 +51,29 @@ Vue.component('route-list',
 
 Vue.component('map-page',
     require('./components/MapPage').default
+);
+
+Vue.component('add-project',
+    require('./components/crudProject/AddProject').default
+);
+
+Vue.component('view-projects',
+    require('./components/crudProject/ViewProjects').default
+);
+
+Vue.component('edit-projects',
+    require('./components/crudProject/EditProjects').default
+);
+Vue.component('main-crud-page',
+    require('./components/crudProject/MainCrudPage').default
+);
+
+Vue.component('view-project-points',
+    require('./components/crudProjectPoint/ViewProjectPoints').default
+);
+
+Vue.component('login-screen',
+    require('./components/auth/loginScreen').default
 );
 
 /**
