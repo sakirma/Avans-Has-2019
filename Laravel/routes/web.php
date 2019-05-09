@@ -47,7 +47,6 @@ Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
 Route::get('/comments/remove', "CommentsController@removeComment")->name('comments.remove');
 Route::post('/comments/add', "CommentsController@addComment")->name('comments.add');
-Route::get('/comments/get/{point_id}', "CommentsController@getComments")->name('comments.get');
 
 Route::get('details/{id}', "ProjectPointsController@GetDetails");
 

@@ -31,16 +31,5 @@ class CommentController extends Controller
         if(isset($comment) && !empty($comment)){
             $comment->delete();
         }
-    }
-
-    /**
-     * @param Request $request
-     *      point_id: id of the point, for which the comments need to be loaded
-     * 
-     * @return Response with the json encoded comments
-     */
-    public function getComments(Request $request){
-        $comments = Comment::where('point_id', $request['point_id'])->get();
-        return new Response(json_encode($comments), 200);
-    }
+    
 }
