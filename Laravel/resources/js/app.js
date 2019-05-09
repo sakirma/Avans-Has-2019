@@ -35,8 +35,6 @@ Vue.use(Vuebar);
 
 import store from './store/session-store'
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
 
 Vue.component('main-page',
     require('./MainPage').default);
