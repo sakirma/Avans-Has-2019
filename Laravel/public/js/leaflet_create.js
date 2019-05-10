@@ -54,6 +54,9 @@ function uploadRoute(){
     let routeName = document.getElementById("routename").value;
 
     let layers = projectMarkers.getLayers();
+
+    if(layers.length < 1) return window.alert("Creëer eerst een route!");
+
     let distance = layers[0].options.distance;
 
     let route = {name: routeName, latlngs: [], ids: [], distance: distance};
@@ -72,6 +75,9 @@ function uploadRoute(){
     xhttp.setRequestHeader('X-CSRF-Token', token);
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(jroute);
+
+    window.alert("Route aangemaakt!");
+    window.location = '/admin/route';
 }
 
 async function placeMarker(latlng, id){

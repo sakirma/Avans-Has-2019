@@ -45,4 +45,11 @@ class ProjectPointsController extends Controller
 
         return abort(404);
     }
+
+    public function getProjectPointByID($projectPointId){
+        $model = ProjectPoint::find($projectPointId);
+        if(empty($model)) { echo '$model'; }
+
+        return json_encode($model);
+    }
 }

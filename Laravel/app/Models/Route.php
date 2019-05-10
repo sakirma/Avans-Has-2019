@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Route extends Model
 {
     protected $table = 'route';
+    protected $id = 'id';
 
     // Table does not have timestamps
     public $timestamps = false;

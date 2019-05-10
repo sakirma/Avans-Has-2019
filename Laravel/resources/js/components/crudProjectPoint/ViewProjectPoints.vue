@@ -63,7 +63,7 @@
             },
         },
         mounted() {
-            window.axios.get('http://127.0.0.1:8000/getProjectPoints').then(response => {
+            window.axios.get('/getProjectPoints').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
                     this.projects.push({name: temp[i].name,_id: temp[i].id , text: temp[i].information});
