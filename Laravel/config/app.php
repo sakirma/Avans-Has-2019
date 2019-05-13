@@ -177,6 +177,9 @@ return [
         
         Collective\Html\HtmlServiceProvider::class,
         \Grimzy\LaravelMysqlSpatial\SpatialServiceProvider::class,
+
+        // Laravel IDE helper
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*
