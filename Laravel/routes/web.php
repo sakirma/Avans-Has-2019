@@ -73,6 +73,8 @@ Route::post('/admin/create/route', 'AdminRouteController@createRoute')->middlewa
 Route::post('/admin/remove/route', 'AdminRouteController@removeRoute')->middleware('auth');
 Route::post('/admin/get/points', 'AdminRouteController@getRoutePoints')->middleware('auth');
 Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint')->middleware('auth');
+
+Route::get('/admin/comments', 'CommentController@getAllComments')->middleware('auth');
 /////////////////
 
 

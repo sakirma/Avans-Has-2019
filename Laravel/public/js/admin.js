@@ -1787,6 +1787,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProjectPageHeader",
   methods: {
@@ -1795,6 +1798,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     openEditRoutesPage: function openEditRoutesPage() {
       window.location.href = '/admin/route';
+    },
+    openCommentsPage: function openCommentsPage() {
+      window.location.href = '/admin/comments';
     }
   }
 });
@@ -51170,6 +51176,16 @@ var render = function() {
         1
       ),
       _vm._v(" "),
+      _c(
+        "v-flex",
+        [
+          _c("v-btn", { on: { click: _vm.openCommentsPage } }, [
+            _vm._v(" Comments ")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c("v-flex", { attrs: { grow: "" } })
     ],
     1
@@ -91579,7 +91595,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\Joeri\Documents\workspace\websites\RoadLeaf\Avans-HAS-2019\Laravel\resources\js\admin.js */"./resources/js/admin.js");
+module.exports = __webpack_require__(/*! D:\Joeri\workspace\websites\Avans-HAS-2019\laravel\resources\js\admin.js */"./resources/js/admin.js");
 
 
 /***/ })

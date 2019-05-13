@@ -25,7 +25,6 @@ class CommentController extends Controller
     /**
      * @param Request $request
      *      id: id of the comment which needs to be removed
-     * 
      */
     public function removeComment(Request $request){
         $comment = Comment::find($request["id"]);
@@ -33,5 +32,10 @@ class CommentController extends Controller
             $comment->delete();
         }
         return redirect()->back();
+    }
+
+    public function getAllComments(){
+        $comments = Comment::all();
+        return view('beheerder.ModeratorCommentsPage', ['comments' => $comments]);
     }
 }
