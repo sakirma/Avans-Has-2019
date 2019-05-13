@@ -21,7 +21,7 @@ class CreateCommentsTable extends Migration
         });
 
         Schema::table('comments', function (Blueprint $table){
-            $table->foreign('point_id')->references('id')->on('project_point')->onDelete('cascade');
+            $table->foreign('point_id')->references('id')->on('interest_point')->onDelete('cascade');
         });
     }
 
