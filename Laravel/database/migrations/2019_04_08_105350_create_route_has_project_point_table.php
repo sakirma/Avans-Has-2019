@@ -13,15 +13,15 @@ class CreateRouteHasProjectPointTable extends Migration
      */
     public function up()
     {
-        Schema::create('route_has_project_point', function (Blueprint $table) {
-            $table->unsignedInteger('project_point_id');
+        Schema::create('route_has_interest_point', function (Blueprint $table) {
+            $table->unsignedInteger('point_id');
             $table->unsignedInteger('route_id');
 
-            $table->primary(['project_point_id', 'route_id']);
+            $table->primary(['point_id', 'route_id']);
         });
 
-        Schema::table('route_has_project_point', function (Blueprint $table) {
-            $table->foreign('project_point_id')->references('id')->on('project_point')->onDelete('cascade');
+        Schema::table('route_has_interest_point', function (Blueprint $table) {
+            $table->foreign('point_id')->references('id')->on('interest_point')->onDelete('cascade');
             $table->foreign('route_id')->references('id')->on('route')->onDelete('cascade');
         });
     }
@@ -33,6 +33,6 @@ class CreateRouteHasProjectPointTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('route_has_project_point');
+        Schema::dropIfExists('route_has_interest_point');
     }
 }

@@ -26,7 +26,7 @@ class ProjectPointsTableSeeder extends Seeder
     {
         factory(App\Models\ProjectPoint::class)->create([
             'location' => new Point($lat, $lng),
-            'geo_json' => Geometry::fromJson('{
+            'area' => Geometry::fromJson('{
               "type": "FeatureCollection",
               "features": [
                 {
