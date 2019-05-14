@@ -35,7 +35,6 @@ class ProjectTableSeeder extends Seeder
     public function AddProjectPoint($lat, $lng)
     {
         factory(App\Models\Project::class)->create([
-            'location' => new Point($lat, $lng),
             'area' => Geometry::fromJson('{
               "type": "FeatureCollection",
               "features": [

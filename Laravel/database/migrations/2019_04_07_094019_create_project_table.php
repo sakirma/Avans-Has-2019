@@ -16,7 +16,6 @@ class CreateProjectTable extends Migration
     {
         Schema::create('project', function (Blueprint $table) {
             $table->increments('id');
-            $table->point('location');
             $table->geometryCollection('area')->nullable();
             $table->string("category")->nullable();
             $table->string('name');
