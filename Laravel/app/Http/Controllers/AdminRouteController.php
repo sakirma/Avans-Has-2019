@@ -20,7 +20,7 @@ class AdminRouteController extends Controller
         $routes = Route::all();
         $routePoints = RouteHasProjectPoint::all();
 
-        return view('createRoute')->with(['points' => $points, 'routes' => $routes, 'routePoints' => $routePoints]);
+        return view('ManageRoutes')->with(['points' => $points, 'routes' => $routes, 'routePoints' => $routePoints]);
     }
 
     function getProjectPoint(Request $request){

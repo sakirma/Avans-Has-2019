@@ -67,11 +67,11 @@ Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
 Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
 
 
-Route::get('/admin/route', 'AdminRouteController@getRouteData')->middleware('auth');
-Route::post('/admin/create/route', 'AdminRouteController@createRoute')->middleware('auth');
-Route::post('/admin/remove/route', 'AdminRouteController@removeRoute')->middleware('auth');
-Route::post('/admin/get/points', 'AdminRouteController@getRoutePoints')->middleware('auth');
-Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint')->middleware('auth');
+Route::get('/admin/route', 'AdminRouteController@getRouteData');
+Route::post('/admin/create/route', 'AdminRouteController@createRoute');
+Route::post('/admin/remove/route', 'AdminRouteController@removeRoute');
+Route::post('/admin/get/points', 'AdminRouteController@getRoutePoints');
+Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint');
 /////////////////
 
 

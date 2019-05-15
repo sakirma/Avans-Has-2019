@@ -24,10 +24,10 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "leaflet": "^1.4.0",
+        "leaflet": "^1.5.1",
         "leaflet-routing-machine": "^3.2.12",
         "vue-scroll-snap": "^0.1.4",
-        "vue2-leaflet": "^2.0.3",
+        "vue2-leaflet": "^2.1.1",
         "vuebar": "^0.0.20",
         "vuedraggable": "^2.20.0",
         "vuetify": "^1.5.11",
