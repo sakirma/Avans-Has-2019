@@ -79,7 +79,7 @@
                 if(this.$refs.form.validate()) {
                     axios({
                         method: 'post',
-                        url: '/beheer/AddProject',
+                        url: '/admin/addInterestPoint',
                         data: {
                             name: this.name,
                             category: this.select,
@@ -96,9 +96,6 @@
 
                 this.$vuetify.goTo('#view-projects');
                 this.$parent.selectedAddPage = false;
-
-
-
             },
             add(event) {
                 if(this.markers.length > 0){
@@ -127,7 +124,8 @@
 
         // test method
         mounted() {
-            this.$vuetify.goTo('#addInterestPoint');
+            // Disabled because it stopped the categories from appearing
+            //this.$vuetify.goTo('#addInterestPoint');
             this.$refs.eenElement.mapObject.on('click', function (e) {
                 console.log(e.latlng);
             });

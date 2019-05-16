@@ -67,7 +67,7 @@ Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
 Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
 
 Route::get('/admin/interestpoint/create', 'InterestPointController@create')->middleware('auth');
-Route::post('/admin/AddInterestPoint', 'InterestPointController@AddInterestPoint')->middleware('auth');
+Route::post('/admin/addInterestPoint', 'InterestPointController@addInterestPoint')->middleware('auth');
 
 Route::get('/admin/route', 'AdminRouteController@getRouteData')->middleware('auth');
 Route::post('/admin/create/route', 'AdminRouteController@createRoute')->middleware('auth');

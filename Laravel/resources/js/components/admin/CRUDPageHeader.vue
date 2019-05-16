@@ -14,11 +14,15 @@
             <v-btn @click="openEditProjectPage"> Projecten </v-btn>
         </v-flex>
         <v-flex>
+            <v-btn @click="openInterestPointPage"> InterestPoints </v-btn>
+        </v-flex>
+        <v-flex>
             <v-btn @click="openEditRoutesPage"> Routes </v-btn>
         </v-flex>
         <v-flex>
             <v-btn @click="openMediaPage"> Media </v-btn>
         </v-flex>
+
         <v-flex grow>
 
         </v-flex>
@@ -31,6 +35,9 @@
         methods: {
             openEditProjectPage() {
                 window.location.href = '/beheer/projecten';
+            },
+            openInterestPointPage() {
+                window.location.href = '/admin/interestpoint/create';
             },
             openEditRoutesPage() {
                 window.location.href = '/admin/route';

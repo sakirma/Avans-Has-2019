@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\InterestPoint;
-use App\Models\Project;
+use App\Models\InterestPoint;
 use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;

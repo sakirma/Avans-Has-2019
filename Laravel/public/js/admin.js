@@ -1790,11 +1790,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProjectPageHeader",
   methods: {
     openEditProjectPage: function openEditProjectPage() {
       window.location.href = '/beheer/projecten';
+    },
+    openInterestPointPage: function openInterestPointPage() {
+      window.location.href = '/admin/interestpoint/create';
     },
     openEditRoutesPage: function openEditRoutesPage() {
       window.location.href = '/admin/route';
@@ -51251,6 +51258,16 @@ var render = function() {
         [
           _c("v-btn", { on: { click: _vm.openEditProjectPage } }, [
             _vm._v(" Projecten ")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-flex",
+        [
+          _c("v-btn", { on: { click: _vm.openInterestPointPage } }, [
+            _vm._v(" InterestPoints ")
           ])
         ],
         1
