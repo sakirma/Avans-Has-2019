@@ -3,11 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Project;
 
 class Category extends Model
 {
-    protected $table = 'project_category';
+    protected $table = 'category';
 
     // Table does not have timestamps
     public $timestamps = false;
@@ -19,9 +18,13 @@ class Category extends Model
         'name',
     ];
 
-
     public function hasProject()
     {
         return $this->hasMany(Project::class);
+    }
+
+    public function hasInterestPoint()
+    {
+        return $this->hasMany(InterestPoint::class);
     }
 }

@@ -74,6 +74,10 @@ Vue.component('login-screen',
     require('./components/auth/loginScreen').default
 );
 
+Vue.component('add-interest-point',
+    require('./components/crudInterestPoint/AddInterestPoint').default
+);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
