@@ -9,6 +9,21 @@ use Illuminate\Http\Request;
 
 class InterestPointController extends Controller
 {
+    // Return view
+    public function create() {
+        return view('createInterestPoint');
+    }
+
+    public function viewInterestPoints(){
+        return view('mainCrudPage');
+    }
+
+    // Methods
+    public function getInterestPoints() {
+        $points = InterestPoint::all();
+        return $points->toJson();
+    }
+
     public function addInterestPoint (Request $request) {
         $point = new InterestPoint();
 
@@ -24,7 +39,14 @@ class InterestPointController extends Controller
         $point->save();
     }
 
-    public function create() {
-        return view('createInterestPoint');
+    public function edit ($id) {
+        $point = InterestPoint::find($id);
+        return $point->toJson();
+    }
+
+    public function destroy(Request $request)
+    {
+        $point = InterestPoint::findOrFail($request->id);
+        $point->delete();
     }
 }

@@ -55,19 +55,23 @@ Route::get('getAllRoutes', "RoutesController@getAllRoutes");
 Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");
 // Crud
 // TODO: Change beheer to admin.
-Route::get('beheer', 'ProjectController@main')->middleware('auth');
+Route::get('admin', 'ProjectController@main')->middleware('auth');
 
 Route::get('/beheer/projecten', 'ProjectController@createProjectPage')->middleware('auth');
 Route::get('/beheer/project/aanmaken', 'ProjectController@create')->middleware('auth');
 
-Route::post('/beheer/AddProject', 'ProjectController@addProject')->middleware('auth');
+Route::post('/beheer/AddInterestPoint', 'ProjectController@addProject')->middleware('auth');
 Route::post('/beheer/updateProject', 'ProjectController@update')->middleware('auth');
 Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
 Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
 Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
 
+Route::get('/admin/interestpoints', 'ProjectController@viewInterestPoints')->middleware('auth');
 Route::get('/admin/interestpoint/create', 'InterestPointController@create')->middleware('auth');
+Route::get('/admin/interestpoint/edit/{id}','InterestPointController@edit')->middleware('auth');
 Route::post('/admin/addInterestPoint', 'InterestPointController@addInterestPoint')->middleware('auth');
+Route::post('/admin/updateInterestPoint', 'InterestPointController@update')->middleware('auth');
+Route::post('/admin/deleteInterestPoint', 'InterestPointController@destroy')->middleware('auth');
 
 Route::get('/admin/route', 'AdminRouteController@getRouteData')->middleware('auth');
 Route::post('/admin/create/route', 'AdminRouteController@createRoute')->middleware('auth');
@@ -80,6 +84,7 @@ Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint')->middl
 // Return only data
 Route::get('/getCategories', 'MainPageController@getCatagories');
 Route::get('/getProjects', 'ProjectController@getProjects');
+Route::get('/getInterestPoints', 'InterestPointController@getInterestPoints');
 
 // Unnecessary : Could be deleted
 Route::get('details', function() {

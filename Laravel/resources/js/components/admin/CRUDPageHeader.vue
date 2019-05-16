@@ -37,7 +37,7 @@
                 window.location.href = '/beheer/projecten';
             },
             openInterestPointPage() {
-                window.location.href = '/admin/interestpoint/create';
+                window.location.href = '/admin/interestpoints';
             },
             openEditRoutesPage() {
                 window.location.href = '/admin/route';

@@ -1801,7 +1801,7 @@ __webpack_require__.r(__webpack_exports__);
       window.location.href = '/beheer/projecten';
     },
     openInterestPointPage: function openInterestPointPage() {
-      window.location.href = '/admin/interestpoint/create';
+      window.location.href = '/admin/interestpoints';
     },
     openEditRoutesPage: function openEditRoutesPage() {
       window.location.href = '/admin/route';
