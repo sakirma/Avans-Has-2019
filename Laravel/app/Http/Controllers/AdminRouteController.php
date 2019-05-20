@@ -14,13 +14,17 @@ use Illuminate\Http\Request;
 
 class AdminRouteController extends Controller
 {
+    function init(){
+        return view('ManageRoutes');
+    }
+
     function getRouteData()
     {
         $points = ProjectPoint::all();
         $routes = Route::all();
         $routePoints = RouteHasProjectPoint::all();
 
-        return view('ManageRoutes')->with(['points' => $points, 'routes' => $routes, 'routePoints' => $routePoints]);
+        return (['points' => $points, 'routes' => $routes, 'routePoints' => $routePoints]);
     }
 
     function getProjectPoint(Request $request){

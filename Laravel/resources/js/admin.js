@@ -10,6 +10,7 @@ window.Vue = require('vue');
 window.Vuetify = require('vuetify');
 
 import L from 'leaflet';
+import 'leaflet-routing-machine';
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -37,6 +38,9 @@ import store from './store/session-store'
 
 Vue.component('main-crud-page',
     require('./components/admin/MainCrudPage').default
+);
+Vue.component('manage-routes',
+    require('./components/admin/ManageRoutes').default
 );
 
 /**
