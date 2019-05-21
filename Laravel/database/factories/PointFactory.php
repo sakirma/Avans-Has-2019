@@ -48,7 +48,7 @@ $factory->define(App\Models\Project::class, function (Faker $faker) {
                     }
                 }]
             }'),
-        'category' => 'lol',
+        'category' => 'eten en drinken',
         'name' => $faker->name,
         'information' => $faker->text(25),
     ];

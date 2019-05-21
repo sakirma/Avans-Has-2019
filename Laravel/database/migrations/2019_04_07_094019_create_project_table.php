@@ -18,8 +18,8 @@ class CreateProjectTable extends Migration
             $table->increments('id');
             $table->geometryCollection('area')->nullable();
             $table->string("category")->nullable();
-            $table->string('name');
-            $table->text('information');
+            $table->string('name', 255);
+            $table->longText('information');
         });
 
 
