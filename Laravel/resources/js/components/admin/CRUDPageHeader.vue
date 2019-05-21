@@ -1,5 +1,5 @@
 <template>
-    <v-layout align-center justify-center row fill-height ml-3>
+    <v-layout align-center justify-center row fill-height ml-3 style="background-color: blue">
         <v-flex shrink class="hidden-sm-and-down v-card--reveal">
             <v-layout align-center justify-center fill-height>
                 <v-img src="img/RoadLeaf-Logo.png"
@@ -10,18 +10,13 @@
                        width="150px"/>
             </v-layout>
         </v-flex>
-        <v-flex pl-3>
-            <v-btn @click="openEditProjectPage"> Projecten </v-btn>
-        </v-flex>
-        <v-flex>
-            <v-btn @click="openEditRoutesPage"> Routes </v-btn>
-        </v-flex>
-        <v-flex>
-            <v-btn @click="openMediaPage"> Media </v-btn>
-        </v-flex>
-        <v-flex grow>
-
-        </v-flex>
+        <v-btn @click="openEditProjectPage"> Projecten</v-btn>
+        <v-btn @click="openEditRoutesPage"> Routes</v-btn>
+        <v-btn @click="openMediaPage"> Media</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn>
+            WOW
+        </v-btn>
     </v-layout>
 </template>
 

@@ -1785,11 +1785,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProjectPageHeader",
   methods: {
@@ -1817,6 +1812,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CRUDPageHeader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CRUDPageHeader */ "./resources/js/components/admin/CRUDPageHeader.vue");
+//
+//
 //
 //
 //
@@ -51202,6 +51199,7 @@ var render = function() {
   return _c(
     "v-layout",
     {
+      staticStyle: { "background-color": "blue" },
       attrs: {
         "align-center": "",
         "justify-center": "",
@@ -51245,36 +51243,19 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "v-flex",
-        { attrs: { "pl-3": "" } },
-        [
-          _c("v-btn", { on: { click: _vm.openEditProjectPage } }, [
-            _vm._v(" Projecten ")
-          ])
-        ],
-        1
-      ),
+      _c("v-btn", { on: { click: _vm.openEditProjectPage } }, [
+        _vm._v(" Projecten")
+      ]),
       _vm._v(" "),
-      _c(
-        "v-flex",
-        [
-          _c("v-btn", { on: { click: _vm.openEditRoutesPage } }, [
-            _vm._v(" Routes ")
-          ])
-        ],
-        1
-      ),
+      _c("v-btn", { on: { click: _vm.openEditRoutesPage } }, [
+        _vm._v(" Routes")
+      ]),
       _vm._v(" "),
-      _c(
-        "v-flex",
-        [
-          _c("v-btn", { on: { click: _vm.openMediaPage } }, [_vm._v(" Media ")])
-        ],
-        1
-      ),
+      _c("v-btn", { on: { click: _vm.openMediaPage } }, [_vm._v(" Media")]),
       _vm._v(" "),
-      _c("v-flex", { attrs: { grow: "" } })
+      _c("v-spacer"),
+      _vm._v(" "),
+      _c("v-btn", [_vm._v("\n        WOW\n    ")])
     ],
     1
   )
@@ -51303,16 +51284,23 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticStyle: { height: "100vh", "background-color": "#89a226" } },
+    { staticStyle: { height: "100vh", "background-color": "#a2282a" } },
     [
       _c(
-        "v-layout",
-        { attrs: { "align-start": "", "justify-start": "", column: "" } },
+        "v-container",
+        { attrs: { fluid: "", "fill-height": "" } },
         [
           _c(
-            "v-flex",
-            { attrs: { "pt-3": "" } },
-            [_c("c-r-u-d-page-header")],
+            "v-layout",
+            { attrs: { column: "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { md1: "", "d-flex": "" } },
+                [_c("c-r-u-d-page-header")],
+                1
+              )
+            ],
             1
           )
         ],
@@ -91684,7 +91672,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Git repos\Avans-HAS-2019\Laravel\resources\js\admin.js */"./resources/js/admin.js");
+module.exports = __webpack_require__(/*! C:\Users\husey\Documents\AvansProject\Avans-HAS-2019\Laravel\resources\js\admin.js */"./resources/js/admin.js");
 
 
 /***/ })
