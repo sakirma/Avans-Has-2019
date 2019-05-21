@@ -765,6 +765,7 @@ class ProjectPointsTableSeeder extends Seeder
           ]
         }
       }'
+      
     );
   }
 
