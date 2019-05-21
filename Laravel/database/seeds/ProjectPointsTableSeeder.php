@@ -767,6 +767,85 @@ class ProjectPointsTableSeeder extends Seeder
       }'
       
     );
+    $this->AddProjectPointFromJSON(
+      51.59444853503294,
+      5.233080983161926,
+      'eten en drinken',
+      'Pannekoekenhuis Belveren in Haaren',
+      ' ',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "bezienswaardigheid_naam": "Pannekoekenhuis Belveren in Haaren",
+          "beschrijving": "geen",
+          "frequentie": "altijd",
+          "categorie": "Eten & Drinken"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.233080983161926,
+            51.59444853503294
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.50537683608064,
+      5.357208251953125,
+      'activiteit',
+      'De wijk Heikandt in Aarle',
+      'Wandeling in het kader van 200 jaar Best.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-symbol": "",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "beschrijving": "Wandeling in het kader van 200 jaar Best.",
+          "bezienswaardigheid_naam": "De wijk Heikandt in Aarle",
+          "stroke-opacity": "",
+          "frequentie": "Zaterdag 13 april",
+          "gebied_naam": "",
+          "categorie": "Activiteit"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.357208251953125,
+            51.50537683608064
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.49944632447973,
+      5.364031791687012,
+      'activiteit',
+      'Lentefeest bij Buurtvrij',
+      'Vandaag vieren we de lente!  Dit doen we met veel bloemen, hutten bouwen, interieur styling, workshops, graffiti, BBQ en nog veel meer.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-symbol": "",
+          "marker-size": "medium",
+          "bezienswaardigheid_naam": "Lentefeest bij Buurtvrij",
+          "beschrijving": "Vandaag vieren we de lente!  Dit doen we met veel bloemen, hutten bouwen, interieur styling, workshops, graffiti, BBQ en nog veel meer.",
+          "marker-color": "#7e7e7e",
+          "frequentie": "Zondag 14 april ",
+          "categorie": "Activiteit"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.364031791687012,
+            51.49944632447973
+          ]
+        }
+      }'
+    );
   }
 
   public function AddProjectPoint($lat, $lng)
