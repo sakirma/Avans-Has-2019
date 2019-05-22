@@ -11,8 +11,8 @@
                     <v-list-tile>
                         <v-list-tile-content >
                             <v-container align-center justify-center row fill-height >
-                                <v-btn @click="OpenEditPagePressed(p._id)">Bewerken</v-btn>
-                                <v-btn color="error" @click="deleteItem(p._id)">Wissen</v-btn>
+                                <v-btn @click="OpenEditPagePressed(p.id)">Bewerken</v-btn>
+                                <v-btn color="error" @click="deleteItem(p.id)">Wissen</v-btn>
                             </v-container>
                         </v-list-tile-content>
                     </v-list-tile>
@@ -43,8 +43,8 @@
             }
         },
         methods:{
-            OpenEditPagePressed: function (interestPointId) {
-                this.onEditPageOpened(interestPointId);
+            OpenEditPagePressed: function (id) {
+                this.onEditPageOpened(id);
             },
             OpenAddPressed: function () {
                 this.onAddOpened();
@@ -56,7 +56,7 @@
                 if(confirm('Weet u zeker dat deze bezienswaardigheid wilt verwijderen?')){
                     axios({
                         method: 'post',
-                        url: '/admin/DeleteProject',
+                        url: '/admin/deleteInterestPoint',
                         data: {
                             id: id,
 
@@ -70,7 +70,8 @@
             window.axios.get('/getInterestPoints').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
-                    this.interest_points.push({name: temp[i].name,_id: temp[i].id , text: temp[i].information});
+                    console.log(temp[i]);
+                    this.interest_points.push({id: temp[i].id,project_id: temp[i].project_id , location: temp[i].location, area: temp[i].area, name: temp[i].name, information: temp[i].information, category: temp[i].categroy});
                 }
             }).catch(function (error) {
                 console.log(error);

@@ -125,7 +125,7 @@
         },
         mounted() {
             setTimeout(function() { window.dispatchEvent(new Event('resize')) }, 250);
-            this.$vuetify.goTo('#editInterestPoints');
+            this.$vuetify.goTo('#edit-interest-point');
             this.$refs.eenElement.mapObject.on('click', function (e) {
                 console.log(e.latlng);
 

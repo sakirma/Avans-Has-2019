@@ -75,6 +75,7 @@
         },
 
         methods: {
+
             validate () {
                 if(this.$refs.form.validate()) {
                     axios({
@@ -97,6 +98,7 @@
                 this.$vuetify.goTo('#view-projects');
                 this.$parent.selectedAddPage = false;
             },
+
             add(event) {
                 if(this.markers.length > 0){
                     this.markers.splice(-1, 1);
@@ -125,7 +127,7 @@
         // test method
         mounted() {
             // Disabled because it stopped the categories from appearing
-            //this.$vuetify.goTo('#addInterestPoint');
+            this.$vuetify.goTo('#add-interest-point');
             this.$refs.eenElement.mapObject.on('click', function (e) {
                 console.log(e.latlng);
             });
