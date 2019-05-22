@@ -846,7 +846,84 @@ class ProjectPointsTableSeeder extends Seeder
         }
       }'
     );
-  }
+    $this->AddProjectPointFromJSON(
+      51.516728140021236,
+      5.353946685791016,
+      'activiteit',
+      'Workshop paasstuk maken',
+      'Op zaterdag 13 april a.s. organiseert Team De vlinder in samenwerking met Winterfestijn Best een workshop Paasstukjes maken voor het goede doel. De workshop vindt plaats in de werkplaats van Ad Raaijmakers Akkerbouw en Gewasverzorging in Best. Onder het genot van een kopje koffie of thee en wat lekkers wordt gewerkt aan de mooiste paasstukken.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-symbol": "",
+          "bezienswaardigheid_naam": "Workshop paasstuk maken",
+          "beschrijving": "Op zaterdag 13 april a.s. organiseert Team De vlinder in samenwerking met Winterfestijn Best een workshop Paasstukjes maken voor het goede doel. De workshop vindt plaats in de werkplaats van Ad Raaijmakers Akkerbouw en Gewasverzorging in Best. Onder het genot van een kopje koffie of thee en wat lekkers wordt gewerkt aan de mooiste paasstukken. ",
+          "frequentie": "Zaterdag 13 april",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "categorie": "Activiteit"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.353946685791016,
+            51.516728140021236
+          ]
+          }
+        }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.55690237162714,
+      5.2020263671875,
+      'bezienswaardigheid',
+      'Kolkven',
+      'Maak een leuke korte wandeling door het Oisterwijkse bos langs enkele vennen, waaronder het Kolkven.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-symbol": "",
+          "bezienswaardigheid_naam": "Kolkven",
+          "beschrijving": "Maak een leuke korte wandeling door het Oisterwijkse bos langs enkele vennen, waaronder het Kolkven.",
+          "categorie": "Bezienswaardigheid",
+          "frequentie": "altijd",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.2020263671875,
+            51.55690237162714
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.5863548288564,
+      5.177282989025116,
+      'bezienswaardigheid',
+      'Kerkhovense Molen',
+      'De Kerkhovense Molen of Onvermoeid is een ronde stenen stellingmolen te Oisterwijk.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "frequentie": "altijd",
+          "bezienswaardigheid_naam": "Kerkhovense Molen",
+          "beschrijving": "De Kerkhovense Molen of Onvermoeid is een ronde stenen stellingmolen te Oisterwijk.",
+          "categorie": "Bezienswaardigheid",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.177282989025116,
+            51.5863548288564
+          ]
+        }
+      }'
+    );
+  } 
 
   public function AddProjectPoint($lat, $lng)
   {
