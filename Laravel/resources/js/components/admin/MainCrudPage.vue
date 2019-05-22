@@ -8,7 +8,7 @@
                 <v-flex d-flex style="background-color: white;">
                     <v-container fluid fill-height pa-0>
                         <v-layout row fill-height>
-                            <v-flex d-flex>
+                            <v-flex xs6 d-flex px-4>
                                 <v-layout column fill-height>
                                     <v-flex xs2>
                                         <v-layout row fill-height>
@@ -19,10 +19,10 @@
                                             </v-flex>
                                             <v-flex d-flex>
                                                 <v-layout row fill-height align-center justify-center>
-                                                    <v-flex d-flex>
-                                                        <v-card color="green">
-
-                                                        </v-card>
+                                                    <v-flex d-flex xs3>
+                                                        <v-btn>
+                                                            Project Toevoegen
+                                                        </v-btn>
                                                     </v-flex>
                                                     <v-flex d-flex>
                                                         <v-text-field solo hide-details round class="search-bar pa-0" append-icon="search"></v-text-field>
@@ -64,5 +64,4 @@
         border-width: 2px;
         border-color: rgba(174, 195, 207, 0.21);
     }
-
 </style>
