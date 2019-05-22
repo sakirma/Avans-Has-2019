@@ -1,5 +1,6 @@
 <template>
     <v-layout align-start justify-sapce-between row fill-height  style="background-color: #89a226">
+        <h2>INTEREST POINTS</h2>
         <v-flex >
             <v-btn dark color="green" @click="OpenAddPressed" style="margin-left:1%"> Nieuwe bezienswaardigheid </v-btn>
             <v-btn dark color="green" @click="GoBack"> Terug </v-btn>

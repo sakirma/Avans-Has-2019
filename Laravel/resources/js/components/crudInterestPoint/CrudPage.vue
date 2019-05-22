@@ -1,8 +1,8 @@
 <template>
     <div  style="height: 100vh">
-        <view-projects id="view-interest-points" :onAddOpened="OpenAddPage" :onEditPageOpened="OpenEditPage"></view-projects>
-        <add-project id="addInterestPoint"  v-if="selectedAddPage === true" ></add-project>
-        <edit-projects id="editInterestPoints" v-if="selectedEditPage.isSelected === true" :_id="Edit().toString()"></edit-projects>
+        <view-interest-points id="view-interest-points" :onAddOpened="OpenAddPage" :onEditPageOpened="OpenEditPage"></view-interest-points>
+        <add-interest-point id="add-interest-point"  v-if="selectedAddPage === true" ></add-interest-point>
+        <edit-interest-point id="edit-interest-point" v-if="selectedEditPage.isSelected === true" :_id="Edit().toString()"></edit-interest-point>
     </div>
 </template>
 

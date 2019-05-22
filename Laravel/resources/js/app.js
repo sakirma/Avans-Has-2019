@@ -63,7 +63,7 @@ Vue.component('edit-projects',
     require('./components/crudProject/EditProjects').default
 );
 Vue.component('main-crud-page',
-    require('./components/crudProject/MainCrudPage').default
+    require('./components/crudInterestPoint/CrudPage').default
 );
 
 Vue.component('view-project-points',
