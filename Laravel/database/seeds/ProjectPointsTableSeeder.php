@@ -923,6 +923,190 @@ class ProjectPointsTableSeeder extends Seeder
         }
       }'
     );
+    $this->AddProjectPointFromJSON(
+      51.589297858596424,
+      5.231863260269165,
+      'bezienswaardigheid',
+      'Kasteel Nemerlaer',
+      'Kasteel Nemerlaer is een 14e-eeuws kasteel, gelegen in Haaren, in de Nederlandse provincie Noord-Brabant',
+      '{
+        "type": "Feature",
+        "properties": {
+          "bezienswaardigheid_naam": "Kasteel Nemerlaer",
+          "beschrijving": "Kasteel Nemerlaer is een 14e-eeuws kasteel, gelegen in Haaren, in de Nederlandse provincie Noord-Brabant",
+          "categorie": "Bezienswaardigheid ",
+          "frequentie": "altijd",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.231863260269165,
+            51.589297858596424
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.465130385364795,
+      5.266613960266113,
+      'bezienswaardigheid',
+      'Oude Toren',
+      'De Oude Toren is een middeleeuwse kerktoren bij Oostelbeers in de gemeente Oirschot in de Nederlandse provincie Noord-Brabant.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-symbol": "",
+          "beschrijving": "De Oude Toren is een middeleeuwse kerktoren bij Oostelbeers in de gemeente Oirschot in de Nederlandse provincie Noord-Brabant.",
+          "bezienswaardigheid_naam": "Oude Toren",
+          "categorie": "Bezienwaardigheid",
+          "frequentie": "altijd",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.266613960266113,
+            51.465130385364795
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.543132343985604,
+      5.130336284637451,
+      'eten en drinken',
+      'Abdij Koningshoeven',
+      'Het ligt vlakbij het Landschapspark Moerenburg waar je heerlijk kunt wandelen. Daarnaast zijn er fietsroutes beschikbaar die je vanaf het trappistenklooster door karakteristieke dorpjes als Oisterwijk en Oirschot leiden. Ideale sportlocatie. Binnen de muren van klooster Abdij Koningshoeven brouwen de Benedictijner monniken het ambachtelijke trappistenbier La Trappe.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "bezienswaardigheid_naam": "Abdij Koningshoeven",
+          "beschrijving": "Het ligt vlakbij het Landschapspark Moerenburg waar je heerlijk kunt wandelen. Daarnaast zijn er fietsroutes beschikbaar die je vanaf het trappistenklooster door karakteristieke dorpjes als Oisterwijk en Oirschot leiden. Ideale sportlocatie. Binnen de muren van klooster Abdij Koningshoeven brouwen de Benedictijner monniken het ambachtelijke trappistenbier La Trappe.",
+          "stroke": "",
+          "stroke-width": "",
+          "stroke-opacity": "",
+          "fill": "",
+          "fill-opacity": "",
+          "gebied_naam": "",
+          "frequentie": "altijd",
+          "categorie": "Museum / Eten & Drinken"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.130336284637451,
+            51.543132343985604
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.60757003871097,
+      5.1901817321777335,
+      'bezienswaardigheid',
+      'Vogelkijkscherm Leemputten',
+      'Hier huist een aalscholverkolonie',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "marker-symbol": "",
+          "bezienswaardigheid_naam": "Vogelkijkscherm Leemputten",
+          "frequentie": "altijd",
+          "categorie": "Bezienswaardigheid",
+          "beschrijving": "Hier huist een aalscholverkolonie"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.1901817321777335,
+            51.60757003871097
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.570881622953564,
+      5.397806167602539,
+      'bezienswaardigheid',
+      'Uitkijktoren t Meulke',
+      'De beemden aan de beek zijn als vanouds in gebruik als weiland.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "bezienswaardigheid_naam": "Uitkijktoren t Meulke",
+          "beschrijving": "De beemden aan de beek zijn als vanouds in gebruik als weiland.",
+          "categorie": "Bezienswaardigheid",
+          "frequentie": "altijd",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.397806167602539,
+            51.570881622953564
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.50356036497247,
+      5.262365341186523,
+      'bezienswaardigheid',
+      'Vogelkijkscherm Kattenbergs Broek',
+      'In 2007 en 2008 bracht Waterschap de Dommel hier iets groots tot stand. Over een lengte van 2 km werd de Beerze in zijn oorspronkelijke staat hersteld. Op basis van de topografische kaart van 1900 werden de bochten terug in de beek gebracht.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "bezienswaardigheid_naam": "Vogelkijkscherm Kattenbergs Broek",
+          "beschrijving": "In 2007 en 2008 bracht Waterschap de Dommel hier iets groots tot stand. Over een lengte van 2 km werd de Beerze in zijn oorspronkelijke staat hersteld. Op basis van de topografische kaart van 1900 werden de bochten terug in de beek gebracht.",
+          "categorie": "Bezienswaardigheid",
+          "frequentie": "altijd",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.262365341186523,
+            51.50356036497247
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.446143972759494,
+      5.23747444152832,
+      'bezienswaardigheid',
+      'Observatiepost Landschotse Heide',
+      'De venwitsnuitlibel: alleen al om die naam zou je dit gebied willen bezoeken. En dan vliegen er ook nog eens 28 andere soorten libellen rond boven de vennen.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "bezienswaardigheid_naam": "Observatiepost Landschotse Heide",
+          "beschrijving": "De venwitsnuitlibel: alleen al om die naam zou je dit gebied willen bezoeken. En dan vliegen er ook nog eens 28 andere soorten libellen rond boven de vennen.",
+          "categorie": "Bezienswaardigheid",
+          "frequentie": "altijd",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "stroke": ""
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.23747444152832,
+            51.446143972759494
+          ]
+        }
+      }'
+    );
   } 
 
   public function AddProjectPoint($lat, $lng)
