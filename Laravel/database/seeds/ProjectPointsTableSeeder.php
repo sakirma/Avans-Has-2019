@@ -1107,6 +1107,237 @@ class ProjectPointsTableSeeder extends Seeder
         }
       }'
     );
+    $this->AddProjectPointFromJSON(
+      51.47218810785753,
+      5.107269287109375,
+      'bezienswaardigheid',
+      'Vogelkijkscherm Rovertsche Heide',
+      'Hier vliegt de vlinder het groentje en kruipen levendbarende hagedissen. Allemaal dankzij het open kappen van dit gebied.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "bezienswaardigheid_naam": "Vogelkijkscherm Rovertsche Heide",
+          "beschrijving": "Hier vliegt de vlinder het groentje en kruipen levendbarende hagedissen. Allemaal dankzij het open kappen van dit gebied.",
+          "categorie": "Bezienswaardigheid",
+          "frequentie": "altijd",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.107269287109375,
+            51.47218810785753
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.655931556048905,
+      5.44147253036499,
+      'bezienswaardigheid',
+      'Kasteel Heeswijk',
+      'Het weerspiegelt bijna duizend jaar macht, trots en cultuur van de Brabantse elite.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "stroke": "",
+          "bezienswaardigheid_naam": "Kasteel Heeswijk",
+          "beschrijving": "Het weerspiegelt bijna duizend jaar macht, trots en cultuur van de Brabantse elite.",
+          "categorie": "Bezienswaardigheid",
+          "frequentie": "di/wo/do/zo",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.44147253036499,
+            51.655931556048905
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.48974747380967,
+      5.022704601287842,
+      'bezienswaardigheid',
+      'Ooijevaarsnest',
+      'De naam moet oud zijn, want ooievaars zitten hier al sinds mensenheugenis niet meer. Door het terrein te vernatten doen we overigens hard ons best hem te verleiden tot terugkeer. Ooievaars eten immers graag kikkers.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-symbol": "",
+          "bezienswaardigheid_naam": "Ooijevaarsnest",
+          "beschrijving": "De naam moet oud zijn, want ooievaars zitten hier al sinds mensenheugenis niet meer. Door het terrein te vernatten doen we overigens hard ons best hem te verleiden tot terugkeer. Ooievaars eten immers graag kikkers.",
+          "categorie": "Bezienswaardigheid",
+          "frequentie": "altijd",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "stroke": ""
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.022704601287842,
+            51.48974747380967
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.55380714718306,
+      5.263395309448242,
+      'bezienswaardigheid',
+      'Graf van Tienhoven',
+      'Aan de rand van het natuurgebied de Kampina bij Oisterwijk liggen enkele grote zwerfkeien waarin de jaren 1875 en 1953 gebeiteld staan. Het zijn de levensjaren van Pieter van Tienhoven, die bij testament had bepaald dat de urn met zijn as hier op de heide begraven moest worden.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "beschrijving": "Aan de rand van het natuurgebied de Kampina bij Oisterwijk liggen enkele grote zwerfkeien waarin de jaren 1875 en 1953 gebeiteld staan. Het zijn de levensjaren van Pieter van Tienhoven, die bij testament had bepaald dat de urn met zijn as hier op de heide begraven moest worden.",
+          "categorie": "Bezienswaardigheid",
+          "frequentie": "altijd",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "bezienswaardigheid_naam": "Graf van Tienhoven"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.263395309448242,
+            51.55380714718306
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.57201524785938,
+      5.364128351211548,
+      'eten en drinken',
+      'Hap en Trap-arrangement',
+      'Fiets door Het Groene Woud en proef de lokale specialiteiten. Je wordt verwelkomt in het hart van Liempde. Je krijgt een mooie fietsroute door Het Groene Woud, afgewisseld met zes stops op verrassende locaties. Geniet van de mooie natuur en proef de lokale specialiteiten. Laat je verrassen door de heerlijke streekproducten!',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "bezienswaardigheid_naam": "Hap&Trap-arrangement",
+          "beschrijving": "Fiets door Het Groene Woud en proef de lokale specialiteiten. Je wordt verwelkomt in het hart van Liempde. Je krijgt een mooie fietsroute door Het Groene Woud, afgewisseld met zes stops op verrassende locaties. Geniet van de mooie natuur en proef de lokale specialiteiten. Laat je verrassen door de heerlijke streekproducten!",
+          "frequentie": "altijd",
+          "categorie": "Eten & Drinken"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.364128351211548,
+            51.57201524785938
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.52030989086833,
+      5.266404747962952,
+      'eten en drinken',
+      'Spoordonkse watermolen',
+      ' ',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "bezienswaardigheid_naam": "Spoordonkse watermolen",
+          "beschrijving": "geen",
+          "frequentie": "altijd",
+          "categorie": "Eten & Drinken"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.266404747962952,
+            51.52030989086833
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.50266545920017,
+      5.264575481414795,
+      'bezienswaardigheid',
+      'Kapel Heilige Eik',
+      ' ',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-symbol": "",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "bezienswaardigheid_naam": "Kapel Heilige eik",
+          "beschrijving": "geen",
+          "frequentie": "altijd",
+          "categorie": "Bezienswaardigheid"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.264575481414795,
+            51.50266545920017
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.63971135519905,
+      5.148293673992156,
+      'eten en drinken',
+      'De Rustende Jager',
+      'Gelegen aan de rand van de Loonse en Drunense Duinen, met een groot terras en voldoende gelegenheid om binnen te zitten. Uitgebreide lunchkaart. Historisch aanlegpunt voor een wandeling, of tijdens een ritje met de fiets of te paard. Voor vergaderingen is een aparte zaal beschikbaar. Tevens een zeer ruim assortiment aan fietsverhuur, dagelijks beschikbaar.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "bezienswaardigheid_naam": "De Rustende Jager",
+          "beschrijving": "Gelegen aan de rand van de Loonse en Drunense Duinen, met een groot terras en voldoende gelegenheid om binnen te zitten. Uitgebreide lunchkaart. Historisch aanlegpunt voor een wandeling, of tijdens een ritje met de fiets of te paard. Voor vergaderingen is een aparte zaal beschikbaar. Tevens een zeer ruim assortiment aan fietsverhuur, dagelijks beschikbaar.",
+          "frequentie": "altijd",
+          "categorie": "Eten & Drinken",
+          "stroke-opacity": ""
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.148293673992156,
+            51.63971135519905
+          ]
+        }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+      51.57653279570173,
+      5.3791192173957825,
+      'bezienswaardigheid',
+      'Sint Janspontje',
+      'Een pontje midden in een natuurgebied met houtwallen, hooilanden, weilanden, bos, heideveldjes en poelen.',
+      '{
+        "type": "Feature",
+        "properties": {
+          "marker-symbol": "",
+          "marker-color": "#7e7e7e",
+          "marker-size": "medium",
+          "bezienswaardigheid_naam": "Sint Janspontje",
+          "beschrijving": "Een pontje midden in een natuurgebied met houtwallen, hooilanden, weilanden, bos, heideveldjes en poelen.",
+          "frequentie": "altijd",
+          "categorie": "Bezienswaardigheid"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            5.3791192173957825,
+            51.57653279570173
+          ]
+        }
+      }'
+    );
   } 
 
   public function AddProjectPoint($lat, $lng)
