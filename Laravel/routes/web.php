@@ -60,18 +60,18 @@ Route::get('admin', 'ProjectController@main')->middleware('auth');
 Route::get('/beheer/projecten', 'ProjectController@createProjectPage')->middleware('auth');
 Route::get('/beheer/project/aanmaken', 'ProjectController@create')->middleware('auth');
 
-Route::post('/beheer/AddInterestPoint', 'ProjectController@addProject')->middleware('auth');
+Route::post('/beheer/AddProjectPoint', 'ProjectController@addProject')->middleware('auth');
 Route::post('/beheer/updateProject', 'ProjectController@update')->middleware('auth');
 Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
 Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
 Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
 
-Route::get('/admin/interestpoints', 'InterestPointController@viewInterestPoints')->middleware('auth');
-Route::get('/admin/interestpoint/create', 'InterestPointController@create')->middleware('auth');
-Route::get('/admin/interestpoint/edit/{id}','InterestPointController@edit')->middleware('auth');
-Route::post('/admin/addInterestPoint', 'InterestPointController@addInterestPoint')->middleware('auth');
-Route::post('/admin/updateInterestPoint', 'InterestPointController@update')->middleware('auth');
-Route::post('/admin/deleteInterestPoint', 'InterestPointController@destroy')->middleware('auth');
+Route::get('/admin/projectpoints', 'ProjectPointController@viewProjectPoints')->middleware('auth');
+Route::get('/admin/projectpoint/create', 'ProjectPointController@create')->middleware('auth');
+Route::get('/admin/projectpoint/edit/{id}','ProjectPointController@edit')->middleware('auth');
+Route::post('/admin/addProjectPoint', 'ProjectPointController@addProjectPoint')->middleware('auth');
+Route::post('/admin/updateProjectPoint', 'ProjectPointController@update')->middleware('auth');
+Route::post('/admin/deleteProjectPoint', 'ProjectPointController@destroy')->middleware('auth');
 
 Route::get('/admin/route', 'AdminRouteController@getRouteData')->middleware('auth');
 Route::post('/admin/create/route', 'AdminRouteController@createRoute')->middleware('auth');
@@ -84,7 +84,7 @@ Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint')->middl
 // Return only data
 Route::get('/getCategories', 'MainPageController@getCatagories');
 Route::get('/getProjects', 'ProjectController@getProjects');
-Route::get('/getInterestPoints', 'InterestPointController@getInterestPoints');
+Route::get('/getProjectPoints', 'ProjectPointController@getProjectPoints');
 
 // Unnecessary : Could be deleted
 Route::get('details', function() {

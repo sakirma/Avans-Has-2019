@@ -20,7 +20,7 @@
 <div id="app">
     <v-app>
    
-        <add-interest-point></add-interest-point>
+        <add-project-point></add-project-point>
    
     </v-app>
 </div>

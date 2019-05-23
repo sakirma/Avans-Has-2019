@@ -2,12 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProjectPoint;
+use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\ProjectPoint;
 
 class ProjectPointsController extends Controller
 {
+    // Return view
+    public function create() {
+        return view('createProjectPoint');
+    }
+
+    public function viewProjectPoints(){
+        return view('mainCrudPage');
+    }
+
+    // Methods
+    public function getProjectPoints() {
+        $points = ProjectPoint::all();
+        return $points->toJson();
+    }
+
+    public function addProjectPoint (Request $request) {
+        $point = new ProjectPoint();
+
+        $location = new Point($request->lat, $request->long);
+        $geometryCollection = new GeometryCollection([$location]);
+
+        $point->name = $request->name;
+        $point->information = $request->information;
+        $point->category = $request->category;
+        $point->location = $location;
+        $point->area = $geometryCollection;
+
+        $point->save();
+    }
+
+    public function edit ($id) {
+        $point = ProjectPoint::find($id);
+        return $point->toJson();
+    }
+
+    public function destroy(Request $request)
+    {
+        $point = ProjectPoint::findOrFail($request->id);
+        $point->delete();
+    }
+
     public function getLocationData(Request $request)
     {
         $allowedLocations=[];

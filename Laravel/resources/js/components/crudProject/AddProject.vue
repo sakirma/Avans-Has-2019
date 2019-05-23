@@ -78,7 +78,7 @@
                 if(this.$refs.form.validate()) {
                     axios({
                         method: 'post',
-                        url: '/beheer/AddInterestPoint',
+                        url: '/beheer/AddProjectPoint',
                         data: {
                             name: this.name,
                             category: this.select,

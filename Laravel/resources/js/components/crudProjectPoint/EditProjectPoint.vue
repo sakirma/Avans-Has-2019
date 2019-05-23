@@ -30,7 +30,7 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker, LPopup,} from 'vue2-leaflet';
+    import {LMap, LTileLayer, LMarker, LPopup,} from 'vue2-leaflet/types';
     import "leaflet/dist/leaflet.css";
     import MapPageHeader from "../map-page-header";
 
@@ -74,7 +74,7 @@
                 lat: '',
                 buttonImage: "img/MapPage/button.png",
                 id: 0,
-                interest_points: [],
+                project_points: [],
             }
         },
 
@@ -84,7 +84,7 @@
                 if(this.$refs.form.validate()) {
                     axios({
                         method: 'post',
-                        url: '/admin/updateInterestPoint/',
+                        url: '/admin/updateProjectPoint/',
                         data: {
                             id: this.id,
                             name: this.name,
@@ -100,7 +100,7 @@
             goToHome(){
                 window.location.reload();
 
-                this.$vuetify.goTo('#view-interest-points');
+                this.$vuetify.goTo('#view-project-points');
                 this.$parent.selectedEditPage.isSelected = false;
                 this.$parent.selectedEditPage.PointId = undefined;
             },
@@ -125,7 +125,7 @@
         },
         mounted() {
             setTimeout(function() { window.dispatchEvent(new Event('resize')) }, 250);
-            this.$vuetify.goTo('#edit-interest-point');
+            this.$vuetify.goTo('#edit-project-point');
             this.$refs.eenElement.mapObject.on('click', function (e) {
                 console.log(e.latlng);
 
@@ -141,7 +141,7 @@
                 console.log(error);
             });
             console.log(this._id + " sfsdafgsf")
-            window.axios.get('/admin/interestpoint/edit/'+this._id ).then(response => {
+            window.axios.get('/admin/projectpoint/edit/'+this._id ).then(response => {
                 let temp = response.data;
                 this.name = temp.name;
                 this.select = temp.category;

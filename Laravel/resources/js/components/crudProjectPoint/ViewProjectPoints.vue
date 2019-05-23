@@ -1,17 +1,18 @@
 <template>
     <v-layout align-start justify-sapce-between row fill-height  style="background-color: #89a226">
+        <h2>INTEREST POINTS</h2>
         <v-flex >
-            <h2>Project Points</h2>
-            <v-btn   dark color="green" @click="OpenAddPressed" style="margin-left:1%"> Nieuw Project </v-btn>
-            <v-card v-for="p in projects" :key="projects.id" style="width:30%; height:100%; margin-left: 1%; margin-bottom: 1% ">
+            <v-btn dark color="green" @click="OpenAddPressed" style="margin-left:1%"> Nieuwe bezienswaardigheid </v-btn>
+            <v-btn dark color="green" @click="GoBack"> Terug </v-btn>
+            <v-card v-for="p in project_points" :key="project_points.id" style="width:30%; height:100%; margin-left: 1%; margin-bottom: 1% ">
                 <p class="text-sm-center">{{ p.name}}</p>
                 <p class="text-sm-center">{{ p.text}}</p>
                 <v-list>
                     <v-list-tile>
                         <v-list-tile-content >
                             <v-container align-center justify-center row fill-height >
-                                <v-btn @click="OpenEditPagePressed(p._id)">{{p._id}}</v-btn>
-                                <v-btn color="error" @click="deleteItem(p._id)">Wissen</v-btn>
+                                <v-btn @click="OpenEditPagePressed(p.id)">Bewerken</v-btn>
+                                <v-btn color="error" @click="deleteItem(p.id)">Wissen</v-btn>
                             </v-container>
                         </v-list-tile-content>
                     </v-list-tile>
@@ -23,7 +24,7 @@
 
 <script>
     export default {
-        name: "ViewProjects",
+        name: "ViewProjectPoints",
         props: {
             onAddOpened: {
                 type: Function,
@@ -36,23 +37,26 @@
             return {
                 selectedEditPage: {
                     isSelected: false,
-                    projectId: undefined
+                    projectPointId: undefined
                 },
-                projects: [],
+                project_points: [],
             }
         },
         methods:{
-            OpenEditPagePressed: function (projectId) {
-                this.onEditPageOpened(projectId);
+            OpenEditPagePressed: function (id) {
+                this.onEditPageOpened(id);
             },
             OpenAddPressed: function () {
                 this.onAddOpened();
             },
+            GoBack() {
+                window.location.href = '/beheer';
+            },
             deleteItem (id) {
-                if(confirm(' wil je dit project zeker verwijderen?')){
+                if(confirm('Weet u zeker dat deze bezienswaardigheid wilt verwijderen?')){
                     axios({
                         method: 'post',
-                        url: '/beheer/DeleteProject',
+                        url: '/admin/deleteProjectPoint',
                         data: {
                             id: id,
 
@@ -66,7 +70,8 @@
             window.axios.get('/getProjectPoints').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
-                    this.projects.push({name: temp[i].name,_id: temp[i].id , text: temp[i].information});
+                    console.log(temp[i]);
+                    this.project_points.push({id: temp[i].id,project_id: temp[i].project_id , location: temp[i].location, area: temp[i].area, name: temp[i].name, information: temp[i].information, category: temp[i].categroy});
                 }
             }).catch(function (error) {
                 console.log(error);

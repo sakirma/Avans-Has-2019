@@ -10,16 +10,14 @@ class ProjectPoint extends Model
     use SpatialTrait;
 
     protected $table = 'interest_point';
+
+    protected $fillable = ['project_id', 'location', 'area', 'name', 'information', 'category' ];
+
     protected $spatialFields = [
         'location',
-        'geo_json'
+        'area'
     ];
 
     // Table does not have timestamps
     public $timestamps = false;
-
-    public function project()
-    {
-        return $this->belongsTo('App\Models\Project', 'projects_id');
-    }
 }

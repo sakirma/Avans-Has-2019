@@ -23,8 +23,8 @@ class Category extends Model
         return $this->hasMany(Project::class);
     }
 
-    public function hasInterestPoint()
+    public function hasProjectPoint()
     {
-        return $this->hasMany(InterestPoint::class);
+        return $this->hasMany(ProjectPoint::class);
     }
 }

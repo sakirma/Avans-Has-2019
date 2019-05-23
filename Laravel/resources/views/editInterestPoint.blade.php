@@ -19,7 +19,7 @@
 
 <div id="app">
     <v-app>
-        <edit-interest-point></edit-interest-point>
+        <edit-project-point></edit-project-point>
     </v-app>
 </div>
 <script src="../../js/app.js"></script>

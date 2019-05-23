@@ -30,12 +30,12 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker, LPopup,} from 'vue2-leaflet';
+    import {LMap, LTileLayer, LMarker, LPopup,} from 'vue2-leaflet/types';
     import "leaflet/dist/leaflet.css";
     import MapPageHeader from "../map-page-header";
 
     export default {
-        name: 'AddInterestPoint',
+        name: 'AddProjectPoint',
         components: {
             MapPageHeader,
             LMap,
@@ -80,7 +80,7 @@
                 if(this.$refs.form.validate()) {
                     axios({
                         method: 'post',
-                        url: '/admin/addInterestPoint',
+                        url: '/admin/addProjectPoint',
                         data: {
                             name: this.name,
                             category: this.select,
@@ -127,7 +127,7 @@
         // test method
         mounted() {
             // Disabled because it stopped the categories from appearing
-            this.$vuetify.goTo('#add-interest-point');
+            this.$vuetify.goTo('#add-project-point');
             this.$refs.eenElement.mapObject.on('click', function (e) {
                 console.log(e.latlng);
             });

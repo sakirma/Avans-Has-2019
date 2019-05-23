@@ -1,26 +1,26 @@
 <template>
     <div  style="height: 100vh">
-        <view-interest-points id="view-interest-points" :onAddOpened="OpenAddPage" :onEditPageOpened="OpenEditPage"></view-interest-points>
-        <add-interest-point id="add-interest-point"  v-if="selectedAddPage === true" ></add-interest-point>
-        <edit-interest-point id="edit-interest-point" v-if="selectedEditPage.isSelected === true" :_id="Edit().toString()"></edit-interest-point>
+        <view-project-points id="view-project-points" :onAddOpened="OpenAddPage" :onEditPageOpened="OpenEditPage"></view-project-points>
+        <add-project-point id="add-project-point"  v-if="selectedAddPage === true" ></add-project-point>
+        <edit-project-point id="edit-project-point" v-if="selectedEditPage.isSelected === true" :_id="Edit().toString()"></edit-project-point>
     </div>
 </template>
 
 <script>
-    import AddInterestPoint from './AddInterestPoint';
+    import AddProjectPoint from './AddProjectPoint';
     import CrudProject from './CrudPage';
-    import EditInterestPoint from './EditInterestPoint';
-    import ViewInterestPoints from './ViewInterestPoints';
+    import EditProjectPoint from './EditProjectPoint';
+    import ViewProjectPoints from './ViewProjectPoints';
 
 
 
     export default {
         name: 'CrudPage',
         components: {
-            AddInterestPoint,
+            AddProjectPoint,
             CrudProject,
-            EditInterestPoint,
-            ViewInterestPoints,
+            EditProjectPoint,
+            ViewProjectPoints,
         },
         data() {
             return {

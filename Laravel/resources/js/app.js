@@ -63,7 +63,7 @@ Vue.component('edit-projects',
     require('./components/crudProject/EditProjects').default
 );
 Vue.component('main-crud-page',
-    require('./components/crudInterestPoint/CrudPage').default
+    require('./components/crudProjectPoint/CrudPage').default
 );
 
 Vue.component('view-project-points',
@@ -74,16 +74,16 @@ Vue.component('login-screen',
     require('./components/auth/loginScreen').default
 );
 
-Vue.component('add-interest-point',
-    require('./components/crudInterestPoint/AddInterestPoint').default
+Vue.component('add-project-point',
+    require('./components/crudProjectPoint/AddProjectPoint').default
 );
 
-Vue.component('edit-interest-point',
-    require('./components/crudInterestPoint/EditInterestPoint').default
+Vue.component('edit-project-point',
+    require('./components/crudProjectPoint/EditProjectPoint').default
 );
 
-Vue.component('view-interest-points',
-    require('./components/crudInterestPoint/ViewInterestPoints').default
+Vue.component('view-project-points',
+    require('./components/crudProjectPoint/ViewProjectPoints').default
 );
 
 /**
