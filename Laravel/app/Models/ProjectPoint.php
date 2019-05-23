@@ -12,7 +12,7 @@ class ProjectPoint extends Model
     protected $table = 'interest_point';
     protected $spatialFields = [
         'location',
-        'geo_json'
+        'area'
     ];
 
     // Table does not have timestamps
