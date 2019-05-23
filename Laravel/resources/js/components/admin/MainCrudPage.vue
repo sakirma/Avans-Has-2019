@@ -19,13 +19,16 @@
                                             </v-flex>
                                             <v-flex d-flex>
                                                 <v-layout row fill-height align-center justify-center>
-                                                    <v-flex d-flex xs3>
-                                                        <v-btn>
-                                                            Project Toevoegen
+                                                    <v-spacer></v-spacer>
+                                                    <v-flex xs3>
+                                                        <v-btn block color="#89a324" class="project-toevoegen-button white--text">
+                                                            <span style="white-space: normal;">
+                                                                Project Toevoegen
+                                                            </span>
                                                         </v-btn>
                                                     </v-flex>
-                                                    <v-flex d-flex>
-                                                        <v-text-field solo hide-details round class="search-bar pa-0" append-icon="search"></v-text-field>
+                                                    <v-flex d-flex xs4>
+                                                        <v-text-field solo hide-details round class="search-bar pa-0" flat append-icon="search"></v-text-field>
                                                     </v-flex>
                                                 </v-layout>
                                             </v-flex>
@@ -63,5 +66,10 @@
         border-style: solid;
         border-width: 2px;
         border-color: rgba(174, 195, 207, 0.21);
+    }
+
+    .project-toevoegen-button {
+        padding: 0;
+        height: 100%;
     }
 </style>
