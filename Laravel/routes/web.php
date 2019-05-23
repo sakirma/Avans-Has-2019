@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 });
 
-Route::get('/admin/route', 'AdminRouteController@init');
+Route::get('/admin/route', 'AdminRouteController@getView');
 Route::post('/admin/route/data', 'AdminRouteController@getRouteData');
 Route::post('/admin/route/create', 'AdminRouteController@createRoute');
 Route::post('/admin/route/remove', 'AdminRouteController@removeRoute');

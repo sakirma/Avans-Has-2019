@@ -77,8 +77,6 @@
 
                 axios.post('/admin/route/data')
                     .then(response => {
-                        console.log(response);
-
                         this.points = response.data.points.slice(0);
                         this.routes = response.data.routes.slice(0);
                         this.routeHasPoints = response.data.routeHasPoints.slice(0);

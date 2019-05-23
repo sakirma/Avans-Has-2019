@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 
 class AdminRouteController extends Controller
 {
-    function init(){
+    function getView(){
         return view('ManageRoutes');
     }
 
