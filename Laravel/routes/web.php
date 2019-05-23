@@ -84,6 +84,8 @@ Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint')->middl
 // Return only data
 Route::get('/getCategories', 'MainPageController@getCatagories');
 Route::get('/getProjects', 'ProjectController@getProjects');
+Route::get('/getProjectNames', 'ProjectController@getProjectNames');
+
 Route::get('/getProjectPoints', 'ProjectPointController@getProjectPoints');
 
 // Unnecessary : Could be deleted

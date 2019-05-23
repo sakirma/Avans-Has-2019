@@ -7,11 +7,12 @@
                     <v-icon dark left>arrow_back</v-icon>Back
                 </v-btn>
                 <v-form v-model="valid" ref="form">
-                    <v-text-field label="Naam" v-model="name" :rules="nameRules" dark></v-text-field>
-                    <v-select label="Kies een categorie" v-model="select" :items="categories" :rules="[v => !!v || 'Categorie is vereist']" required dark></v-select>
-                    <v-textarea label="Beschrijving" v-model="text"  :rules="textRules" required dark></v-textarea>
+                    <v-select label="Project" v-model="selectName" :items="projects.name" dark></v-select>
                     <v-text-field label="Latidude" :value="lat" :rules="[v => !!v || 'Punt moet op de map geselecteerd worden']" readonly required dark></v-text-field>
                     <v-text-field label="Longitude" :value="long" :rules="[v => !!v || 'Punt moet op de map geselecteerd worden']" readonly required dark></v-text-field>
+                    <v-text-field label="Naam" v-model="name" :rules="nameRules" dark></v-text-field>
+                    <v-textarea label="Beschrijving" v-model="text"  :rules="textRules" required dark></v-textarea>
+                    <v-select label="Kies een categorie" v-model="selectCat" :items="categories" :rules="[v => !!v || 'Categorie is vereist']" required dark></v-select>
                     <v-btn @click="validate" :class="{ red: !valid, green: valid }">Klaar</v-btn>
                 </v-form>
             </v-flex>
@@ -52,8 +53,10 @@
                     v => !!v || 'Naam is vereist',
                     v => (v && v.length <= 191) || 'Naam mag niet langer zijn dan 190 karakters'
                 ],
-                select: null,
+                selectCat: null,
+                selectName: null,
                 categories: [],
+                projects: [],
                 text: '',
                 textRules: [
                     v => !!v || 'Beschreiving is vereist',
@@ -132,14 +135,25 @@
                 console.log(e.latlng);
             });
 
+            window.axios.get('/getProjectNames').then(response => {
+                let temp = response.data;
+                for (let i = 0; i < temp.length; i++) {
+                    this.projects.push( {name: temp[i].name.toString(), id: temp[i].id.toString()});
+                }
+                console.log(this.projects);
+            }).catch(function (error) {
+                console.log(error);
+            });
+
             window.axios.get('/getCategories').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
-                    this.categories.push(temp[i].name);
+                    this.categories.push(temp[i].name.toString());
                 }
             }).catch(function (error) {
                 console.log(error);
             });
+
         }
     }
 </script>
