@@ -49,6 +49,7 @@ $factory->define(App\Models\ProjectPoint::class, function (Faker $faker) {
                     }
                 }]
             }'),
+        'category' => 'eten en drinken',
         'name' => $faker->name,
         'information' => $faker->text(25),
     ];
