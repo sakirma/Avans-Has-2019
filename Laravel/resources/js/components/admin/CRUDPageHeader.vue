@@ -42,8 +42,6 @@
 </script>
 
 <style scoped>
-
-    
     .button-page-title {
         color: white;
     }

@@ -18,17 +18,18 @@
                                                 </v-card-title>
                                             </v-flex>
                                             <v-flex d-flex>
-                                                <v-layout row fill-height align-center justify-center>
-                                                    <v-spacer></v-spacer>
-                                                    <v-flex xs3>
-                                                        <v-btn block color="#89a324" class="project-toevoegen-button white--text">
+                                                <v-layout row align-center justify-center>
+                                                    <v-flex xs2 fill-height justify-content-center>
+                                                        <v-btn color="#89a324"
+                                                               class="project-toevoegen-button white--text">
                                                             <span style="white-space: normal;">
                                                                 Project Toevoegen
                                                             </span>
                                                         </v-btn>
                                                     </v-flex>
-                                                    <v-flex d-flex xs4>
-                                                        <v-text-field solo hide-details round class="search-bar pa-0" flat append-icon="search"></v-text-field>
+                                                    <v-flex>
+                                                        <v-text-field solo hide-details round class="search-bar pa-0"
+                                                                      flat append-icon="search"></v-text-field>
                                                     </v-flex>
                                                 </v-layout>
                                             </v-flex>
