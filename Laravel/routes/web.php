@@ -29,15 +29,11 @@ Route::post('GetProjectWithinDistance', "ProjectController@getProjectWithinDista
 Route::get('/project/info/{id}', "ProjectController@index")->name("project.info");
 Route::post('/project/info/{id}', "ProjectController@facetInfo")->name("project.info.facet");
 
-
-
-
-
 Route::group(['prefix' => 'admin'], function () {
     Auth::routes();
 });
 
-Route::get('admin/login', 'Auth\LoginController@showLoginForm');
+Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('admin/authenticate', 'Auth\LoginController@authenticate');
 
 
@@ -53,19 +49,23 @@ Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
 Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
 Route::get('getAllRoutes', "RoutesController@getAllRoutes");
 Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");
-// Crud
-// TODO: Change beheer to admin.
-Route::get('beheer', 'ProjectController@main')->middleware('auth');
 
-Route::get('/beheer/projecten', 'ProjectController@createProjectPage')->middleware('auth');
-Route::get('/beheer/project/aanmaken', 'ProjectController@create')->middleware('auth');
 
-Route::post('/beheer/AddProject', 'ProjectController@addProject')->middleware('auth');
-Route::post('/beheer/updateProject', 'ProjectController@update')->middleware('auth');
-Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
-Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
-Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
+Route::group(['middleware' => ['auth']], function () {
 
+    Route::get('beheer', 'ProjectController@main');
+
+    Route::get('/beheer/projecten', 'ProjectController@createProjectPage');
+    Route::get('/beheer/project/aanmaken', 'ProjectController@create');
+
+    Route::post('/beheer/AddProject', 'ProjectController@addProject');
+    Route::post('/beheer/updateProject', 'ProjectController@update');
+    Route::post('/beheer/DeleteProject', 'ProjectController@destroy');
+    Route::get('/beheer/edit/{id}','ProjectController@edit');
+    Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
+
+
+});
 
 Route::get('/admin/route', 'AdminRouteController@init');
 Route::post('/admin/route/data', 'AdminRouteController@getRouteData');
@@ -73,7 +73,6 @@ Route::post('/admin/route/create', 'AdminRouteController@createRoute');
 Route::post('/admin/route/remove', 'AdminRouteController@removeRoute');
 Route::post('/admin/route/points', 'AdminRouteController@getRoutePoints');
 Route::post('/admin/route/projects', 'AdminRouteController@getProjectPoint');
-/////////////////
 
 
 // Return only data

@@ -18,10 +18,19 @@ class ProjectTableSeeder extends Seeder
         // https://laravel.com/docs/5.8/database-testing#writing-factories
 
         // Project needs a category.
-        DB::table('project_category')->insert([
-            'name' => 'lol',
+        DB::table('category')->insert([
+            'name' => 'natuurgebied',
         ]);
-
+        DB::table('category')->insert([
+          'name' => 'bezienswaardigheid',
+        ]);
+        DB::table('category')->insert([
+          'name' => 'eten en drinken',
+        ]);
+        DB::table('category')->insert([
+          'name' => 'activiteit',
+        ]);
+        
         //factory(App\Models\Project::class)->create();
         $this->AddProjectPoint(51.61716386256088, 5.506896972656249);
         $this->AddProjectPoint(51.61716386256088, 5.506896972656249);
@@ -35,8 +44,7 @@ class ProjectTableSeeder extends Seeder
     public function AddProjectPoint($lat, $lng)
     {
         factory(App\Models\Project::class)->create([
-            'location' => new Point($lat, $lng),
-            'geo_json' => Geometry::fromJson('{
+            'area' => Geometry::fromJson('{
               "type": "FeatureCollection",
               "features": [
                 {
