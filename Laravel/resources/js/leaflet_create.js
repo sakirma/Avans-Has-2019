@@ -7,7 +7,7 @@ let newMarkers = [];
 
 export default {
 
-    //projectMarkers.on('dblclick', mouseRemoveMarker);
+    //
     /*function mousePlaceMarker(e) {
 
         L.marker(e.latlng,{
@@ -26,7 +26,7 @@ export default {
         map = m;
         map.doubleClickZoom.disable();
 
-        let routingControl = L.Routing.control({
+        routingControl = L.Routing.control({
             router: L.Routing.mapbox('pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig'),
             waypoints: [null],
             routeWhileDragging: false,
@@ -36,26 +36,10 @@ export default {
             }
         }).on('routesfound', this.updateMarkersToRoute).addTo(map);
 
-
         projectMarkers = L.featureGroup().addTo(map);
+        projectMarkers.on('dblclick', this.mouseRemoveMarker);
 
         return routingControl;
-    },
-
-    mouseRemoveMarker: function (e) {
-        projectMarkers.removeLayer(e.layer);
-
-        let routes = routingControl.getWaypoints();
-        let newRoutes = [];
-
-        for (let i = 0; i < routes.length; i++) {
-
-            if ((routes[i].latLng !== e.latlng) && (routes[i].latLng !== null)) {
-                newRoutes.push(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng));
-            }
-        }
-        routingControl.setWaypoints(newRoutes);
-        this.resetCheckbox(e.layer.options.id);
     },
 
     uploadRoute: function () {
@@ -92,8 +76,6 @@ export default {
     placeMarker: function (point) {
 
         //let projectInfo = await this.getProjectInfo(id);
-        console.log(point);
-
         let latlng = new L.latLng( point.location.coordinates[1], point.location.coordinates[0] );
 
         L.marker(latlng, {
@@ -132,7 +114,9 @@ export default {
             });
     },
 
-    removeMarker: function (latling, id) {
+    removeMarker: function (point) {
+
+        let latlng = L.latLng(point.location.coordinates[1], point.location.coordinates[0]);
 
         let routes = routingControl.getWaypoints();
         let layers = projectMarkers.getLayers();
@@ -141,13 +125,13 @@ export default {
         //Update leaflet layer
         for (let i = 0; i < layers.length; i++) {
             //TODO (bug) options.id is sometimes int sometimes string (temp workaround)
-            if (layers[i].options.id == id) {
+            if (layers[i].options.id === point.id) {
                 projectMarkers.removeLayer(layers[i]);
             }
         }
         //Update routing machine
         for (let i = 0; i < routes.length; i++) {
-            if ((routes[i].latLng !== null) && (!routes[i].latLng.equals(latling))) {
+            if ((routes[i].latLng !== null) && (!routes[i].latLng.equals(latlng))) {
                 newRoutes.push(L.routing.waypoint(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng), routes[i].name, {
                     name: routes[i].name,
                     info: routes[i].options.info
@@ -157,29 +141,33 @@ export default {
         routingControl.setWaypoints(newRoutes);
     },
 
-    //TODO refactor for vue
-    onCheckbox: function (lat, lng, id) {
-
-        console.log(lat + "," +lng);
-
-        let latlng = L.latLng(lat, lng);
-
-        this.placeMarker(latlng, id);
-        //this.removeMarker(latlng, id);
-    },
-
-    resetCheckbox: function (id) {
-        let checkbox = document.getElementById('button-' + id);
-        if (checkbox === null) return;
-
-        checkbox.checked = false;
-    },
-
     checkCheckbox: function (id) {
-        let checkbox = document.getElementById('button-' + id);
+        let checkbox = document.getElementById(id);
         if (checkbox === null) return;
 
         checkbox.checked = true;
+    },
+
+
+    mouseRemoveMarker: function (e) {
+
+        projectMarkers.removeLayer(e.layer);
+
+        let checkbox = document.getElementById(e.layer.options.id);
+
+        let routes = routingControl.getWaypoints();
+        let newRoutes = [];
+
+        for (let i = 0; i < routes.length; i++) {
+
+            if ((routes[i].latLng !== e.latlng) && (routes[i].latLng !== null)) {
+                newRoutes.push(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng));
+            }
+        }
+        routingControl.setWaypoints(newRoutes);
+
+        if (checkbox === null) return;
+        checkbox.checked = false;
     },
 
     updateMarkersToRoute: function (e) {
@@ -187,7 +175,7 @@ export default {
 
         for (let i = 0; i < e.waypoints.length; i++) {
 
-            let elem = document.getElementById("travel-info");
+            //let elem = document.getElementById("travel-info");
             let mId = e.waypoints[i].name;
             let projectInfo = e.waypoints[i].options.info;
 
@@ -210,9 +198,9 @@ export default {
                 ).addTo(projectMarkers);
             //.on('dragend', calculateRoute)
 
-            let c = elem.childNodes;
-            c[1].innerHTML = "Totale km: " + Math.round((e.routes[0].summary.totalDistance / 1000) * 100) / 100;
-            c[3].innerHTML = "Totale reistijd: " + (timeConvert(e.routes[0].summary.totalTime));
+            //let c = elem.childNodes;
+            //c[1].innerHTML = "Totale km: " + Math.round((e.routes[0].summary.totalDistance / 1000) * 100) / 100;
+            //c[3].innerHTML = "Totale reistijd: " + (timeConvert(e.routes[0].summary.totalTime));
         }
     },
 
@@ -316,7 +304,7 @@ export default {
         }
     },
 
-    //map.on('dblclick', mousePlaceMarker);
+
 }
 
 

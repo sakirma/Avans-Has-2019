@@ -21,7 +21,7 @@
                         <h3>{{ point.name }}</h3>
                         <P>location: {{ point.location.coordinates[0] }}, {{ point.location.coordinates[1] }}</P>
                         <p>information: {{ point.information }} </p>
-                        <input type="checkbox" :id="point.id"  v-on:click="placePoint(point)">
+                        <input type="checkbox" :id="point.id"  v-on:click="toggleCheckbox(point, $event)">
                     </div>
 
                 </v-layout>
@@ -86,13 +86,31 @@
                 });
             },
 
+            toggleCheckbox: function(point, event){
+                if(event.target.checked) { this.placePoint(point); }
+                else { this.removePoint(point); }
+            },
+
             placePoint: function(point){
 
                 let markers = leaflet_create.default.placeMarker( point );
                 let waypoints = leaflet_create.default.createWaypoints( markers );
 
+                if(markers.length < 2) return;
+
                 console.log(this.routingControl);
                 this.routingControl.setWaypoints( waypoints );
+            },
+
+            removePoint: function(point){
+                leaflet_create.default.removeMarker( point );
+            },
+
+            resetCheckbox: function(id){
+                let checkbox = document.getElementById(id);
+                if (checkbox === null) return;
+
+                checkbox.checked = true;
             }
         }
     }
