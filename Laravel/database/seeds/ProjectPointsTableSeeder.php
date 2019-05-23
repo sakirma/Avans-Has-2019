@@ -64,7 +64,7 @@ class ProjectPointsTableSeeder extends Seeder
         "geometry": {
           "type": "Polygon",
           "coordinates": [
-            [
+          [
               [
                 5.2349768534745325,
                 51.57824557639225
@@ -846,6 +846,129 @@ class ProjectPointsTableSeeder extends Seeder
         }
       }'
     );
+    //mine
+    $this->AddProjectPointFromJSON(
+        52.135173926548894,
+        5.074310302734375,
+        'activiteit',
+        'Lentefeest bij Buurtvrij',
+        'Vandaag vieren we de lente!  Dit doen we met veel bloemen, hutten bouwen, interieur styling, workshops, graffiti, BBQ en nog veel meer.',
+        '{
+        "type": "Feature",
+        "properties": {
+          "marker-symbol": "",
+          "marker-size": "medium",
+          "bezienswaardigheid_naam": "Lentefeest bij Buurtvrij",
+          "beschrijving": "Vandaag vieren we de lente!  Dit doen we met veel bloemen, hutten bouwen, interieur styling, workshops, graffiti, BBQ en nog veel meer.",
+          "marker-color": "#7e7e7e",
+          "frequentie": "Zondag 14 april ",
+          "categorie": "Activiteit"
+        },
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                5.074310302734375,
+                52.135173926548894
+              ],
+              [
+                5.6689453125,
+                52.042355439413214
+              ],
+              [
+                5.923004150390624,
+                51.97980524492489
+              ],
+              [
+                5.651092529296874,
+                51.92394344554469
+              ],
+              [
+                5.096282958984375,
+                52.075285904832334
+              ],
+              [
+                5.140228271484375,
+                51.93749209045435
+              ],
+              [
+                5.2294921875,
+                51.85613885029435
+              ],
+              [
+                5.398406982421875,
+                51.89598644548043
+              ],
+              [
+                5.673065185546874,
+                51.87903433818993
+              ],
+              [
+                5.057830810546875,
+                52.12590076522272
+              ],
+              [
+                5.06744384765625,
+                52.13264507395748
+              ],
+              [
+                5.083923339843749,
+                52.136016845512536
+              ],
+              [
+                5.083580017089844,
+                52.135173926548894
+              ]
+            ]
+          }
+      }'
+    );
+    $this->AddProjectPointFromJSON(
+          51.83068574881732,
+          4.346466064453125,
+          'activiteit',
+          'Lentefeest bij Buurtvrij',
+          'Vandaag vieren we de lente!  Dit doen we met veel bloemen, hutten bouwen, interieur styling, workshops, graffiti, BBQ en nog veel meer.',
+          '{
+        "type": "Feature",
+        "properties": {
+          "marker-symbol": "",
+          "marker-size": "medium",
+          "bezienswaardigheid_naam": "Lentefeest bij Buurtvrij",
+          "beschrijving": "Vandaag vieren we de lente!  Dit doen we met veel bloemen, hutten bouwen, interieur styling, workshops, graffiti, BBQ en nog veel meer.",
+          "marker-color": "#7e7e7e",
+          "frequentie": "Zondag 14 april ",
+          "categorie": "Activiteit"
+        },
+        "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              4.346466064453125,
+              51.83068574881732
+            ],
+            [
+              4.75982666015625,
+              51.83068574881732
+            ],
+            [
+              4.75982666015625,
+              51.97134580885172
+            ],
+            [
+              4.346466064453125,
+              51.97134580885172
+            ],
+            [
+              4.346466064453125,
+              51.83068574881732
+            ]
+          ]
+        ]
+      }
+      }'
+      );
   }
 
   public function AddProjectPoint($lat, $lng)
