@@ -21,8 +21,8 @@ class CreateProjectPointTable extends Migration
             $table->point('location');
             $table->geometryCollection('area')->nullable();
 
-            $table->string('name');
-            $table->string('information');
+            $table->string('name', 255);
+            $table->longText('information');
             $table->string('category')->nullable();
         });
 
