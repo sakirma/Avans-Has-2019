@@ -7,7 +7,6 @@ use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
 use Validator;
-use App\Models\ProjectPoint;
 
 class ProjectPointsController extends Controller
 {

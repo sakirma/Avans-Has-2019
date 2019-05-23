@@ -66,12 +66,12 @@ Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('a
 Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
 Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
 
-Route::get('/admin/projectpoints', 'ProjectPointController@viewProjectPoints')->middleware('auth');
-Route::get('/admin/projectpoint/create', 'ProjectPointController@create')->middleware('auth');
-Route::get('/admin/projectpoint/edit/{id}','ProjectPointController@edit')->middleware('auth');
-Route::post('/admin/addProjectPoint', 'ProjectPointController@addProjectPoint')->middleware('auth');
-Route::post('/admin/updateProjectPoint', 'ProjectPointController@update')->middleware('auth');
-Route::post('/admin/deleteProjectPoint', 'ProjectPointController@destroy')->middleware('auth');
+Route::get('/admin/projectpoints', 'InterestPointController@viewInterestPoints');
+Route::get('/admin/projectpoint/create', 'InterestPointController@create')->middleware('auth');
+Route::get('/admin/projectpoint/edit/{id}','InterestPointController@edit')->middleware('auth');
+Route::post('/admin/addProjectPoint', 'InterestPointController@addProjectPoint')->middleware('auth');
+Route::post('/admin/updateProjectPoint', 'InterestPointController@update')->middleware('auth');
+Route::post('/admin/deleteProjectPoint', 'InterestPointController@destroy')->middleware('auth');
 
 Route::get('/admin/route', 'AdminRouteController@getRouteData')->middleware('auth');
 Route::post('/admin/create/route', 'AdminRouteController@createRoute')->middleware('auth');
