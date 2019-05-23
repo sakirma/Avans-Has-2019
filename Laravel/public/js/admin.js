@@ -91684,7 +91684,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Git repos\Avans-HAS-2019\Laravel\resources\js\admin.js */"./resources/js/admin.js");
+module.exports = __webpack_require__(/*! C:\Users\Gijs\Documents\GitHub\Avans-HAS-2019\Laravel\resources\js\admin.js */"./resources/js/admin.js");
 
 
 /***/ })

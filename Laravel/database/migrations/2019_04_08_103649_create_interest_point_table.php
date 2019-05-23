@@ -4,26 +4,30 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-
-class CreateProjectTable extends Migration
+class CreateInterestPointTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
+    # TODO: Put GeoJson Columns.
     public function up()
     {
-        Schema::create('project', function (Blueprint $table) {
+        Schema::create('interest_point', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('project_id')->nullable();
+
+            $table->point('location');
             $table->geometryCollection('area')->nullable();
-            $table->string("category")->nullable();
+
             $table->string('name', 255);
             $table->longText('information');
+            $table->string('category')->nullable();
         });
 
-
-        Schema::table('project', function (Blueprint $table) {
+        Schema::table('interest_point', function (Blueprint $table) {
+            $table->foreign('project_id')->references('id')->on('project')->onDelete('cascade');
             $table->foreign('category')->references('name')->on('category')->onDelete('set null');
         });
     }
@@ -35,6 +39,6 @@ class CreateProjectTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project');
+        Schema::dropIfExists('interest_point');
     }
 }
