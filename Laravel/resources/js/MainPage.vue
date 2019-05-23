@@ -24,6 +24,13 @@
             ProjectPage,
             RoutePage,
         },
+        watch: {
+            selectedProjectPage: function(){
+                this.$nextTick(() => {
+                    this.$refs.projectPage.init();
+                })
+            }
+        },
         data() {
             return {
                 selectedProjectPage: {
@@ -50,7 +57,6 @@
                     this.UpdateScreen();
                 }
             },
-
             OpenRoutePage() {
                 this.selectedRoutePage = true;
                 this.selectedProjectPage.isSelected = false;
@@ -62,14 +68,12 @@
                     this.UpdateScreen();
                 }
             },
-
             OpenMapPage() {
                 let pageStates = this.$store.getters.pageStates;
                 this.$store.commit('setPageState', pageStates.mapPage);
 
                 this.UpdateScreen();
             },
-
             UpdateScreen() {
                 let currentPageState = this.$store.getters.getCurrentPageState;
                 let pageStates = this.$store.getters.pageStates;
@@ -96,7 +100,6 @@
                 L.DomEvent.disableClickPropagation(element.$el);
                 L.DomEvent.disableScrollPropagation(element.$el);
             },
-
             ScrollOnWheelEvent(e) {
                 if(this.scrolledOnFirstPage === false && e.deltaY > 0)
                 {

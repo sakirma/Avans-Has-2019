@@ -51,9 +51,9 @@ class ProjectPointsController extends Controller
         $arr = [];
         foreach($points as $point){
             if($point["area"] != null){
-                $arr[] = $point["area"];
+                $arr[] = ["id" => $point["id"], "info" => $point["area"]];
             }else{
-                $arr[] = $point["location"];
+                $arr[] = ["id" => $point["id"], "info" => $point["location"]];
             }
         }
         return json_encode($arr);
