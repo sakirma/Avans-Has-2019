@@ -22,4 +22,8 @@ class ProjectPoint extends Model
     {
         return $this->belongsTo('App\Models\Project', 'projects_id');
     }
+
+    public function imagePoints(){
+        return $this->hasMany("App\Models\PointHasImage", "point_id");
+    }
 }
