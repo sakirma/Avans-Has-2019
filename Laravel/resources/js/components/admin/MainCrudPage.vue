@@ -10,26 +10,24 @@
                         <v-layout row fill-height>
                             <v-flex xs6 d-flex px-4>
                                 <v-layout column fill-height>
-                                    <v-flex xs2>
-                                        <v-layout row fill-height>
-                                            <v-flex d-flex>
+                                    <v-flex xs1>
+                                        <v-layout row fill-height align-center justify-center>
+                                            <v-flex xs1>
                                                 <v-card-title class="display-2" style="color: #89a324;">
                                                     Projecten
                                                 </v-card-title>
                                             </v-flex>
-                                            <v-flex d-flex>
-                                                <v-layout row align-center justify-center>
-                                                    <v-flex xs2 fill-height justify-content-center>
-                                                        <v-btn color="#89a324"
-                                                               class="project-toevoegen-button white--text">
-                                                            <span style="white-space: normal;">
+                                            <v-flex fill-height>
+                                                <v-layout row fill-height align-center justify-end>
+                                                    <v-flex xs2 align-self-center mx-3>
+                                                        <v-btn block style="height: 100%;" color="#89a324">
+                                                            <v-card style="white-space: normal;" color="transparent" flat class="white--text">
                                                                 Project Toevoegen
-                                                            </span>
+                                                            </v-card>
                                                         </v-btn>
                                                     </v-flex>
-                                                    <v-flex>
-                                                        <v-text-field solo hide-details round class="search-bar pa-0"
-                                                                      flat append-icon="search"></v-text-field>
+                                                    <v-flex xs5>
+                                                        <v-text-field solo hide-details round label="zoek een project" class="search-bar pa-0" flat append-icon="search"></v-text-field>
                                                     </v-flex>
                                                 </v-layout>
                                             </v-flex>
@@ -67,10 +65,5 @@
         border-style: solid;
         border-width: 2px;
         border-color: rgba(174, 195, 207, 0.21);
-    }
-
-    .project-toevoegen-button {
-        padding: 0;
-        height: 100%;
     }
 </style>
