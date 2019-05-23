@@ -43,12 +43,12 @@ Route::post('/media', "MediaController@saveMedia")->name('media.save');
 
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
-Route::get('details/{id}', "ProjectPointsController@GetDetails");
-
 Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
 Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
 Route::get('getAllRoutes', "RoutesController@getAllRoutes");
 Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");
+
+Route::get('/getAllProjectPoints', "ProjectPointsController@getAllPoints");
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('beheer', 'ProjectController@main');
