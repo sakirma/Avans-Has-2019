@@ -29,6 +29,10 @@
             @if(isset($media) && !empty($media))
                 <img src="{{ route('media.get', ['name' => $media->name]) }}"/>
             @endif
+
+            @if($errors->any())
+                {{$errors->first()}}
+            @endif
         </div>
     </body>
 </html>

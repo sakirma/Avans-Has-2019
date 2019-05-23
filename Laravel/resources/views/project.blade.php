@@ -30,36 +30,38 @@
                     <h1>{{ $project->name }}</h1>
                     <p>{{ $project->information }}</p>
 
-                    <?php
-                        if(!isset($facet_id)) $facet_id = 0;
-                        
-                        if(isset($direction)){
-                            if($direction == "next"){
-                                $facet_id++;
-                                if($facet_id >= count($project->facets))
-                                    $facet_id = 0;
-                            }else{
-                                $facet_id--;
-                                if($facet_id < 0)
-                                    $facet_id = count($project->facets) - 1;
+                    @if(count($project->sortedFacets()) > 0)
+                        <?php
+                            if(!isset($facet_id)) $facet_id = 0;
+                            
+                            if(isset($direction)){
+                                if($direction == "next"){
+                                    $facet_id++;
+                                    if($facet_id >= count($project->facets))
+                                        $facet_id = 0;
+                                }else{
+                                    $facet_id--;
+                                    if($facet_id < 0)
+                                        $facet_id = count($project->facets) - 1;
+                                }
                             }
-                        }
-                    ?>
-
-                    <form id="facet-form" action="/project/info/{{$project->id}}" method="POST">
-                        @csrf
-                        <input type="hidden" name="facet_id" value="{{ $facet_id }}">
-                        <input type="hidden" name="project" value="{{ $project->id }}">
-                        <input type="hidden" id="direction" name="direction">
-                        <div>
-                            <input onclick="event.preventDefault(); document.getElementById('direction').value = 'back'; document.getElementById('facet-form').submit();" type="image" name="back" src="{{ asset('img/left_arrow.png') }}">
-                        </div>
-                        <p><strong>{{ $project->sortedFacets()[$facet_id]->route->name }}</strong></p>
-                        <p>{{ $project->sortedFacets()[$facet_id]->information }}</p>
-                        <div>
-                            <input onclick="event.preventDefault(); document.getElementById('direction').value = 'next'; document.getElementById('facet-form').submit();" type="image" name="next" src="{{ asset('img/right_arrow.png') }}">
-                        </div>
-                    </form>
+                        ?>
+                        
+                        <form id="facet-form" action="/project/info/{{$project->id}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="facet_id" value="{{ $facet_id }}">
+                            <input type="hidden" name="project" value="{{ $project->id }}">
+                            <input type="hidden" id="direction" name="direction">
+                            <div>
+                                <input onclick="event.preventDefault(); document.getElementById('direction').value = 'back'; document.getElementById('facet-form').submit();" type="image" name="back" src="{{ asset('img/left_arrow.png') }}">
+                            </div>
+                            <p><strong>Route: {{ $project->sortedFacets()[$facet_id]->route->name }}</strong></p>
+                            <p>Facet: {{ $project->sortedFacets()[$facet_id]->information }}</p>
+                            <div>
+                                <input onclick="event.preventDefault(); document.getElementById('direction').value = 'next'; document.getElementById('facet-form').submit();" type="image" name="next" src="{{ asset('img/right_arrow.png') }}">
+                            </div>
+                        </form>
+                    @endif
 
                     <div class="img-container">
                         @foreach($project->images() as $image)

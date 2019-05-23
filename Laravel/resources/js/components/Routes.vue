@@ -1,7 +1,12 @@
 <template>
     <div id="mapPage" style="height: 100vh;">
         <v-layout column fill-height style="background-color: #89a226">
-            <v-flex ma-3 xs1></v-flex>
+            <v-flex ma-3 xs1>
+                <v-layout justify-end>
+                    <v-btn v-on:click="exportToGoogle">Volg geselecteerde route in Google Maps</v-btn>
+                </v-layout>
+
+            </v-flex>
 
             <v-flex>
                 <l-map :center="center" :zoom="zoom" id="map" ref="map" style="height:100%;">
@@ -10,6 +15,12 @@
                             <list-routes :routesParent="this"></list-routes>
                         </v-layout>
                     </v-container>
+
+                    <v-layout align-start>
+                        <v-container>
+                            <v-btn>Test</v-btn>
+                        </v-container>
+                    </v-layout>
 
                     <l-tile-layer :attribution="attribution" :url="url"></l-tile-layer>
 
@@ -20,6 +31,7 @@
                             </l-popup>
                         </l-marker>
                     </template>
+
                 </l-map>
             </v-flex>
 
@@ -80,17 +92,25 @@
                 for (let i = 0; i < $arr.length; i++) {
                     this.projectPoints.push({location: $arr[i].location});
                     var pointId = this.projectPoints[i].id;
-                    var lat = this.projectPoints[i].location.coordinates[0];
-                    var lng = this.projectPoints[i].location.coordinates[1];
+                    var lat = this.projectPoints[i].location.coordinates[1];
+                    var lng = this.projectPoints[i].location.coordinates[0];
                     this.markers.push({
                         id: pointId,
                         latlng: L.latLng(parseFloat(lat), parseFloat(lng)),
                         content: ""
                     });
                 }
-                console.log(this.projectPoints);
                 routeList.routeClicked(this.$refs.map.mapObject, this.projectPoints);
-            }
+            },
+            exportToGoogle: function () {
+                if (this.projectPoints.length > 0) {
+                    let url = "https://www.google.com/maps/dir/";
+                    for (let i = 0; i < this.projectPoints.length; i++){
+                        url = url.toString() + this.projectPoints[i].location.coordinates[1].toString() + "," +this.projectPoints[i].location.coordinates[0].toString() + "/";
+                    }
+                    window.open(url, "_blank");
+                }
+            },
         },
     };
 </script>
