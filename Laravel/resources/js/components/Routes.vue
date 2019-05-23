@@ -52,7 +52,7 @@
     import DropDownButton from "./mapPageButton/DropDownButton";
 
     import routing from "leaflet-routing-machine";
-    import * as routeList from "./routeList.js";
+    import * as routeList from "./routelist.js";
 
     export default {
         name: "RoutesComponent",
