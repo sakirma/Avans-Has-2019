@@ -75,6 +75,14 @@
                             </l-popup>
                         </l-marker>
                     </template>
+
+                    <template v-for="(polygon, index) in polygons">
+                        <l-polygon :latLongs="polygon">
+                            <l-popup>
+                                <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>
+                            </l-popup>
+                        </l-polygon>
+                    </template>
                 </l-map>
             </v-flex>
 
@@ -101,6 +109,7 @@
             LMap,
             LTileLayer,
             LMarker,
+            LPolygon,
             LPopup
         },
         props: {
@@ -115,7 +124,7 @@
             return {
                 zoom: 11,
                 center: L.latLng(51.7142669290121, 5.3173828125),
-                url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+                url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 markers: [],
                 polygons: [],
@@ -138,16 +147,24 @@
             },
             loadMapObjects: function () {
                 axios.get('/getAllProjectPoints').then(({ data }) => {
-                    let locations = [];
-                    let polygons = [];
+                    console.log(data);
                     for(let i = 0; i < data.length; i++){
-                        locations[i] = L.latLng(data[i].location.coordinates[1], data[i].location.coordinates[0]);
-                        console.log(data[i].area);
-                        // if(data[i].area){
-                        //     polygons[polygons.length] = [data[i].area];
-                        // }
+                        if(data[i].type == "Point"){
+                            this.markers.push(L.latLng(data[i].coordinates[1], data[i].coordinates[0]));
+                        }else if(data[i].type == "GeometryCollection"){
+                            for(let j = 0; j < data[i].geometries.length; j++){
+                                if(data[i].geometries[j].type == "Polygon"){
+                                    let points = [];
+                                    for(let k = 0; k < data[i].geometries[j].coordinates.length; k++){
+                                        points.push(L.latLng(data[i].geometries[j].coordinates[k][1], data[i].geometries[j].coordinates[k][0]));
+                                    }
+                                    this.polygons.push(points);
+                                }else if(data[i].geometries[j].type == "Point"){
+                                    this.markers.push(L.latLng(data[i].coordinates[1], data[i].coordinates[0]));
+                                }
+                            }
+                        }
                     }
-                    this.markers = locations;
                 });
             }
         },

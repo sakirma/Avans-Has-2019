@@ -47,7 +47,16 @@ class ProjectPointsController extends Controller
     }
 
     public function getAllPoints(){
-        return json_encode(ProjectPoint::all());
+        $points = ProjectPoint::all();
+        $arr = [];
+        foreach($points as $point){
+            if($point["area"] != null){
+                $arr[] = $point["area"];
+            }else{
+                $arr[] = $point["location"];
+            }
+        }
+        return json_encode($arr);
     }
 
     public function getProjectPointByID($projectPointId){
