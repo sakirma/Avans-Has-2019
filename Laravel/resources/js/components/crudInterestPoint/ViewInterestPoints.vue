@@ -4,7 +4,7 @@
         <v-flex >
             <v-btn dark color="green" @click="OpenAddPressed" style="margin-left:1%"> Nieuwe bezienswaardigheid </v-btn>
             <v-btn dark color="green" @click="GoBack"> Terug </v-btn>
-            <v-card v-for="p in interest_points" :key="interest_points.id" style="width:30%; height:100%; margin-left: 1%; margin-bottom: 1% ">
+            <v-card v-for="p in project_points" :key="project_points.id" style="width:30%; height:100%; margin-left: 1%; margin-bottom: 1% ">
                 <p class="text-sm-center">{{ p.id}}</p>
                 <p class="text-sm-center">{{ p.projectId}}</p>
                 <p class="text-sm-center">{{ p.name}}</p>
@@ -28,7 +28,7 @@
 
 <script>
     export default {
-        name: "ViewInterestPoints",
+        name: "ViewProjectPoints",
         props: {
             onAddOpened: {
                 type: Function,
@@ -41,9 +41,9 @@
             return {
                 selectedEditPage: {
                     isSelected: false,
-                    interestPointId: undefined
+                    projectPointId: undefined
                 },
-                interest_points: [],
+                project_points: [],
             }
         },
         methods:{
@@ -60,7 +60,7 @@
                 if(confirm('Weet u zeker dat deze bezienswaardigheid wilt verwijderen?')){
                     axios({
                         method: 'post',
-                        url: '/admin/deleteInterestPoint',
+                        url: '/admin/deleteProjectPoint',
                         data: {
                             id: id,
 
@@ -71,11 +71,11 @@
             },
         },
         mounted() {
-            window.axios.get('/getInterestPoints').then(response => {
+            window.axios.get('/getProjectPoints').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
                     console.log(temp[i]);
-                    this.interest_points.push({id: temp[i].id,project_id: temp[i].project_id , location: temp[i].location, area: temp[i].area, name: temp[i].name, information: temp[i].information, category: temp[i].categroy});
+                    this.project_points.push({id: temp[i].id,project_id: temp[i].project_id , location: temp[i].location, area: temp[i].area, name: temp[i].name, information: temp[i].information, category: temp[i].categroy});
                 }
             }).catch(function (error) {
                 console.log(error);
