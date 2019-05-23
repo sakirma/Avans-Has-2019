@@ -77,7 +77,7 @@
                     </template>
 
                     <template v-for="(polygon, index) in polygons">
-                        <l-polygon :lat-lngs="polygon" color="#ff00ff">
+                        <l-polygon :lat-lngs="polygon">
                         </l-polygon>
                     </template>
                 </l-map>
