@@ -87,7 +87,7 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker, LControl, LPopup} from 'vue2-leaflet';
+    import {LMap, LTileLayer, LMarker, LPolygon, LControl, LPopup} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
 
     import MapPageHeader from "./map-page-header";
@@ -117,7 +117,8 @@
                 center: L.latLng(51.7142669290121, 5.3173828125),
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                markers: [L.latLng(51.7142669290121, 5.3173828125), L.latLng(51.7142669290121, 5.3153828125), L.latLng(51.7142669290121, 5.33828125)],
+                markers: [],
+                polygons: [],
                 buttonImage: "img/MapPage/button.png",
                 LeftDropDownButton: ['Projectnaam A', 'Projectnaam B', 'Projectnaam C'],
                 RightDropDownButton: ['Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks'],
@@ -134,9 +135,24 @@
             },
             OpenRoutePagePressed: function () {
                 this.onRoutePageOpened();
+            },
+            loadMapObjects: function () {
+                axios.get('/getAllProjectPoints').then(({ data }) => {
+                    let locations = [];
+                    let polygons = [];
+                    for(let i = 0; i < data.length; i++){
+                        locations[i] = L.latLng(data[i].location.coordinates[1], data[i].location.coordinates[0]);
+                        console.log(data[i].area);
+                        // if(data[i].area){
+                        //     polygons[polygons.length] = [data[i].area];
+                        // }
+                    }
+                    this.markers = locations;
+                });
             }
         },
         mounted() {
+            this.loadMapObjects();
         }
     }
 </script>
