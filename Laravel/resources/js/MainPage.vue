@@ -3,7 +3,7 @@
         <first-page id="firstPage"></first-page>
         <map-page id="mapPage" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
         <!-- TODO: DEBUGGING Replace false with true.  -->
-        <project-page ref="projectPage" id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
+        <project-page ref="projectPage" id="projectPage" :onProjectOpened="OpenProjectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
         <RoutePage ref="routePage" id="routePage" v-else-if="selectedRoutePage === true"></RoutePage>
         <div v-else></div>
     </div>

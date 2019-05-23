@@ -85,11 +85,9 @@
             LPopup
         },
         props: {
-            onProjectOpened: {
-                type: Function,
-            },
-            onRoutePageOpened: {
-                type: Function,
+            parentPage: {
+                type: Object,
+                required: true
             }
         },
         data() {
@@ -114,10 +112,7 @@
                 this.$parent.disableInputEvents(element);
             },
             OpenProjectPagePressed: function (projectId) {
-                this.onProjectOpened(projectId);
-            },
-            OpenRoutePagePressed: function () {
-                this.onRoutePageOpened();
+                this.parentPage.onProjectOpened(projectId);
             },
             createPolygon: function (id, coordinates){
                 let points = [];

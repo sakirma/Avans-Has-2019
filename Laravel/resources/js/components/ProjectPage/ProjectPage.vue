@@ -44,32 +44,7 @@
 <!--                                    </l-marker>-->
 <!--                                </template>-->
 <!--                            </l-map>-->
-                            <map-component>
-                                <v-layout align-end justify-start row>
-                                    <v-flex xs12 md3 lg2>
-                                        <v-btn style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" @click="OpenRoutePagePressed">
-                                            <v-layout column>
-                                                <v-flex class="white--text font-weight-bold">
-                                                    ROUTES MAKEN
-                                                </v-flex>
-                                            </v-layout>
-                                        </v-btn>
-                                    </v-flex>
-
-                                    <v-flex xs12 md3 lg2 v-if="$vuetify.breakpoint.xsOnly">
-                                        <v-card style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
-                                            <v-layout column>
-                                                <v-flex class="white--text font-weight-bold">
-                                                    <v-text-field
-                                                            class="mx-3"
-                                                            style="padding-top: 8px;"
-                                                            prepend-inner-icon="search"
-                                                    ></v-text-field>
-                                                </v-flex>
-                                            </v-layout>
-                                        </v-card>
-                                    </v-flex>
-                                </v-layout>
+                            <map-component :parent-page="this">
                             </map-component>
                         </v-card>
                     </v-flex>
@@ -115,7 +90,7 @@
 <!--                                    </l-marker>-->
 <!--                                </template>-->
 <!--                            </l-map>-->
-                            <map-component></map-component>
+                            <map-component :parentPage="this"></map-component>
                         </v-card>
                     </v-flex>
 
@@ -140,6 +115,11 @@
             return {
                 information: ""
             }
+        },
+        props: {
+            onProjectOpened: {
+                type: Function,
+            },
         },
         methods: {
             init() {
