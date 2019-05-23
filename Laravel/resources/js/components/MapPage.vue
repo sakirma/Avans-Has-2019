@@ -76,8 +76,8 @@
                         </l-marker>
                     </template>
 
-                    <template v-for="(polygon, index) in polygons">
-                        <l-polygon :latLongs="polygon">
+                    <template v-for="(latlng, index) in latlngs">
+                        <l-polygon :latLongs="latlng" color="#ffffff">
                             <l-popup>
                                 <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>
                             </l-popup>
@@ -128,6 +128,28 @@
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 markers: [],
                 polygons: [],
+                latlngs: [
+                [47.2263299, -1.6222],
+                [47.21024000000001, -1.6270065],
+                [47.1969447, -1.6136169],
+                [47.18527929999999, -1.6143036],
+                [47.1794457, -1.6098404],
+                [47.1775788, -1.5985107],
+                [47.1676598, -1.5753365],
+                [47.1593731, -1.5521622],
+                [47.1593731, -1.5319061],
+                [47.1722111, -1.5143967],
+                [47.1960115, -1.4841843],
+                [47.2095404, -1.4848709],
+                [47.2291277, -1.4683914],
+                [47.2533687, -1.5116501],
+                [47.2577961, -1.5531921],
+                [47.26828069, -1.5621185],
+                [47.2657179, -1.589241],
+                [47.2589612, -1.6204834],
+                [47.237287, -1.6266632],
+                [47.2263299, -1.6222]
+            ],
                 buttonImage: "img/MapPage/button.png",
                 LeftDropDownButton: ['Projectnaam A', 'Projectnaam B', 'Projectnaam C'],
                 RightDropDownButton: ['Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks'],
@@ -155,16 +177,18 @@
                             for(let j = 0; j < data[i].geometries.length; j++){
                                 if(data[i].geometries[j].type == "Polygon"){
                                     let points = [];
-                                    for(let k = 0; k < data[i].geometries[j].coordinates.length; k++){
-                                        points.push(L.latLng(data[i].geometries[j].coordinates[k][1], data[i].geometries[j].coordinates[k][0]));
+                                    console.log("length of polygon coordinates: " + data[i].geometries[j].coordinates[0].length);
+                                    for(let k = 0; k < data[i].geometries[j].coordinates[0].length; k++){
+                                        points.push(L.latLng(data[i].geometries[j].coordinates[0][k][1], data[i].geometries[j].coordinates[0][k][0]));
                                     }
                                     this.polygons.push(points);
                                 }else if(data[i].geometries[j].type == "Point"){
-                                    this.markers.push(L.latLng(data[i].coordinates[1], data[i].coordinates[0]));
+                                    this.markers.push(L.latLng(data[i].geometries[j].coordinates[1], data[i].geometries[j].coordinates[0]));
                                 }
                             }
                         }
                     }
+                    console.log(this.polygons);
                 });
             }
         },
