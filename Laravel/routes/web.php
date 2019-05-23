@@ -11,9 +11,9 @@
 |
 */
 Route::get('/', 'MainPageController@index');
-Route::get('details/{id}', "ProjectPointsController@getDetails");
+Route::get('details/{id}', "ProjectPointController@getDetails");
 
-Route::post('/location', "ProjectPointsController@getLocationData");
+Route::post('/location', "ProjectPointController@getLocationData");
 
 Route::get('/about', function(){
     return view('about');
@@ -47,10 +47,10 @@ Route::post('/media', "MediaController@saveMedia")->name('media.save');
 
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
-Route::get('details/{id}', "ProjectPointsController@GetDetails");
+Route::get('details/{id}', "ProjectPointController@GetDetails");
 
 Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
-Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
+Route::get('getProjectPoint/{projectPointId}', "ProjectPointController@getProjectPointByID");
 Route::get('getAllRoutes', "RoutesController@getAllRoutes");
 Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");
 // Crud
@@ -64,7 +64,7 @@ Route::post('/beheer/AddProjectPoint', 'ProjectController@addProject')->middlewa
 Route::post('/beheer/updateProject', 'ProjectController@update')->middleware('auth');
 Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
 Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
-Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
+Route::get('/beheer/projectpoints/', 'ProjectPointController@index');
 
 Route::get('/admin/projectpoints', 'ProjectPointController@viewProjectPoints');
 Route::get('/admin/projectpoint/create', 'ProjectPointController@create')->middleware('auth');

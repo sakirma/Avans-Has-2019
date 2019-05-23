@@ -8,7 +8,7 @@ use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
 use Validator;
 
-class ProjectPointsController extends Controller
+class ProjectPointController extends Controller
 {
     // Return view
     public function create() {
