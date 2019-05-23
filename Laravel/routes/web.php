@@ -68,10 +68,11 @@ Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
 
 
 Route::get('/admin/route', 'AdminRouteController@init');
-Route::post('/admin/create/route', 'AdminRouteController@createRoute');
-Route::post('/admin/remove/route', 'AdminRouteController@removeRoute');
-Route::post('/admin/get/points', 'AdminRouteController@getRoutePoints');
-Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint');
+Route::post('/admin/route/data', 'AdminRouteController@getRouteData');
+Route::post('/admin/route/create', 'AdminRouteController@createRoute');
+Route::post('/admin/route/remove', 'AdminRouteController@removeRoute');
+Route::post('/admin/route/points', 'AdminRouteController@getRoutePoints');
+Route::post('/admin/route/projects', 'AdminRouteController@getProjectPoint');
 /////////////////
 
 

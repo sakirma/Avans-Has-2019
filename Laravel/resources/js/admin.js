@@ -10,7 +10,9 @@ window.Vue = require('vue');
 window.Vuetify = require('vuetify');
 
 import L from 'leaflet';
+
 import 'leaflet-routing-machine';
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 
 delete L.Icon.Default.prototype._getIconUrl;
 

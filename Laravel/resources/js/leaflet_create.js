@@ -1,4 +1,4 @@
-
+let map;
 //let projectMarkers = L.featureGroup().addTo(map);
 
 let projectMarkers;
@@ -21,8 +21,12 @@ export default {
         }
     }*/
 
-    init: function (map) {
-        routingControl = L.Routing.control({
+    setVariables: function (m) {
+
+        map = m;
+        map.doubleClickZoom.disable();
+
+        let routingControl = L.Routing.control({
             router: L.Routing.mapbox('pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig'),
             waypoints: [null],
             routeWhileDragging: false,
@@ -32,7 +36,8 @@ export default {
             }
         }).on('routesfound', this.updateMarkersToRoute).addTo(map);
 
-        map.doubleClickZoom.disable();
+
+        projectMarkers = L.featureGroup().addTo(map);
 
         return routingControl;
     },
@@ -84,33 +89,34 @@ export default {
         window.location = '/admin/route';
     },
 
-    placeMarker: async function (latlng, id) {
+    placeMarker: function (point) {
 
-        let projectInfo = await getProjectInfo(id);
-        let marker = L.marker(latlng, {
+        //let projectInfo = await this.getProjectInfo(id);
+        console.log(point);
+
+        let latlng = new L.latLng( point.location.coordinates[1], point.location.coordinates[0] );
+
+        L.marker(latlng, {
             draggable: false,
             riseOnHover: true,
-            id: id,
-            info: projectInfo
+            id: point.id,
+            info: point.information,
         }).bindPopup(
             '<p>' + latlng + '</p>' +
-            '<p> Naam: ' + projectInfo[0].name + '</p>' +
-            '<p> Informatie: ' + projectInfo[0].information + '</p>'
+            '<p> Naam: ' + point.name + '</p>' +
+            '<p> Informatie: ' + point.information + '</p>'
         )
             .addTo(projectMarkers);
         // .on('dragend', calculateRoute)
-        console.log(marker);
 
-        if (projectMarkers.getLayers().length > 1) {
-            this.calculateRoute(id);
-        }
+        return projectMarkers.getLayers();
     },
 
     getProjectInfo: function (id) {
 
         let token = document.getElementsByName('csrf-token')[0].getAttribute('content');
 
-        return fetch('/admin/get/project', {
+        return fetch('/admin/route/projects', {
             method: 'post',
             headers: {
                 "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
@@ -152,17 +158,14 @@ export default {
     },
 
     //TODO refactor for vue
-    onCheckbox: function (location, id) {
+    onCheckbox: function (lat, lng, id) {
 
-        let checkbox = document.getElementById("button-" + id).checked;
-        let spliced = location.split(" ");
-        let latlng = L.latLng(parseFloat(spliced[1]), parseFloat(spliced[0]));
+        console.log(lat + "," +lng);
 
-        if (checkbox) {
-            this.placeMarker(latlng, id);
-        } else {
-            this.removeMarker(latlng, id);
-        }
+        let latlng = L.latLng(lat, lng);
+
+        this.placeMarker(latlng, id);
+        //this.removeMarker(latlng, id);
     },
 
     resetCheckbox: function (id) {
@@ -235,18 +238,19 @@ export default {
         }
     },
 
-    calculateRoute: function () {
+    createWaypoints: function () {
 
-        let layers = projectMarkers.getLayers();
+        let markers = projectMarkers.getLayers();
         let waypoints = [];
 
-        for (let i = 0; i < layers.length; i++) {
-            waypoints.push(L.routing.waypoint(L.latLng(layers[i].getLatLng().lat, layers[i].getLatLng().lng), layers[i].options.id, {
-                id: layers[i].options.id,
-                info: layers[i].options.info
+        for (let i = 0; i < markers.length; i++) {
+            waypoints.push(L.routing.waypoint(L.latLng(markers[i].getLatLng().lat, markers[i].getLatLng().lng), markers[i].options.id, {
+                id: markers[i].options.id,
+                info: markers[i].options.info
             }));
         }
-        routingControl.setWaypoints(waypoints);
+
+        return waypoints;
     },
 
     showRoute: function () {
