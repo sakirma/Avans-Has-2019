@@ -5,8 +5,12 @@
             <v-btn dark color="green" @click="OpenAddPressed" style="margin-left:1%"> Nieuwe bezienswaardigheid </v-btn>
             <v-btn dark color="green" @click="GoBack"> Terug </v-btn>
             <v-card v-for="p in interest_points" :key="interest_points.id" style="width:30%; height:100%; margin-left: 1%; margin-bottom: 1% ">
+                <p class="text-sm-center">{{ p.id}}</p>
+                <p class="text-sm-center">{{ p.projectId}}</p>
                 <p class="text-sm-center">{{ p.name}}</p>
-                <p class="text-sm-center">{{ p.text}}</p>
+                <p class="text-sm-center">{{ p.information}}</p>
+                <p class="text-sm-center">{{ p.category}}</p>
+
                 <v-list>
                     <v-list-tile>
                         <v-list-tile-content >

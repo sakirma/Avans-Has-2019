@@ -15,12 +15,13 @@ class InterestPointController extends Controller
     }
 
     public function viewInterestPoints(){
-        return view('mainCrudPage');
+        return view('MainCrudPage');
     }
 
     // Methods
     public function getInterestPoints() {
         $points = InterestPoint::all();
+
         return $points->toJson();
     }
 

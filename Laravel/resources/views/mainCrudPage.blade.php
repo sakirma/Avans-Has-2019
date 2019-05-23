@@ -18,7 +18,7 @@
 <body>
 <div id="app">
     <v-app>
-        <main-crud-page></main-crud-page>
+        <crud-page></crud-page>
     </v-app>
 </div>
 <script src="../js/app.js"></script>
