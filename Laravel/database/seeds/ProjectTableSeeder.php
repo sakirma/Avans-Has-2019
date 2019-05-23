@@ -19,16 +19,16 @@ class ProjectTableSeeder extends Seeder
 
         // Project needs a category.
         DB::table('category')->insert([
-            'name' => 'natuurgebieden',
+            'name' => 'natuurgebied',
         ]);
         DB::table('category')->insert([
-          'name' => 'bezienswaardigheden',
+          'name' => 'bezienswaardigheid',
         ]);
         DB::table('category')->insert([
           'name' => 'eten en drinken',
         ]);
         DB::table('category')->insert([
-          'name' => 'activiteiten',
+          'name' => 'activiteit',
         ]);
         
         //factory(App\Models\Project::class)->create();
