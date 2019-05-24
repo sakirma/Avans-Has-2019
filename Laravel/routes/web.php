@@ -50,9 +50,6 @@ Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
 Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
 Route::get('getAllRoutes', "RoutesController@getAllRoutes");
 Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");
-// Crud
-// TODO: Change beheer to admin.
-Route::get('beheer', 'ProjectController@main')->middleware('auth');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('beheer', 'ProjectController@main');
