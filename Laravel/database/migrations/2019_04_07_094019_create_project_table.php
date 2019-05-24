@@ -16,16 +16,15 @@ class CreateProjectTable extends Migration
     {
         Schema::create('project', function (Blueprint $table) {
             $table->increments('id');
-            $table->point('location');
-            $table->geometryCollection('geo_json');
-            $table->string("category");
-            $table->string('name');
-            $table->text('information');
+            $table->geometryCollection('area')->nullable();
+            $table->string("category")->nullable();
+            $table->string('name', 255);
+            $table->longText('information');
         });
 
 
         Schema::table('project', function (Blueprint $table) {
-            $table->foreign('category')->references('name')->on('project_category');
+            $table->foreign('category')->references('name')->on('category')->onDelete('set null');
         });
     }
 

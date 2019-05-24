@@ -9,7 +9,7 @@ class ProjectPoint extends Model
 {
     use SpatialTrait;
 
-    protected $table = 'project_point';
+    protected $table = 'interest_point';
     protected $spatialFields = [
         'location',
         'geo_json'

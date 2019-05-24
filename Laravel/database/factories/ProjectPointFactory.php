@@ -1,13 +1,12 @@
 <?php
-
 use Faker\Generator as Faker;
-use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Grimzy\LaravelMysqlSpatial\Types\Geometry;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 $factory->define(App\Models\ProjectPoint::class, function (Faker $faker) {
     return [
-        'location' => new Point(2, 1),
-        'geo_json' => Geometry::fromJson('{
+        'project_id' => 1,
+        'area' => Geometry::fromJson('{
                 "type": "FeatureCollection",
                 "features": [{
                     "type": "Feature",
@@ -49,7 +48,7 @@ $factory->define(App\Models\ProjectPoint::class, function (Faker $faker) {
                     }
                 }]
             }'),
-        'project_id' => 1,
+        'category' => 'eten en drinken',
         'name' => $faker->name,
         'information' => $faker->text(25),
     ];

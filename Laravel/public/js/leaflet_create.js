@@ -77,7 +77,7 @@ function uploadRoute(){
     xhttp.send(jroute);
 
     window.alert("Route aangemaakt!");
-    window.location = 'admin/route';
+    window.location = '/admin/route';
 }
 
 async function placeMarker(latlng, id){

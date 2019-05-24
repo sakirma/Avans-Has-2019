@@ -1787,9 +1787,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProjectPageHeader",
   methods: {
@@ -1799,8 +1796,8 @@ __webpack_require__.r(__webpack_exports__);
     openEditRoutesPage: function openEditRoutesPage() {
       window.location.href = '/admin/route';
     },
-    openCommentsPage: function openCommentsPage() {
-      window.location.href = '/admin/comments';
+    openMediaPage: function openMediaPage() {
+      window.location.href = '/media';
     }
   }
 });
@@ -6322,7 +6319,7 @@ function isSlowBuffer (obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery JavaScript Library v3.4.1
+ * jQuery JavaScript Library v3.4.0
  * https://jquery.com/
  *
  * Includes Sizzle.js
@@ -6332,7 +6329,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2019-05-01T21:04Z
+ * Date: 2019-04-10T19:48Z
  */
 ( function( global, factory ) {
 
@@ -6465,7 +6462,7 @@ function toType( obj ) {
 
 
 var
-	version = "3.4.1",
+	version = "3.4.0",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -10821,12 +10818,8 @@ var documentElement = document.documentElement;
 		},
 		composed = { composed: true };
 
-	// Support: IE 9 - 11+, Edge 12 - 18+, iOS 10.0 - 10.2 only
 	// Check attachment across shadow DOM boundaries when possible (gh-3504)
-	// Support: iOS 10.0-10.2 only
-	// Early iOS 10 versions support `attachShadow` but not `getRootNode`,
-	// leading to errors. We need to check for `getRootNode`.
-	if ( documentElement.getRootNode ) {
+	if ( documentElement.attachShadow ) {
 		isAttached = function( elem ) {
 			return jQuery.contains( elem.ownerDocument, elem ) ||
 				elem.getRootNode( composed ) === elem.ownerDocument;
@@ -11686,7 +11679,8 @@ jQuery.event = {
 
 				// Claim the first handler
 				if ( rcheckableType.test( el.type ) &&
-					el.click && nodeName( el, "input" ) ) {
+					el.click && nodeName( el, "input" ) &&
+					dataPriv.get( el, "click" ) === undefined ) {
 
 					// dataPriv.set( el, "click", ... )
 					leverageNative( el, "click", returnTrue );
@@ -11703,7 +11697,8 @@ jQuery.event = {
 
 				// Force setup before triggering a click
 				if ( rcheckableType.test( el.type ) &&
-					el.click && nodeName( el, "input" ) ) {
+					el.click && nodeName( el, "input" ) &&
+					dataPriv.get( el, "click" ) === undefined ) {
 
 					leverageNative( el, "click" );
 				}
@@ -11744,9 +11739,7 @@ function leverageNative( el, type, expectSync ) {
 
 	// Missing expectSync indicates a trigger call, which must force setup through jQuery.event.add
 	if ( !expectSync ) {
-		if ( dataPriv.get( el, type ) === undefined ) {
-			jQuery.event.add( el, type, returnTrue );
-		}
+		jQuery.event.add( el, type, returnTrue );
 		return;
 	}
 
@@ -11761,13 +11754,9 @@ function leverageNative( el, type, expectSync ) {
 			if ( ( event.isTrigger & 1 ) && this[ type ] ) {
 
 				// Interrupt processing of the outer synthetic .trigger()ed event
-				// Saved data should be false in such cases, but might be a leftover capture object
-				// from an async native handler (gh-4350)
-				if ( !saved.length ) {
+				if ( !saved ) {
 
 					// Store arguments for use when handling the inner native event
-					// There will always be at least one argument (an event object), so this array
-					// will not be confused with a leftover capture object.
 					saved = slice.call( arguments );
 					dataPriv.set( this, type, saved );
 
@@ -11780,14 +11769,14 @@ function leverageNative( el, type, expectSync ) {
 					if ( saved !== result || notAsync ) {
 						dataPriv.set( this, type, false );
 					} else {
-						result = {};
+						result = undefined;
 					}
 					if ( saved !== result ) {
 
 						// Cancel the outer synthetic event
 						event.stopImmediatePropagation();
 						event.preventDefault();
-						return result.value;
+						return result;
 					}
 
 				// If this is an inner synthetic event for an event with a bubbling surrogate
@@ -11802,19 +11791,17 @@ function leverageNative( el, type, expectSync ) {
 
 			// If this is a native event triggered above, everything is now in order
 			// Fire an inner synthetic event with the original arguments
-			} else if ( saved.length ) {
+			} else if ( saved ) {
 
 				// ...and capture the result
-				dataPriv.set( this, type, {
-					value: jQuery.event.trigger(
+				dataPriv.set( this, type, jQuery.event.trigger(
 
-						// Support: IE <=9 - 11+
-						// Extend with the prototype to reset the above stopImmediatePropagation()
-						jQuery.extend( saved[ 0 ], jQuery.Event.prototype ),
-						saved.slice( 1 ),
-						this
-					)
-				} );
+					// Support: IE <=9 - 11+
+					// Extend with the prototype to reset the above stopImmediatePropagation()
+					jQuery.extend( saved.shift(), jQuery.Event.prototype ),
+					saved,
+					this
+				) );
 
 				// Abort handling of the native event
 				event.stopImmediatePropagation();
@@ -51176,16 +51163,6 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "v-flex",
-        [
-          _c("v-btn", { on: { click: _vm.openCommentsPage } }, [
-            _vm._v(" Comments ")
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
       _c("v-flex", { attrs: { grow: "" } })
     ],
     1
@@ -90200,7 +90177,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
@@ -90208,7 +90185,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
 /**
- * vuex v3.1.1
+ * vuex v3.1.0
  * (c) 2019 Evan You
  * @license MIT
  */
@@ -90248,12 +90225,9 @@ function applyMixin (Vue) {
   }
 }
 
-var target = typeof window !== 'undefined'
-  ? window
-  : typeof global !== 'undefined'
-    ? global
-    : {};
-var devtoolHook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+var devtoolHook =
+  typeof window !== 'undefined' &&
+  window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
 
 function devtoolPlugin (store) {
   if (!devtoolHook) { return }
@@ -90297,12 +90271,6 @@ function isPromise (val) {
 
 function assert (condition, msg) {
   if (!condition) { throw new Error(("[vuex] " + msg)) }
-}
-
-function partial (fn, arg) {
-  return function () {
-    return fn(arg)
-  }
 }
 
 // Base data struct for store's module, package with some attribute and method
@@ -90766,9 +90734,7 @@ function resetStoreVM (store, state, hot) {
   var computed = {};
   forEachValue(wrappedGetters, function (fn, key) {
     // use computed to leverage its lazy-caching mechanism
-    // direct inline function use will lead to closure preserving oldVm.
-    // using partial to return function with only arguments preserved in closure enviroment.
-    computed[key] = partial(fn, store);
+    computed[key] = function () { return fn(store); };
     Object.defineProperty(store.getters, key, {
       get: function () { return store._vm[key]; },
       enumerable: true // for local getters
@@ -91207,7 +91173,7 @@ function getModuleByNamespace (store, helper, namespace) {
 var index_esm = {
   Store: Store,
   install: install,
-  version: '3.1.1',
+  version: '3.1.0',
   mapState: mapState,
   mapMutations: mapMutations,
   mapGetters: mapGetters,
@@ -91218,7 +91184,6 @@ var index_esm = {
 /* harmony default export */ __webpack_exports__["default"] = (index_esm);
 
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -91595,7 +91560,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Joeri\workspace\websites\Avans-HAS-2019\laravel\resources\js\admin.js */"./resources/js/admin.js");
+module.exports = __webpack_require__(/*! C:\Users\Huseyin Caliskan\Documents\AvansProjecten\Avans-HAS-2019\Laravel\resources\js\admin.js */"./resources/js/admin.js");
 
 
 /***/ })

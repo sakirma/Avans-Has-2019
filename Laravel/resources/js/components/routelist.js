@@ -3,8 +3,8 @@ export let routingControl;
 export function routeClicked(map, routeList) {
     var allMarkers = [];
     for (let i = 0; i < routeList.length; i++) {
-        var lat = routeList[i].location.coordinates[0];
-        var lng = routeList[i].location.coordinates[1];
+        var lat = routeList[i].location.coordinates[1];
+        var lng = routeList[i].location.coordinates[0];
         allMarkers.push([lat, lng]);
     }
     calculateRoute(map, allMarkers);

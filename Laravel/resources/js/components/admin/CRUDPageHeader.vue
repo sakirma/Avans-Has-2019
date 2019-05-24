@@ -17,7 +17,7 @@
             <v-btn @click="openEditRoutesPage"> Routes </v-btn>
         </v-flex>
         <v-flex>
-            <v-btn @click="openCommentsPage"> Comments </v-btn>
+            <v-btn @click="openMediaPage"> Media </v-btn>
         </v-flex>
         <v-flex grow>
 
@@ -35,8 +35,8 @@
             openEditRoutesPage() {
                 window.location.href = '/admin/route';
             },
-            openCommentsPage() {
-                window.location.href = '/admin/comments';
+            openMediaPage() {
+                window.location.href = '/media';
             }
         }
     }
