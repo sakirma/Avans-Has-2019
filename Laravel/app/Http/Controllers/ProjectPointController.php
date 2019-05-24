@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\ProjectPoint;
 use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
+use Grimzy\LaravelMysqlSpatial\Types\Polygon;
+use Grimzy\LaravelMysqlSpatial\Types\LineString;
+use console;
+
+
 use Illuminate\Http\Request;
 use Validator;
 
@@ -28,14 +33,34 @@ class ProjectPointController extends Controller
     public function addProjectPoint (Request $request) {
         $point = new ProjectPoint();
 
-        $location = new Point($request->lat, $request->long);
-        $geometryCollection = new GeometryCollection([$location]);
+        $location = new Point($request->markerLat, $request->markerLong);
+     $array = [];
+     $x =sizeof($request->areaLat);
 
+
+
+        for($i = 0; $i<$x;$i++){
+
+
+            $p = new Point($request->areaLat[$i], $request->areaLng[$i]);
+            array_push($array, $p);
+        }
+        array_push($array, new Point($request->areaLat[0], $request->areaLng[0]));
+
+        $test3 = new Polygon([new LineString($array)]);
+        $l = json_encode($test3);
+        $p = var_dump(json_decode($l)->coordinates[0]);
+        $test4 = new Polygon([new LineString($p)]);
+        for($i = 0; $i<$x;$i++){
+            $test3[[$i]] = new Point($request->areaLat[$i], $request->areaLng[$i]);
+        }
+
+        $point->project_id = $request->project_id;
+        $point->location = $location;
+        $point->area = $test4;
         $point->name = $request->name;
         $point->information = $request->information;
         $point->category = $request->category;
-        $point->location = $location;
-        $point->area = $geometryCollection;
 
         $point->save();
     }

@@ -14,7 +14,6 @@
                     <v-textarea label="Beschrijving" v-model="text"  :rules="textRules" required dark></v-textarea>
                     <v-select label="Kies een categorie" v-model="selectCat" :items="categories"  dark></v-select>
                     <v-btn @click="validate" :class="{ red: !valid, green: valid }">Klaar</v-btn>
-                    <v-btn @click="validate" class="btn-success">add marker</v-btn>
 
                 </v-form>
             </v-flex>
@@ -61,7 +60,9 @@
                 ],
                 selectCat: null,
                 selectName: null,
+                selectedId: null,
                 categories: [],
+                projects: [],
                 projectNames: [],
                 projectIds: [],
                 text: '',
@@ -82,23 +83,44 @@
                 lat: '',
                 buttonImage: "img/MapPage/button.png",
                 id: 0,
+                areaLat: [],
+                areaLng: [],
             }
         },
 
         methods: {
 
             validate () {
+                for(let i = 0; i<this.projectNames.length;i++){
+
+                    if(this.projects[i].name == this.selectName){
+                        this.selectedId = this.projects[i].id;
+                    }
+                }
+                var areaCords = [];
+                for(let i = 0; i< this.areaLatLngs.length;i++){
+                    this.areaLat.push(this.areaLatLngs[i].lat);
+                    this.areaLng.push(this.areaLatLngs[i].lng);
+
+                    areaCords.push({lat: this.areaLatLngs[i].lat, lng: this.areaLatLngs[i].lng})
+                }
+                console.log(areaCords);
+
                 if(this.$refs.form.validate()) {
                     axios({
                         method: 'post',
                         url: '/admin/addProjectPoint',
                         data: {
+
+                            project_id: this.selectedId,
                             name: this.name,
-                            category: this.select,
+                            category: this.selectCat,
                             information: this.text,
-                            lat: this.lat,
-                            long: this.long,
-                            projectId: this.projectId,
+                            markerLat: this.lat,
+                            markerLong: this.long,
+                            areaLat: this.areaLat,
+                            areaLng: this.areaLng,
+
                         }
                     });
                 }
@@ -145,11 +167,14 @@
             window.axios.get('/getProjects').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
+                    this.projects.push({id: temp[i].id.toString(), name: temp[i].name.toString()})
                     this.projectNames.push( temp[i].name.toString());
                     this.projectIds.push( temp[i].id.toString());
 
                 }
-                console.log(this.projects);
+
+
+
             }).catch(function (error) {
                 console.log(error);
             });
@@ -175,7 +200,7 @@
                         polyline: false,
                         rectangle: false,
                         circle: false,
-                        marker: false,
+                        marker: true,
                         circlemarker: false
                     }
                 });
@@ -184,23 +209,42 @@
 
                 const editableLayers = new window.L.FeatureGroup().addTo(map);
                 map.on(window.L.Draw.Event.CREATED, (e) => {
-                    // const type = e.layerType;
-                    const layer = e.layer;
+                    const type = e.layerType;
+                    var layer = e.layer;
 
-                    for(let i = 0 ; i< layer._latlngs[0].length;i++){
+                    if(type === 'polygon'){
+                        for(let i = 0 ; i< layer._latlngs[0].length;i++){
 
-                        this.areaLatLngs.push({lat: layer._latlngs[0][i].lat, lng: layer._latlngs[0][i].lng});
+                            this.areaLatLngs.push({lat: layer._latlngs[0][i].lat, lng: layer._latlngs[0][i].lng});
+                        }
+
+                        for(let i = 0 ; i< this.areaLatLngs.length;i++){
+
+
+                        }
+                        // Do whatever else you need to. (save to db, add to map etc)
+                        editableLayers.addLayer(layer);
                     }
-                    console.log('ttttttttttttt');
+                    else if(type === 'marker'){
+                        if(this.markers.length > 0){
+                                    this.markers.splice(-1, 1);
+                                }
+                                this.id++;
+                                var coord = layer._latlng;
+                                var lat = coord.lat;
+                                var lng = coord.lng;
+                                this.long = lng;
+                                this.lat = lat;
+                                this.markers.push({
+                                    id: this.id,
+                                    latlng: L.latLng(parseFloat(lat), parseFloat(lng)),
+                                    content: 'hoi!'
+                                });
+                            }
 
-                    for(let i = 0 ; i< this.areaLatLngs.length;i++){
-                        console.log(this.areaLatLngs[i].lat);
-                        console.log(this.areaLatLngs[i].lng);
 
-                    }
-                    console.log(this.areaLatLngs);
-                    // Do whatever else you need to. (save to db, add to map etc)
-                    editableLayers.addLayer(layer);
+
+
                 });
             });
 

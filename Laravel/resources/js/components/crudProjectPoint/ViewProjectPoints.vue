@@ -70,7 +70,6 @@
             window.axios.get('/getProjectPoints').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
-                    console.log(temp[i]);
                     this.project_points.push({id: temp[i].id,project_id: temp[i].project_id , location: temp[i].location, area: temp[i].area, name: temp[i].name, information: temp[i].information, category: temp[i].categroy});
                 }
             }).catch(function (error) {
