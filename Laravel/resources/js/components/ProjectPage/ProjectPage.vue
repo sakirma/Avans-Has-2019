@@ -137,7 +137,6 @@
                 });
 
                 axios.get("/getMediaFromProjectPoint/"+id).then(({ data }) => {
-                    console.log(data.length);
                     for(let i = 0; i < data.length; i++)
                         this.images.push("getmedia/" + data[i]);
                 });
