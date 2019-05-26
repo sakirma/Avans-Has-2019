@@ -6,27 +6,7 @@
                     <c-r-u-d-page-header></c-r-u-d-page-header>
                 </v-flex>
                 <v-flex d-flex style="background-color: white;">
-                    <v-container fluid fill-height pt-3 pb-5>
-                        <v-layout row fill-height>
-                            <v-flex xs6 d-flex px-4>
-                                <v-layout column fill-height>
-                                    <v-flex xs1>
-                                        <projects-header></projects-header>
-                                    </v-flex>
-                                    <v-flex d-flex style="background-color: red">
-                                        <v-layout >
-
-                                        </v-layout>
-                                    </v-flex>
-                                </v-layout>
-                            </v-flex>
-                            <v-flex d-flex>
-                                <v-card color="orange">
-
-                                </v-card>
-                            </v-flex>
-                        </v-layout>
-                    </v-container>
+                    <project-page></project-page>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -35,12 +15,12 @@
 
 <script>
     import CRUDPageHeader from './CRUDPageHeader';
-    import ProjectsHeader from './headers/ProjectsHeader'
+    import ProjectPage from './ProjectPage';
     export default {
         name: "MainCrudPage",
         components: {
             CRUDPageHeader,
-            ProjectsHeader
+            ProjectPage
         }
     }
 </script>
