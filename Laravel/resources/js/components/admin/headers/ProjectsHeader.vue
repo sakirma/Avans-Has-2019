@@ -7,8 +7,8 @@
         </v-flex>
         <v-flex fill-height xs6>
             <v-layout row fill-height align-center justify-end>
-                <v-btn style="max-width: 10%;" color="#89a324">
-                    <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat class="white--text">
+                <v-btn style="max-width: 10%; height: 55%" color="#89a324">
+                    <v-card style="white-space: normal; max-width: 60%; " color="transparent" flat class="white--text">
                         Project Toevoegen
                     </v-card>
                 </v-btn>
