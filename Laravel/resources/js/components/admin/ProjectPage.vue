@@ -6,29 +6,27 @@
                     <v-flex style="width: 100%">
                         <projects-header></projects-header>
                     </v-flex>
-                    <v-flex style="background-color: white; overflow: auto; width: 70%;" class="removeScrollBar"  v-bar>
+                    <v-flex style="background-color: white; overflow: auto; width: 70%;" class="removeScrollBar" v-bar>
                         <v-data-table
-                                :headers="headers"
-                                :items="desserts"
-                                class="projectTable elevation-1"
-                                disable-initial-sort
-                                hide-actions
-                                :pagination.sync="pagination"
+                            :headers="headers"
+                            :items="desserts"
+                            class="projectTable elevation-1"
+                            disable-initial-sort
+                            hide-actions
+                            :pagination.sync="pagination"
 
                         >
-                        <template v-slot:items="props" >
+                            <template v-slot:items="props">
                                 <td>{{ props.item.name }}</td>
-                                <td class="text-xs-right columnLine"> {{ props.item.calories }} </td>
-                                <td class="text-xs-right columnLine"> {{ props.item.fat }} </td>
+                                <td class="text-xs-right columnLine"> {{ props.item.calories }}</td>
+                                <td class="text-xs-right columnLine"> {{ props.item.fat }}</td>
                             </template>
                         </v-data-table>
                     </v-flex>
                 </v-layout>
             </v-flex>
             <v-flex d-flex xs5>
-                <v-card color="orange">
-                    <map-section></map-section>
-                </v-card>
+                <map-section></map-section>
             </v-flex>
         </v-layout>
     </v-container>
@@ -266,16 +264,14 @@
     .vb > .vb-dragger > .vb-dragger-styler {
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
-        -webkit-transform: rotate3d(0,0,0,0);
-        transform: rotate3d(0,0,0,0);
-        -webkit-transition:
-                background-color 100ms ease-out,
-                margin 100ms ease-out,
-                height 100ms ease-out;
-        transition:
-                background-color 100ms ease-out,
-                margin 100ms ease-out,
-                height 100ms ease-out;
+        -webkit-transform: rotate3d(0, 0, 0, 0);
+        transform: rotate3d(0, 0, 0, 0);
+        -webkit-transition: background-color 100ms ease-out,
+        margin 100ms ease-out,
+        height 100ms ease-out;
+        transition: background-color 100ms ease-out,
+        margin 100ms ease-out,
+        height 100ms ease-out;
         background-color: rgba(38, 38, 38, 0.1);
         margin: 5px 5px 5px 0;
         border-radius: 20px;

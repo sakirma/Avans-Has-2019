@@ -1,9 +1,20 @@
 <template>
-    <v-layout column fill-height>
+    <v-layout column fill-height justify-center>
         <v-flex xs1>
-            <v-card color="red">
-
-            </v-card>
+            <v-layout row align-center justify-center fill-height>
+                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324">
+                    Natuurgebieden
+                </v-btn>
+                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324">
+                    Bezienswaardigheden
+                </v-btn>
+                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324">
+                    Eten & Drinken
+                </v-btn>
+                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324">
+                    Activiteiten
+                </v-btn>
+            </v-layout>
         </v-flex>
         <v-flex>
             <div style="height: 100%;">
@@ -37,5 +48,7 @@
 </script>
 
 <style scoped>
-
+.categorieButton {
+    border-radius: 5px;
+}
 </style>
