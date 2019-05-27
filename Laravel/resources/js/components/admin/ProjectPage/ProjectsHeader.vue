@@ -7,7 +7,7 @@
         </v-flex>
         <v-flex fill-height xs6>
             <v-layout row fill-height align-center justify-end>
-                <v-btn style="max-width: 10%; height: 55%" color="#89a324">
+                <v-btn style="max-width: 10%; height: 55%" color="#89a324" @click="OnEditProjectButtonPressed">
                     <v-card style="white-space: normal; max-width: 60%; " color="transparent" flat class="white--text">
                         Project Toevoegen
                     </v-card>
@@ -20,7 +20,13 @@
 
 <script>
     export default {
-        name: "ProjectsHeader"
+        name: "ProjectsHeader",
+        props: {
+            OnEditProjectButtonPressed: {
+                type: Function,
+                required: true,
+            }
+        }
     }
 </script>
 

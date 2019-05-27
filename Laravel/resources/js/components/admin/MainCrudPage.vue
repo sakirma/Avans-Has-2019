@@ -2,7 +2,7 @@
     <div style="height: 100vh; background-color: #89a324">
         <v-container fluid fill-height py-0 px-0>
             <v-layout column>
-                <v-flex xs2 d-flex mx-5 my-3>
+                <v-flex xs2 d-flex mx-5 my-3 style="max-height: 100px;">
                     <c-r-u-d-page-header></c-r-u-d-page-header>
                 </v-flex>
                 <v-flex d-flex style="background-color: white;">
@@ -15,7 +15,7 @@
 
 <script>
     import CRUDPageHeader from './CRUDPageHeader';
-    import ProjectPage from './ProjectPage';
+    import ProjectPage from './ProjectPage/ProjectPage';
 
     export default {
         name: "MainCrudPage",

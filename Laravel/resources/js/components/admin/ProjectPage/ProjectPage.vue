@@ -2,28 +2,8 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6>
-                <v-layout align-center justify-center column fill-height>
-                    <v-flex style="width: 100%">
-                        <projects-header></projects-header>
-                    </v-flex>
-                    <v-flex style="background-color: white; overflow: auto; width: 70%;" class="removeScrollBar" v-bar>
-                        <v-data-table
-                            :headers="headers"
-                            :items="desserts"
-                            class="projectTable elevation-1"
-                            disable-initial-sort
-                            hide-actions
-                            :pagination.sync="pagination"
-
-                        >
-                            <template v-slot:items="props">
-                                <td>{{ props.item.name }}</td>
-                                <td class="text-xs-right columnLine"> {{ props.item.calories }}</td>
-                                <td class="text-xs-right columnLine"> {{ props.item.fat }}</td>
-                            </template>
-                        </v-data-table>
-                    </v-flex>
-                </v-layout>
+                <projects-view :parent="this" :headers="headers" :desserts="desserts"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
+                <projects-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
             </v-flex>
             <v-flex d-flex xs5>
                 <map-section></map-section>
@@ -33,28 +13,21 @@
 </template>
 
 <script>
-    import ProjectsHeader from './headers/ProjectsHeader';
-    import MapSection from './Map'
+    import MapSection from '../Map';
+    import ProjectsView from './ProjectsView';
+    import ProjectsNew from './ProjectsNew'
 
     export default {
         name: "ProjectList",
         components: {
-            ProjectsHeader,
-            MapSection
+            MapSection,
+            ProjectsView,
+            ProjectsNew
         },
         data() {
-            // {
-            //     text: 'Naam',
-            //         align: 'left',
-            //     sortable: false,
-            //     value: 'projectPointName'
-            // },
-            // { text: 'Categorie', value: 'calories' },
-            // { text: 'informatie', value: 'information' },
             return {
-                pagination: {
-                    rowsPerPage: -1,
-                },
+                ProjectPageStates: {'viewMode': 0, 'editMode': 1, 'newMode': 2},
+                currentPageState: 2,
                 headers: [
                     {
                         text: 'Naam',
@@ -232,6 +205,14 @@
                         iron: '6%'
                     },
                 ]
+            }
+        },
+        methods: {
+            newProjectButtonPressed() {
+                this.currentPageState = this.ProjectPageStates.newMode;
+            },
+            enableViewMode() {
+                this.currentPageState = this.ProjectPageStates.viewMode;
             }
         }
     }
