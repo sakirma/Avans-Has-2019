@@ -75,6 +75,21 @@
                             </l-popup>
                         </l-marker>
                     </template>
+
+                    <template v-for="(polygon, index) in polygons">
+                        <l-polygon :lat-lngs="polygon">
+                        </l-polygon>
+                    </template>
+
+                    <template v-for="(polyline, index) in polylines">
+                        <l-polyline :lat-lngs="polyline">
+                        </l-polyline>
+                    </template>
+
+                    <template v-for="(rectangle, index) in rectangles">
+                        <l-polyline :lat-lngs="rectangle">
+                        </l-polyline>
+                    </template>
                 </l-map>
             </v-flex>
 
@@ -87,7 +102,7 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker, LControl, LPopup} from 'vue2-leaflet';
+    import {LMap, LTileLayer, LMarker, LPolygon, LPolyline, LRectangle, LPopup} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
 
     import MapPageHeader from "./map-page-header";
@@ -101,6 +116,9 @@
             LMap,
             LTileLayer,
             LMarker,
+            LPolygon,
+            LPolyline,
+            LRectangle,
             LPopup
         },
         props: {
@@ -115,9 +133,12 @@
             return {
                 zoom: 11,
                 center: L.latLng(51.7142669290121, 5.3173828125),
-                url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+                url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                markers: [L.latLng(51.7142669290121, 5.3173828125), L.latLng(51.7142669290121, 5.3153828125), L.latLng(51.7142669290121, 5.33828125)],
+                markers: [],
+                polygons: [],
+                polylines: [],
+                rectangles: [],
                 buttonImage: "img/MapPage/button.png",
                 LeftDropDownButton: ['Projectnaam A', 'Projectnaam B', 'Projectnaam C'],
                 RightDropDownButton: ['Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks'],
@@ -134,9 +155,43 @@
             },
             OpenRoutePagePressed: function () {
                 this.onRoutePageOpened();
+            },
+            createPolygon: function (coordinates){
+                let points = [];
+                for(let k = 0; k < coordinates[0].length; k++){
+                    points.push(L.latLng(coordinates[0][k][1], coordinates[0][k][0]));
+                }
+                this.polygons.push(points);
+            },
+            loadMapObjects: function () {
+                axios.get('/getAllProjectPoints').then(({ data }) => {
+                    console.log(data);
+                    for(let i = 0; i < data.length; i++){
+                        if(data[i].type == "Point"){
+                            this.markers.push(L.latLng(data[i].coordinates[1], data[i].coordinates[0]));
+                        }else if(data[i].type == "GeometryCollection"){
+                            for(let j = 0; j < data[i].geometries.length; j++){
+                                if(data[i].geometries[j].type == "Point"){
+                                    this.markers.push(L.latLng(data[i].geometries[j].coordinates[1], data[i].geometries[j].coordinates[0]));
+                                }else if(data[i].geometries[j].type == "Polygon"){
+                                     this.createPolygon(data[i].geometries[j].coordinates);
+                                }else{
+                                    let points = [];
+                                    for(let k = 0; k < data[i].geometries[j].coordinates.length; k++){
+                                        points.push(L.latLng(data[i].geometries[j].coordinates[k][1], data[i].geometries[j].coordinates[k][0]));
+                                    }
+
+                                    if(data[i].geometries[j].type == "LineString") this.polylines.push(points);
+                                    else if(data[i].geometries[j].type == "Rectangle") this.rectangles.push(points);
+                                }
+                            }
+                        }
+                    }
+                });
             }
         },
         mounted() {
+            this.loadMapObjects();
         }
     }
 </script>

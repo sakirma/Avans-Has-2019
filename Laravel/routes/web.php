@@ -53,6 +53,8 @@ Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRou
 // TODO: Change beheer to admin.
 Route::get('admin', 'ProjectController@main')->middleware('auth');
 
+Route::get('/getAllProjectPoints', "ProjectPointsController@getAllPoints");
+
 Route::group(['middleware' => ['auth']], function () {
     Route::get('beheer', 'ProjectController@main');
 

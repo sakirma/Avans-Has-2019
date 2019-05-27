@@ -110,6 +110,19 @@ class ProjectPointController extends Controller
         return abort(404);
     }
 
+    public function getAllPoints(){
+        $points = ProjectPoint::all();
+        $arr = [];
+        foreach($points as $point){
+            if($point["area"] != null){
+                $arr[] = $point["area"];
+            }else{
+                $arr[] = $point["location"];
+            }
+        }
+        return json_encode($arr);
+    }
+
     public function getProjectPointByID($projectPointId){
         $model = ProjectPoint::find($projectPointId);
         if(empty($model)) { echo '$model'; }
