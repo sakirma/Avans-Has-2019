@@ -14,14 +14,12 @@
                     <v-textarea label="Beschrijving" v-model="text"  :rules="textRules" required dark></v-textarea>
                     <v-select label="Kies een categorie" v-model="selectCat" :items="categories"  dark></v-select>
                     <v-btn @click="validate" :class="{ red: !valid, green: valid }">Klaar</v-btn>
-
                 </v-form>
             </v-flex>
             <v-flex fill-height>
-                <l-map ref="eenElement" v-on:click="add($event)"
+                <l-map ref="eenElement"
                        :zoom="zoom"
                        :center="center"
-
                        style="width:100%; height:80%"
                 >
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
@@ -37,7 +35,7 @@
     import "leaflet/dist/leaflet.css";
     import MapPageHeader from "../map-page-header";
     import LDraw from 'leaflet-draw';
-    // import "leaflet-draw/dist/leaflet.draw.css";
+
 
 
     export default {
@@ -78,13 +76,11 @@
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 markers: [],
-                areaLatLngs: [],
                 long: '',
                 lat: '',
                 buttonImage: "img/MapPage/button.png",
                 id: 0,
-                areaLat: [],
-                areaLng: [],
+
             }
         },
 
@@ -97,14 +93,6 @@
                         this.selectedId = this.projects[i].id;
                     }
                 }
-                var areaCords = [];
-                for(let i = 0; i< this.areaLatLngs.length;i++){
-                    this.areaLat.push(this.areaLatLngs[i].lat);
-                    this.areaLng.push(this.areaLatLngs[i].lng);
-
-                    areaCords.push({lat: this.areaLatLngs[i].lat, lng: this.areaLatLngs[i].lng})
-                }
-                console.log(areaCords);
 
                 if(this.$refs.form.validate()) {
                     axios({
@@ -118,8 +106,7 @@
                             information: this.text,
                             markerLat: this.lat,
                             markerLong: this.long,
-                            areaLat: this.areaLat,
-                            areaLng: this.areaLng,
+
 
                         }
                     });
@@ -131,30 +118,6 @@
                 this.$vuetify.goTo('#view-projects');
                 this.$parent.selectedAddPage = false;
             },
-
-            add(event) {
-            //     if(this.markers.length > 0){
-            //         this.markers.splice(-1, 1);
-            //     }
-            //     this.id++;
-            //     var coord = event.latlng;
-            //     var lat = coord.lat;
-            //     var lng = coord.lng;
-            //     this.long = lng;
-            //     this.lat = lat;
-            //     console.log("lat: "+ lat + " lng: " + lng)
-            //     this.markers.push({
-            //         id: this.id,
-            //         latlng: L.latLng(parseFloat(lat), parseFloat(lng)),
-            //         content: 'hoi!'
-            //     });
-            //     console.log("marked at " + event.latlng);
-            // },
-            // remove() {
-            //     this.markers.splice(-1, 1);
-            }
-
-
         },
 
         // test method
@@ -170,11 +133,7 @@
                     this.projects.push({id: temp[i].id.toString(), name: temp[i].name.toString()})
                     this.projectNames.push( temp[i].name.toString());
                     this.projectIds.push( temp[i].id.toString());
-
                 }
-
-
-
             }).catch(function (error) {
                 console.log(error);
             });
@@ -193,10 +152,7 @@
                 const drawControl = new window.L.Control.Draw({
                     position: 'bottomleft',
                     draw: {
-                        polygon: {
-                            allowIntersection: false,
-                            showArea: true
-                        },
+                        polygon: false,
                         polyline: false,
                         rectangle: false,
                         circle: false,
@@ -204,28 +160,12 @@
                         circlemarker: false
                     }
                 });
-
                 map.addControl(drawControl);
-
                 const editableLayers = new window.L.FeatureGroup().addTo(map);
                 map.on(window.L.Draw.Event.CREATED, (e) => {
                     const type = e.layerType;
                     var layer = e.layer;
-
-                    if(type === 'polygon'){
-                        for(let i = 0 ; i< layer._latlngs[0].length;i++){
-
-                            this.areaLatLngs.push({lat: layer._latlngs[0][i].lat, lng: layer._latlngs[0][i].lng});
-                        }
-
-                        for(let i = 0 ; i< this.areaLatLngs.length;i++){
-
-
-                        }
-                        // Do whatever else you need to. (save to db, add to map etc)
-                        editableLayers.addLayer(layer);
-                    }
-                    else if(type === 'marker'){
+                    if(type === 'marker'){
                         if(this.markers.length > 0){
                                     this.markers.splice(-1, 1);
                                 }
@@ -241,14 +181,8 @@
                                     content: 'hoi!'
                                 });
                             }
-
-
-
-
                 });
             });
-
-
         }
     }
 </script>

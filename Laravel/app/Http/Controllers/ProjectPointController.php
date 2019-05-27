@@ -11,6 +11,7 @@ use console;
 
 
 use Illuminate\Http\Request;
+use function MongoDB\BSON\toJSON;
 use Validator;
 
 class ProjectPointController extends Controller
@@ -34,30 +35,10 @@ class ProjectPointController extends Controller
         $point = new ProjectPoint();
 
         $location = new Point($request->markerLat, $request->markerLong);
-     $array = [];
-     $x =sizeof($request->areaLat);
-
-
-
-        for($i = 0; $i<$x;$i++){
-
-
-            $p = new Point($request->areaLat[$i], $request->areaLng[$i]);
-            array_push($array, $p);
-        }
-        array_push($array, new Point($request->areaLat[0], $request->areaLng[0]));
-
-        $test3 = new Polygon([new LineString($array)]);
-        $l = json_encode($test3);
-        $p = var_dump(json_decode($l)->coordinates[0]);
-        $test4 = new Polygon([new LineString($p)]);
-        for($i = 0; $i<$x;$i++){
-            $test3[[$i]] = new Point($request->areaLat[$i], $request->areaLng[$i]);
-        }
 
         $point->project_id = $request->project_id;
         $point->location = $location;
-        $point->area = $test4;
+        $point->area = null;
         $point->name = $request->name;
         $point->information = $request->information;
         $point->category = $request->category;
@@ -68,6 +49,21 @@ class ProjectPointController extends Controller
     public function edit ($id) {
         $point = ProjectPoint::find($id);
         return $point->toJson();
+    }
+
+    public function update( Request $request)
+    {
+        $projectPoint = ProjectPoint::find($request->id);
+
+        $location = new Point($request->markerLat, $request->markerLong);
+
+        $projectPoint->project_id = $request->project_id;
+        $projectPoint->location = $location;
+        $projectPoint->area = null;
+        $projectPoint->name = $request->name;
+        $projectPoint->information = $request->information;
+        $projectPoint->category = $request->category;
+        $projectPoint->update($request->all());
     }
 
     public function destroy(Request $request)

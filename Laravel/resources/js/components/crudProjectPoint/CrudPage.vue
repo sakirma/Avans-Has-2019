@@ -12,8 +12,6 @@
     import EditProjectPoint from './EditProjectPoint';
     import ViewProjectPoints from './ViewProjectPoints';
 
-
-
     export default {
         name: 'CrudPage',
         components: {
