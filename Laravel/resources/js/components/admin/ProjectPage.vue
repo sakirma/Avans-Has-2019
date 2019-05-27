@@ -1,12 +1,12 @@
 <template>
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height>
-            <v-flex xs6 d-flex px-4>
-                <v-layout column fill-height>
-                    <v-flex xs1>
+            <v-flex xs6 px-4 >
+                <v-layout align-center justify-center column fill-height>
+                    <v-flex style="width: 100%">
                         <projects-header></projects-header>
                     </v-flex>
-                    <v-flex d-flex style="background-color: white; overflow: auto;" >
+                    <v-flex style="background-color: white; overflow: auto; width: 70%;" class="removeScrollBar"  v-bar>
                         <v-data-table
                                 :headers="headers"
                                 :items="desserts"
@@ -14,9 +14,9 @@
                                 disable-initial-sort
                                 hide-actions
                                 :pagination.sync="pagination"
-                                style="overflow: auto;"
+
                         >
-                            <template v-slot:items="props">
+                        <template v-slot:items="props" >
                                 <td>{{ props.item.name }}</td>
                                 <td class="text-xs-right columnLine"> {{ props.item.calories }} </td>
                                 <td class="text-xs-right columnLine"> {{ props.item.fat }} </td>
@@ -57,23 +57,20 @@
                 },
                 headers: [
                     {
-                        text: 'Dessert (100g serving)',
+                        text: 'Naam',
                         align: "left",
                         sortable: false,
                         value: 'name',
-                        width: 1
                     },
                     {
-                        text: 'Calories',
+                        text: 'Categorie',
                         align: 'left',
                         value: 'calories',
-                        width: 10
                     },
                     {
-                        text: 'Fat (g)',
+                        text: 'Beschrijving',
                         align: 'left',
                         value: 'fat',
-                        width: 10
                     },
                 ],
                 desserts: [
@@ -246,6 +243,61 @@
     }
 
     .projectTable .v-table__overflow {
-        overflow-y: auto;
+        overflow-y: hidden;
+        padding-right: 15px;
+    }
+
+    .removeScrollBar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .removeScrollBar {
+        scrollbar-width: none;
+    }
+
+    .vb > .vb-dragger {
+        z-index: 5;
+        width: 12px;
+        right: 0;
+    }
+
+    .vb > .vb-dragger > .vb-dragger-styler {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transform: rotate3d(0,0,0,0);
+        transform: rotate3d(0,0,0,0);
+        -webkit-transition:
+                background-color 100ms ease-out,
+                margin 100ms ease-out,
+                height 100ms ease-out;
+        transition:
+                background-color 100ms ease-out,
+                margin 100ms ease-out,
+                height 100ms ease-out;
+        background-color: rgba(38, 38, 38, 0.1);
+        margin: 5px 5px 5px 0;
+        border-radius: 20px;
+        height: calc(100% - 10px);
+        display: block;
+    }
+
+    .vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler {
+        background-color: rgba(38, 38, 38, 0.3);
+    }
+
+    .vb > .vb-dragger:hover > .vb-dragger-styler {
+        background-color: rgba(38, 38, 38, 0.5);
+        margin: 0px;
+        height: 100%;
+    }
+
+    .vb.vb-dragging > .vb-dragger > .vb-dragger-styler {
+        background-color: rgba(38, 38, 38, 0.5);
+        margin: 0px;
+        height: 100%;
+    }
+
+    .vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {
+        background-color: rgba(38, 38, 38, 0.5);
     }
 </style>

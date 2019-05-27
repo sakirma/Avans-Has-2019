@@ -12,8 +12,8 @@
             </v-layout>
         </v-flex>
         <v-btn class="button-page-title title" flat @click="openEditProjectPage"> Projecten</v-btn>
-        <v-btn class="button-page-title title" flat @click="openEditRoutesPage"> Routes</v-btn>
-        <v-btn class="button-page-title title" flat @click="openMediaPage"> Media</v-btn>
+        <v-btn class="button-page-title title" flat @click="openEditRoutesPage"> Interessepunten</v-btn>
+        <v-btn class="button-page-title title" flat @click="openMediaPage"> Routes</v-btn>
         <v-spacer></v-spacer>
         <v-btn class="button-page-title title" icon flat color="white">
             <v-icon large> web</v-icon>
