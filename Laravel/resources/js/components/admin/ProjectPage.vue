@@ -1,7 +1,7 @@
 <template>
     <v-container fluid fill-height pt-3 pb-5>
-        <v-layout row fill-height>
-            <v-flex xs6 px-4 >
+        <v-layout row fill-height justify-space-around>
+            <v-flex xs6>
                 <v-layout align-center justify-center column fill-height>
                     <v-flex style="width: 100%">
                         <projects-header></projects-header>
@@ -25,9 +25,9 @@
                     </v-flex>
                 </v-layout>
             </v-flex>
-            <v-flex d-flex>
+            <v-flex d-flex xs5>
                 <v-card color="orange">
-
+                    <map-section></map-section>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -36,11 +36,13 @@
 
 <script>
     import ProjectsHeader from './headers/ProjectsHeader';
+    import MapSection from './Map'
 
     export default {
         name: "ProjectList",
         components: {
             ProjectsHeader,
+            MapSection
         },
         data() {
             // {
