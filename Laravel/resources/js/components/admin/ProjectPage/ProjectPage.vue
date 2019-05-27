@@ -4,6 +4,7 @@
             <v-flex xs6>
                 <projects-view :parent="this" :headers="headers" :desserts="desserts"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
                 <projects-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
+                <project-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
             </v-flex>
             <v-flex d-flex xs5>
                 <map-section></map-section>
@@ -15,19 +16,21 @@
 <script>
     import MapSection from '../Map';
     import ProjectsView from './ProjectsView';
-    import ProjectsNew from './ProjectsNew'
+    import ProjectsNew from './ProjectsNew';
+    import ProjectEdit from './ProjectsEdit';
 
     export default {
         name: "ProjectList",
         components: {
             MapSection,
             ProjectsView,
-            ProjectsNew
+            ProjectsNew,
+            ProjectEdit
         },
         data() {
             return {
                 ProjectPageStates: {'viewMode': 0, 'editMode': 1, 'newMode': 2},
-                currentPageState: 2,
+                currentPageState: 0,
                 headers: [
                     {
                         text: 'Naam',
@@ -213,6 +216,10 @@
             },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
+            },
+            editAProject(product) {
+                this.currentPageState = this.ProjectPageStates.editMode;
+                this.$refs.projectEditSection.projectEditSection(product);
             }
         }
     }

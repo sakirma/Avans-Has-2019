@@ -13,9 +13,11 @@
                     :pagination.sync="pagination"
             >
                 <template v-slot:items="props">
-                    <td>{{ props.item.name }}</td>
-                    <td class="text-xs-right columnLine"> {{ props.item.calories }}</td>
-                    <td class="text-xs-right columnLine"> {{ props.item.fat }}</td>
+                    <tr @click="rowSelected(props.item)">
+                        <td>{{ props.item.name }}</td>
+                        <td class="text-xs-right">{{ props.item.calories }}</td>
+                        <td class="text-xs-right">{{ props.item.fat }}</td>
+                    </tr>
                 </template>
             </v-data-table>
         </v-flex>
@@ -46,6 +48,9 @@
         methods: {
             EditProjects() {
                 this.parent.newProjectButtonPressed();
+            },
+            rowSelected(selectedProject) {
+                this.parent.editAProject(selectedProject);
             }
         },
         data() {
