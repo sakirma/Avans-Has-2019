@@ -3,7 +3,7 @@
         <div class="testingCSS">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Project</v-card-title>
-                <v-btn fab flat @click="">
+                <v-btn fab flat @click="close">
                     <v-icon x-large color="green"> close</v-icon>
                 </v-btn>
             </v-layout>
@@ -19,7 +19,8 @@
                         </v-flex>
                         <v-spacer></v-spacer>
                         <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
-                            <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat class="white--text">
+                            <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
+                                    class="white--text">
                                 Project Toevoegen
                             </v-card>
                         </v-btn>
@@ -84,9 +85,18 @@
                 },
             }
         },
+        props: {
+            parent: {
+                type: Object,
+                required: true,
+            }
+        },
         methods: {
             projectEditSection(product) {
                 this.selectedProject = product;
+            },
+            close() {
+                this.parent.enableViewMode();
             }
         }
     }
