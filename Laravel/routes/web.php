@@ -58,13 +58,13 @@ Route::get('/getAllProjectPoints', "ProjectPointsController@getAllPoints");
 Route::group(['middleware' => ['auth']], function () {
     Route::get('beheer', 'ProjectController@main');
 
-Route::post('/beheer/AddProjectPoint', 'ProjectController@addProject')->middleware('auth');
-Route::post('/beheer/updateProject', 'ProjectController@update')->middleware('auth');
-Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
-Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
-Route::get('/beheer/projectpoints/', 'ProjectPointController@index');
+//Route::post('/beheer/AddProjectPoint', 'ProjectController@addProject')->middleware('auth');
+//Route::post('/beheer/updateProject', 'ProjectController@update')->middleware('auth');
+//Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
+//Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
+//Route::get('/beheer/projectpoints/', 'ProjectPointController@index');
 
-Route::get('/admin/projectpoints', 'ProjectPointController@viewProjectPoints');
+Route::get('/admin/projectpoints', 'ProjectPointController@viewProjectPoints')->middleware('auth');
 Route::get('/admin/projectpoint/create', 'ProjectPointController@create')->middleware('auth');
 Route::get('/admin/projectpoint/edit/{id}','ProjectPointController@edit')->middleware('auth');
 Route::post('/admin/addProjectPoint', 'ProjectPointController@addProjectPoint')->middleware('auth');
