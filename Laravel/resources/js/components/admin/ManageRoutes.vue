@@ -14,6 +14,17 @@
             </v-layout>
         </div>
         <div style="height: 100%">
+            <v-flex xs12 sm6 d-flex style="background-color: #89a226">
+                <v-select
+                        box
+                        item-text="name"
+                        item-value="id"
+                        :items="routes"
+                        label="Box style"
+                        v-on:change="loadRouteFromDataBase"
+                ></v-select>
+                <v-btn color="success" v-on:click="saveRouteToDatabase">Update</v-btn>
+            </v-flex>
             <v-layout column fill-height style="background-color: #89a226">
                 <v-layout v-for="(point, index) in points" v-bind:key="point.id">
 
@@ -37,6 +48,7 @@
     import "leaflet/dist/leaflet.css";
 
     import axios from 'axios';
+    import Options from "vue2-leaflet/src/mixins/Options";
 
     let leaflet_create = require('../../leaflet_create');
 
@@ -45,6 +57,7 @@
         name: "ManageRoutes",
 
         components: {
+            Options,
             LMap,
             LTileLayer,
             LMarker,
@@ -64,6 +77,7 @@
                 routes: [],
                 routeHasPoints: [],
 
+                selectedRoute: null,
                 routingControl: null,
             }
         },
@@ -77,9 +91,13 @@
 
                 axios.post('/admin/route/data')
                     .then(response => {
-                        this.points = response.data.points.slice(0);
-                        this.routes = response.data.routes.slice(0);
-                        this.routeHasPoints = response.data.routeHasPoints.slice(0);
+                        let p = response.data.points;
+                        let r = response.data.routes;
+                        let rp = response.data.routeHasPoints;
+
+                        if(p != null)this.points = p.slice(0);
+                        if(r != null) this.routes = r.slice(0);
+                        if(rp != null) this.routeHasPoints = rp.routeHasPoints.slice(0);
                     })
                 .catch(e => {
                     console.log(e);
@@ -107,14 +125,45 @@
             },
 
             resetCheckbox: function(id){
-                let checkbox = document.getElementById(id);
+                let checkbox = document.getElementById( id );
                 if (checkbox === null) return;
 
                 checkbox.checked = true;
+            },
+
+            saveRouteToDatabase: function(){
+                let name = "";
+                for (let i=0; i < this.routes.length; i++){
+
+                    console.log(this.routes[i].id + ", " + this.selectedRoute);
+                    if(this.routes[i].id === this.selectedRoute) { name = this.routes[i].name; break; }
+                }
+
+                leaflet_create.default.uploadRoute(name);
+            },
+
+            loadRouteFromDataBase: function(e){
+
+                this.selectedRoute = e;
+                let t = this;
+
+                leaflet_create.default.showRoute(e)
+                    .then( function (response) {
+
+                        for(let i=0; i< t.points.length; i++){
+
+                            for(let j=0; j< response.length; j++){
+
+                                if(t.points[i].id === response[j][0]) {
+                                    t.placePoint(t.points[i]);
+                                    t.resetCheckbox(t.points[i].id);
+                                }
+                            }
+                        }
+                    });
             }
         }
     }
-
 
 </script>
 

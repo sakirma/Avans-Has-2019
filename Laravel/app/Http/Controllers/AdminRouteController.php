@@ -61,7 +61,7 @@ class AdminRouteController extends Controller
         $routeId = $request->routeId;
         $response = [];
 
-        $ids = RouteHasProjectPoint::select('project_point_id')
+        $ids = RouteHasProjectPoint::select('point_id')
             ->where('route_id', $routeId)
             ->get();
         //Twee querys voor de spatial data
@@ -70,7 +70,6 @@ class AdminRouteController extends Controller
         foreach($routePoints as $r){
              array_push($response, [$r->id, $r->location]);
         }
-
         return $response;
     }
 
@@ -109,7 +108,7 @@ class AdminRouteController extends Controller
         for ($i = 0; $i < count($ids); $i++) {
             $routepoints = new RouteHasProjectPoint();
 
-            $routepoints->project_point_id = $ids[$i];
+            $routepoints->point_id = $ids[$i];
             $routepoints->route_id = $route->id;
             $routepoints->save();
         }

@@ -42,20 +42,17 @@ export default {
         return routingControl;
     },
 
-    uploadRoute: function () {
-
-        let routeName = document.getElementById("routename").value;
+    uploadRoute: function (name) {
 
         let layers = projectMarkers.getLayers();
 
         if (layers.length < 1) return window.alert("Creëer eerst een route!");
 
         let distance = layers[0].options.distance;
+        let route = {name: name, latlngs: [], ids: [], distance: distance};
 
-        let route = {name: routeName, latlngs: [], ids: [], distance: distance};
 
-
-        for (i = 0; i < layers.length; i++) {
+        for (let i = 0; i < layers.length; i++) {
             route.latlngs.push(layers[i].getLatLng());
             route.ids.push(layers[i].options.id);
         }
@@ -64,7 +61,9 @@ export default {
         let token = document.getElementsByName('csrf-token')[0].getAttribute('content');
         let jroute = JSON.stringify(route);
 
-        xhttp.open('POST', '/admin/create/route');
+
+        //TODO: verander dit naar fetch.
+        xhttp.open('POST', '/admin/route/create');
         xhttp.setRequestHeader('X-CSRF-Token', token);
         xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhttp.send(jroute);
@@ -82,6 +81,7 @@ export default {
             draggable: false,
             riseOnHover: true,
             id: point.id,
+            name: point.name,
             info: point.information,
         }).bindPopup(
             '<p>' + latlng + '</p>' +
@@ -161,7 +161,11 @@ export default {
         for (let i = 0; i < routes.length; i++) {
 
             if ((routes[i].latLng !== e.latlng) && (routes[i].latLng !== null)) {
-                newRoutes.push(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng));
+                newRoutes.push(L.routing.waypoint(L.latLng(routes[i].latLng.lat, routes[i].latLng.lng), routes[i].name, {
+                    id: routes[i].options.id,
+                    name: routes[i].options.name,
+                    info: routes[i].options.info,
+                }));
             }
         }
         routingControl.setWaypoints(newRoutes);
@@ -177,24 +181,25 @@ export default {
 
             //let elem = document.getElementById("travel-info");
             let mId = e.waypoints[i].name;
-            let projectInfo = e.waypoints[i].options.info;
 
-            if (mId === undefined) {
-                mId = Math.random().toString(36).substring(7);
-            }
+            let projectInfo = e.waypoints[i].options.info;
+            let pointName = e.waypoints[i].options.name;
+
+            if (mId === undefined) { mId = Math.random().toString(36).substring(7); }
 
             L.marker(e.waypoints[i].latLng, {
                 draggable: false,
                 riseOnHover: true,
                 id: mId,
+                name: pointName,
                 info: projectInfo,
                 distance: e.routes[0].summary.totalDistance,
                 travelTime: e.routes[0].summary.totalTime
             })
                 .bindPopup(
                     '<p>' + e.waypoints[i].latLng.lat + ' , ' + e.waypoints[i].latLng.lng + '</p>' +
-                    '<p> Naam: ' + projectInfo[0].name + '</p>' +
-                    '<p> Informatie: ' + projectInfo[0].information + '</p>'
+                    '<p> Naam: ' + pointName + '</p>' +
+                    '<p> Informatie: ' + projectInfo + '</p>'
                 ).addTo(projectMarkers);
             //.on('dragend', calculateRoute)
 
@@ -234,6 +239,7 @@ export default {
         for (let i = 0; i < markers.length; i++) {
             waypoints.push(L.routing.waypoint(L.latLng(markers[i].getLatLng().lat, markers[i].getLatLng().lng), markers[i].options.id, {
                 id: markers[i].options.id,
+                name: markers[i].options.name,
                 info: markers[i].options.info
             }));
         }
@@ -241,41 +247,25 @@ export default {
         return waypoints;
     },
 
-    showRoute: function () {
+    showRoute: function (id) {
 
         projectMarkers.clearLayers();
-
-        let sRoute = document.getElementById("selectedRoute");
-        let route = sRoute.options[sRoute.selectedIndex].value;
-
         let token = document.getElementsByName('csrf-token')[0].getAttribute('content');
 
-        fetch('/admin/get/points', {
+        return fetch('/admin/route/points', {
             method: 'post',
             headers: {
                 "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                 'X-CSRF-Token': token,
             },
-            body: 'routeId=' + route,
+            body: 'routeId=' + id,
 
         })
             .then(function (res) {
                 return res.json();
             })
             .then(function (data) {
-
-                let points = JSON.parse(JSON.stringify(data));
-                for (let i = 0; i < points.length; i++) {
-
-                    let id = points[i][0];
-                    let location = points[i][1];
-                    let latlng = L.latLng(location.coordinates[1], location.coordinates[0]);
-
-                    console.log(id);
-
-                    this.placeMarker(latlng, id);
-                    this.checkCheckbox(id);
-                }
+                return JSON.parse(JSON.stringify(data));
             })
             .catch(function (error) {
                 console.log('Request failed', error);
