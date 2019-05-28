@@ -3,10 +3,11 @@
         <v-container fluid fill-height py-0 px-0>
             <v-layout column>
                 <v-flex xs2 d-flex mx-5 my-3 style="max-height: 100px;">
-                    <c-r-u-d-page-header></c-r-u-d-page-header>
+                    <c-r-u-d-page-header :parent="this"></c-r-u-d-page-header>
                 </v-flex>
                 <v-flex d-flex style="background-color: white;">
-                    <project-page></project-page>
+                    <project-page v-if="currentCrudPageState === crudPageState.Projects"></project-page>
+                    <statistics-page v-else-if="currentCrudPageState === crudPageState.Statistics"></statistics-page>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -16,17 +17,27 @@
 <script>
     import CRUDPageHeader from './CRUDPageHeader';
     import ProjectPage from './ProjectPage/ProjectPage';
+    import StatisticsPage from './StatisticsPage';
 
     export default {
         name: "MainCrudPage",
         components: {
             CRUDPageHeader,
-            ProjectPage
+            ProjectPage,
+            StatisticsPage,
         },
         data() {
             return {
-                crudPageState: { 'Projecten': 0, 'Interessepunten': 1, 'Routes': 2, 'Statistieken': 3 },
+                crudPageState: { 'Projects': 0, 'Interessepunten': 1, 'Routes': 2, 'Statistics': 3 },
                 currentCrudPageState: 3,
+            }
+        },
+        methods: {
+            openEditProjectPage() {
+                this.currentCrudPageState = this.crudPageState.Projects;
+            },
+            openStatisticsPage() {
+                this.currentCrudPageState = this.crudPageState.Statistics;
             }
         }
     }

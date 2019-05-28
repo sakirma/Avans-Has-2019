@@ -8,7 +8,7 @@
                 </v-btn>
             </v-layout>
 
-            <v-layout column fill-height>
+            <v-layout column>
                 <v-flex xs1>
                     <v-layout row>
                         <v-flex xs3>

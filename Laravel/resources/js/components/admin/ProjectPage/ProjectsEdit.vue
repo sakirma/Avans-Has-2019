@@ -8,7 +8,7 @@
                 </v-btn>
             </v-layout>
 
-            <v-layout column fill-height>
+            <v-layout column >
                 <v-flex xs1>
                     <v-layout row>
                         <v-flex xs3>
@@ -17,13 +17,6 @@
                         <v-flex xs3>
                             <v-text-field :label="selectedProject.name"></v-text-field>
                         </v-flex>
-                        <v-spacer></v-spacer>
-                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
-                            <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
-                                    class="white--text">
-                                Project Toevoegen
-                            </v-card>
-                        </v-btn>
                     </v-layout>
                 </v-flex>
 
@@ -65,6 +58,24 @@
                             <v-card-title class="title">Video toevoegen:</v-card-title>
                         </v-flex>
                         <v-textarea box></v-textarea>
+                    </v-layout>
+                </v-flex>
+
+                <v-flex xs1 pr-5>
+                    <v-layout reverse row xs1>
+                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
+                            <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
+                                    class="white--text">
+                                Project Wijzigen
+                            </v-card>
+                        </v-btn>
+
+                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
+                            <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
+                                    class="white--text">
+                                Project Verwijderen
+                            </v-card>
+                        </v-btn>
                     </v-layout>
                 </v-flex>
             </v-layout>
