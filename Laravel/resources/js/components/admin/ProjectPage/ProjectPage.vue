@@ -2,7 +2,7 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6>
-                <projects-view :parent="this" :headers="headers" :desserts="desserts"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
+                <projects-view :parent="this" :headers="headers" :projects="projects"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
                 <projects-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
                 <project-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
             </v-flex>
@@ -27,6 +27,12 @@
             ProjectsNew,
             ProjectEdit
         },
+
+        mounted(){
+            axios.get("/getProjects/").then(response => {this.projects = response.data}).then(console.log(this.projects))
+         
+        },
+
         data() {
             return {
                 ProjectPageStates: {'viewMode': 0, 'editMode': 1, 'newMode': 2},
@@ -41,173 +47,21 @@
                     {
                         text: 'Categorie',
                         align: 'left',
-                        value: 'calories',
+                        value: 'category',
                     },
                     {
                         text: 'Beschrijving',
                         align: 'left',
-                        value: 'fat',
+                        value: 'information',
                     },
                 ],
-                desserts: [
-                    {
-                        name: 'Frozen Yogurt',
-                        calories: 159,
-                        fat: 6.0,
-                    },
-                    {
-                        name: 'Ice cream sandwich',
-                        calories: 237,
-                        fat: 9.0,
-                        carbs: 37,
-                        protein: 4.3,
-                        iron: '1%'
-                    },
-                    {
-                        name: 'Eclair',
-                        calories: 262,
-                        fat: 16.0,
-                        carbs: 23,
-                        protein: 6.0,
-                        iron: '7%'
-                    },
-                    {
-                        name: 'Cupcake',
-                        calories: 305,
-                        fat: 3.7,
-                        carbs: 67,
-                        protein: 4.3,
-                        iron: '8%'
-                    },
-                    {
-                        name: 'Gingerbread',
-                        calories: 356,
-                        fat: 16.0,
-                        carbs: 49,
-                        protein: 3.9,
-                        iron: '16%'
-                    },
-                    {
-                        name: 'Jelly bean',
-                        calories: 375,
-                        fat: 0.0,
-                        carbs: 94,
-                        protein: 0.0,
-                        iron: '0%'
-                    },
-                    {
-                        name: 'Lollipop',
-                        calories: 392,
-                        fat: 0.2,
-                        carbs: 98,
-                        protein: 0,
-                        iron: '2%'
-                    },
-                    {
-                        name: 'Honeycomb',
-                        calories: 408,
-                        fat: 3.2,
-                        carbs: 87,
-                        protein: 6.5,
-                        iron: '45%'
-                    },
-                    {
-                        name: 'Donut',
-                        calories: 452,
-                        fat: 25.0,
-                        carbs: 51,
-                        protein: 4.9,
-                        iron: '22%'
-                    },
-                    {
-                        name: 'KitKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                ]
+
+
+                projects: [],
+
+
+
+               
             }
         },
         methods: {

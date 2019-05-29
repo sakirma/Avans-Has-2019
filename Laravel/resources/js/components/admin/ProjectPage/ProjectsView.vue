@@ -6,7 +6,7 @@
         <v-flex style="background-color: white; overflow: auto; width: 70%;" class="removeScrollBar" v-bar>
             <v-data-table
                     :headers="headers"
-                    :items="desserts"
+                    :items="projects"
                     class="projectTable elevation-1"
                     disable-initial-sort
                     hide-actions
@@ -15,8 +15,8 @@
                 <template v-slot:items="props">
                     <tr @click="rowSelected(props.item)">
                         <td>{{ props.item.name }}</td>
-                        <td class="text-xs-right">{{ props.item.calories }}</td>
-                        <td class="text-xs-right">{{ props.item.fat }}</td>
+                        <td class="text-xs-right">{{ props.item.category }}</td>
+                        <td class="text-xs-right">{{ props.item.information }}</td>
                     </tr>
                 </template>
             </v-data-table>
@@ -36,7 +36,7 @@
                 type: Array,
                 required: true
             },
-            desserts: {
+            projects: {
                 type: Array,
                 required: true,
             },
