@@ -41,7 +41,7 @@
                 this.parent.openStatisticsPage();
             },
             openEditRoutesPage() {
-                window.location.href = '/admin/route';
+                this.parent.openInterestPointPage();
             },
             openMediaPage() {
                 window.location.href = '/media';

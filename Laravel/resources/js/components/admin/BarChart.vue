@@ -16,7 +16,7 @@
         mounted() {
             this.renderChart(this.data, {
                 responsive: true, // my new default options
-                maintainAspectRatio: true, // my new default options
+                maintainAspectRatio: false, // my new default options
                 legend: {
                     onClick: (e) => e.stopPropagation()
                 },

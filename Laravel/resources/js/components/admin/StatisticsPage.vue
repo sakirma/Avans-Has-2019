@@ -4,13 +4,13 @@
             <v-layout align-start justify-space-between row fill-height>
                 <v-flex xs7 d-flex fill-height pr-5>
                     <v-layout align-space-between justify-space-between column fill-height>
-                        <v-flex d-flex xs6>
+                        <v-flex d-flex xs6 lg5 xl5>
                             <v-card color="#8DA659" class="roundedCard">
                                 <v-card-title class="display-1 white--text">
                                     <v-layout align-start column>
                                         Statistieken
-                                        <div class="chart-container" style="position: relative; height: 10vh; width: 15vw">
-                                            <bar-chart :data="datasets"/>
+                                        <div class="chart-container">
+                                            <bar-chart :data="datasets" :styles="myStyles"/>
                                         </div>
 
                                     </v-layout>
@@ -19,26 +19,29 @@
                             </v-card>
                         </v-flex>
 
-                        <v-flex xs5 d-flex fill-height>
+                        <v-flex xs6 d-flex fill-height>
                             <v-card color="#8DA659" class="roundedCard">
                                 <v-card-title class="headline white--text">
                                     <v-layout column align-start fill-height>
-                                        <v-flex xs1>
-                                            Meest bezochte routes
-                                        </v-flex>
+
 
                                         <v-layout align-start justify-space-between row fill-height>
-                                            <v-flex xs3>
-                                                <v-card-text class="body-2">
-                                                    1. Route van de avonturier <br>
-                                                    2. Route van Napoleon <br>
-                                                    3. Traditionele route <br>
-                                                    4.Vlinder tocht <br>
-                                                    5. Herfst promenade <br>
-                                                </v-card-text>
-                                            </v-flex>
-                                            <v-flex xs5>
-                                                <v-card-text class="body-2">
+                                            <v-layout column align-start>
+                                                <v-flex xs1>
+                                                    Meest bezochte routes
+                                                </v-flex>
+                                                <v-flex xs6>
+                                                    <v-card-text class="body-2">
+                                                        1. Route van de avonturier <br>
+                                                        2. Route van Napoleon <br>
+                                                        3. Traditionele route <br>
+                                                        4.Vlinder tocht <br>
+                                                        5. Herfst promenade <br>
+                                                    </v-card-text>
+                                                </v-flex>
+                                            </v-layout>
+                                            <v-flex xs6>
+                                                <v-card-text class="body-2" style="line-height: 1">
                                                     Lorem ipsum dolor sit amet,
                                                     consectetuer adipiscing elit, sed diam
                                                     nonummy nibh euismod tincidunt ut
@@ -117,9 +120,9 @@
                             </v-layout>
                         </v-flex>
 
-                        <v-flex xs5 d-flex fill-height>
+                        <v-flex xs6 d-flex fill-height>
                             <v-card color="#8DA659" class="roundedCard">
-                                <v-card-text class="white--text body-2">
+                                <v-card-text class="white--text body-2" style="line-height: 1;">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus dolor ante, a vestibulum magna imperdiet sit amet. Proin accumsan, urna nec lacinia vehicula, ipsum urna volutpat orci, eu semper erat justo eget ligula. Mauris interdum metus vitae laoreet euismod. Phasellus scelerisque urna id turpis gravida, vel condimentum mauris euismod. Mauris vel imperdiet nisl. Nam cursus porttitor placerat. Praesent luctus ullamcorper enim, nec sodales nisl. Suspendisse ultrices urna a orci tempus, ut condimentum sapien eleifend. Sed sodales ornare massa, id feugiat quam varius ut. Fusce dictum auctor dui vitae faucibus. Phasellus porta varius quam. Donec dolor ex, tincidunt eget scelerisque ut, tristique vitae eros. In ut vulputate quam.
                                 </v-card-text>
                             </v-card>
@@ -150,6 +153,14 @@
         },
         components: {
             BarChart,
+        },
+        computed: {
+            myStyles() {
+                return {
+                    height: `25vh`,
+                    width: `25vw`
+                }
+            }
         }
     }
 </script>

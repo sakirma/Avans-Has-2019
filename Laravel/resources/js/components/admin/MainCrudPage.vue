@@ -8,6 +8,7 @@
                 <v-flex d-flex style="background-color: white;">
                     <project-page v-if="currentCrudPageState === crudPageState.Projects"></project-page>
                     <statistics-page v-else-if="currentCrudPageState === crudPageState.Statistics"></statistics-page>
+                    <interest-point-page v-else-if="currentCrudPageState === crudPageState.InterestPoints" ></interest-point-page>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -18,6 +19,7 @@
     import CRUDPageHeader from './CRUDPageHeader';
     import ProjectPage from './ProjectPage/ProjectPage';
     import StatisticsPage from './StatisticsPage';
+    import InterestPointPage from './InterestPoint/InterestPointPage'
 
     export default {
         name: "MainCrudPage",
@@ -25,10 +27,11 @@
             CRUDPageHeader,
             ProjectPage,
             StatisticsPage,
+            InterestPointPage
         },
         data() {
             return {
-                crudPageState: { 'Projects': 0, 'Interessepunten': 1, 'Routes': 2, 'Statistics': 3 },
+                crudPageState: { 'Projects': 0, 'InterestPoints': 1, 'Routes': 2, 'Statistics': 3 },
                 currentCrudPageState: 3,
             }
         },
@@ -38,6 +41,9 @@
             },
             openStatisticsPage() {
                 this.currentCrudPageState = this.crudPageState.Statistics;
+            },
+            openInterestPointPage() {
+                this.currentCrudPageState = this.crudPageState.InterestPoints;
             }
         }
     }
