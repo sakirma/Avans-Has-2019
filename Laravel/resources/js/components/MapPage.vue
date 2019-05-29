@@ -6,91 +6,9 @@
             </v-flex>
 
             <v-flex>
-                <l-map ref="map"
-                       :zoom="zoom"
-                       :center="center"
-                       style="height:100%;">
-                    <v-layout :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}"  column fill-height>
-                        <v-layout align-start justify-start row mt-0>
-                            <!--Leaflet map's z-index is 1000-->
-                            <v-flex style="z-index: 701" xs12 md3 lg2>
-                                <drop-down-button buttonTitle="IK WIL MEER ZIEN!"
-                                                  title="NATUURLIEFHEBER, DIT HEBBEN WE VOOR JE"
-                                                  :items="LeftDropDownButton"></drop-down-button>
-                            </v-flex>
+                <map-component :parentPage="this">
 
-                            <!--Leaflet map's z-index is 1000-->
-                            <v-flex style="z-index: 701" xs12 md3 lg2
-                                    :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-3': $vuetify.breakpoint.lgAndUp}">
-                                <drop-down-button buttonTitle="IK WIL RECREËEREN!"
-                                                  title="GENIET VAN HET LEVEN DOORMIDDEL VAN"
-                                                  :items="RightDropDownButton"></drop-down-button>
-                            </v-flex>
-                            <v-spacer></v-spacer>
-
-                            <!--Leaflet map's z-index is 1000-->
-                            <v-flex style="z-index: 701" shrink pt-1 v-if="$vuetify.breakpoint.smAndUp">
-                                <v-text-field
-                                        class="mx-3"
-                                        solo
-                                        prepend-inner-icon="search"
-                                ></v-text-field>
-                            </v-flex>
-                        </v-layout>
-
-                        <v-layout align-end justify-start row>
-                            <v-flex xs12 md3 lg2>
-                                <v-btn style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" @click="OpenRoutePagePressed">
-                                    <v-layout column>
-                                        <v-flex class="white--text font-weight-bold">
-                                            ROUTES MAKEN
-                                        </v-flex>
-                                    </v-layout>
-                                </v-btn>
-                            </v-flex>
-
-                            <v-flex xs12 md3 lg2 v-if="$vuetify.breakpoint.xsOnly">
-                                <v-card style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
-                                    <v-layout column>
-                                        <v-flex class="white--text font-weight-bold">
-                                            <v-text-field
-                                                    class="mx-3"
-                                                    style="padding-top: 8px;"
-                                                    prepend-inner-icon="search"
-                                            ></v-text-field>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-card>
-                            </v-flex>
-                        </v-layout>
-                    </v-layout>
-
-
-                    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-
-                    <template v-for="(marker, index) in markers">
-                        <l-marker :lat-lng="marker">
-                            <l-popup>
-                                <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>
-                            </l-popup>
-                        </l-marker>
-                    </template>
-
-                    <template v-for="(polygon, index) in polygons">
-                        <l-polygon :lat-lngs="polygon">
-                        </l-polygon>
-                    </template>
-
-                    <template v-for="(polyline, index) in polylines">
-                        <l-polyline :lat-lngs="polyline">
-                        </l-polyline>
-                    </template>
-
-                    <template v-for="(rectangle, index) in rectangles">
-                        <l-polyline :lat-lngs="rectangle">
-                        </l-polyline>
-                    </template>
-                </l-map>
+                </map-component>
             </v-flex>
 
             <v-flex xs1>
@@ -102,24 +20,16 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker, LPolygon, LPolyline, LRectangle, LPopup} from 'vue2-leaflet';
-    import "leaflet/dist/leaflet.css";
-
     import MapPageHeader from "./map-page-header";
     import DropDownButton from "./mapPageButton/DropDownButton"
+    import MapComponent from './ProjectPage/MapComponent';
 
     export default {
         name: 'MapPage',
         components: {
             MapPageHeader,
             DropDownButton,
-            LMap,
-            LTileLayer,
-            LMarker,
-            LPolygon,
-            LPolyline,
-            LRectangle,
-            LPopup
+            MapComponent
         },
         props: {
             onProjectOpened: {
@@ -156,33 +66,40 @@
             OpenRoutePagePressed: function () {
                 this.onRoutePageOpened();
             },
-            createPolygon: function (coordinates){
+            createPolygon: function (id, coordinates) {
                 let points = [];
-                for(let k = 0; k < coordinates[0].length; k++){
+                for (let k = 0; k < coordinates[0].length; k++) {
                     points.push(L.latLng(coordinates[0][k][1], coordinates[0][k][0]));
                 }
-                this.polygons.push(points);
+                this.polygons.push({"id": id, "latlng": points});
+            },
+            createPoint: function (id, coordinates) {
+                this.markers.push({"id": id, "latlng": L.latLng(coordinates[1], coordinates[0])});
             },
             loadMapObjects: function () {
-                axios.get('/getAllProjectPoints').then(({ data }) => {
-                    console.log(data);
-                    for(let i = 0; i < data.length; i++){
-                        if(data[i].type == "Point"){
-                            this.markers.push(L.latLng(data[i].coordinates[1], data[i].coordinates[0]));
-                        }else if(data[i].type == "GeometryCollection"){
-                            for(let j = 0; j < data[i].geometries.length; j++){
-                                if(data[i].geometries[j].type == "Point"){
-                                    this.markers.push(L.latLng(data[i].geometries[j].coordinates[1], data[i].geometries[j].coordinates[0]));
-                                }else if(data[i].geometries[j].type == "Polygon"){
-                                     this.createPolygon(data[i].geometries[j].coordinates);
-                                }else{
+                axios.get('/getAllProjectPoints').then(({data}) => {
+                    for (let i = 0; i < data.length; i++) {
+                        if (data[i].info.type == "Point") {
+                            this.createPoint(data[i].id, data[i].info.coordinates);
+                        } else if (data[i].info.type == "GeometryCollection") {
+                            for (let j = 0; j < data[i].info.geometries.length; j++) {
+                                if (data[i].info.geometries[j].type == "Point") {
+                                    this.createPoint(data[i].id, data[i].info.geometries[j].coordinates);
+                                } else if (data[i].info.geometries[j].type == "Polygon") {
+                                    this.createPolygon(data[i].id, data[i].info.geometries[j].coordinates);
+                                } else {
                                     let points = [];
-                                    for(let k = 0; k < data[i].geometries[j].coordinates.length; k++){
-                                        points.push(L.latLng(data[i].geometries[j].coordinates[k][1], data[i].geometries[j].coordinates[k][0]));
+                                    for (let k = 0; k < data[i].info.geometries[j].coordinates.length; k++) {
+                                        points.push(L.latLng(data[i].info.geometries[j].coordinates[k][1], data[i].info.geometries[j].coordinates[k][0]));
                                     }
-
-                                    if(data[i].geometries[j].type == "LineString") this.polylines.push(points);
-                                    else if(data[i].geometries[j].type == "Rectangle") this.rectangles.push(points);
+                                    if (data[i].info.geometries[j].type == "LineString") this.polylines.push({
+                                        "id": data[i].id,
+                                        "latlng": points
+                                    });
+                                    else if (data[i].info.geometries[j].type == "Rectangle") this.rectangles.push({
+                                        "id": [data[i].id],
+                                        "latlng": points
+                                    });
                                 }
                             }
                         }
@@ -192,6 +109,40 @@
         },
         mounted() {
             this.loadMapObjects();
+
+            let ToRoutePageComponent = {
+                // language=HTML
+                template: `
+                    <v-layout align-end justify-start row>
+                        <v-flex xs12 md3 lg2>
+                            <v-btn style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)"
+                                   @click="OpenRoutePagePressed">
+                                <v-layout column>
+                                    <v-flex class="white--text font-weight-bold">
+                                        ROUTES MAKEN
+                                    </v-flex>
+                                </v-layout>
+                            </v-btn>
+                        </v-flex>
+
+                        <v-flex xs12 md3 lg2 v-if="$vuetify.breakpoint.xsOnly">
+                            <v-card style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
+                                <v-layout column>
+                                    <v-flex class="white--text font-weight-bold">
+                                        <v-text-field
+                                                class="mx-3"
+                                                style="padding-top: 8px;"
+                                                prepend-inner-icon="search"
+                                        ></v-text-field>
+                                    </v-flex>
+                                </v-layout>
+                            </v-card>
+                        </v-flex>
+                    </v-layout>
+                `,
+
+
+            }
         }
     }
 </script>

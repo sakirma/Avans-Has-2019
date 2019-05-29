@@ -1,19 +1,19 @@
 <template>
-    <v-layout align-center justify-center row fill-height >
+    <v-layout align-center justify-center row fill-height>
         <v-flex shrink class="hidden-sm-and-down v-card--reveal">
             <v-layout align-center justify-center fill-height>
-                <v-img class="mt-2"
-                        src="img/RoadLeaf-Logo.png"
+                <v-img class="mt-2 roadleafPhoto"
+                       src="img/RoadLeaf-Logo.png"
                        height="100%"
                        max-height="100px"
                        contain
-                       style="filter: brightness(0) invert(1);"
-                       width="150px"/>
+                       width="150px"
+                       @click="openStatisticsPage"/>
             </v-layout>
         </v-flex>
         <v-btn class="button-page-title title" flat @click="openEditProjectPage"> Projecten</v-btn>
-        <v-btn class="button-page-title title" flat @click="openEditRoutesPage"> Routes</v-btn>
-        <v-btn class="button-page-title title" flat @click="openMediaPage"> Media</v-btn>
+        <v-btn class="button-page-title title" flat @click="openEditRoutesPage"> Interessepunten</v-btn>
+        <v-btn class="button-page-title title" flat @click="openMediaPage"> Routes</v-btn>
         <v-spacer></v-spacer>
         <v-btn class="button-page-title title" icon flat color="white">
             <v-icon large> web</v-icon>
@@ -27,23 +27,30 @@
 <script>
     export default {
         name: "ProjectPageHeader",
+        props: {
+            parent: {
+                type: Object,
+                required: true,
+            }
+        },
         methods: {
             openEditProjectPage() {
-                window.location.href = '/beheer/projecten';
+                this.parent.openEditProjectPage();
+            },
+            openStatisticsPage() {
+                this.parent.openStatisticsPage();
             },
             openEditRoutesPage() {
-                window.location.href = '/admin/route';
+                this.parent.openInterestPointPage();
             },
             openMediaPage() {
                 window.location.href = '/media';
-            }
+            },
         }
     }
 </script>
 
 <style scoped>
-
-    
     .button-page-title {
         color: white;
     }
@@ -55,5 +62,15 @@
     .button-page-title:hover:before {
         background-color: transparent;
         color: black;
+    }
+
+    .roadleafPhoto {
+        filter: brightness(0) invert(1);
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .roadleafPhoto:hover {
+        filter: brightness(0) invert(0);
     }
 </style>
