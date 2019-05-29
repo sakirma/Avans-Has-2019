@@ -92,3 +92,5 @@ modules.xml
 # End of https://www.gitignore.io/api/jetbrains+all
 
 Laravel/public/js/app\.js
+
+Laravel/public/js/admin\.js
