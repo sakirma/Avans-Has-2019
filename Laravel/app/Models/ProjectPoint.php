@@ -20,4 +20,12 @@ class ProjectPoint extends Model
 
     // Table does not have timestamps
     public $timestamps = false;
+    public function project()
+    {
+        return $this->belongsTo('App\Models\Project', 'projects_id');
+    }
+
+    public function imagePoints(){
+        return $this->hasMany("App\Models\PointHasImage", "point_id");
+    }
 }

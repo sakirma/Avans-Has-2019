@@ -3,7 +3,7 @@
         <first-page id="firstPage"></first-page>
         <map-page id="mapPage" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
         <!-- TODO: DEBUGGING Replace false with true.  -->
-        <project-page ref="projectPage" id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
+        <project-page ref="projectPage" id="projectPage" :onProjectOpened="OpenProjectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
         <RoutePage ref="routePage" id="routePage" v-else-if="selectedRoutePage === true"></RoutePage>
         <div v-else></div>
     </div>
@@ -23,6 +23,13 @@
             FirstPage,
             ProjectPage,
             RoutePage,
+        },
+        watch: {
+            selectedProjectPage: function(){
+                this.$nextTick(() => {
+                    this.$refs.projectPage.init();
+                })
+            }
         },
         data() {
             return {
@@ -50,7 +57,6 @@
                     this.UpdateScreen();
                 }
             },
-
             OpenRoutePage() {
                 this.selectedRoutePage = true;
                 this.selectedProjectPage.isSelected = false;
@@ -62,14 +68,12 @@
                     this.UpdateScreen();
                 }
             },
-
             OpenMapPage() {
                 let pageStates = this.$store.getters.pageStates;
                 this.$store.commit('setPageState', pageStates.mapPage);
 
                 this.UpdateScreen();
             },
-
             UpdateScreen() {
                 let currentPageState = this.$store.getters.getCurrentPageState;
                 let pageStates = this.$store.getters.pageStates;
@@ -96,7 +100,6 @@
                 L.DomEvent.disableClickPropagation(element.$el);
                 L.DomEvent.disableScrollPropagation(element.$el);
             },
-
             ScrollOnWheelEvent(e) {
                 if(this.scrolledOnFirstPage === false && e.deltaY > 0)
                 {

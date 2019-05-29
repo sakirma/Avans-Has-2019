@@ -24,9 +24,11 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "chart.js": "^2.8.0",
         "leaflet": "^1.4.0",
         "leaflet-draw": "^1.0.4",
         "leaflet-routing-machine": "^3.2.12",
+        "vue-chartjs": "^3.4.2",
         "vue-scroll-snap": "^0.1.4",
         "vue2-leaflet": "^2.0.3",
         "vuebar": "^0.0.20",
