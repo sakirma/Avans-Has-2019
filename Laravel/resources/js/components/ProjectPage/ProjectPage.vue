@@ -21,7 +21,13 @@
                                 align-self-end>
                             <v-card flat class="primary" style="position:relative; overflow-y: hidden;" v-bar>
                                 <v-card-text style="position: absolute;">
-
+                                    <v-carousel>
+                                        <v-carousel-item
+                                                v-for="(image,i) in images"
+                                                :key="i"
+                                                :src="image"
+                                        ></v-carousel-item>
+                                    </v-carousel>
                                 </v-card-text>
                             </v-card>
                         </v-flex>
@@ -113,7 +119,8 @@
         name: "ProjectPage",
         data() {
             return {
-                information: ""
+                information: "",
+                images: []
             }
         },
         props: {
@@ -123,10 +130,15 @@
         },
         methods: {
             init() {
+                this.images = [];
                 let id = this.$parent.selectedProjectPage.projectId;
                 axios.get("/getProjectPoint/"+id).then(({ data }) => {
-                    console.log(data);
                     this.information = data.information;
+                });
+
+                axios.get("/getMediaFromProjectPoint/"+id).then(({ data }) => {
+                    for(let i = 0; i < data.length; i++)
+                        this.images.push("getmedia/" + data[i]);
                 });
             }
         },

@@ -61,8 +61,14 @@ class ProjectPointsController extends Controller
 
     public function getProjectPointByID($projectPointId){
         $model = ProjectPoint::find($projectPointId);
-        if(empty($model)) { echo '$model'; }
-
         return json_encode($model);
+    }
+
+    public function getMedia($id){
+        $model = ProjectPoint::find($id);
+        $images = $model->imagePoints;
+        $names = [];
+        foreach($images as $image) $names[] = $image->media_name;
+        return json_encode($names);
     }
 }
