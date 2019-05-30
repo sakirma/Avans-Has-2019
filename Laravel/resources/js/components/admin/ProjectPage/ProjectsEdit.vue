@@ -1,6 +1,8 @@
 <template>
     <div class="projectEditSection" v-bar>
-        <div class="testingCSS">
+    
+        
+        <v-form v-model="valid" ref="form">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Project</v-card-title>
                 <v-btn fab flat @click="close">
@@ -15,7 +17,7 @@
                             <v-card-title class="title">Naam:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field :label="selectedProject.name"></v-text-field>
+                            <v-text-field v-model="selectedProject.name" :rules="nameRules" :label="selectedProject.name"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -27,7 +29,7 @@
                             <v-card-title class="title">Kies een categorie:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field></v-text-field>
+                             <v-select v-model="selectedProject.category" :label="selectedProject.category" :items="categories" :rules="[v => !!v || 'Categorie is vereist']" required dark></v-select>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -38,11 +40,12 @@
                             <v-card-title class="title">Beschrijving</v-card-title>
                         </v-flex>
                         <v-flex xs4>
-                            <v-textarea box></v-textarea>
+                            <v-textarea box v-model="selectedProject.information" :label="selectedProject.information"></v-textarea>
                         </v-flex>
                     </v-layout>
                 </v-flex>
 
+            
                 <v-flex xs1>
                     <v-layout column>
                         <v-flex>
@@ -63,14 +66,14 @@
 
                 <v-flex xs1 pr-5>
                     <v-layout reverse row xs1>
-                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
+                        <v-btn @click="validate" style="max-width: 10%; height: 100%;" color="#89A226">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
                                     class="white--text">
                                 Project Wijzigen
                             </v-card>
                         </v-btn>
 
-                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
+                        <v-btn @click="deleteProject(selectedProject.id)" style="max-width: 10%; height: 100%;" color="#89A226">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
                                     class="white--text">
                                 Project Verwijderen
@@ -79,21 +82,48 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
+                  </v-form>
         </div>
-    </div>
+  
+
 </template>
 
 <script>
     export default {
         name: "ProjectsEdit",
+
+        mounted(){
+            window.axios.get('/getCategories').then(response => {
+                let temp = response.data;
+                for (let i = 0; i < temp.length; i++) {
+                    this.categories.push(temp[i].name);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+
         data() {
             return {
                 selectedProject: {
                     id: '', // ID is used to get data from database, as an example, to retrieve which image and youtube url is being used.
                     name: '',
-                    categorie: '',
-                    beschrijving: '',
+                    category: '',
+                    information: '',
+                   
                 },
+
+                categories: [],
+
+                 nameRules: [
+                    v => !!v || 'Naam is vereist',
+                    v => (v && v.length <= 191) || 'Naam mag niet langer zijn dan 190 karakters'
+                ],
+            textRules: [
+                    v => !!v || 'Beschreiving is vereist',
+                    v => (v && v.length <= 65.535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
+                ],
+                valid: false,
             }
         },
         props: {
@@ -108,7 +138,39 @@
             },
             close() {
                 this.parent.enableViewMode();
-            }
+            }, 
+
+            deleteProject(id){
+                if(confirm('Weet u zeker dat u dit project wilt verwijderen?')){
+                    axios({
+                        method: 'post',
+                        url: '/admin/deleteProject',
+                        data: {
+                            id: id,
+
+                        }
+                    });
+                    this.close();
+                }
+            },
+
+             validate () {
+                if(this.$refs.form.validate()) {
+                    axios({
+                        method: 'post',
+                        url: '/admin/updateProject',
+                        data: {
+                            id: this.selectedProject.id,
+                            name: this.selectedProject.name,
+                            category: this.selectedProject.category,
+                            information: this.selectedProject.information,
+                            //lat: this.lat,
+                            //long: this.long,
+                        }
+                    });
+                     //this.close();
+                }
+        }
         }
     }
 </script>

@@ -1,5 +1,6 @@
 <template>
     <div class="projectEditSection" v-bar >
+    <v-form v-model="valid" ref="form">
         <div class="pr-2">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Nieuw Project</v-card-title>
@@ -15,10 +16,10 @@
                             <v-card-title class="title">Naam:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field></v-text-field>
+                            <v-text-field v-model="name" :rules="nameRules"></v-text-field>
                         </v-flex>
                         <v-spacer></v-spacer>
-                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
+                        <v-btn @click="validate" style="max-width: 10%; height: 100%;" color="#89A226">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat class="white--text">
                                 Project Toevoegen
                             </v-card>
@@ -33,7 +34,7 @@
                             <v-card-title class="title">Kies een categorie:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field></v-text-field>
+                             <v-select v-model="select" :items="categories" :rules="[v => !!v || 'Categorie is vereist']" required dark></v-select>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -44,7 +45,7 @@
                             <v-card-title class="title">Beschrijving:</v-card-title>
                         </v-flex>
                         <v-flex xs4>
-                            <v-textarea box></v-textarea>
+                            <v-textarea box v-model="text" :rules="textRules"></v-textarea>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -68,6 +69,7 @@
                 </v-flex>
             </v-layout>
         </div>
+        </v-form>
     </div>
 </template>
 
@@ -83,8 +85,57 @@
         methods: {
             close() {
                 this.parent.enableViewMode();
-            }
+            },
+
+            validate () {
+                if(this.$refs.form.validate()) {
+                    axios({
+                        method: 'post',
+                        url: '/admin/addProject',
+                        data: {
+                            name: this.name,
+                            category: this.select,
+                            information: this.text,
+                            lat: this.lat,
+                            long: this.long,
+                        }
+                    });
+                     this.close();
+                }
         }
+        },
+
+            
+
+        mounted(){
+            window.axios.get('/getCategories').then(response => {
+                let temp = response.data;
+                for (let i = 0; i < temp.length; i++) {
+                    this.categories.push(temp[i].name);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+    
+
+    data(){
+        return {
+            nameRules: [
+                    v => !!v || 'Naam is vereist',
+                    v => (v && v.length <= 191) || 'Naam mag niet langer zijn dan 190 karakters'
+                ],
+            textRules: [
+                    v => !!v || 'Beschreiving is vereist',
+                    v => (v && v.length <= 65.535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
+                ],
+         categories: [],
+         select: null,
+         name: '',
+         text: '',
+         valid: false,
+        }
+    }
     }
 </script>
 

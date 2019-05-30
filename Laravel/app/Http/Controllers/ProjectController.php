@@ -18,14 +18,14 @@ class ProjectController extends Controller
     public function addProject (Request $request) {
         $project = new Project();
 
-        $point = new Point($request->lat, $request->long);
-        $geometryCollection = new GeometryCollection([$point]);
+        // $point = new Point($request->lat, $request->long);
+        // $geometryCollection = new GeometryCollection([$point]);
 
         $project->name = $request->name;
         $project->information = $request->information;
         $project->category = $request->category;
-        $project->location = $point;
-        $project->geo_json = $geometryCollection;
+        // $project->location = $point;
+        // $project->geo_json = $geometryCollection;
 
         $project->save();
     }
@@ -38,17 +38,20 @@ class ProjectController extends Controller
         return $project->toJson();
     }
 
-    public function update( Request $request)
+    public function update(Request $request)
     {
-        $project = Project::find($request->id);
-        $point = new Point($request->lat, $request->long);
-        $geometryCollection = new GeometryCollection([$point]);
+        
+        $project = Project::find($request['id']);
+
+        // $point = new Point($request->lat, $request->long);
+        // $geometryCollection = new GeometryCollection([$point]);
         $project->name = $request->name;
         $project->information = $request->information;
         $project->category = $request->category;
-        $project->location = $point;
-        $project->geo_json = $geometryCollection;
-        $project->update($request->all());
+        // $project->location = $point;
+        // $project->geo_json = $geometryCollection;
+        $project->area = null;
+        $project->save();
     }
 
     public function viewProjects() {
@@ -100,6 +103,11 @@ class ProjectController extends Controller
     public function facetInfo(Request $request){
         $project = Project::find($request['project']);
         return view('project')->with(["project" => $project, "facet_id" => $request['facet_id'], "direction" => $request['direction']]);
+    }
+
+    public function deleteProject(Request $request){
+        $project = Project::find($request['id']);
+        $project->delete();
     }
 
     public function destroy(Request $request)

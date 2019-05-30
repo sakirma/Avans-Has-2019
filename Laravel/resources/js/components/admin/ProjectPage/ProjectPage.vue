@@ -29,8 +29,9 @@
         },
 
         mounted(){
-            axios.get("/getProjects/").then(response => {this.projects = response.data}).then(console.log(this.projects))
-         
+            axios.get("/getProjects/").then(response => {this.projects = response.data});
+          
+           
         },
 
         data() {
@@ -58,9 +59,6 @@
 
 
                 projects: [],
-
-
-
                
             }
         },
