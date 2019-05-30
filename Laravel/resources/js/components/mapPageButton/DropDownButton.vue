@@ -99,9 +99,6 @@
         display: none;
     }
 
-    .vb-dragger {
-    }
-
     .removeScrollBar {
         scrollbar-width: none;
     }

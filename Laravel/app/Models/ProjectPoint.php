@@ -12,7 +12,7 @@ class ProjectPoint extends Model
     protected $table = 'interest_point';
     protected $spatialFields = [
         'location',
-        'geo_json'
+        'area'
     ];
 
     // Table does not have timestamps
@@ -25,5 +25,9 @@ class ProjectPoint extends Model
 
     public function comments(){
         return $this->hasMany('App\Models\Comment', 'point_id');
+    }
+
+    public function imagePoints(){
+        return $this->hasMany("App\Models\PointHasImage", "point_id");
     }
 }
