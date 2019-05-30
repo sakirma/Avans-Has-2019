@@ -20,9 +20,6 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker, LPolygon, LPolyline, LRectangle, LPopup} from 'vue2-leaflet';
-    import "leaflet/dist/leaflet.css";
-
     import MapPageHeader from "./map-page-header";
     import DropDownButton from "./mapPageButton/DropDownButton"
     import MapComponent from './ProjectPage/MapComponent';
