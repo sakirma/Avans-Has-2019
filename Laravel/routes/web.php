@@ -45,6 +45,8 @@ Route::get('/comments/remove', "CommentController@removeComment")->name('comment
 Route::post('/comments/add', "CommentController@addComment")->name('comments.add');
 
 Route::get('details/{id}', "ProjectPointsController@GetDetails");
+Route::get('getMediaFromProjectPoint/{id}', "ProjectPointsController@getMedia");
+Route::get('/getAllProjectPoints', "ProjectPointsController@getAllPoints");
 
 Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
 Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
