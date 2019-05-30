@@ -38,12 +38,15 @@ Route::post('admin/authenticate', 'Auth\LoginController@authenticate');
 
 
 Route::get('/media', "MediaController@index")->name('media');
-
 Route::post('/media', "MediaController@saveMedia")->name('media.save');
-
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
-Route::get('details/{id}', "ProjectPointController@GetDetails");
+Route::get('/comments/remove', "CommentController@removeComment")->name('comments.remove');
+Route::post('/comments/add', "CommentController@addComment")->name('comments.add');
+
+Route::get('details/{id}', "ProjectPointsController@GetDetails");
+Route::get('getMediaFromProjectPoint/{id}', "ProjectPointsController@getMedia");
+Route::get('/getAllProjectPoints', "ProjectPointsController@getAllPoints");
 
 Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
 Route::get('getProjectPoint/{projectPointId}', "ProjectPointController@getProjectPointByID");
@@ -52,8 +55,6 @@ Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRou
 // Crud
 // TODO: Change beheer to admin.
 Route::get('admin', 'ProjectController@main')->middleware('auth');
-
-Route::get('/getAllProjectPoints', "ProjectPointsController@getAllPoints");
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('beheer', 'ProjectController@main');

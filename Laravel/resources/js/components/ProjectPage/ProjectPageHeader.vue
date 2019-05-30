@@ -21,7 +21,6 @@
             </v-layout>
         </v-flex>
         <v-flex grow>
-
         </v-flex>
     </v-layout>
 </template>
