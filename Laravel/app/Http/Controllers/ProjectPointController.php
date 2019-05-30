@@ -38,7 +38,7 @@ class ProjectPointController extends Controller
 
         $point->project_id = $request->project_id;
         $point->location = $location;
-        $point->area = null;
+        $point->area = $request->area;
         $point->name = $request->name;
         $point->information = $request->information;
         $point->category = $request->category;

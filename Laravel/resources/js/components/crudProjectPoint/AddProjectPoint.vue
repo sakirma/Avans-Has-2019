@@ -78,6 +78,7 @@
                 markers: [],
                 long: '',
                 lat: '',
+                area: null,
                 buttonImage: "img/MapPage/button.png",
                 id: 0,
 
@@ -99,15 +100,13 @@
                         method: 'post',
                         url: '/admin/addProjectPoint',
                         data: {
-
                             project_id: this.selectedId,
                             name: this.name,
                             category: this.selectCat,
                             information: this.text,
                             markerLat: this.lat,
                             markerLong: this.long,
-
-
+                            area: this.area,
                         }
                     });
                 }
