@@ -48,7 +48,7 @@ class LoginController extends Controller
             return 'OK';
         }
 
-        return Response::json(['message' => 'Invalid Credentials'], 500);
+        return response()->json(['message' => 'Invalid Credentials'], 500);
     }
 
     public function username() {

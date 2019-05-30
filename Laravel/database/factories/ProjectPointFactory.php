@@ -1,5 +1,4 @@
 <?php
-
 use Faker\Generator as Faker;
 use Grimzy\LaravelMysqlSpatial\Types\Geometry;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
