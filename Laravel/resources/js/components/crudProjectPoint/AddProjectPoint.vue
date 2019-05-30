@@ -66,7 +66,7 @@
                 text: '',
                 textRules: [
                     v => !!v || 'Beschreiving is vereist',
-                    v => (v && v.length <= 65.535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
+                    v => (v && v.length <= 65535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
                 ],
                 projectId: '',
                 valid: false,
