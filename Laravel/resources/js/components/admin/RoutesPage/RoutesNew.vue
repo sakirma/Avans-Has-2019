@@ -61,7 +61,7 @@
                                                 <div style="width: 100%;" class="my-1 routeDrag" flat>
                                                     <v-layout align-center justify-center row fill-height
                                                               class="routeButton">
-                                                        <v-card-text class="py-0 headline " style="color: #89a324">
+                                                        <v-card-text class="py-0 headline " style="color: rgba(137,163,36,0.75)">
                                                             {{route.name}}
                                                         </v-card-text>
                                                         <v-icon color="#89a324" class="mr-1">
@@ -70,7 +70,7 @@
                                                     </v-layout>
                                                 </div>
                                                 <v-btn icon>
-                                                    <v-icon large color="#89a324">
+                                                    <v-icon large color="rgba(137,163,36,0.75)">
                                                         close
                                                     </v-icon>
                                                 </v-btn>
@@ -82,7 +82,7 @@
                             <v-btn flat depressed class="pa-0 ml-4" style="text-transform: none; width: 90%;">
                                 <v-layout align-center justify-center row fill-height
                                           class="routeButton">
-                                    <v-card-text class="py-0 headline " style="color: #89a324">
+                                    <v-card-text class="py-0 headline " style="color: rgba(137,163,36,0.75)">
                                         Kies hier een nieuwe punt
                                     </v-card-text>
                                 </v-layout>
