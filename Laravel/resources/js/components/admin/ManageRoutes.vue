@@ -15,15 +15,16 @@
         </div>
         <div style="height: 100%">
             <v-flex xs12 sm6 d-flex style="background-color: #89a226">
-                <v-select
+                <v-combobox
                         box
                         item-text="name"
                         item-value="id"
                         :items="routes"
                         label="Box style"
                         v-on:change="loadRouteFromDataBase"
-                ></v-select>
+                ></v-combobox>
                 <v-btn color="success" v-on:click="saveRouteToDatabase">Update</v-btn>
+                <v-btn color="error" v-on:click="removeRouteFromDatabase">Remove</v-btn>
             </v-flex>
             <v-layout column fill-height style="background-color: #89a226">
                 <v-layout v-for="(point, index) in points" v-bind:key="point.id">
@@ -32,7 +33,7 @@
                         <h3>{{ point.name }}</h3>
                         <P>location: {{ point.location.coordinates[0] }}, {{ point.location.coordinates[1] }}</P>
                         <p>information: {{ point.information }} </p>
-                        <input type="checkbox" :id="point.id"  v-on:click="toggleCheckbox(point, $event)">
+                        <input type="checkbox" :id="point.id"  v-on:click="checkboxPlace(point, $event)">
                     </div>
 
                 </v-layout>
@@ -77,8 +78,11 @@
                 routes: [],
                 routeHasPoints: [],
 
-                selectedRoute: null,
+                selectedRouteName: "",
+                selectedRouteId: null,
+
                 routingControl: null,
+
             }
         },
         mounted() {
@@ -104,7 +108,7 @@
                 });
             },
 
-            toggleCheckbox: function(point, event){
+            checkboxPlace: function(point, event){
                 if(event.target.checked) { this.placePoint(point); }
                 else { this.removePoint(point); }
             },
@@ -124,44 +128,61 @@
                 leaflet_create.default.removeMarker( point );
             },
 
-            resetCheckbox: function(id){
+            enableCheckbox: function(id){
                 let checkbox = document.getElementById( id );
                 if (checkbox === null) return;
 
                 checkbox.checked = true;
             },
+            disableCheckbox: function(id){
+                let checkbox = document.getElementById( id );
+                if (checkbox === null) return;
 
+                checkbox.checked = false;
+            },
             saveRouteToDatabase: function(){
-                let name = "";
+                /*let name = "";
                 for (let i=0; i < this.routes.length; i++){
 
-                    console.log(this.routes[i].id + ", " + this.selectedRoute);
-                    if(this.routes[i].id === this.selectedRoute) { name = this.routes[i].name; break; }
+                    //console.log( this.routes[i].id + ", " + this.selectedRouteName );
+                    console.log(this.selectedRouteName);
+                    if(this.routes[i].id === this.selectedRouteName) { name = this.routes[i].name; break; }
                 }
-
-                leaflet_create.default.uploadRoute(name);
+                */
+                leaflet_create.default.uploadRoute( this.selectedRouteName );
             },
 
             loadRouteFromDataBase: function(e){
 
-                this.selectedRoute = e;
+                if(e === null) return;
+
+                this.selectedRouteName = (e.name === undefined) ? e : e.name;
+                this.selectedRouteId = e.id;
+                let id = e.id;
+
+                if(id === undefined) return;
                 let t = this;
 
-                leaflet_create.default.showRoute(e)
+
+                t.routingControl.getPlan().setWaypoints([]);
+                leaflet_create.default.showRoute(id)
                     .then( function (response) {
-
                         for(let i=0; i< t.points.length; i++){
-
                             for(let j=0; j< response.length; j++){
-
                                 if(t.points[i].id === response[j][0]) {
                                     t.placePoint(t.points[i]);
-                                    t.resetCheckbox(t.points[i].id);
+                                    t.enableCheckbox(t.points[i].id);
                                 }
                             }
                         }
                     });
-            }
+            },
+
+            removeRouteFromDatabase: function(){
+                console.log(this.selectedRouteName);
+                if(!this.selectedRouteId) return;
+                leaflet_create.default.removeRouteFromDatabase(this.selectedRouteId)
+            },
         }
     }
 

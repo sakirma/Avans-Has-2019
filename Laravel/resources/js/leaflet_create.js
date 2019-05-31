@@ -272,23 +272,24 @@ export default {
             });
     },
 
-    deleteRoute: function () {
-        let sRoute = document.getElementById("selectedRoute");
-        let route = sRoute.options[sRoute.selectedIndex].value;
+    removeRouteFromDatabase: function (route) {
+
         if (route) {
             let xhttp = new XMLHttpRequest();
             let token = document.getElementsByName('csrf-token')[0].getAttribute('content');
 
-            xhttp.open('POST', '/admin/remove/route');
+            xhttp.open('POST', '/admin/route/remove');
             xhttp.onreadystatechange = function () {
-                if (xhttp.readyState == 4 && xhttp.status == 200) {
-                    alert(xhttp.response);
-                    location.reload();
-                }
-            }
+                if (!(xhttp.readyState === 4 && xhttp.status === 200)) { return; }
+
+                alert(xhttp.response);
+                location.reload();
+            };
+
             xhttp.setRequestHeader('X-CSRF-Token', token);
             xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhttp.send("routeID=" + route);
+
         } else {
             alert("You need to specify the route you want to delete");
         }
