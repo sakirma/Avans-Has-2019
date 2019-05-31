@@ -1,7 +1,7 @@
 <template>
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
-            <v-flex xs6>
+            <v-flex xs6 class="ml-5">
                 <interest-point-view :parent="this" :headers="headers" :desserts="desserts"
                                      v-if="currentPageState === ProjectPageStates.viewMode"></interest-point-view>
                 <interest-point-new :parent="this"

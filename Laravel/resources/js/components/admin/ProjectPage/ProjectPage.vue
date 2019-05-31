@@ -1,7 +1,7 @@
 <template>
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
-            <v-flex xs6>
+            <v-flex xs6 class="ml-5">
                 <projects-view :parent="this" :headers="headers" :desserts="desserts"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
                 <projects-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
                 <project-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
@@ -35,7 +35,6 @@
                     {
                         text: 'Naam',
                         align: "left",
-                        sortable: false,
                         value: 'name',
                     },
                     {

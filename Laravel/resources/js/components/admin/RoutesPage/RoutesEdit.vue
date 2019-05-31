@@ -1,6 +1,6 @@
 <template>
     <div class="projectEditSection" v-bar>
-        <div class="testingCSS">
+        <div>
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Route</v-card-title>
                 <v-btn fab flat @click="close">
