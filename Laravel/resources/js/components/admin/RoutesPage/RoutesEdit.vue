@@ -2,20 +2,20 @@
     <div class="projectEditSection" v-bar>
         <div class="testingCSS">
             <v-layout align-center justify-space-between row>
-                <v-card-title class="display-1">Project</v-card-title>
+                <v-card-title class="display-1">Route</v-card-title>
                 <v-btn fab flat @click="close">
-                    <v-icon x-large color="green"> close</v-icon>
+                    <v-icon x-large color="green">close</v-icon>
                 </v-btn>
             </v-layout>
 
-            <v-layout column >
+            <v-layout column>
                 <v-flex xs1>
                     <v-layout row>
                         <v-flex xs3>
                             <v-card-title class="title">Naam:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field :label="selectedProject.name"></v-text-field>
+                            <v-text-field :label="selectedRoute.name"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -44,19 +44,46 @@
                 </v-flex>
 
                 <v-flex xs1>
-                    <v-layout column>
-                        <v-flex>
-                            <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
+                    <v-layout row align-start>
+                        <v-card-title style="padding-top: 0 !important;" class="title">Punten toevoegen:</v-card-title>
+                        <v-flex xs7 lg4>
+                            <v-responsive max-height="250px">
+                                <draggable
+                                        tag="ul"
+                                        v-model="routeList"
+                                        v-bind="dragOptions"
+                                        @start="drag=true"
+                                        @end="drag=false"
+                                >
+                                    <template v-for="(route, index) in routeList">
+                                        <div :key="index">
+                                            <v-card style="height: 100%" flat>
+                                                <v-layout justify-space-between row fill-height>
+                                                    <div style="width: 100%;" class="my-1" flat>
+                                                        <v-layout align-start justify-center column fill-height class="routeButton">
+                                                            <v-card-text class="py-0 headline " style="color: #89a324">
+                                                                {{route.name}}
+                                                            </v-card-text>
+                                                        </v-layout>
+                                                    </div>
+                                                    <v-btn icon>
+                                                        <v-icon large color="#89a324">
+                                                            close
+                                                        </v-icon>
+                                                    </v-btn>
+                                                </v-layout>
+                                            </v-card>
+                                        </div>
+                                    </template>
+                                </draggable>
+                            </v-responsive>
                         </v-flex>
-                        <v-textarea box></v-textarea>
                     </v-layout>
                 </v-flex>
 
                 <v-flex xs1>
-                    <v-layout column>
-                        <v-flex>
-                            <v-card-title class="title">Video toevoegen:</v-card-title>
-                        </v-flex>
+                    <v-layout row>
+                        <v-card-title class="title">Video toevoegen:</v-card-title>
                         <v-textarea box></v-textarea>
                     </v-layout>
                 </v-flex>
@@ -84,16 +111,24 @@
 </template>
 
 <script>
+    import draggable from "vuedraggable";
+
     export default {
         name: "ProjectsEdit",
         data() {
             return {
-                selectedProject: {
+                selectedRoute: {
                     id: '', // ID is used to get data from database, as an example, to retrieve which image and youtube url is being used.
                     name: '',
                     categorie: '',
                     beschrijving: '',
                 },
+                routeList: [
+                    {name: 'wow'},
+                    {name: 'wow'},
+                    {name: 'wow'},
+                    {name: 'nog een project'}
+                ],
             }
         },
         props: {
@@ -104,16 +139,35 @@
         },
         methods: {
             projectEditSection(product) {
-                this.selectedProject = product;
+                this.selectedRoute = product;
             },
             close() {
                 this.parent.enableViewMode();
+            }
+        },
+        components: {
+            draggable,
+        },
+        computed: {
+            dragOptions() {
+                return {
+                    animation: 200,
+                    group: "description",
+                    disabled: false,
+                    ghostClass: "ghost"
+                };
             }
         }
     }
 </script>
 
 <style>
+    .routeButton {
+        border-style: solid;
+        border-color: #89a324;
+        border-width: 2px;
+    }
+
     .projectEditSection {
         height: 100%;
         border-radius: 20px;

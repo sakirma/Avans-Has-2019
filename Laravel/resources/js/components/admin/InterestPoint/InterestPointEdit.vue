@@ -99,7 +99,7 @@
         name: "InterestPointEdit",
         data() {
             return {
-                selectedProject: {
+                selectedRoute: {
                     id: '', // ID is used to get data from database, as an example, to retrieve which image and youtube url is being used.
                     name: '',
                     categorie: '',
