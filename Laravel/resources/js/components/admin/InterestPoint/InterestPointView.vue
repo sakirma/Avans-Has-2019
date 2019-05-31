@@ -3,7 +3,7 @@
         <v-flex style="width: 100%">
             <interest-point-header :OnEditProjectButtonPressed="EditProjects"></interest-point-header>
         </v-flex>
-        <v-flex style="background-color: white; overflow: auto; width: 70%;" class="removeScrollBar" v-bar>
+        <v-flex style="background-color: white; overflow: auto; width: 100%;" class="removeScrollBar" v-bar>
             <v-data-table
                     :headers="headers"
                     :items="desserts"
