@@ -40,7 +40,7 @@ class ProjectPointsController extends Controller
 
         // Check if model has been found in DB
         if (!empty($model)) {
-            return view('details', ['model' => $model, 'project' => $project]);
+            return view('details', ['model' => $model]);
         }
 
         return abort(404);
