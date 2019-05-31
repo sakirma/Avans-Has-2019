@@ -46,7 +46,7 @@
                 <v-flex xs1>
                     <v-layout row align-start>
                         <v-card-title style="padding-top: 0 !important;" class="title">Punten toevoegen:</v-card-title>
-                        <v-flex xs7 lg4>
+                        <v-flex xs7 sm8 lg6 xl4>
                             <v-responsive max-height="250px">
                                 <draggable
                                         tag="ul"
@@ -57,13 +57,16 @@
                                 >
                                     <template v-for="(route, index) in routeList">
                                         <div :key="index">
-                                            <v-card style="height: 100%" flat>
-                                                <v-layout justify-space-between row fill-height>
-                                                    <div style="width: 100%;" class="my-1" flat>
-                                                        <v-layout align-start justify-center column fill-height class="routeButton">
+                                            <div>
+                                                <v-layout align-center justify-space-between row fill-height>
+                                                    <div style="width: 100%;" class="my-1 routeDrag" flat>
+                                                        <v-layout align-center justify-center row fill-height class="routeButton">
                                                             <v-card-text class="py-0 headline " style="color: #89a324">
                                                                 {{route.name}}
                                                             </v-card-text>
+                                                            <v-icon color="#89a324" class="mr-1">
+                                                                list
+                                                            </v-icon>
                                                         </v-layout>
                                                     </div>
                                                     <v-btn icon>
@@ -72,7 +75,7 @@
                                                         </v-icon>
                                                     </v-btn>
                                                 </v-layout>
-                                            </v-card>
+                                            </div>
                                         </div>
                                     </template>
                                 </draggable>
@@ -81,7 +84,7 @@
                     </v-layout>
                 </v-flex>
 
-                <v-flex xs1>
+                <v-flex xs1 pt-5>
                     <v-layout row>
                         <v-card-title class="title">Video toevoegen:</v-card-title>
                         <v-textarea box></v-textarea>
@@ -166,6 +169,10 @@
         border-style: solid;
         border-color: #89a324;
         border-width: 2px;
+    }
+
+    .routeDrag {
+        cursor: grab;
     }
 
     .projectEditSection {
