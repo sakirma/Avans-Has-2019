@@ -57,37 +57,48 @@
                                 >
                                     <template v-for="(route, index) in routeList">
                                         <div :key="index">
-                                            <div>
-                                                <v-layout align-center justify-space-between row fill-height>
-                                                    <div style="width: 100%;" class="my-1 routeDrag" flat>
-                                                        <v-layout align-center justify-center row fill-height class="routeButton">
-                                                            <v-card-text class="py-0 headline " style="color: #89a324">
-                                                                {{route.name}}
-                                                            </v-card-text>
-                                                            <v-icon color="#89a324" class="mr-1">
-                                                                list
-                                                            </v-icon>
-                                                        </v-layout>
-                                                    </div>
-                                                    <v-btn icon>
-                                                        <v-icon large color="#89a324">
-                                                            close
+                                            <v-layout align-center justify-space-between row fill-height>
+                                                <div style="width: 100%;" class="my-1 routeDrag" flat>
+                                                    <v-layout align-center justify-center row fill-height
+                                                              class="routeButton">
+                                                        <v-card-text class="py-0 headline " style="color: #89a324">
+                                                            {{route.name}}
+                                                        </v-card-text>
+                                                        <v-icon color="#89a324" class="mr-1">
+                                                            list
                                                         </v-icon>
-                                                    </v-btn>
-                                                </v-layout>
-                                            </div>
+                                                    </v-layout>
+                                                </div>
+                                                <v-btn icon>
+                                                    <v-icon large color="#89a324">
+                                                        close
+                                                    </v-icon>
+                                                </v-btn>
+                                            </v-layout>
                                         </div>
                                     </template>
                                 </draggable>
                             </v-responsive>
+                            <v-btn flat depressed class="pa-0 ml-4" style="text-transform: none; width: 90%;">
+                                <v-layout align-center justify-center row fill-height
+                                          class="routeButton">
+                                    <v-card-text class="py-0 headline " style="color: #89a324">
+                                        Kies hier een nieuwe punt
+                                    </v-card-text>
+                                </v-layout>
+                            </v-btn>
                         </v-flex>
                     </v-layout>
                 </v-flex>
 
                 <v-flex xs1 pt-5>
                     <v-layout row>
-                        <v-card-title class="title">Video toevoegen:</v-card-title>
-                        <v-textarea box></v-textarea>
+                        <v-card-title class="title">Uitgerekende kilometers:</v-card-title>
+                    </v-layout>
+                </v-flex>
+                <v-flex xs1>
+                    <v-layout row>
+                        <v-card-title class="title">Uitgerekende duur:</v-card-title>
                     </v-layout>
                 </v-flex>
 
@@ -96,14 +107,14 @@
                         <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
                                     class="white--text">
-                                Project Wijzigen
+                                Aanpassing toepassen
                             </v-card>
                         </v-btn>
 
                         <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
                                     class="white--text">
-                                Project Verwijderen
+                                Route verijderen
                             </v-card>
                         </v-btn>
                     </v-layout>
