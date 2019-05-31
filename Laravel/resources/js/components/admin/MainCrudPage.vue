@@ -2,47 +2,14 @@
     <div style="height: 100vh; background-color: #89a324">
         <v-container fluid fill-height py-0 px-0>
             <v-layout column>
-                <v-flex xs1 d-flex mx-5 my-3>
-                    <c-r-u-d-page-header></c-r-u-d-page-header>
+                <v-flex xs2 d-flex mx-5 my-3 style="max-height: 100px;">
+                    <c-r-u-d-page-header :parent="this"></c-r-u-d-page-header>
                 </v-flex>
                 <v-flex d-flex style="background-color: white;">
-                    <v-container fluid fill-height pa-0>
-                        <v-layout row fill-height>
-                            <v-flex xs6 d-flex px-4>
-                                <v-layout column fill-height>
-                                    <v-flex xs2>
-                                        <v-layout row fill-height>
-                                            <v-flex d-flex>
-                                                <v-card-title class="display-2" style="color: #89a324;">
-                                                    Projecten
-                                                </v-card-title>
-                                            </v-flex>
-                                            <v-flex d-flex>
-                                                <v-layout row fill-height align-center justify-center>
-                                                    <v-spacer></v-spacer>
-                                                    <v-flex xs3>
-                                                        <v-btn block color="#89a324" class="project-toevoegen-button white--text">
-                                                            <span style="white-space: normal;">
-                                                                Project Toevoegen
-                                                            </span>
-                                                        </v-btn>
-                                                    </v-flex>
-                                                    <v-flex d-flex xs4>
-                                                        <v-text-field solo hide-details round class="search-bar pa-0" flat append-icon="search"></v-text-field>
-                                                    </v-flex>
-                                                </v-layout>
-                                            </v-flex>
-                                        </v-layout>
-                                    </v-flex>
-                                </v-layout>
-                            </v-flex>
-                            <v-flex d-flex>
-                                <v-card color="orange">
-
-                                </v-card>
-                            </v-flex>
-                        </v-layout>
-                    </v-container>
+                    <project-page v-if="currentCrudPageState === crudPageState.Projects"></project-page>
+                    <statistics-page v-else-if="currentCrudPageState === crudPageState.Statistics"></statistics-page>
+                    <interest-point-page v-else-if="currentCrudPageState === crudPageState.InterestPoints" ></interest-point-page>
+                    <routes-page v-else-if="currentCrudPageState === crudPageState.Routes"></routes-page>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -51,11 +18,39 @@
 
 <script>
     import CRUDPageHeader from './CRUDPageHeader';
+    import ProjectPage from './ProjectPage/ProjectPage';
+    import StatisticsPage from './StatisticsPage';
+    import InterestPointPage from './InterestPoint/InterestPointPage'
+    import RoutesPage from './RoutesPage/RoutesPage';
 
     export default {
         name: "MainCrudPage",
         components: {
-            CRUDPageHeader
+            CRUDPageHeader,
+            ProjectPage,
+            StatisticsPage,
+            InterestPointPage,
+            RoutesPage
+        },
+        data() {
+            return {
+                crudPageState: { 'Projects': 0, 'InterestPoints': 1, 'Routes': 2, 'Statistics': 3 },
+                currentCrudPageState: 2,
+            }
+        },
+        methods: {
+            openEditProjectPage() {
+                this.currentCrudPageState = this.crudPageState.Projects;
+            },
+            openStatisticsPage() {
+                this.currentCrudPageState = this.crudPageState.Statistics;
+            },
+            openInterestPointPage() {
+                this.currentCrudPageState = this.crudPageState.InterestPoints;
+            },
+            openRoutesPage() {
+                this.currentCrudPageState = this.crudPageState.Routes;
+            }
         }
     }
 </script>
@@ -66,10 +61,5 @@
         border-style: solid;
         border-width: 2px;
         border-color: rgba(174, 195, 207, 0.21);
-    }
-
-    .project-toevoegen-button {
-        padding: 0;
-        height: 100%;
     }
 </style>

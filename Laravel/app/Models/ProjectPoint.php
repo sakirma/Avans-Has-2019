@@ -20,6 +20,14 @@ class ProjectPoint extends Model
 
     public function project()
     {
-        return $this->belongsTo('App\Models\Project', 'projects_id');
+        return $this->belongsTo('App\Models\Project', 'project_id');
+    }
+
+    public function comments(){
+        return $this->hasMany('App\Models\Comment', 'point_id');
+    }
+
+    public function imagePoints(){
+        return $this->hasMany("App\Models\PointHasImage", "point_id");
     }
 }
