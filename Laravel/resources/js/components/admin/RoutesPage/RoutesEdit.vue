@@ -129,7 +129,7 @@
                     <v-layout row>
                         <v-flex grow>
                             <v-text-field
-                                    class="mx-5 roundedCorners"
+                                    class="px-5 roundedCorners"
                                     flat
                                     label="Search"
                                     prepend-inner-icon="search"
@@ -137,14 +137,15 @@
                         </v-flex>
 
                         <v-flex shrink>
-                            <v-btn icon>
-                                <v-icon>
+                            <v-btn icon flat large color="green" @click="ToggleAllProjectPointList">
+                                <v-icon large>
                                     close
                                 </v-icon>
                             </v-btn>
                         </v-flex>
                     </v-layout>
                 </v-flex>
+                <project-selection-list></project-selection-list>
             </v-layout>
         </div>
     </div>
@@ -152,6 +153,7 @@
 
 <script>
     import draggable from "vuedraggable";
+    import ProjectSelectionList from "./ProjectSelectionList";
 
     export default {
         name: "ProjectsEdit",
@@ -186,12 +188,12 @@
                 this.parent.enableViewMode();
             },
             ToggleAllProjectPointList() {
-                console.log('foo');
                 this.showListOfProjectPoints = !this.showListOfProjectPoints;
-            }
+            },
         },
         components: {
             draggable,
+            ProjectSelectionList,
         },
         computed: {
             dragOptions() {

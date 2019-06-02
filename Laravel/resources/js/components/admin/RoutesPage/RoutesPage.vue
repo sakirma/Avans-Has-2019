@@ -30,7 +30,7 @@
         data() {
             return {
                 ProjectPageStates: {'viewMode': 0, 'editMode': 1, 'newMode': 2},
-                currentPageState: 0,
+                currentPageState: 1,
                 headers: [
                     {
                         text: 'Naam',
