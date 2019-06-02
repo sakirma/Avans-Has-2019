@@ -144,22 +144,23 @@
                     }
                 }
 
-                if(this.$refs.form.validate()) {
-                    /*
-                    axios({
-                        method: 'post',
-                        url: '/admin/addProjectPoint',
-                        data: {
-                            project_id: this.projectId,
-                            name: this.name,
-                            category: this.category,
-                            information: this.text,
-                            markerLat: this.lat,
-                            markerLong: this.long,
-                            area: this.area,
-                        }
-                    });
-                    */
+                let r = confirm('Still missing Lat and Long are you sure you want to submit this form?');
+                if( r == true) {
+                    if (this.$refs.form.validate()) {
+                        axios({
+                            method: 'post',
+                            url: '/admin/addProjectPoint',
+                            data: {
+                                project_id: this.projectId,
+                                name: this.name,
+                                category: this.category,
+                                information: this.text,
+                                markerLat: this.lat,
+                                markerLong: this.long,
+                                area: this.area,
+                            }
+                        });
+                    }
                 }
             },
         }
