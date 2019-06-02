@@ -2,11 +2,11 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <interest-point-view :parent="this" :headers="headers" :desserts="desserts"
+                <interest-point-view :parent="this" :headers="headers" :project_points="project_points"
                                      v-if="currentPageState === ProjectPageStates.viewMode"></interest-point-view>
-                <interest-point-new :parent="this"
+                <interest-point-new :parent="this" :categories="categories" :projects="projects" :projectNames="projectNames" :projectIds="projectIds"
                                     v-else-if="currentPageState === ProjectPageStates.newMode"></interest-point-new>
-                <interest-point-edit :parent="this" ref="projectEditSection"
+                <interest-point-edit :parent="this" ref="projectEditSection" :categories="categories"
                                      v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
             </v-flex>
             <v-flex d-flex xs5>
@@ -34,6 +34,12 @@
             return {
                 ProjectPageStates: {'viewMode': 0, 'editMode': 1, 'newMode': 2},
                 currentPageState: 0,
+                project_points: [],
+                projects: [],
+                projectNames: [],
+                projectIds: [],
+                categories: [],
+
                 headers: [
                     {
                         text: 'Naam',
@@ -56,163 +62,6 @@
                         value: 'fat',
                     },
                 ],
-                desserts: [
-                    {
-                        name: 'Frozen Yogurt',
-                        calories: 159,
-                        projectId: 1,
-                        fat: 6.0,
-                    },
-                    {
-                        name: 'Ice cream sandwich',
-                        calories: 237,
-                        projectId: 2,
-                        fat: 9.0,
-                    },
-                    {
-                        name: 'Eclair',
-                        calories: 262,
-                        fat: 16.0,
-                        projectId: 1,
-                    },
-                    {
-                        name: 'Cupcake',
-                        calories: 305,
-                        fat: 3.7,
-                        carbs: 67,
-                        protein: 4.3,
-                        iron: '8%'
-                    },
-                    {
-                        name: 'Gingerbread',
-                        calories: 356,
-                        fat: 16.0,
-                        carbs: 49,
-                        protein: 3.9,
-                        iron: '16%'
-                    },
-                    {
-                        name: 'Jelly bean',
-                        calories: 375,
-                        fat: 0.0,
-                        carbs: 94,
-                        protein: 0.0,
-                        iron: '0%'
-                    },
-                    {
-                        name: 'Lollipop',
-                        calories: 392,
-                        fat: 0.2,
-                        carbs: 98,
-                        protein: 0,
-                        iron: '2%'
-                    },
-                    {
-                        name: 'Honeycomb',
-                        calories: 408,
-                        fat: 3.2,
-                        carbs: 87,
-                        protein: 6.5,
-                        iron: '45%'
-                    },
-                    {
-                        name: 'Donut',
-                        calories: 452,
-                        fat: 25.0,
-                        carbs: 51,
-                        protein: 4.9,
-                        iron: '22%'
-                    },
-                    {
-                        name: 'KitKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        projectId: 4,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                    {
-                        name: 'KiasdasdasdtKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%'
-                    },
-                ]
             }
         },
         methods: {
@@ -226,6 +75,39 @@
                 this.currentPageState = this.ProjectPageStates.editMode;
                 this.$refs.projectEditSection.projectEditSection(product);
             }
+        },
+        mounted() {
+            // Get all Project Points
+            window.axios.get('/getProjectPoints').then(response => {
+                let temp = response.data;
+                for (let i = 0; i < temp.length; i++) {
+                    this.project_points.push({id: temp[i].id, project_id: temp[i].project_id, location: temp[i].location, area: temp[i].area, name: temp[i].name, information: temp[i].information, category: temp[i].category});
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+            // Get all Categories
+            window.axios.get('/getCategories').then(response => {
+                let temp = response.data;
+                for (let i = 0; i < temp.length; i++) {
+                    this.categories.push(temp[i].name.toString());
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+            // Get all project
+            window.axios.get('/getProjects').then(response => {
+                let temp = response.data;
+                for (let i = 0; i < temp.length; i++) {
+                    this.projects.push({id: temp[i].id.toString(), name: temp[i].name.toString()});
+                    this.projectNames.push( temp[i].name.toString());
+                    this.projectIds.push( temp[i].id.toString());
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
     }
 </script>

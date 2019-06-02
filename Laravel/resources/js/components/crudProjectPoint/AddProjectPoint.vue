@@ -129,7 +129,7 @@
             window.axios.get('/getProjects').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
-                    this.projects.push({id: temp[i].id.toString(), name: temp[i].name.toString()})
+                    this.projects.push({id: temp[i].id.toString(), name: temp[i].name.toString()});
                     this.projectNames.push( temp[i].name.toString());
                     this.projectIds.push( temp[i].id.toString());
                 }

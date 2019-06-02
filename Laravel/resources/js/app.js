@@ -86,10 +86,6 @@ Vue.component('edit-project-point',
     require('./components/crudProjectPoint/EditProjectPoint').default
 );
 
-Vue.component('view-project-points',
-    require('./components/crudProjectPoint/ViewProjectPoints').default
-);
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
