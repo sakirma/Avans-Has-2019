@@ -112,12 +112,13 @@
         },
         data() {
             return {
-                valid: false,
                 name: '',
                 nameRules: [
                     v => !!v || 'Naam is vereist',
                     v => (v && v.length <= 191) || 'Naam mag niet langer zijn dan 190 karakters'
                 ],
+                projectName: null,
+                projectId: null,
                 category: null,
                 categoryRules: [
                     v => !!v || 'Categorie is vereist',
@@ -127,8 +128,6 @@
                     v => !!v || 'Beschreiving is vereist',
                     v => (v && v.length <= 65535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
                 ],
-                projectName: null,
-                projectId: null,
             }
         },
         methods: {
@@ -155,9 +154,9 @@
                                 name: this.name,
                                 category: this.category,
                                 information: this.text,
-                                markerLat: this.lat,
-                                markerLong: this.long,
-                                area: this.area,
+                                markerLat: null,
+                                markerLong: null,
+                                area: null,
                             }
                         });
                     }

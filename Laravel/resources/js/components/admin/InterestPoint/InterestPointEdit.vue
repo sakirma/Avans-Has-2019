@@ -20,14 +20,13 @@
                     </v-layout>
                 </v-flex>
 
-
                 <v-flex xs1>
                     <v-layout row>
                         <v-flex xs3>
-                            <v-card-title class="title">Kies een categorie:</v-card-title>
+                            <v-card-title class="title">Kies een Project:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field></v-text-field>
+                            <v-select :items="projectNames" label="optioneel"></v-select>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -35,10 +34,10 @@
                 <v-flex xs1>
                     <v-layout row>
                         <v-flex xs3>
-                            <v-card-title class="title">Kies een Project:</v-card-title>
+                            <v-card-title class="title">Kies een categorie:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field label="optioneel"></v-text-field>
+                            <v-select :items="categories"></v-select>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -102,8 +101,8 @@
                 selectedProject: {
                     id: '', // ID is used to get data from database, as an example, to retrieve which image and youtube url is being used.
                     name: '',
-                    categorie: '',
-                    beschrijving: '',
+                    category: '',
+                    text: '',
                 },
             }
         },
@@ -111,6 +110,22 @@
             parent: {
                 type: Object,
                 required: true,
+            },
+            categories: {
+                type: Array,
+                required: true,
+            },
+            projects: {
+                type: Array,
+                required: true
+            },
+            projectNames: {
+                type: Array,
+                required: true
+            },
+            projectIds: {
+                type: Array,
+                required: true
             }
         },
         methods: {

@@ -151,6 +151,7 @@
                 console.log(error);
             });
             console.log(this._id + " sfsdafgsf")
+
             window.axios.get('/admin/projectpoint/edit/'+this._id ).then(response => {
                 let temp = response.data;
                 this.name = temp.name;
@@ -176,6 +177,7 @@
             }).catch(function (error) {
                 console.log(error);
             });
+
             console.log("tredgtdsfgd");
             console.log(this.array);
             this.$nextTick(() => {

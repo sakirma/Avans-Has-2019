@@ -6,7 +6,7 @@
                                      v-if="currentPageState === ProjectPageStates.viewMode"></interest-point-view>
                 <interest-point-new :parent="this" :categories="categories" :projects="projects" :projectNames="projectNames" :projectIds="projectIds"
                                     v-else-if="currentPageState === ProjectPageStates.newMode"></interest-point-new>
-                <interest-point-edit :parent="this" ref="projectEditSection" :categories="categories"
+                <interest-point-edit :parent="this" ref="projectEditSection" :categories="categories" :projects="projects" :projectNames="projectNames" :projectIds="projectIds"
                                      v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
             </v-flex>
             <v-flex d-flex xs5>
@@ -44,22 +44,18 @@
                     {
                         text: 'Naam',
                         align: "left",
-                        value: 'name',
                     },
                     {
                         text: 'Categorie',
                         align: 'left',
-                        value: 'calories',
                     },
                     {
                         text: 'Project',
                         align: 'left',
-                        value: 'projectId',
                     },
                     {
                         text: 'Beschrijving',
                         align: 'left',
-                        value: 'fat',
                     },
                 ],
             }
