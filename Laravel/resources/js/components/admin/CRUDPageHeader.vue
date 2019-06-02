@@ -13,13 +13,13 @@
         </v-flex>
         <v-btn class="button-page-title title" flat @click="openEditProjectPage"> Projecten</v-btn>
         <v-btn class="button-page-title title" flat @click="openEditRoutesPage"> Interessepunten</v-btn>
-        <v-btn class="button-page-title title" flat @click="openMediaPage"> Routes</v-btn>
+        <v-btn class="button-page-title title" flat @click="routesPage"> Routes</v-btn>
         <v-spacer></v-spacer>
         <v-btn class="button-page-title title" icon flat color="white">
-            <v-icon large> web</v-icon>
+            <v-icon large color="#032C4A"> web</v-icon>
         </v-btn>
         <v-btn class="button-page-title title" icon flat color="white">
-            <v-icon large> exit_to_app</v-icon>
+            <v-icon large color="#032C4A"> exit_to_app</v-icon>
         </v-btn>
     </v-layout>
 </template>
@@ -46,8 +46,8 @@
             openEditRoutesPage() {
                 this.parent.openInterestPointPage();
             },
-            openMediaPage() {
-                window.location.href = '/media';
+            routesPage() {
+                this.parent.openRoutesPage();
             },
         }
     }

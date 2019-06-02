@@ -1,7 +1,7 @@
 <template>
-    <v-layout align-start justify-center column fill-height>
+    <v-layout align-center justify-center column fill-height>
         <v-flex style="width: 100%">
-            <projects-header :OnEditProjectButtonPressed="EditProjects"></projects-header>
+            <routes-header :OnEditProjectButtonPressed="EditProjects"></routes-header>
         </v-flex>
         <v-flex style="background-color: white; overflow: auto; width: 100%;" class="removeScrollBar" v-bar>
             <v-data-table
@@ -16,7 +16,9 @@
                     <tr @click="rowSelected(props.item)">
                         <td>{{ props.item.name }}</td>
                         <td class="text-xs-right">{{ props.item.calories }}</td>
-                        <td class="text-xs-right">{{ props.item.fat }}</td>
+                        <td class="text-xs-right">{{ props.item.projectId }}</td>
+                        <td class="text-xs-right">{{ props.item.aantalKm }}</td>
+                        <td class="text-xs-right">{{ props.item.duur }}</td>
                     </tr>
                 </template>
             </v-data-table>
@@ -25,11 +27,12 @@
 </template>
 
 <script>
-    import ProjectsHeader from './ProjectsHeader';
+    import RoutesHeader from './RoutesHeader';
+
     export default {
         name: "ProjectView",
         components: {
-            ProjectsHeader,
+            RoutesHeader,
         },
         props: {
             headers: {
