@@ -137,7 +137,7 @@
             validate () {
                 if(this.projectName != null) {
                     for(let i = 0; i<this.projectNames.length;i++){
-                        if(this.projects[i].name == this.projectName){
+                        if(this.projects[i].name === this.projectName){
                             this.projectId = this.projects[i].id;
                         }
                     }

@@ -15,7 +15,7 @@
                             <v-card-title class="title">Naam:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field :label="selectedProject.name"></v-text-field>
+                            <v-text-field v-model="name" :rules="nameRules" :label="selectedProject.name"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -26,7 +26,7 @@
                             <v-card-title class="title">Kies een Project:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-select :items="projectNames" label="optioneel"></v-select>
+                            <v-select v-model="projectName" :items="projectNames" label="optioneel"></v-select>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -37,7 +37,7 @@
                             <v-card-title class="title">Kies een categorie:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-select :items="categories"></v-select>
+                            <v-select v-model="category" :items="categories" :rules="categoryRules"></v-select>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -48,7 +48,7 @@
                             <v-card-title class="title">Beschrijving</v-card-title>
                         </v-flex>
                         <v-flex xs4>
-                            <v-textarea box></v-textarea>
+                            <v-textarea v-model="text" :rules="textRules" box></v-textarea>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -56,7 +56,7 @@
                 <v-flex xs1>
                     <v-layout column>
                         <v-flex>
-                            <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
+                            <v-card-title class="title">*Afbeelding toevoegen:</v-card-title>
                         </v-flex>
                         <v-textarea box></v-textarea>
                     </v-layout>
@@ -65,7 +65,7 @@
                 <v-flex xs1>
                     <v-layout column>
                         <v-flex>
-                            <v-card-title class="title">Video toevoegen:</v-card-title>
+                            <v-card-title class="title">*Video toevoegen:</v-card-title>
                         </v-flex>
                         <v-textarea box></v-textarea>
                     </v-layout>
@@ -80,7 +80,7 @@
                             </v-card>
                         </v-btn>
 
-                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
+                        <v-btn @click="deleteItem(selectedProject.id)" style="max-width: 10%; height: 100%;" color="#89A226">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
                                     class="white--text text-xs-center">
                                 Punt Verwijderen
@@ -98,6 +98,22 @@
         name: "InterestPointEdit",
         data() {
             return {
+                name: '',
+                nameRules: [
+                    v => !!v || 'Naam is vereist',
+                    v => (v && v.length <= 191) || 'Naam mag niet langer zijn dan 190 karakters'
+                ],
+                projectName: null,
+                projectId: null,
+                category: null,
+                categoryRules: [
+                    v => !!v || 'Categorie is vereist',
+                ],
+                text: '',
+                textRules: [
+                    v => !!v || 'Beschreiving is vereist',
+                    v => (v && v.length <= 65535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
+                ],
                 selectedProject: {
                     id: '', // ID is used to get data from database, as an example, to retrieve which image and youtube url is being used.
                     name: '',
@@ -134,6 +150,42 @@
             },
             close() {
                 this.parent.enableViewMode();
+            },
+            deleteItem(id) {
+                if(confirm('Weet u zeker dat deze interessepunt wilt verwijderen?')){
+                    axios({
+                        method: 'post',
+                        url: '/admin/deleteProjectPoint',
+                        data: {
+                            id: id,
+                        }
+                    });
+                    window.location.reload();
+                }
+            },
+            test() {
+                this.id = this.selectedPoint.id;
+                console.log(this.selectedPoint.id);
+                // Get all data current selected point
+                window.axios.get('/admin/projectpoint/edit/'+this.id ).then(response => {
+                    let temp = response.data;
+                    this.name = temp.name;
+                    this.selectCat = temp.category;
+                    this.text = temp.information;
+                    this.projectId = temp.project_id;
+                    // Set correct project name
+                    for(let $i = 0; $i < this.projects.length;$i++){
+                        if(this.projectId === this.projects[$i].id){
+                            this.projectName = this.projects[$i].name;
+                        }
+                    }
+                    //this.lat = temp.location.coordinates[1];
+                    //this.long = temp.location.coordinates[0];
+                    //this.array = temp.area;
+                    console.log(temp);
+                }).catch(function (error) {
+                    console.log(error);
+                });
             }
         }
     }

@@ -43,19 +43,23 @@
                 headers: [
                     {
                         text: 'Naam',
-                        align: "left",
+                        align: 'left',
+                        value: 'name',
                     },
                     {
                         text: 'Categorie',
                         align: 'left',
+                        value: 'category',
                     },
                     {
                         text: 'Project',
                         align: 'left',
+                        value: 'projectId',
                     },
                     {
                         text: 'Beschrijving',
                         align: 'left',
+                        value: 'text'
                     },
                 ],
             }
