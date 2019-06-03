@@ -34,16 +34,21 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('admin/logout', 'Auth\LoginController@logout');
+
 Route::post('admin/authenticate', 'Auth\LoginController@authenticate');
 
 
 Route::get('/media', "MediaController@index")->name('media');
-
 Route::post('/media', "MediaController@saveMedia")->name('media.save');
-
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
+Route::get('/comments/remove', "CommentController@removeComment")->name('comments.remove');
+Route::post('/comments/add', "CommentController@addComment")->name('comments.add');
+
 Route::get('details/{id}', "ProjectPointsController@GetDetails");
+Route::get('getMediaFromProjectPoint/{id}', "ProjectPointsController@getMedia");
+Route::get('/getAllProjectPoints', "ProjectPointsController@getAllPoints");
 
 Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
 Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
@@ -68,6 +73,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/admin/remove/route', 'AdminRouteController@removeRoute');
     Route::post('/admin/get/points', 'AdminRouteController@getRoutePoints');
     Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint');
+
 });
 
 

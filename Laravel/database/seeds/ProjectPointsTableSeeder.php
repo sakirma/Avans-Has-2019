@@ -64,7 +64,7 @@ class ProjectPointsTableSeeder extends Seeder
         "geometry": {
           "type": "Polygon",
           "coordinates": [
-            [
+          [
               [
                 5.2349768534745325,
                 51.57824557639225

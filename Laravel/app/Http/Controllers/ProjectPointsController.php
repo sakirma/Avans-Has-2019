@@ -40,16 +40,35 @@ class ProjectPointsController extends Controller
 
         // Check if model has been found in DB
         if (!empty($model)) {
-            return view('details', ['model' => $model, 'project' => $project]);
+            return view('details', ['model' => $model]);
         }
 
         return abort(404);
     }
 
+    public function getAllPoints(){
+        $points = ProjectPoint::all();
+        $arr = [];
+        foreach($points as $point){
+            if($point["area"] != null){
+                $arr[] = ["id" => $point["id"], "info" => $point["area"]];
+            }else{
+                $arr[] = ["id" => $point["id"], "info" => $point["location"]];
+            }
+        }
+        return json_encode($arr);
+    }
+
     public function getProjectPointByID($projectPointId){
         $model = ProjectPoint::find($projectPointId);
-        if(empty($model)) { echo '$model'; }
-
         return json_encode($model);
+    }
+
+    public function getMedia($id){
+        $model = ProjectPoint::find($id);
+        $images = $model->imagePoints;
+        $names = [];
+        foreach($images as $image) $names[] = $image->media_name;
+        return json_encode($names);
     }
 }

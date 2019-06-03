@@ -1,9 +1,8 @@
 <template>
     <div v-resize="UpdateScreen">
-        <first-page id="firstPage"></first-page>
+        <first-page id="firstPage" ref="firstPage" v-scroll="onScrollFirstPage" v-show="firstPageEnabled === true"></first-page>
         <map-page id="mapPage" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
-        <!-- TODO: DEBUGGING Replace false with true.  -->
-        <project-page ref="projectPage" id="projectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
+        <project-page ref="projectPage" id="projectPage" :onProjectOpened="OpenProjectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
         <RoutePage ref="routePage" id="routePage" v-else-if="selectedRoutePage === true"></RoutePage>
         <div v-else></div>
     </div>
@@ -24,6 +23,13 @@
             ProjectPage,
             RoutePage,
         },
+        watch: {
+            selectedProjectPage: function(){
+                this.$nextTick(() => {
+                    this.$refs.projectPage.init();
+                })
+            }
+        },
         data() {
             return {
                 selectedProjectPage: {
@@ -31,7 +37,7 @@
                     projectId: undefined
                 },
                 selectedRoutePage: false,
-
+                firstPageEnabled: true,
                 scrolledOnFirstPage: false,
             }
         },
@@ -50,7 +56,6 @@
                     this.UpdateScreen();
                 }
             },
-
             OpenRoutePage() {
                 this.selectedRoutePage = true;
                 this.selectedProjectPage.isSelected = false;
@@ -62,14 +67,12 @@
                     this.UpdateScreen();
                 }
             },
-
             OpenMapPage() {
                 let pageStates = this.$store.getters.pageStates;
                 this.$store.commit('setPageState', pageStates.mapPage);
 
                 this.UpdateScreen();
             },
-
             UpdateScreen() {
                 let currentPageState = this.$store.getters.getCurrentPageState;
                 let pageStates = this.$store.getters.pageStates;
@@ -96,7 +99,6 @@
                 L.DomEvent.disableClickPropagation(element.$el);
                 L.DomEvent.disableScrollPropagation(element.$el);
             },
-
             ScrollOnWheelEvent(e) {
                 if(this.scrolledOnFirstPage === false && e.deltaY > 0)
                 {
@@ -105,7 +107,18 @@
 
                     this.scrolledOnFirstPage = true;
                 }
-            }
+            },
+            onScrollFirstPage(e) {
+                let firstPageEl = this.$refs.firstPage.$el;
+                let path = e.path || (e.composedPath && e.composedPath());
+                let scrollPercentage = 1 / firstPageEl.clientHeight * path[1].scrollY;
+
+
+                if(scrollPercentage > 0.95)
+                {
+                    this.firstPageEnabled = false;
+                }
+            },
         },
         mounted() {
             this.UpdateScreen();
