@@ -108,6 +108,7 @@
                 projectName: null,
                 projectId: null,
                 category: null,
+                categories: [],
                 categoryRules: [
                     v => !!v || 'Categorie is vereist',
                 ],
@@ -127,10 +128,6 @@
         props: {
             parent: {
                 type: Object,
-                required: true,
-            },
-            categories: {
-                type: Array,
                 required: true,
             },
             projects: {
@@ -182,7 +179,8 @@
                             id: id,
                         }
                     });
-                    window.location.reload();
+                    this.parent.loadPoints();
+                    this.close();
                 }
             },
             validate () {
@@ -201,6 +199,16 @@
                     });
                 }
             },
+        },
+        mounted() {
+            window.axios.get('/getCategories').then(response => {
+                let temp = response.data;
+                for (let i = 0; i < temp.length; i++) {
+                    this.categories.push(temp[i].name.toString());
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
     }
 </script>

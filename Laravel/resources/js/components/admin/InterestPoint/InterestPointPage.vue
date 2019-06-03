@@ -4,9 +4,9 @@
             <v-flex xs6 class="ml-5">
                 <interest-point-view :parent="this" :headers="headers" :project_points="project_points"
                                      v-if="currentPageState === ProjectPageStates.viewMode"></interest-point-view>
-                <interest-point-new :parent="this" :categories="categories" :projects="projects" :projectNames="projectNames" :projectIds="projectIds"
+                <interest-point-new :parent="this" :projects="projects" :projectNames="projectNames" :projectIds="projectIds"
                                     v-else-if="currentPageState === ProjectPageStates.newMode"></interest-point-new>
-                <interest-point-edit :parent="this" ref="projectEditSection" :categories="categories" :projects="projects" :projectNames="projectNames" :projectIds="projectIds"
+                <interest-point-edit :parent="this" ref="projectEditSection" :projects="projects" :projectNames="projectNames" :projectIds="projectIds"
                                      v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
             </v-flex>
             <v-flex d-flex xs5>
@@ -68,6 +68,12 @@
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
             },
+             loadPoints(){
+                axios.get("/getProjectPoints").then(response => {this.project_points = response.data})
+                    .catch(function (error) {
+                    console.log(error);
+                });
+            },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
             },
@@ -77,25 +83,7 @@
             }
         },
         mounted() {
-            // Get all Project Points
-            window.axios.get('/getProjectPoints').then(response => {
-                let temp = response.data;
-                for (let i = 0; i < temp.length; i++) {
-                    this.project_points.push({id: temp[i].id, project_id: temp[i].project_id, location: temp[i].location, area: temp[i].area, name: temp[i].name, information: temp[i].information, category: temp[i].category});
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
-
-            // Get all Categories
-            window.axios.get('/getCategories').then(response => {
-                let temp = response.data;
-                for (let i = 0; i < temp.length; i++) {
-                    this.categories.push(temp[i].name.toString());
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
+            this.loadPoints();
 
             // Get all project
             window.axios.get('/getProjects').then(response => {
