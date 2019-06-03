@@ -61,6 +61,7 @@ class ProjectPointsController extends Controller
 
     public function getProjectPointByID($projectPointId){
         $model = ProjectPoint::find($projectPointId);
+        $model["comments"] = $model->comments;
         return json_encode($model);
     }
 
