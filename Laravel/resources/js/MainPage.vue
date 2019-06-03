@@ -1,8 +1,7 @@
 <template>
     <div v-resize="UpdateScreen">
-        <first-page id="firstPage"></first-page>
+        <first-page id="firstPage" ref="firstPage" v-scroll="onScrollFirstPage" v-show="firstPageEnabled === true"></first-page>
         <map-page id="mapPage" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
-        <!-- TODO: DEBUGGING Replace false with true.  -->
         <project-page ref="projectPage" id="projectPage" :onProjectOpened="OpenProjectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
         <RoutePage ref="routePage" id="routePage" v-else-if="selectedRoutePage === true"></RoutePage>
         <div v-else></div>
@@ -38,7 +37,7 @@
                     projectId: undefined
                 },
                 selectedRoutePage: false,
-
+                firstPageEnabled: true,
                 scrolledOnFirstPage: false,
             }
         },
@@ -108,7 +107,18 @@
 
                     this.scrolledOnFirstPage = true;
                 }
-            }
+            },
+            onScrollFirstPage(e) {
+                let firstPageEl = this.$refs.firstPage.$el;
+                let path = e.path || (e.composedPath && e.composedPath());
+                let scrollPercentage = 1 / firstPageEl.clientHeight * path[1].scrollY;
+
+
+                if(scrollPercentage > 0.95)
+                {
+                    this.firstPageEnabled = false;
+                }
+            },
         },
         mounted() {
             this.UpdateScreen();
