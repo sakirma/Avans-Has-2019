@@ -7,7 +7,6 @@
                     <v-icon x-large color="green">close</v-icon>
                 </v-btn>
             </v-layout>
-
             <v-layout column>
                 <v-flex xs1>
                     <v-layout row>
@@ -46,48 +45,7 @@
                 <v-flex xs1>
                     <v-layout row align-start>
                         <v-card-title style="padding-top: 0 !important;" class="title">Punten toevoegen:</v-card-title>
-                        <v-flex xs7 sm8 lg6 xl4>
-                            <v-responsive max-height="250px">
-                                <draggable
-                                        tag="ul"
-                                        v-model="routeList"
-                                        v-bind="dragOptions"
-                                        @start="drag=true"
-                                        @end="drag=false"
-                                >
-                                    <template v-for="(route, index) in routeList">
-                                        <div :key="index">
-                                            <v-layout align-center justify-space-between row fill-height>
-                                                <div style="width: 100%;" class="my-1 routeDrag" flat>
-                                                    <v-layout align-center justify-center row fill-height
-                                                              class="routeButton">
-                                                        <v-card-text class="py-0 headline " style="color: rgba(137,163,36,0.7575)">
-                                                            {{route.name}}
-                                                        </v-card-text>
-                                                        <v-icon color="#89a324" class="mr-1">
-                                                            list
-                                                        </v-icon>
-                                                    </v-layout>
-                                                </div>
-                                                <v-btn icon>
-                                                    <v-icon large color="rgba(137,163,36,0.75)">
-                                                        close
-                                                    </v-icon>
-                                                </v-btn>
-                                            </v-layout>
-                                        </div>
-                                    </template>
-                                </draggable>
-                            </v-responsive>
-                            <v-btn flat depressed class="pa-0 ml-4" style="text-transform: none; width: 90%;">
-                                <v-layout align-center justify-center row fill-height
-                                          class="routeButton">
-                                    <v-card-text class="py-0 headline " style="color: #89a324">
-                                        Kies hier een nieuwe punt
-                                    </v-card-text>
-                                </v-layout>
-                            </v-btn>
-                        </v-flex>
+                        <project-selection-list ref="selectionList"></project-selection-list>
                     </v-layout>
                 </v-flex>
 
@@ -126,6 +84,7 @@
 
 <script>
     import draggable from "vuedraggable";
+    import ProjectSelectionList from "./ProjectSelectionList";
 
     import {LMap, LTileLayer, LMarker, LControl, LPopup} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
@@ -152,12 +111,11 @@
                     categorie: '',
                     beschrijving: '',
                 },
-                routeList: [
-                    {name: 'wow'},
-                    {name: 'wow'},
-                    {name: 'wow'},
-                    {name: 'nog een project'}
-                ],
+
+                point: [],
+                selectedPoints[],
+
+                map: null,
                 routingControl: null,
             }
         },
@@ -174,9 +132,9 @@
                 console.log(id);
                 axios.post('/admin/route/points', {
                     routeId: id,
-                })
-                    .then(response => {
+                }).then(response => {
                         console.log(response);
+                        response.data
                     });
             },
             loadRouteFromDataBase: function(id){
@@ -186,45 +144,49 @@
 
                 leaflet_create.default.showRoute(id)
                     .then( function (response) {
-                        for(let i=0; i< t.points.length; i++){
-                            for(let j=0; j< response.length; j++){
-                                if(t.points[i].id === response[j][0]) {
-                                    t.placePoint(t.points[i]);
-                                    t.enableCheckbox(t.points[i].id);
-                                }
-                            }
+                        console.log(response);
+                        for(let i=0; i< response.length; i++){
+
                         }
                     });
             },
-            projectEditSection(product) {
+            placePoint: function(point){
+
+                let markers = leaflet_create.default.placeMarker( point );
+                let waypoints = leaflet_create.default.createWaypoints( markers );
+
+                if(markers.length < 2) return;
+
+                console.log(this.routingControl);
+                this.routingControl.setWaypoints( waypoints );
+            },
+
+            projectEditSection(product, map) {
                 this.selectedRoute = product;
-                this.routingControl = leaflet_create.default.setVariables(this.$refs.map.mapObject);
-                this.loadRouteFromDataBase(product.projectId);
+                this.map = map;
+                this.routingControl = leaflet_create.default.setVariables(map);
+                this.loadProjectPoints(product.projectId);
             },
             close() {
                 this.parent.enableViewMode();
-            }
+            },
         },
         components: {
             draggable,
-        },
-        computed: {
-            dragOptions() {
-                return {
-                    animation: 200,
-                    group: "description",
-                    disabled: false,
-                    ghostClass: "ghost"
-                };
-            }
+            ProjectSelectionList,
         }
     }
 </script>
 
 <style>
+    .roundedCorners.v-input .v-input__control .v-input__slot {
+        border-radius: 15px;
+        background-color: rgba(137, 163, 36, 0.6);
+    }
+
     .routeButton {
         border-style: solid;
-        border-color: rgba(137,163,36,0.6);
+        border-color: rgba(137, 163, 36, 0.6);
         border-width: 2px;
     }
 

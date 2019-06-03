@@ -7,7 +7,7 @@
                 <routes-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></routes-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section></map-section>
+                <map-section ref="mapSection"></map-section>
             </v-flex>
         </v-layout>
     </v-container>
@@ -69,11 +69,7 @@
 
                 axios.post('/admin/route/data')
                     .then(response => {
-                        let p = response.data.points;
                         let r = response.data.routes;
-                        let rp = response.data.routeHasPoints;
-
-                        console.log(r);
                         for (let i=0; i<r.length; i++){
                             let t = {
                                 name: r[i].name,
@@ -82,10 +78,6 @@
                             };
                             this.routes.push(t);
                         }
-
-                        if(p != null)this.points = p.slice(0);
-                        //if(r != null) this.routes = r.slice(0);
-                        if(rp != null) this.routeHasPoints = rp.routeHasPoints.slice(0);
                     })
                     .catch(e => {
                         console.log(e);
@@ -99,7 +91,7 @@
             },
             editAProject(product) {
                 this.currentPageState = this.ProjectPageStates.editMode;
-                this.$refs.projectEditSection.projectEditSection(product);
+                this.$refs.projectEditSection.projectEditSection(product, this.$refs.mapSection.getMapObject());
             }
         }
     }

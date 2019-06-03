@@ -34,6 +34,8 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('admin/logout', 'Auth\LoginController@logout');
+
 Route::post('admin/authenticate', 'Auth\LoginController@authenticate');
 
 
@@ -65,7 +67,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/beheer/DeleteProject', 'ProjectController@destroy');
     Route::get('/beheer/edit/{id}','ProjectController@edit');
     Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
-
 
 });
 
