@@ -29,10 +29,11 @@
         },
 
         mounted(){
-            axios.get("/getProjects/").then(response => {this.projects = response.data});
+          this.loadProjects();  
           
            
         },
+
 
         data() {
             return {
@@ -66,6 +67,11 @@
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
             },
+
+            loadProjects(){
+            axios.get("/getProjects/").then(response => {this.projects = response.data});
+            },
+
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
             },

@@ -34,7 +34,15 @@
                             <v-card-title class="title">Kies een categorie:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                             <v-select v-model="select" :items="categories" :rules="[v => !!v || 'Categorie is vereist']" required dark></v-select>
+                             <v-select 
+                             v-model="select"
+                             :items="categories" 
+                             menu-props="auto"
+                             label="Selecteren"
+                             :rules="[v => !!v || 'Categorie is vereist']" 
+                             required 
+                             single-line>
+                             </v-select>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -100,7 +108,8 @@
                             long: this.long,
                         }
                     });
-                     this.close();
+                    this.parent.loadProjects(); 
+                    this.close();
                 }
         }
         },
