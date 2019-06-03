@@ -40,6 +40,10 @@ class Project extends Model
         return $images;
     }
 
+    public function imageProjects(){
+        return $this->hasMany("App\Models\ProjectHasImage", "project_id");
+    }
+
     public function facets()
     {
         return $this->hasMany('App\Models\Facet');

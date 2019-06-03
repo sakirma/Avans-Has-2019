@@ -59,6 +59,14 @@ class ProjectController extends Controller
         return $projects->toJson();
     }
 
+    public function getMedia($id){
+        $model = Project::find($id);
+        $images = $model->imagePoints;
+        $names = [];
+        foreach($images as $image) $names[] = $image->media_name;
+        return json_encode($names);
+    }
+
     /**
      * @param Request $request
      *      pointWKT: Well Known Text for Point
