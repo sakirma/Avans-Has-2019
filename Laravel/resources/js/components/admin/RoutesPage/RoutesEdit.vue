@@ -91,6 +91,7 @@
     import Options from "vue2-leaflet/src/mixins/Options";
 
     import axios from 'axios';
+
     let leaflet_create = require('../../../leaflet_create');
 
     export default {
@@ -112,9 +113,6 @@
                     beschrijving: '',
                 },
 
-                point: [],
-                selectedPoints[],
-
                 map: null,
                 routingControl: null,
             }
@@ -128,47 +126,60 @@
         },
 
         methods: {
-            loadProjectPoints(id){
-                console.log(id);
+            //Kan meschien weg aangezien het word overgeneomen door currentSelectedProjects in de projectSelectionList.vue
+            loadProjectPoints(id) {
+                let t = this;
+
                 axios.post('/admin/route/points', {
                     routeId: id,
                 }).then(response => {
-                        console.log(response);
-                        response.data
+
+                    let selectedPoints = [];
+
+                    response.data.forEach(function (point) {
+                        t.placePoint(point);
+                        selectedPoints.push(point);
                     });
+
+                    this.$refs.selectionList.enableInterestPoints(selectedPoints);
+                });
             },
-            loadRouteFromDataBase: function(id){
+            placePoint: function (point) {
 
-                let t = this;
-                t.routingControl.getPlan().setWaypoints([]);
+                let markers = leaflet_create.default.placeMarker(point);
+                let waypoints = leaflet_create.default.createWaypoints(markers);
 
-                leaflet_create.default.showRoute(id)
-                    .then( function (response) {
-                        console.log(response);
-                        for(let i=0; i< response.length; i++){
+                if (markers.length < 2) return;
 
-                        }
-                    });
+                this.routingControl.setWaypoints(waypoints);
             },
-            placePoint: function(point){
-
-                let markers = leaflet_create.default.placeMarker( point );
-                let waypoints = leaflet_create.default.createWaypoints( markers );
-
-                if(markers.length < 2) return;
-
-                console.log(this.routingControl);
-                this.routingControl.setWaypoints( waypoints );
+            removePoint: function (point) {
+                leaflet_create.default.removeMarker(point);
             },
-
-            projectEditSection(product, map) {
+            removeFromView(e) {
+                let id = e.layer.options.id;
+                this.$refs.selectionList.removeElementById(id);
+            },
+            clearMarkers: function () {
+                leaflet_create.default.clearMarkers();
+            },
+            projectEditSection(product, points, map) {
                 this.selectedRoute = product;
+
                 this.map = map;
                 this.routingControl = leaflet_create.default.setVariables(map);
+
                 this.loadProjectPoints(product.projectId);
+                this.$refs.selectionList.addInterestPoints(points);
+
+                let markers = leaflet_create.default.getProjectMarkers();
+                markers.on('dblclick', this.removeFromView);
             },
             close() {
                 this.parent.enableViewMode();
+                this.$refs.selectionList.clearInterestPoints();
+                this.map.removeControl(this.routingControl);
+                this.clearMarkers();
             },
         },
         components: {

@@ -18,6 +18,7 @@
     import RoutesView from './RoutesView';
     import RoutesNew from './RoutesNew';
     import RoutesEdit from './RoutesEdit';
+    import axios from 'axios';
 
     export default {
         name: "ProjectList",
@@ -58,7 +59,8 @@
                         value: 'duur',
                     },
                 ],
-                routes: []
+                routes: [],
+                points: []
             }
         },
         mounted() {
@@ -70,6 +72,8 @@
                 axios.post('/admin/route/data')
                     .then(response => {
                         let r = response.data.routes;
+                        let p = response.data.points;
+
                         for (let i=0; i<r.length; i++){
                             let t = {
                                 name: r[i].name,
@@ -78,6 +82,7 @@
                             };
                             this.routes.push(t);
                         }
+                        if (p != null) this.points = p.slice(0);
                     })
                     .catch(e => {
                         console.log(e);
@@ -91,7 +96,7 @@
             },
             editAProject(product) {
                 this.currentPageState = this.ProjectPageStates.editMode;
-                this.$refs.projectEditSection.projectEditSection(product, this.$refs.mapSection.getMapObject());
+                this.$refs.projectEditSection.projectEditSection(product, this.points,this.$refs.mapSection.getMapObject());
             }
         }
     }

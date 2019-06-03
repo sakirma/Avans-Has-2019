@@ -30,9 +30,9 @@ class AdminRouteController extends Controller
     function getProjectPoint(Request $request){
 
         $id = $request->id;
-        $project = ProjectPoint::where('id', $id)->get();
+        $projectPoints = ProjectPoint::where('id', $id)->get();
 
-        return $project;
+        return $projectPoints;
     }
 
     function insertMarkers(Request $request){
@@ -67,10 +67,10 @@ class AdminRouteController extends Controller
         //Twee querys voor de spatial data
         $routePoints = ProjectPoint::whereIn('id', $ids)->get();
 
-        foreach($routePoints as $r){
+        /*foreach($routePoints as $r){
              array_push($response, [$r->id, $r->location]);
-        }
-        return $response;
+        }*/
+        return $routePoints;
     }
 
     function createRoute(Request $request){

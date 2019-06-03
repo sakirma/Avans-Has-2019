@@ -28,14 +28,12 @@
             </v-flex>
             <v-layout column fill-height style="background-color: #89a226">
                 <v-layout v-for="(point, index) in points" v-bind:key="point.id">
-
                     <div :key="(point, index)">
                         <h3>{{ point.name }}</h3>
                         <P>location: {{ point.location.coordinates[0] }}, {{ point.location.coordinates[1] }}</P>
                         <p>information: {{ point.information }} </p>
                         <input type="checkbox" :id="point.id"  v-on:click="checkboxPlace(point, $event)">
                     </div>
-
                 </v-layout>
             </v-layout>
         </div>
@@ -86,12 +84,13 @@
             }
         },
         mounted() {
-            this.routingControl = leaflet_create.default.setVariables(this.$refs.map.mapObject);
+            //set routingControl
+            this.routingControl = leaflet_create.default.setVariables();
             this.initialize();
         },
 
         methods: {
-            initialize: function() {
+            initialize: function () {
 
                 axios.post('/admin/route/data')
                     .then(response => {
@@ -99,13 +98,13 @@
                         let r = response.data.routes;
                         let rp = response.data.routeHasPoints;
 
-                        if(p != null)this.points = p.slice(0);
-                        if(r != null) this.routes = r.slice(0);
-                        if(rp != null) this.routeHasPoints = rp.routeHasPoints.slice(0);
+                        if (p != null) this.points = p.slice(0);
+                        if (r != null) this.routes = r.slice(0);
+                        if (rp != null) this.routeHasPoints = rp.routeHasPoints.slice(0);
                     })
-                .catch(e => {
-                    console.log(e);
-                });
+                    .catch(e => {
+                        console.log(e);
+                    });
             },
 
             checkboxPlace: function(point, event){
@@ -123,11 +122,9 @@
                 console.log(this.routingControl);
                 this.routingControl.setWaypoints( waypoints );
             },
-
             removePoint: function(point){
                 leaflet_create.default.removeMarker( point );
             },
-
             enableCheckbox: function(id){
                 let checkbox = document.getElementById( id );
                 if (checkbox === null) return;

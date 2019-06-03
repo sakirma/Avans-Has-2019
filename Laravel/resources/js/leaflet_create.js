@@ -42,6 +42,10 @@ export default {
         return routingControl;
     },
 
+    getProjectMarkers: function(){
+        return projectMarkers;
+    },
+
     uploadRoute: function (name) {
 
         let layers = projectMarkers.getLayers();
@@ -112,6 +116,11 @@ export default {
             .catch(function (err) {
                 console.log(err)
             });
+    },
+
+    clearMarkers: function (){
+        projectMarkers.clearLayers();
+        routingControl.setWaypoints([]);
     },
 
     removeMarker: function (point) {
