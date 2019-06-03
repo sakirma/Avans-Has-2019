@@ -89,6 +89,8 @@
     export default {
         name: "InterestPointNew",
         props: {
+            parentData: Object,
+
             parent: {
                 type: Object,
                 required: true
@@ -135,6 +137,8 @@
                 this.parent.enableViewMode();
             },
             validate () {
+                console.log("TEEEEST");
+                console.log(this.parentData);
                 if(this.projectName != null) {
                     for(let i = 0; i<this.projectNames.length;i++){
                         if(this.projects[i].name === this.projectName){
