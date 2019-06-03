@@ -4,13 +4,13 @@
             <v-flex xs6 class="ml-5">
                 <interest-point-view :parent="this" :headers="headers" :project_points="project_points"
                                      v-if="currentPageState === ProjectPageStates.viewMode"></interest-point-view>
-                <interest-point-new :parent="this" :projects="projects" :projectNames="projectNames" :projectIds="projectIds"
+                <interest-point-new  v-on:close="clearmap" :parent="this" :projects="projects" :projectNames="projectNames" :projectIds="projectIds" :marker="marker"
                                     v-else-if="currentPageState === ProjectPageStates.newMode"></interest-point-new>
                 <interest-point-edit :parent="this" ref="projectEditSection" :projects="projects" :projectNames="projectNames" :projectIds="projectIds"
                                      v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section :parentData="marker" ref="mapSection" :parent="this" v-on:childToParent="onChildClick"></map-section>
+                <map-section  ref="mapSection" :parent="this" v-on:childToParent="onChildClick" :markers="marker"></map-section>
             </v-flex>
         </v-layout>
     </v-container>
@@ -66,12 +66,17 @@
             }
         },
         methods: {
+            clearmap(){
+                console.log("helloooo");
+              this.marker = null;
+            },
             onChildClick (value) {
                 this.marker = value
+
             },
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
-                this.$refs.mapSection.drawMode();
+                this.$refs.mapSection.setdrawMode(true);
             },
              loadPoints(){
                 axios.get("/getProjectPoints").then(response => {this.project_points = response.data})
@@ -81,6 +86,8 @@
             },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
+                this.$refs.mapSection.setdrawMode(false);
+
             },
             editAProject(product) {
                 this.currentPageState = this.ProjectPageStates.editMode;
@@ -88,6 +95,7 @@
             }
         },
         mounted() {
+
             this.loadPoints();
 
             // Get all project
@@ -101,6 +109,7 @@
             }).catch(function (error) {
                 console.log(error);
             });
+
         }
     }
 </script>

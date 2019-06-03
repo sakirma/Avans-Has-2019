@@ -106,6 +106,10 @@
             projectIds: {
                 type: Array,
                 required: true
+            },
+            marker:{
+              type: Object,
+
             }
         },
         data() {
@@ -131,11 +135,15 @@
         },
         methods: {
             close() {
+                this.parent.$refs.mapSection.setdrawMode(false);
+                this.parent.$refs.mapSection.clearMap();
+                this.marker = null;
+                this.$emit('close', this.marker)
                 this.parent.enableViewMode();
             },
             validate () {
                 console.log("TEEEEST");
-                console.log(this.parentData);
+                console.log(this.marker);
                 if(this.projectName != null) {
                     for(let i = 0; i<this.projectNames.length;i++){
                         if(this.projects[i].name === this.projectName){
@@ -154,8 +162,8 @@
                                 name: this.name,
                                 category: this.category,
                                 information: this.text,
-                                markerLat: null,
-                                markerLong: null,
+                                markerLat: this.marker.lat,
+                                markerLong: this.marker.lng,
                                 area: null,
                             }
                         });

@@ -44,25 +44,33 @@
                 type: Object,
                 required: true
             }
+
         },
         data() {
             return {
                 zoom: 11,
                 center: L.latLng(51.7142669290121, 5.3173828125),
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
-                isDrawMode: true,
+                isDrawMode: false,
                 markers: [],
 
             }
         },
         methods: {
-            drawMode() {
-                this.isDrawMode = true;
+            setdrawMode(value) {
+                this.isDrawMode = value;
+
             },
-            emitToParent () {
-                this.$emit('childToParent', this.markers)
+            clearMap(){
+                if(this.markers.length > 0){
+                    this.markers.splice(-1, 1);
+                }
+            },
+            emitToParent (event) {
+                this.$emit('childToParent', this.markers[0].latlng)
             },
             add(event) {
+                if(this.isDrawMode){
                 if(this.markers.length > 0){
                     this.markers.splice(-1, 1);
                 }
@@ -79,9 +87,9 @@
                     content: 'hoi!'
                 });
                 console.log("marked at " + event.latlng);
-                this.emitToParent();
+                this.emitToParent(event);
 
-            },
+            }},
 
         }
     }
