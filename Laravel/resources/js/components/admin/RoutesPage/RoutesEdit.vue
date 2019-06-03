@@ -127,8 +127,23 @@
 <script>
     import draggable from "vuedraggable";
 
+    import {LMap, LTileLayer, LMarker, LControl, LPopup} from 'vue2-leaflet';
+    import "leaflet/dist/leaflet.css";
+    import Options from "vue2-leaflet/src/mixins/Options";
+
+    import axios from 'axios';
+    let leaflet_create = require('../../../leaflet_create');
+
     export default {
         name: "ProjectsEdit",
+        components: {
+            Options,
+            LMap,
+            LTileLayer,
+            LMarker,
+            LPopup,
+            LControl,
+        },
         data() {
             return {
                 selectedRoute: {
@@ -143,17 +158,48 @@
                     {name: 'wow'},
                     {name: 'nog een project'}
                 ],
+                routingControl: null,
             }
         },
+
         props: {
             parent: {
                 type: Object,
                 required: true,
             }
         },
+
         methods: {
+            loadProjectPoints(id){
+                console.log(id);
+                axios.post('/admin/route/points', {
+                    routeId: id,
+                })
+                    .then(response => {
+                        console.log(response);
+                    });
+            },
+            loadRouteFromDataBase: function(id){
+
+                let t = this;
+                t.routingControl.getPlan().setWaypoints([]);
+
+                leaflet_create.default.showRoute(id)
+                    .then( function (response) {
+                        for(let i=0; i< t.points.length; i++){
+                            for(let j=0; j< response.length; j++){
+                                if(t.points[i].id === response[j][0]) {
+                                    t.placePoint(t.points[i]);
+                                    t.enableCheckbox(t.points[i].id);
+                                }
+                            }
+                        }
+                    });
+            },
             projectEditSection(product) {
                 this.selectedRoute = product;
+                this.routingControl = leaflet_create.default.setVariables(this.$refs.map.mapObject);
+                this.loadRouteFromDataBase(product.projectId);
             },
             close() {
                 this.parent.enableViewMode();
