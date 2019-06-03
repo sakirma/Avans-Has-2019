@@ -53,7 +53,6 @@
                 this.parent.newProjectButtonPressed();
             },
             rowSelected(selectedProject) {
-                console.log(this.$refs.map.mapObject);
                 this.parent.editAProject(selectedProject);
             }
         },
