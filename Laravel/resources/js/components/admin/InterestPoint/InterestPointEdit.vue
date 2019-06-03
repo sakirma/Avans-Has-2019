@@ -26,9 +26,16 @@
                             <v-flex xs3>
                                 <v-card-title class="title">Kies een Project:</v-card-title>
                             </v-flex>
-                            <v-flex xs3>
-                                <v-select v-model="projectName" :items="projectNames" label="optioneel"></v-select>
-                            </v-flex>
+                            <v-layout row align-center>
+                                <v-flex xs3>
+                                    <v-select v-model="projectName" :items="projectNames" label="optioneel"></v-select>
+                                </v-flex>
+                                <v-btn icon color="green" flat @click="removeProject">
+                                    <v-icon>
+                                        close
+                                    </v-icon>
+                                </v-btn>
+                            </v-layout>
                         </v-layout>
                     </v-flex>
 
@@ -38,7 +45,7 @@
                                 <v-card-title class="title">Kies een categorie:</v-card-title>
                             </v-flex>
                             <v-flex xs3>
-                                <v-select v-model="selectedProject.category" :items="categories" :rules="categoryRules"></v-select>
+                                <v-select v-model="selectedProject.category" :items="categories" :rules="categoryRules"> </v-select>
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -121,6 +128,7 @@
                     id: '', // ID is used to get data from database, as an example, to retrieve which image and youtube url is being used.
                     name: '',
                     category: '',
+                    project_id: '',
                     information: '',
                 },
             }
@@ -146,29 +154,21 @@
         methods: {
             projectEditSection(product) {
                 this.selectedProject = product;
-                this.getDetailsPoint();
+                this.getUpdateProjectName();
             },
             close() {
+                this.parent.loadPoints();
                 this.parent.enableViewMode();
             },
-            getDetailsPoint() {
-                window.axios.get('/admin/projectpoint/getDetails/'+this.selectedProject.id).then(response => {
-                    let temp = response.data;
-                    this.name = temp.name;
-                    this.select = temp.category;
-                    this.text = temp.information;
-                    this.projectId = temp.project_id;
-                    //this.lat = temp.location.coordinates[1];
-                    //this.long = temp.location.coordinates[0];
-
-                    for(let i = 0; i<this.projects.length;i++){
-                        if(this.projects[i].id === this.projectId){
-                            this.projectName = this.projects[i].name;
-                        }
+            getUpdateProjectName() {
+                for(let i = 0; i<this.projects.length;i++){
+                    if(this.projects[i].id == this.selectedProject.project_id){
+                        this.projectName = this.projects[i].name;
                     }
-                }).catch(function (error) {
-                    console.log(error);
-                });
+                    else {
+                        console.log(this.projects[i].id + " - " + this.selectedProject.project_id);
+                    }
+                }
             },
             deleteItem(id) {
                 if(confirm('Weet u zeker dat deze interessepunt wilt verwijderen?')){
@@ -179,11 +179,18 @@
                             id: id,
                         }
                     });
-                    this.parent.loadPoints();
                     this.close();
                 }
             },
             validate () {
+                if(this.projectName != null) {
+                    for(let i = 0; i<this.projectNames.length;i++){
+                        if(this.projects[i].name == this.projectName){
+                            this.projectId = this.projects[i].id;
+                        }
+                    }
+                }
+
                 if(this.$refs.form.validate()) {
                     axios({
                         method: 'post',
@@ -193,11 +200,17 @@
                             name: this.selectedProject.name,
                             category: this.selectedProject.category,
                             information: this.selectedProject.information,
+                            project_id: this.projectId
                             //lat: this.lat,
                             //long: this.long,
                         }
                     });
+                    this.close();
                 }
+            },
+            removeProject() {
+                this.projectName = null;
+                this.projectId = null;
             },
         },
         mounted() {

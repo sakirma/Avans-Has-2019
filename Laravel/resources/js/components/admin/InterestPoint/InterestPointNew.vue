@@ -139,7 +139,7 @@
                         }
                     }
                 }
-                
+
                 if(confirm('Still missing Lat and Long are you sure you want to submit this form?')) {
                     if (this.$refs.form.validate()) {
                         axios({
