@@ -94,3 +94,5 @@ modules.xml
 Laravel/public/js/app\.js
 
 Laravel/public/js/admin\.js
+Laravel/public/js/admin.js
+Laravel/public/js/app.js
