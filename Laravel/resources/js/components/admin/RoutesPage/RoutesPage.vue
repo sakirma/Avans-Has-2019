@@ -2,9 +2,9 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <projects-view :parent="this" :headers="headers" :desserts="desserts"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
-                <projects-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
-                <project-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
+                <routes-view :parent="this" :headers="headers" :desserts="desserts"  v-if="currentPageState === ProjectPageStates.viewMode"></routes-view>
+                <routes-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></routes-new>
+                <routes-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></routes-edit>
             </v-flex>
             <v-flex d-flex xs5>
                 <map-section></map-section>
@@ -15,17 +15,17 @@
 
 <script>
     import MapSection from '../Map';
-    import ProjectsView from './ProjectsView';
-    import ProjectsNew from './ProjectsNew';
-    import ProjectEdit from './ProjectsEdit';
+    import RoutesView from './RoutesView';
+    import RoutesNew from './RoutesNew';
+    import RoutesEdit from './RoutesEdit';
 
     export default {
         name: "ProjectList",
         components: {
             MapSection,
-            ProjectsView,
-            ProjectsNew,
-            ProjectEdit
+            RoutesView,
+            RoutesNew,
+            RoutesEdit
         },
         data() {
             return {
@@ -43,9 +43,19 @@
                         value: 'calories',
                     },
                     {
-                        text: 'Beschrijving',
+                        text: 'Project',
                         align: 'left',
-                        value: 'fat',
+                        value: 'projectId',
+                    },
+                    {
+                        text: 'Aantal Km',
+                        align: 'left',
+                        value: 'AantalKm',
+                    },
+                    {
+                        text: 'Duur',
+                        align: 'left',
+                        value: 'duur',
                     },
                 ],
                 desserts: [
