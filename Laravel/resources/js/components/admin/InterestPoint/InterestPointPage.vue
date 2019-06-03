@@ -10,14 +10,14 @@
                                      v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section></map-section>
+                <map-section :parentData="marker" ref="mapSection" :parent="this" v-on:childToParent="onChildClick"></map-section>
             </v-flex>
         </v-layout>
     </v-container>
 </template>
 
 <script>
-    import MapSection from '../Map';
+    import MapSection from './InterestPointMap';
     import InterestPointView from './InterestPointView';
     import InterestPointNew from './InterestPointNew';
     import InterestPointEdit from './InterestPointEdit'
@@ -39,6 +39,7 @@
                 projectNames: [],
                 projectIds: [],
                 categories: [],
+                marker:[],
 
                 headers: [
                     {
@@ -65,8 +66,12 @@
             }
         },
         methods: {
+            onChildClick (value) {
+                this.marker = value
+            },
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
+                this.$refs.mapSection.drawMode();
             },
              loadPoints(){
                 axios.get("/getProjectPoints").then(response => {this.project_points = response.data})
