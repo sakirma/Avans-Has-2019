@@ -5,7 +5,7 @@
         <v-form v-model="valid" ref="form">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Project</v-card-title>
-                <v-btn fab flat @click="closeUpdate">
+                <v-btn fab flat @click="close">
                     <v-icon x-large color="green"> close</v-icon>
                 </v-btn>
             </v-layout>
@@ -146,6 +146,7 @@
                 this.selectedProject = product;
             },
             close() {
+                this.parent.loadProjects(); 
                 this.parent.enableViewMode();
             }, 
 
@@ -159,15 +160,11 @@
 
                         }
                     });
-                    this.closeUpdate();
+                    this.close();
                 }
             },
 
-            closeUpdate(){
-                    this.parent.loadProjects(); 
-                    this.close();
-            },
-
+         
              validate () {
                 if(this.$refs.form.validate()) {
                     axios({
@@ -182,7 +179,6 @@
                             //long: this.long,
                         }
                     });
-                        
                      this.close();
                 }
         }
