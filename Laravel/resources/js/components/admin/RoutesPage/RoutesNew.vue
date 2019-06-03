@@ -79,14 +79,7 @@
                                     </template>
                                 </draggable>
                             </v-responsive>
-                            <v-btn flat depressed class="pa-0 ml-4" style="text-transform: none; width: 90%;">
-                                <v-layout align-center justify-center row fill-height
-                                          class="routeButton">
-                                    <v-card-text class="py-0 headline " style="color: rgba(137,163,36,0.75)">
-                                        Kies hier een nieuwe punt
-                                    </v-card-text>
-                                </v-layout>
-                            </v-btn>
+                            <project-selection-list ref="selectionList"></project-selection-list>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -119,6 +112,7 @@
 
 <script>
     import draggable from "vuedraggable";
+    import ProjectSelectionList from "./ProjectSelectionList";
 
     export default {
         name: "ProjectsEdit",
@@ -150,7 +144,8 @@
             }
         },
         components: {
-            draggable
+            draggable,
+            ProjectSelectionList,
         }
     }
 </script>

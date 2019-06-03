@@ -1,13 +1,12 @@
 <template>
     <div class="projectEditSection" v-bar>
-        <div v-if="showListOfProjectPoints === false">
+        <div>
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Route</v-card-title>
                 <v-btn fab flat @click="close">
                     <v-icon x-large color="green">close</v-icon>
                 </v-btn>
             </v-layout>
-
             <v-layout column>
                 <v-flex xs1>
                     <v-layout row>
@@ -46,50 +45,7 @@
                 <v-flex xs1>
                     <v-layout row align-start>
                         <v-card-title style="padding-top: 0 !important;" class="title">Punten toevoegen:</v-card-title>
-                        <v-flex xs7 sm8 lg6 xl4>
-                            <v-responsive max-height="250px">
-                                <draggable
-                                        tag="ul"
-                                        v-model="routeList"
-                                        v-bind="dragOptions"
-                                        @start="drag=true"
-                                        @end="drag=false"
-                                >
-                                    <template v-for="(route, index) in routeList">
-                                        <div :key="index">
-                                            <v-layout align-center justify-space-between row fill-height>
-                                                <div style="width: 100%;" class="my-1 routeDrag" flat>
-                                                    <v-layout align-center justify-center row fill-height
-                                                              class="routeButton">
-                                                        <v-card-text class="py-0 headline "
-                                                                     style="color: rgba(137,163,36,0.7575)">
-                                                            {{route.name}}
-                                                        </v-card-text>
-                                                        <v-icon color="#89a324" class="mr-1">
-                                                            list
-                                                        </v-icon>
-                                                    </v-layout>
-                                                </div>
-                                                <v-btn icon>
-                                                    <v-icon large color="rgba(137,163,36,0.75)">
-                                                        close
-                                                    </v-icon>
-                                                </v-btn>
-                                            </v-layout>
-                                        </div>
-                                    </template>
-                                </draggable>
-                            </v-responsive>
-                            <v-btn flat depressed class="pa-0 ml-4" style="text-transform: none; width: 90%;"
-                                   @click="ToggleAllProjectPointList">
-                                <v-layout align-center justify-center row fill-height
-                                          class="routeButton">
-                                    <v-card-text class="py-0 headline " style="color: #89a324">
-                                        Kies hier een nieuwe punt
-                                    </v-card-text>
-                                </v-layout>
-                            </v-btn>
-                        </v-flex>
+                        <project-selection-list ref="selectionList"></project-selection-list>
                     </v-layout>
                 </v-flex>
 
@@ -123,31 +79,6 @@
                 </v-flex>
             </v-layout>
         </div>
-        <div v-else-if="showListOfProjectPoints === true">
-            <v-layout column ma-3>
-                <v-flex xs1>
-                    <v-layout row>
-                        <v-flex grow>
-                            <v-text-field
-                                    class="px-5 roundedCorners"
-                                    flat
-                                    label="Search"
-                                    prepend-inner-icon="search"
-                                    solo> </v-text-field>
-                        </v-flex>
-
-                        <v-flex shrink>
-                            <v-btn icon flat large color="green" @click="ToggleAllProjectPointList">
-                                <v-icon large>
-                                    close
-                                </v-icon>
-                            </v-btn>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
-                <project-selection-list></project-selection-list>
-            </v-layout>
-        </div>
     </div>
 </template>
 
@@ -165,13 +96,6 @@
                     categorie: '',
                     beschrijving: '',
                 },
-                routeList: [
-                    {name: 'wow'},
-                    {name: 'wow'},
-                    {name: 'wow'},
-                    {name: 'nog een project'}
-                ],
-                showListOfProjectPoints: false,
             }
         },
         props: {
@@ -187,23 +111,10 @@
             close() {
                 this.parent.enableViewMode();
             },
-            ToggleAllProjectPointList() {
-                this.showListOfProjectPoints = !this.showListOfProjectPoints;
-            },
         },
         components: {
             draggable,
             ProjectSelectionList,
-        },
-        computed: {
-            dragOptions() {
-                return {
-                    animation: 200,
-                    group: "description",
-                    disabled: false,
-                    ghostClass: "ghost"
-                };
-            }
         }
     }
 </script>
