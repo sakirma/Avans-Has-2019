@@ -29,9 +29,7 @@
         },
 
         mounted(){
-          this.loadProjects();  
-          
-           
+          this.loadProjects();     
         },
 
 
