@@ -15,9 +15,9 @@
                 <template v-slot:items="props">
                     <tr @click="rowSelected(props.item)">
                         <td>{{ props.item.name }}</td>
-                        <td class="text-xs-right">{{ props.item.category }}</td>
-                        <td class="text-xs-right">{{ props.item.project_id }}</td>
-                        <td class="text-xs-right">{{ props.item.information }}</td>
+                        <td class="text-xs-left">{{ props.item.category }}</td>
+                        <td class="text-xs-left">{{ props.item.project_id }}</td>
+                        <td class="text-xs-left">{{ props.item.information }}</td>
                     </tr>
                 </template>
             </v-data-table>
