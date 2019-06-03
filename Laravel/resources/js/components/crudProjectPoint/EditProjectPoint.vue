@@ -152,7 +152,7 @@
             });
             console.log(this._id + " sfsdafgsf")
 
-            window.axios.get('/admin/projectpoint/edit/'+this._id ).then(response => {
+            window.axios.get('/admin/projectpoint/getDetails/'+this._id ).then(response => {
                 let temp = response.data;
                 this.name = temp.name;
                 this.selectCat = temp.category;

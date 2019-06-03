@@ -8,87 +8,89 @@
                 </v-btn>
             </v-layout>
 
-            <v-layout column >
-                <v-flex xs1>
-                    <v-layout row>
-                        <v-flex xs3>
-                            <v-card-title class="title">Naam:</v-card-title>
-                        </v-flex>
-                        <v-flex xs3>
-                            <v-text-field v-model="name" :rules="nameRules" :label="selectedProject.name"></v-text-field>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
+            <v-form ref="form">
+                <v-layout column >
+                    <v-flex xs1>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-card-title class="title">Naam:</v-card-title>
+                            </v-flex>
+                            <v-flex xs3>
+                                <v-text-field v-model="selectedProject.name" :rules="nameRules"></v-text-field>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
 
-                <v-flex xs1>
-                    <v-layout row>
-                        <v-flex xs3>
-                            <v-card-title class="title">Kies een Project:</v-card-title>
-                        </v-flex>
-                        <v-flex xs3>
-                            <v-select v-model="projectName" :items="projectNames" label="optioneel"></v-select>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
+                    <v-flex xs1>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-card-title class="title">Kies een Project:</v-card-title>
+                            </v-flex>
+                            <v-flex xs3>
+                                <v-select v-model="projectName" :items="projectNames" label="optioneel"></v-select>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
 
-                <v-flex xs1>
-                    <v-layout row>
-                        <v-flex xs3>
-                            <v-card-title class="title">Kies een categorie:</v-card-title>
-                        </v-flex>
-                        <v-flex xs3>
-                            <v-select v-model="category" :items="categories" :rules="categoryRules"></v-select>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
+                    <v-flex xs1>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-card-title class="title">Kies een categorie:</v-card-title>
+                            </v-flex>
+                            <v-flex xs3>
+                                <v-select v-model="selectedProject.category" :items="categories" :rules="categoryRules"></v-select>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
 
-                <v-flex xs1>
-                    <v-layout row>
-                        <v-flex xs3>
-                            <v-card-title class="title">Beschrijving</v-card-title>
-                        </v-flex>
-                        <v-flex xs4>
-                            <v-textarea v-model="text" :rules="textRules" box></v-textarea>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
+                    <v-flex xs1>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-card-title class="title">Beschrijving</v-card-title>
+                            </v-flex>
+                            <v-flex xs4>
+                                <v-textarea v-model="selectedProject.information" :rules="textRules" box></v-textarea>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
 
-                <v-flex xs1>
-                    <v-layout column>
-                        <v-flex>
-                            <v-card-title class="title">*Afbeelding toevoegen:</v-card-title>
-                        </v-flex>
-                        <v-textarea box></v-textarea>
-                    </v-layout>
-                </v-flex>
+                    <v-flex xs1>
+                        <v-layout column>
+                            <v-flex>
+                                <v-card-title class="title">*Afbeelding toevoegen:</v-card-title>
+                            </v-flex>
+                            <v-textarea box></v-textarea>
+                        </v-layout>
+                    </v-flex>
 
-                <v-flex xs1>
-                    <v-layout column>
-                        <v-flex>
-                            <v-card-title class="title">*Video toevoegen:</v-card-title>
-                        </v-flex>
-                        <v-textarea box></v-textarea>
-                    </v-layout>
-                </v-flex>
+                    <v-flex xs1>
+                        <v-layout column>
+                            <v-flex>
+                                <v-card-title class="title">*Video toevoegen:</v-card-title>
+                            </v-flex>
+                            <v-textarea box></v-textarea>
+                        </v-layout>
+                    </v-flex>
 
-                <v-flex xs1 pr-5>
-                    <v-layout reverse row xs1>
-                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
-                            <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
-                                    class="white--text">
-                                Aanpassingen Toepassen
-                            </v-card>
-                        </v-btn>
+                    <v-flex xs1 pr-5>
+                        <v-layout reverse row xs1>
+                            <v-btn @click="validate" style="max-width: 10%; height: 100%;" color="#89A226">
+                                <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
+                                        class="white--text">
+                                    Aanpassingen Toepassen
+                                </v-card>
+                            </v-btn>
 
-                        <v-btn @click="deleteItem(selectedProject.id)" style="max-width: 10%; height: 100%;" color="#89A226">
-                            <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
-                                    class="white--text text-xs-center">
-                                Punt Verwijderen
-                            </v-card>
-                        </v-btn>
-                    </v-layout>
-                </v-flex>
-            </v-layout>
+                            <v-btn @click="deleteItem(selectedProject.id)" style="max-width: 10%; height: 100%;" color="#89A226">
+                                <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
+                                        class="white--text text-xs-center">
+                                    Punt Verwijderen
+                                </v-card>
+                            </v-btn>
+                        </v-layout>
+                    </v-flex>
+                </v-layout>
+            </v-form>
         </div>
     </div>
 </template>
@@ -106,6 +108,7 @@
                 projectName: null,
                 projectId: null,
                 category: null,
+                categories: [],
                 categoryRules: [
                     v => !!v || 'Categorie is vereist',
                 ],
@@ -118,17 +121,13 @@
                     id: '', // ID is used to get data from database, as an example, to retrieve which image and youtube url is being used.
                     name: '',
                     category: '',
-                    text: '',
+                    information: '',
                 },
             }
         },
         props: {
             parent: {
                 type: Object,
-                required: true,
-            },
-            categories: {
-                type: Array,
                 required: true,
             },
             projects: {
@@ -147,9 +146,29 @@
         methods: {
             projectEditSection(product) {
                 this.selectedProject = product;
+                this.getDetailsPoint();
             },
             close() {
                 this.parent.enableViewMode();
+            },
+            getDetailsPoint() {
+                window.axios.get('/admin/projectpoint/getDetails/'+this.selectedProject.id).then(response => {
+                    let temp = response.data;
+                    this.name = temp.name;
+                    this.select = temp.category;
+                    this.text = temp.information;
+                    this.projectId = temp.project_id;
+                    //this.lat = temp.location.coordinates[1];
+                    //this.long = temp.location.coordinates[0];
+
+                    for(let i = 0; i<this.projects.length;i++){
+                        if(this.projects[i].id === this.projectId){
+                            this.projectName = this.projects[i].name;
+                        }
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
             },
             deleteItem(id) {
                 if(confirm('Weet u zeker dat deze interessepunt wilt verwijderen?')){
@@ -160,33 +179,36 @@
                             id: id,
                         }
                     });
-                    window.location.reload();
+                    this.parent.loadPoints();
+                    this.close();
                 }
             },
-            test() {
-                this.id = this.selectedPoint.id;
-                console.log(this.selectedPoint.id);
-                // Get all data current selected point
-                window.axios.get('/admin/projectpoint/edit/'+this.id ).then(response => {
-                    let temp = response.data;
-                    this.name = temp.name;
-                    this.selectCat = temp.category;
-                    this.text = temp.information;
-                    this.projectId = temp.project_id;
-                    // Set correct project name
-                    for(let $i = 0; $i < this.projects.length;$i++){
-                        if(this.projectId === this.projects[$i].id){
-                            this.projectName = this.projects[$i].name;
+            validate () {
+                if(this.$refs.form.validate()) {
+                    axios({
+                        method: 'post',
+                        url: '/admin/updateProjectPoint',
+                        data: {
+                            id: this.selectedProject.id,
+                            name: this.selectedProject.name,
+                            category: this.selectedProject.category,
+                            information: this.selectedProject.information,
+                            //lat: this.lat,
+                            //long: this.long,
                         }
-                    }
-                    //this.lat = temp.location.coordinates[1];
-                    //this.long = temp.location.coordinates[0];
-                    //this.array = temp.area;
-                    console.log(temp);
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            }
+                    });
+                }
+            },
+        },
+        mounted() {
+            window.axios.get('/getCategories').then(response => {
+                let temp = response.data;
+                for (let i = 0; i < temp.length; i++) {
+                    this.categories.push(temp[i].name.toString());
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
     }
 </script>

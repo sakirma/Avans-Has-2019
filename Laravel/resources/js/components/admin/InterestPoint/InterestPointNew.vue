@@ -95,10 +95,6 @@
                 type: Object,
                 required: true
             },
-            categories: {
-                type: Array,
-                required: true
-            },
             projects: {
                 type: Array,
                 required: true
@@ -122,6 +118,7 @@
                 projectName: null,
                 projectId: null,
                 category: null,
+                categories: [],
                 categoryRules: [
                     v => !!v || 'Categorie is vereist',
                 ],
@@ -146,9 +143,8 @@
                         }
                     }
                 }
-
-                let r = confirm('Still missing Lat and Long are you sure you want to submit this form?');
-                if( r == true) {
+                
+                if(confirm('Still missing Lat and Long are you sure you want to submit this form?')) {
                     if (this.$refs.form.validate()) {
                         axios({
                             method: 'post',
@@ -165,7 +161,19 @@
                         });
                     }
                 }
+                this.parent.loadPoints();
+                this.close();
             },
+        },
+        mounted() {
+            window.axios.get('/getCategories').then(response => {
+                let temp = response.data;
+                for (let i = 0; i < temp.length; i++) {
+                    this.categories.push(temp[i].name.toString());
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
     }
 </script>
