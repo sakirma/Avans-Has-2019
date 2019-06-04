@@ -15,7 +15,7 @@
                             <v-card-title class="title">Naam:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field v-model="name" :label="selectedProject.name"></v-text-field>
+                            <v-text-field v-model="name"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
