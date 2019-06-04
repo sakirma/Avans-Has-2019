@@ -129,6 +129,14 @@
 </script>
 
 <style>
+    .leaflet-popup-content-wrapper {
+        background-color: #D9D9D9;
+    }
+
+    .leaflet-popup-tip {
+        background-color: #D9D9D9;
+    }
+
     .vb > .vb-dragger {
         z-index: 5;
         width: 12px;
