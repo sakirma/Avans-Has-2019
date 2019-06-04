@@ -8,7 +8,7 @@
             <v-flex style="position: relative">
                 <map-component :parentPage="this">
                 </map-component>
-                <v-layout align-end justify-start row style="position: absolute; bottom: 0; width: 100%;">
+                <v-layout :class="{'ml-5': $vuetify.breakpoint.mdAndUp}"  align-end justify-start row style="position: absolute; bottom: 0; width: 100%;">
                     <v-flex xs12 md3 lg2>
                         <v-btn style="z-index: 1005;" depressed class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" @click="OpenRoutePagePressed">
                             <v-layout column>

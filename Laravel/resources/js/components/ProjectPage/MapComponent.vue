@@ -6,7 +6,7 @@
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
         <template v-for="marker in markers">
-            <l-marker :lat-lng="marker.latlng">
+            <l-marker :lat-lng="marker.latlng" :icon="redPin">
                 <l-popup>
                     <v-layout column align-center fill-height>
                         <p class="text-xs-center title">dafq word dit wel groter als de text langer word?</p>
@@ -18,7 +18,7 @@
         </template>
 
         <template v-for="polygon in polygons">
-            <l-polygon :lat-lngs="polygon.latlng">
+            <l-polygon :lat-lngs="polygon.latlng" :color="polygonLineColor" :fill-color="polygonFillColor" :fill-opacity="0.6" >
                 <l-popup>
                     <v-layout column align-center fill-height>
                         <p class="text-xs-center title">dafq word dit wel groter als de text langer word?</p>
@@ -89,6 +89,14 @@
                 buttonImage: "img/MapPage/button.png",
                 LeftDropDownButton: ['Projectnaam A', 'Projectnaam B', 'Projectnaam C'],
                 RightDropDownButton: ['Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks'],
+
+                polygonFillColor: '#C5DF24',
+                polygonLineColor: '#89a324',
+                redPin: L.icon({
+                    iconUrl: 'img/Punaise rood.png',
+
+                    iconSize: [34, 51],
+                }),
             }
         },
         methods: {
