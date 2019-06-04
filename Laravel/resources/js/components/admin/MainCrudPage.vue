@@ -35,7 +35,7 @@
         data() {
             return {
                 crudPageState: { 'Projects': 0, 'InterestPoints': 1, 'Routes': 2, 'Statistics': 3 },
-                currentCrudPageState: 2,
+                currentCrudPageState: 3,
             }
         },
         methods: {
