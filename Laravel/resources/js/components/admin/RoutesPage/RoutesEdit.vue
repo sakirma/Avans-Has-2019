@@ -120,6 +120,7 @@
 
                 map: null,
                 routingControl: null,
+                routeInfo: null,
             }
         },
 
@@ -158,7 +159,6 @@
                 if (markers.length < 2) return;
 
                 this.routingControl.setWaypoints(waypoints);
-
             },
             removePoint: function (point) {
                 leaflet_create.default.removeMarker(point);
@@ -181,7 +181,6 @@
 
                 let markers = leaflet_create.default.getProjectMarkers();
                 markers.on('dblclick', this.removeFromView);
-                let d = leaflet_create.default.getDistanceAndDuration();
             },
             saveRouteToDatabase(){
                 leaflet_create.default.uploadRoute(this.selectedRoute.name)

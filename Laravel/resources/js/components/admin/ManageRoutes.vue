@@ -32,7 +32,7 @@
                         <h3>{{ point.name }}</h3>
                         <P>location: {{ point.location.coordinates[0] }}, {{ point.location.coordinates[1] }}</P>
                         <p>information: {{ point.information }} </p>
-                        <input type="checkbox" :id="point.id"  v-on:click="checkboxPlace(point, $event)">
+                        <input type="checkbox" :id="point.id" v-on:click="checkboxPlace(point, $event)">
                     </div>
                 </v-layout>
             </v-layout>
@@ -64,8 +64,8 @@
             LControl,
         },
 
-        data(){
-            return{
+        data() {
+            return {
 
                 zoom: 11,
                 center: L.latLng(51.7142669290121, 5.3173828125),
@@ -107,37 +107,40 @@
                     });
             },
 
-            checkboxPlace: function(point, event){
-                if(event.target.checked) { this.placePoint(point); }
-                else { this.removePoint(point); }
+            checkboxPlace: function (point, event) {
+                if (event.target.checked) {
+                    this.placePoint(point);
+                } else {
+                    this.removePoint(point);
+                }
             },
 
-            placePoint: function(point){
+            placePoint: function (point) {
 
-                let markers = leaflet_create.default.placeMarker( point );
-                let waypoints = leaflet_create.default.createWaypoints( markers );
+                let markers = leaflet_create.default.placeMarker(point);
+                let waypoints = leaflet_create.default.createWaypoints(markers);
 
-                if(markers.length < 2) return;
+                if (markers.length < 2) return;
 
                 console.log(this.routingControl);
-                this.routingControl.setWaypoints( waypoints );
+                this.routingControl.setWaypoints(waypoints);
             },
-            removePoint: function(point){
-                leaflet_create.default.removeMarker( point );
+            removePoint: function (point) {
+                leaflet_create.default.removeMarker(point);
             },
-            enableCheckbox: function(id){
-                let checkbox = document.getElementById( id );
+            enableCheckbox: function (id) {
+                let checkbox = document.getElementById(id);
                 if (checkbox === null) return;
 
                 checkbox.checked = true;
             },
-            disableCheckbox: function(id){
-                let checkbox = document.getElementById( id );
+            disableCheckbox: function (id) {
+                let checkbox = document.getElementById(id);
                 if (checkbox === null) return;
 
                 checkbox.checked = false;
             },
-            saveRouteToDatabase: function(){
+            saveRouteToDatabase: function () {
                 /*let name = "";
                 for (let i=0; i < this.routes.length; i++){
 
@@ -146,27 +149,27 @@
                     if(this.routes[i].id === this.selectedRouteName) { name = this.routes[i].name; break; }
                 }
                 */
-                leaflet_create.default.uploadRoute( this.selectedRouteName );
+                leaflet_create.default.uploadRoute(this.selectedRouteName);
             },
 
-            loadRouteFromDataBase: function(e){
+            loadRouteFromDataBase: function (e) {
 
-                if(e === null) return;
+                if (e === null) return;
 
                 this.selectedRouteName = (e.name === undefined) ? e : e.name;
                 this.selectedRouteId = e.id;
                 let id = e.id;
 
-                if(id === undefined) return;
+                if (id === undefined) return;
                 let t = this;
 
 
                 t.routingControl.getPlan().setWaypoints([]);
                 leaflet_create.default.showRoute(id)
-                    .then( function (response) {
-                        for(let i=0; i< t.points.length; i++){
-                            for(let j=0; j< response.length; j++){
-                                if(t.points[i].id === response[j][0]) {
+                    .then(function (response) {
+                        for (let i = 0; i < t.points.length; i++) {
+                            for (let j = 0; j < response.length; j++) {
+                                if (t.points[i].id === response[j][0]) {
                                     t.placePoint(t.points[i]);
                                     t.enableCheckbox(t.points[i].id);
                                 }
@@ -175,9 +178,9 @@
                     });
             },
 
-            removeRouteFromDatabase: function(){
+            removeRouteFromDatabase: function () {
                 console.log(this.selectedRouteName);
-                if(!this.selectedRouteId) return;
+                if (!this.selectedRouteId) return;
                 leaflet_create.default.removeRouteFromDatabase(this.selectedRouteId)
             },
         }

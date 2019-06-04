@@ -2,9 +2,12 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <routes-view :parent="this" :headers="headers" :desserts="routes"  v-show="currentPageState === ProjectPageStates.viewMode"></routes-view>
-                <routes-new :parent="this"  ref="projectNewSection" v-show="currentPageState === ProjectPageStates.newMode"></routes-new>
-                <routes-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></routes-edit>
+                <routes-view :parent="this" :headers="headers" :desserts="routes"
+                             v-show="currentPageState === ProjectPageStates.viewMode"></routes-view>
+                <routes-new :parent="this" ref="projectNewSection"
+                            v-show="currentPageState === ProjectPageStates.newMode"></routes-new>
+                <routes-edit :parent="this" ref="projectEditSection"
+                             v-show="currentPageState === ProjectPageStates.editMode"></routes-edit>
             </v-flex>
             <v-flex d-flex xs5>
                 <map-section ref="mapSection"></map-section>
@@ -67,14 +70,14 @@
             this.initialize();
         },
         methods: {
-            initialize: function() {
+            initialize: function () {
 
                 axios.post('/admin/route/data')
                     .then(response => {
                         let r = response.data.routes;
                         let p = response.data.points;
 
-                        for (let i=0; i<r.length; i++){
+                        for (let i = 0; i < r.length; i++) {
                             let t = {
                                 name: r[i].name,
                                 duur: r[i].length,
@@ -82,7 +85,21 @@
                             };
                             this.routes.push(t);
                         }
-                        if (p != null) this.points = p.slice(0);
+                        for (let i = 0; i < p.length; i++) {
+                            //this.points = p.slice(0);
+                            let point = {
+                                area: p[i].area,
+                                category: p[i].category,
+                                id: p[i].id,
+                                information: p[i].information,
+                                location: p[i].location,
+                                name: p[i].name,
+                                project_id: p[i].project_id,
+                                selected: false,
+                            };
+
+                            this.points.push(point);
+                        }
                     })
                     .catch(e => {
                         console.log(e);
@@ -97,7 +114,7 @@
             },
             editAProject(product) {
                 this.currentPageState = this.ProjectPageStates.editMode;
-                this.$refs.projectEditSection.projectEditSection(product, this.points,this.$refs.mapSection.getMapObject());
+                this.$refs.projectEditSection.projectEditSection(product, this.points, this.$refs.mapSection.getMapObject());
             }
         }
     }

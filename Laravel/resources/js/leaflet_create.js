@@ -5,7 +5,7 @@ let projectMarkers;
 let routingControl;
 let newMarkers = [];
 
-let routeInformation = { 
+let routeInformation = {
     distance: null,
     time: null,
 };
@@ -38,7 +38,7 @@ export default {
         map.doubleClickZoom.disable();
 
         routingControl = L.Routing.control({
-            router: L.Routing.mapbox('pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig'),
+            router: L.Routing.mapbox('pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig', {profile: "mapbox/walking"}),
             waypoints: [null],
             routeWhileDragging: false,
             addWaypoints: false,
@@ -139,7 +139,6 @@ export default {
 
         //Update leaflet layer
         for (let i = 0; i < layers.length; i++) {
-            //TODO (bug) options.id is sometimes int sometimes string (temp workaround)
             if (layers[i].options.id === point.id) {
                 projectMarkers.removeLayer(layers[i]);
             }

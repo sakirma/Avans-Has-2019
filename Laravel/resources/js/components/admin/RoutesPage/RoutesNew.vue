@@ -15,7 +15,7 @@
                             <v-card-title class="title">Naam:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field  v-model="newRoute.name"></v-text-field>
+                            <v-text-field v-model="newRoute.name"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -176,10 +176,15 @@
                 let id = e.layer.options.id;
                 this.$refs.selectionList.removeElementById(id);
             },
-            saveRouteToDatabase(){
+            saveRouteToDatabase() {
                 leaflet_create.default.uploadRoute(this.newRoute.name)
             },
             close() {
+
+                leaflet_create.default.clearMarkers();
+                this.map.removeControl(this.routingControl);
+                this.$refs.selectionList.clearInterestPoints();
+
                 this.parent.enableViewMode();
             }
         },

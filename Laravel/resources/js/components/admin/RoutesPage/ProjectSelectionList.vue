@@ -109,7 +109,7 @@
                     this.interestPoints.push(points[i]);
                 }
             },
-            addInterestPointsToMap(){
+            addInterestPointsToMap() {
 
             },
             removeElementById(id) {
