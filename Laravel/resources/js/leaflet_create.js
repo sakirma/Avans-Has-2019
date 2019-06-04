@@ -5,6 +5,11 @@ let projectMarkers;
 let routingControl;
 let newMarkers = [];
 
+let routeInformation = { 
+    distance: null,
+    time: null,
+};
+
 export default {
 
     //
@@ -20,7 +25,13 @@ export default {
             calculateRoute();
         }
     }*/
-
+    getDistanceAndDuration: function () {
+        console.log(routeInformation);
+        return routeInformation
+    },
+    getProjectMarkers: function () {
+        return projectMarkers;
+    },
     setVariables: function (m) {
 
         map = m;
@@ -41,11 +52,6 @@ export default {
 
         return routingControl;
     },
-
-    getProjectMarkers: function(){
-        return projectMarkers;
-    },
-
     uploadRoute: function (name) {
 
         let layers = projectMarkers.getLayers();
@@ -73,13 +79,13 @@ export default {
         xhttp.send(jroute);
 
         window.alert("Route aangemaakt!");
-        window.location = '/admin/route';
+        location.reload();
     },
 
     placeMarker: function (point) {
 
         //let projectInfo = await this.getProjectInfo(id);
-        let latlng = new L.latLng( point.location.coordinates[1], point.location.coordinates[0] );
+        let latlng = new L.latLng(point.location.coordinates[1], point.location.coordinates[0]);
 
         L.marker(latlng, {
             draggable: false,
@@ -118,7 +124,7 @@ export default {
             });
     },
 
-    clearMarkers: function (){
+    clearMarkers: function () {
         projectMarkers.clearLayers();
         routingControl.setWaypoints([]);
     },
@@ -183,6 +189,7 @@ export default {
         checkbox.checked = false;
     },
 
+
     updateMarkersToRoute: function (e) {
         projectMarkers.clearLayers();
 
@@ -194,7 +201,9 @@ export default {
             let projectInfo = e.waypoints[i].options.info;
             let pointName = e.waypoints[i].options.name;
 
-            if (mId === undefined) { mId = Math.random().toString(36).substring(7); }
+            if (mId === undefined) {
+                mId = Math.random().toString(36).substring(7);
+            }
 
             L.marker(e.waypoints[i].latLng, {
                 draggable: false,
@@ -210,6 +219,11 @@ export default {
                     '<p> Naam: ' + pointName + '</p>' +
                     '<p> Informatie: ' + projectInfo + '</p>'
                 ).addTo(projectMarkers);
+
+            routeInformation = {
+                distance: e.routes[0].summary.totalDistance,
+                time: e.routes[0].summary.totalTime
+            };
             //.on('dragend', calculateRoute)
 
             //let c = elem.childNodes;
@@ -232,7 +246,7 @@ export default {
     saveMarker: function (id) {
         let layers = projectMarkers.getLayers();
 
-        for (i = 0; i < layers.length; i++) {
+        for (let i = 0; i < layers.length; i++) {
             if (layers[i].options.id === id) {
                 let content = layers[i].getPopup().getContent();
                 console.log(content);
@@ -289,7 +303,9 @@ export default {
 
             xhttp.open('POST', '/admin/route/remove');
             xhttp.onreadystatechange = function () {
-                if (!(xhttp.readyState === 4 && xhttp.status === 200)) { return; }
+                if (!(xhttp.readyState === 4 && xhttp.status === 200)) {
+                    return;
+                }
 
                 alert(xhttp.response);
                 location.reload();

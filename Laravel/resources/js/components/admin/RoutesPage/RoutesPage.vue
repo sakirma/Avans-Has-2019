@@ -2,8 +2,8 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <routes-view :parent="this" :headers="headers" :desserts="routes"  v-if="currentPageState === ProjectPageStates.viewMode"></routes-view>
-                <routes-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></routes-new>
+                <routes-view :parent="this" :headers="headers" :desserts="routes"  v-show="currentPageState === ProjectPageStates.viewMode"></routes-view>
+                <routes-new :parent="this"  ref="projectNewSection" v-show="currentPageState === ProjectPageStates.newMode"></routes-new>
                 <routes-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></routes-edit>
             </v-flex>
             <v-flex d-flex xs5>
@@ -90,6 +90,7 @@
             },
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
+                this.$refs.projectNewSection.createNewRouteButtonPressed(this.$refs.mapSection.getMapObject(), this.points);
             },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;

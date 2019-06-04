@@ -14,7 +14,8 @@
                             <v-card-title class="title">Naam:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field :label="selectedRoute.name"></v-text-field>
+                            <v-text-field v-model="selectedRoute.name">
+                            </v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -64,14 +65,18 @@
                     <v-layout reverse row xs1>
                         <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
-                                    class="white--text">
+                                    class="white--text"
+                                    @click="saveRouteToDatabase"
+                            >
                                 Aanpassing toepassen
                             </v-card>
                         </v-btn>
 
                         <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
-                                    class="white--text">
+                                    class="white--text"
+                                    @click="removeRouteFromDatabase"
+                            >
                                 Route verijderen
                             </v-card>
                         </v-btn>
@@ -127,6 +132,7 @@
 
         methods: {
             //Kan meschien weg aangezien het word overgeneomen door currentSelectedProjects in de projectSelectionList.vue
+            //TODO: (bug) elke derde point word niet goed verwijderd op de view als hij op de kaart word weg gehaald.
             loadProjectPoints(id) {
                 let t = this;
 
@@ -152,6 +158,7 @@
                 if (markers.length < 2) return;
 
                 this.routingControl.setWaypoints(waypoints);
+
             },
             removePoint: function (point) {
                 leaflet_create.default.removeMarker(point);
@@ -174,12 +181,22 @@
 
                 let markers = leaflet_create.default.getProjectMarkers();
                 markers.on('dblclick', this.removeFromView);
+                let d = leaflet_create.default.getDistanceAndDuration();
+            },
+            saveRouteToDatabase(){
+                leaflet_create.default.uploadRoute(this.selectedRoute.name)
+            },
+            removeRouteFromDatabase: function(){
+                console.log(this.selectedRoute);
+                if(!this.selectedRoute.projectId) return;
+                leaflet_create.default.removeRouteFromDatabase(this.selectedRoute.projectId)
             },
             close() {
+                this.clearMarkers();
+                this.map.removeControl(this.routingControl);
                 this.parent.enableViewMode();
                 this.$refs.selectionList.clearInterestPoints();
-                this.map.removeControl(this.routingControl);
-                this.clearMarkers();
+
             },
         },
         components: {
