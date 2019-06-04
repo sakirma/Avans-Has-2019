@@ -95,7 +95,7 @@
                 redPin: L.icon({
                     iconUrl: 'img/Punaise rood.png',
 
-                    iconSize: [34, 51],
+                    iconSize: [36, 60],
                 }),
             }
         },
