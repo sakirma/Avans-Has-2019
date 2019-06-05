@@ -1,13 +1,15 @@
 <template>
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
-            <v-flex xs6>
-                <projects-view :parent="this" :headers="headers" :projects="projects"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
-                <projects-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
-                <project-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
+            <v-flex xs6 class="ml-5">
+                <routes-view :parent="this" :headers="headers" :desserts="desserts"
+                             v-if="currentPageState === ProjectPageStates.viewMode"></routes-view>
+                <routes-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></routes-new>
+                <routes-edit :parent="this" ref="projectEditSection"
+                             v-show="currentPageState === ProjectPageStates.editMode"></routes-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section></map-section>
+                <map-section ref="mapSection"></map-section>
             </v-flex>
         </v-layout>
     </v-container>
@@ -15,24 +17,18 @@
 
 <script>
     import MapSection from '../Map';
-    import ProjectsView from './ProjectsView';
-    import ProjectsNew from './ProjectsNew';
-    import ProjectEdit from './ProjectsEdit';
+    import RoutesView from './RoutesView';
+    import RoutesNew from './RoutesNew';
+    import RoutesEdit from './RoutesEdit';
 
     export default {
         name: "ProjectList",
         components: {
             MapSection,
-            ProjectsView,
-            ProjectsNew,
-            ProjectEdit
+            RoutesView,
+            RoutesNew,
+            RoutesEdit
         },
-
-        mounted(){
-          this.loadProjects();     
-        },
-
-
         data() {
             return {
                 ProjectPageStates: {'viewMode': 0, 'editMode': 1, 'newMode': 2},
@@ -46,29 +42,53 @@
                     {
                         text: 'Categorie',
                         align: 'left',
-                        value: 'category',
+                        value: 'calories',
                     },
                     {
-                        text: 'Beschrijving',
+                        text: 'Project',
                         align: 'left',
-                        value: 'information',
+                        value: 'projectId',
+                    },
+                    {
+                        text: 'Aantal Km',
+                        align: 'left',
+                        value: 'AantalKm',
+                    },
+                    {
+                        text: 'Duur',
+                        align: 'left',
+                        value: 'duur',
                     },
                 ],
-
-
-                projects: [],
-               
+                desserts: [
+                    {
+                        name: 'Frozen Yogurt',
+                        calories: 159,
+                        fat: 6.0,
+                    },
+                    {
+                        name: 'Ice cream sandwich',
+                        calories: 237,
+                        fat: 9.0,
+                        carbs: 37,
+                        protein: 4.3,
+                        iron: '1%'
+                    },
+                    {
+                        name: 'Eclair',
+                        calories: 262,
+                        fat: 16.0,
+                        carbs: 23,
+                        protein: 6.0,
+                        iron: '7%'
+                    }
+                ]
             }
         },
         methods: {
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
             },
-
-            loadProjects(){
-            axios.get("/getProjects/").then(response => {this.projects = response.data});
-            },
-
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
             },

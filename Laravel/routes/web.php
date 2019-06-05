@@ -34,16 +34,21 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('admin/logout', 'Auth\LoginController@logout');
+
 Route::post('admin/authenticate', 'Auth\LoginController@authenticate');
 
 
 Route::get('/media', "MediaController@index")->name('media');
-
 Route::post('/media', "MediaController@saveMedia")->name('media.save');
-
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
 
-Route::get('details/{id}', "ProjectPointController@GetDetails");
+Route::get('/comments/remove', "CommentController@removeComment")->name('comments.remove');
+Route::post('/comments/add', "CommentController@addComment")->name('comments.add');
+
+Route::get('details/{id}', "ProjectPointsController@GetDetails");
+Route::get('getMediaFromProjectPoint/{id}', "ProjectPointsController@getMedia");
+Route::get('/getAllProjectPoints', "ProjectPointsController@getAllPoints");
 
 Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
 Route::get('getProjectPoint/{projectPointId}', "ProjectPointController@getProjectPointByID");
@@ -52,8 +57,6 @@ Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRou
 // Crud
 // TODO: Change beheer to admin.
 Route::get('admin', 'ProjectController@main')->middleware('auth');
-
-Route::get('/getAllProjectPoints', "ProjectPointsController@getAllPoints");
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('beheer', 'ProjectController@main');
@@ -64,12 +67,12 @@ Route::group(['middleware' => ['auth']], function () {
 //Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
 //Route::get('/beheer/projectpoints/', 'ProjectPointController@index');
 
-Route::get('/admin/projectpoints', 'ProjectPointController@viewProjectPoints')->middleware('auth');
-Route::get('/admin/projectpoint/create', 'ProjectPointController@create')->middleware('auth');
-Route::get('/admin/projectpoint/edit/{id}','ProjectPointController@edit')->middleware('auth');
-Route::post('/admin/addProjectPoint', 'ProjectPointController@addProjectPoint')->middleware('auth');
-Route::post('/admin/updateProjectPoint', 'ProjectPointController@update')->middleware('auth');
-Route::post('/admin/deleteProjectPoint', 'ProjectPointController@destroy')->middleware('auth');
+    Route::get('/admin/projectpoints', 'ProjectPointController@viewProjectPoints')->middleware('auth');
+    Route::get('/admin/projectpoint/create', 'ProjectPointController@create')->middleware('auth');
+    Route::get('/admin/projectpoint/getDetails/{id}','ProjectPointController@edit')->middleware('auth');
+    Route::post('/admin/addProjectPoint', 'ProjectPointController@addProjectPoint')->middleware('auth');
+    Route::post('/admin/updateProjectPoint', 'ProjectPointController@update')->middleware('auth');
+    Route::post('/admin/deleteProjectPoint', 'ProjectPointController@destroy')->middleware('auth');
 
 Route::post('/admin/addProject', 'ProjectController@addProject')->middleware('auth');
 Route::post('/admin/updateProject', 'ProjectController@update')->middleware('auth');
@@ -84,6 +87,7 @@ Route::post('/admin/deleteProject', 'ProjectController@deleteProject')->middlewa
     Route::post('/admin/remove/route', 'AdminRouteController@removeRoute');
     Route::post('/admin/get/points', 'AdminRouteController@getRoutePoints');
     Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint');
+
 });
 
 

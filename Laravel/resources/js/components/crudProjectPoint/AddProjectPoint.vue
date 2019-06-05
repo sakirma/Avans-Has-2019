@@ -66,7 +66,7 @@
                 text: '',
                 textRules: [
                     v => !!v || 'Beschreiving is vereist',
-                    v => (v && v.length <= 65.535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
+                    v => (v && v.length <= 65535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
                 ],
                 projectId: '',
                 valid: false,
@@ -78,6 +78,7 @@
                 markers: [],
                 long: '',
                 lat: '',
+                area: null,
                 buttonImage: "img/MapPage/button.png",
                 id: 0,
 
@@ -99,15 +100,13 @@
                         method: 'post',
                         url: '/admin/addProjectPoint',
                         data: {
-
                             project_id: this.selectedId,
                             name: this.name,
                             category: this.selectCat,
                             information: this.text,
                             markerLat: this.lat,
                             markerLong: this.long,
-
-
+                            area: this.area,
                         }
                     });
                 }
@@ -130,7 +129,7 @@
             window.axios.get('/getProjects').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
-                    this.projects.push({id: temp[i].id.toString(), name: temp[i].name.toString()})
+                    this.projects.push({id: temp[i].id.toString(), name: temp[i].name.toString()});
                     this.projectNames.push( temp[i].name.toString());
                     this.projectIds.push( temp[i].id.toString());
                 }

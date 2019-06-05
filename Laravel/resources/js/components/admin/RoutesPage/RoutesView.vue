@@ -1,12 +1,12 @@
 <template>
     <v-layout align-center justify-center column fill-height>
         <v-flex xs2 style="width: 100%">
-            <interest-point-header :OnEditProjectButtonPressed="EditProjects"></interest-point-header>
+            <routes-header :OnEditProjectButtonPressed="EditProjects"></routes-header>
         </v-flex>
         <v-flex style="background-color: white; overflow: auto; width: 100%;" class="removeScrollBar" v-bar>
             <v-data-table
                     :headers="headers"
-                    :items="project_points"
+                    :items="desserts"
                     class="projectTable elevation-1"
                     disable-initial-sort
                     hide-actions
@@ -15,9 +15,10 @@
                 <template v-slot:items="props">
                     <tr @click="rowSelected(props.item)">
                         <td>{{ props.item.name }}</td>
-                        <td class="text-xs-left">{{ props.item.category }}</td>
-                        <td class="text-xs-left">{{ props.item.project_id }}</td>
-                        <td class="text-xs-left">{{ props.item.information }}</td>
+                        <td class="text-xs-right">{{ props.item.calories }}</td>
+                        <td class="text-xs-right">{{ props.item.projectId }}</td>
+                        <td class="text-xs-right">{{ props.item.aantalKm }}</td>
+                        <td class="text-xs-right">{{ props.item.duur }}</td>
                     </tr>
                 </template>
             </v-data-table>
@@ -26,19 +27,19 @@
 </template>
 
 <script>
-    import InterestPointHeader from './InterestPointHeader';
+    import RoutesHeader from './RoutesHeader';
 
     export default {
-        name: "InterestPointView",
+        name: "ProjectView",
         components: {
-            InterestPointHeader,
+            RoutesHeader,
         },
         props: {
             headers: {
                 type: Array,
                 required: true
             },
-            project_points: {
+            desserts: {
                 type: Array,
                 required: true,
             },
@@ -47,21 +48,19 @@
                 required: true,
             }
         },
-        data() {
-            return {
-                pagination: {
-                    rowsPerPage: -1,
-                },
-            }
-        },
         methods: {
             EditProjects() {
                 this.parent.newProjectButtonPressed();
             },
             rowSelected(selectedProject) {
-                console.log('SELECTED PROJECT');
-                console.log(selectedProject);
                 this.parent.editAProject(selectedProject);
+            }
+        },
+        data() {
+            return {
+                pagination: {
+                    rowsPerPage: -1,
+                },
             }
         }
     }

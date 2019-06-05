@@ -71,7 +71,7 @@
                 text: '',
                 textRules: [
                     v => !!v || 'Beschreiving is vereist',
-                    v => (v && v.length <= 65.535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
+                    v => (v && v.length <= 65535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
                 ],
                 point_id: '',
                 projectId: '',
@@ -151,7 +151,8 @@
                 console.log(error);
             });
             console.log(this._id + " sfsdafgsf")
-            window.axios.get('/admin/projectpoint/edit/'+this._id ).then(response => {
+
+            window.axios.get('/admin/projectpoint/getDetails/'+this._id ).then(response => {
                 let temp = response.data;
                 this.name = temp.name;
                 this.selectCat = temp.category;
@@ -176,6 +177,7 @@
             }).catch(function (error) {
                 console.log(error);
             });
+
             console.log("tredgtdsfgd");
             console.log(this.array);
             this.$nextTick(() => {

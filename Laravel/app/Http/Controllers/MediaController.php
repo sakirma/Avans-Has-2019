@@ -14,6 +14,7 @@ class MediaController extends Controller
 
     //shows an view with just a form in it to create a post request
     public function index(){
+        $media = new Media;
         return view('mediaExample');
     }
 

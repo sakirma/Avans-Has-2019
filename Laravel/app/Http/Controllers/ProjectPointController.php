@@ -38,7 +38,7 @@ class ProjectPointController extends Controller
 
         $point->project_id = $request->project_id;
         $point->location = $location;
-        $point->area = null;
+        $point->area = $request->area;
         $point->name = $request->name;
         $point->information = $request->information;
         $point->category = $request->category;
@@ -55,7 +55,7 @@ class ProjectPointController extends Controller
     {
         $projectPoint = ProjectPoint::find($request->id);
 
-        $location = new Point($request->markerLat, $request->markerLong);
+        $location = new Point($request->lat, $request->long);
 
         $projectPoint->project_id = $request->project_id;
         $projectPoint->location = $location;
@@ -104,7 +104,7 @@ class ProjectPointController extends Controller
 
         // Check if model has been found in DB
         if (!empty($model)) {
-            return view('details', ['model' => $model, 'project' => $project]);
+            return view('details', ['model' => $model]);
         }
 
         return abort(404);
@@ -115,9 +115,9 @@ class ProjectPointController extends Controller
         $arr = [];
         foreach($points as $point){
             if($point["area"] != null){
-                $arr[] = $point["area"];
+                $arr[] = ["id" => $point["id"], "info" => $point["area"]];
             }else{
-                $arr[] = $point["location"];
+                $arr[] = ["id" => $point["id"], "info" => $point["location"]];
             }
         }
         return json_encode($arr);
@@ -125,8 +125,14 @@ class ProjectPointController extends Controller
 
     public function getProjectPointByID($projectPointId){
         $model = ProjectPoint::find($projectPointId);
-        if(empty($model)) { echo '$model'; }
-
         return json_encode($model);
+    }
+
+    public function getMedia($id){
+        $model = ProjectPoint::find($id);
+        $images = $model->imagePoints;
+        $names = [];
+        foreach($images as $image) $names[] = $image->media_name;
+        return json_encode($names);
     }
 }
