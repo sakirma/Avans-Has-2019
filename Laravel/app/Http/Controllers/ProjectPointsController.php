@@ -84,7 +84,7 @@ class ProjectPointsController extends Controller
             $point = new ProjectPoint();
             $point->project_id = $request->project_id;
             $point->location = new Point($request->lat, $request->long);
-            $point->area = $request->area;
+            if(isset($request->area)) $point->area = $request->area;
             $point->name = $request->name;
             $point->information= $request->information;
             $point->category = $request->category;

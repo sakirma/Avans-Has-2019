@@ -198,11 +198,12 @@
                 this.close();
             },
             remove(){
-                axios.post("/beheer/removePoint", { id: this.id })
+                axios.post("/beheer/removeProject", { id: this.id })
                     .catch((error) => {
                         alert("Er ging iets mis bij het verwijderen...");
-                        console.log(error);
+                        console.log(error.message);
                     });
+                this.close();
             }
         },
         mounted(){

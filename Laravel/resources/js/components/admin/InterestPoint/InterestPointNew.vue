@@ -157,6 +157,7 @@
                         });
                     }
                 });
+                this.close();
             }
         },
         mounted() {

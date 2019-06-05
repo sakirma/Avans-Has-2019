@@ -68,9 +68,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/beheer/removemedia', "MediaController@removeMedia");
     Route::post('/beheer/media', "MediaController@saveMedia");
 
-    Route::post('/beheer/AddProject', 'ProjectController@addProject');
+    Route::post('/beheer/createProject', 'ProjectController@createProject');
     Route::post('/beheer/updateProject', 'ProjectController@update');
-    Route::post('/beheer/DeleteProject', 'ProjectController@destroy');
+    Route::post('/beheer/removeProject', 'ProjectController@remove');
     Route::get('/beheer/edit/{id}','ProjectController@edit');
     Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
 

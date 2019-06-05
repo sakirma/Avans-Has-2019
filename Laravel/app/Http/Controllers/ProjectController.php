@@ -15,20 +15,20 @@ class ProjectController extends Controller
      * pointWKT: Well Known Text for Point
      */
 
-    public function addProject (Request $request) {
-        $project = new Project();
-
-        $point = new Point($request->lat, $request->long);
-        $geometryCollection = new GeometryCollection([$point]);
-
-        $project->name = $request->name;
-        $project->information = $request->information;
-        $project->category = $request->category;
-        $project->location = $point;
-        $project->geo_json = $geometryCollection;
-
-        $project->save();
+    public function createProject(Request $request){
+        if(isset($request->category) && isset($request->name) && isset($request->information)){
+            $point = new Project();
+            if(isset($request->area)) $point->area = $request->area;
+            $point->name = $request->name;
+            $point->information= $request->information;
+            $point->category = $request->category;
+            $point->save();
+            return json_encode($point);
+        }else{
+            return abort(400);
+        }
     }
+
     public function create() {
         return view('createProject');
     }
@@ -99,11 +99,9 @@ class ProjectController extends Controller
         return view('project')->with(["project" => $project, "facet_id" => $request['facet_id'], "direction" => $request['direction']]);
     }
 
-    public function destroy(Request $request)
-    {
-        $project = Project::findOrFail($request->id);
-        $project->delete();
+    public function remove(Request $request){
+        if(isset($request->id)){
+            Project::find($request->id)->delete();
+        }else return abort(400);
     }
-
-
 }

@@ -223,6 +223,7 @@
                     .catch((error) => {
                         alert("Er ging iets mis bij het verwijderen...");
                     });
+                this.close();
             }
         }
     }
