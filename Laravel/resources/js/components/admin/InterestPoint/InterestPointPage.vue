@@ -88,7 +88,7 @@
         methods: {
             clearmap(){
                 console.log("helloooo");
-              this.marker = null;
+              // this.marker = null;
             },
             onChildClick (value) {
                 console.log("value PPage:");

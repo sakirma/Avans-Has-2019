@@ -55,6 +55,28 @@
                     </v-flex>
 
                     <v-flex xs1>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-card-title class="title">Locatie Latidude:</v-card-title>
+                            </v-flex>
+                            <v-flex xs4>
+                                <v-textarea v-model="marker.lat" :rules="markerRules" box></v-textarea>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+
+                    <v-flex xs1>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-card-title class="title">Locatie Longitude::</v-card-title>
+                            </v-flex>
+                            <v-flex xs4>
+                                <v-textarea v-model="marker.lng" :rules="markerRules" box></v-textarea>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+
+                    <v-flex xs1>
                         <v-layout column>
                             <v-flex>
                                 <v-card-title class="title">*Afbeelding toevoegen:</v-card-title>
@@ -72,17 +94,10 @@
                         </v-layout>
                     </v-flex>
 
-                    <v-flex xs1 v-if="hidden">
-                        <v-layout column>
-                            <v-flex>
-                                <v-card-title class="title">*marker</v-card-title>
-                            </v-flex>
-                            <v-textarea v-model="marker" :rules="markerRules"></v-textarea>
-                        </v-layout>
-                    </v-flex>
+
 
                     <v-layout align-center justify-end row>
-                        <v-btn @click="validate" style="max-width: 10%; height: 100%;" color="#89A226">
+                        <v-btn @click="validate" style="max-width: 10%; height: 100%;" color="#89A226" :class="{ red: !valid, green: valid }">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat class="white--text">
                                 Project punt Toevoegen
                             </v-card>
@@ -149,7 +164,7 @@
             close() {
                 this.parent.$refs.mapSection.setdrawMode(false);
                 this.parent.$refs.mapSection.clearMap();
-                this.marker = null;
+                // this.marker = null;
                 this.$emit('close', this.marker)
                 this.parent.enableViewMode();
             },
@@ -177,9 +192,12 @@
                                 area: null,
                             }
                         });
+                        this.parent.loadPoints();
+                        this.close();
+                    }else{
+                        alert("u heeft niet alles ingevuld");
                     }
-                this.parent.loadPoints();
-                this.close();
+
             },
         },
         mounted() {
