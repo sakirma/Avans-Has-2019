@@ -190,7 +190,6 @@
 
     .searchBarAboveMap {
         position: absolute;
-        height: 100%;
         z-index: 1000;
         bottom: 0;
         right: 0;
