@@ -6,7 +6,7 @@
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
         <template v-for="marker in markers">
-            <l-marker :lat-lng="marker.latlng" :icon="redPin">
+            <l-marker :lat-lng="marker.latlng" :icon="redPin" style="transform: scale(0.1)">
                 <l-popup>
                     <v-layout column align-center fill-height>
                         <p class="text-xs-center title">dafq word dit wel groter als de text langer word?</p>
@@ -93,9 +93,9 @@
                 polygonFillColor: '#C5DF24',
                 polygonLineColor: '#89a324',
                 redPin: L.icon({
-                    iconUrl: 'img/Punaise rood.png',
+                    iconUrl: 'img/Punaise rood.svg',
 
-                    iconSize: [36, 60],
+                    iconSize: [30, 60],
                 }),
             }
         },
