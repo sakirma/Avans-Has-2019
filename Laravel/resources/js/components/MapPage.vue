@@ -2,7 +2,7 @@
     <div id="mapPage" style="height: 100vh;">
         <v-layout column fill-height style="background-color: #89a226">
             <v-flex sm1 xs2 >
-                <map-page-header></map-page-header>
+                <map-page-header :parent="this"></map-page-header>
             </v-flex>
 
             <v-flex style="position: relative">
@@ -78,18 +78,15 @@
                 center: L.latLng(51.7142669290121, 5.3173828125),
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                markers: [],
-                polygons: [],
-                polylines: [],
-                rectangles: [],
                 buttonImage: "img/MapPage/button.png",
-                LeftDropDownButton: ['Projectnaam A', 'Projectnaam B', 'Projectnaam C'],
-                RightDropDownButton: ['Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks'],
 
-                popupContent: ' <button href="javascript:;" @click="console.log("wow")">terms</button>',
+                pressedImages: { activiteit: false, "eten en drinken": false, bezienswaardigheid: false, natuurgebied: false }
             }
         },
         methods: {
+            filter(key){
+                this.pressedImages[key] = !this.pressedImages[key];
+            },
             disableInputEvents(element) {
                 this.$parent.disableInputEvents(element);
             },
@@ -98,51 +95,9 @@
             },
             OpenRoutePagePressed: function () {
                 this.onRoutePageOpened();
-            },
-            createPolygon: function (id, coordinates) {
-                let points = [];
-                for (let k = 0; k < coordinates[0].length; k++) {
-                    points.push(L.latLng(coordinates[0][k][1], coordinates[0][k][0]));
-                }
-                this.polygons.push({"id": id, "latlng": points});
-            },
-            createPoint: function (id, coordinates) {
-                this.markers.push({"id": id, "latlng": L.latLng(coordinates[1], coordinates[0])});
-            },
-            loadMapObjects: function () {
-                axios.get('/getAllProjectPoints').then(({data}) => {
-                    for (let i = 0; i < data.length; i++) {
-                        if (data[i].info.type == "Point") {
-                            this.createPoint(data[i].id, data[i].info.coordinates);
-                        } else if (data[i].info.type == "GeometryCollection") {
-                            for (let j = 0; j < data[i].info.geometries.length; j++) {
-                                if (data[i].info.geometries[j].type == "Point") {
-                                    this.createPoint(data[i].id, data[i].info.geometries[j].coordinates);
-                                } else if (data[i].info.geometries[j].type == "Polygon") {
-                                    this.createPolygon(data[i].id, data[i].info.geometries[j].coordinates);
-                                } else {
-                                    let points = [];
-                                    for (let k = 0; k < data[i].info.geometries[j].coordinates.length; k++) {
-                                        points.push(L.latLng(data[i].info.geometries[j].coordinates[k][1], data[i].info.geometries[j].coordinates[k][0]));
-                                    }
-                                    if (data[i].info.geometries[j].type == "LineString") this.polylines.push({
-                                        "id": data[i].id,
-                                        "latlng": points
-                                    });
-                                    else if (data[i].info.geometries[j].type == "Rectangle") this.rectangles.push({
-                                        "id": [data[i].id],
-                                        "latlng": points
-                                    });
-                                }
-                            }
-                        }
-                    }
-                });
             }
         },
         mounted() {
-            this.loadMapObjects();
-
             let toRoutePageComponent = {
                 // language=HTML
                 template: `
