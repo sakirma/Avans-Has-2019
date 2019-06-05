@@ -71,7 +71,17 @@
               this.marker = null;
             },
             onChildClick (value) {
-                this.marker = value
+                console.log("value PPage:");
+                console.log(value);
+                this.marker = value;
+                console.log('marker PPAGE value');
+
+                console.log(value.lat);
+
+                this.$refs.projectEditSection.bool = true;
+                this.$refs.projectEditSection.markerLat = value.lng;
+                this.$refs.projectEditSection.markerLong = value.lat;
+
 
             },
             newProjectButtonPressed() {
@@ -90,8 +100,18 @@
 
             },
             editAProject(product) {
+                console.log("EDIT PP:");
+                console.log(this.marker);
+                console.log('PRODUCT');
+                console.log(product);
+
+
                 this.currentPageState = this.ProjectPageStates.editMode;
                 this.$refs.projectEditSection.projectEditSection(product);
+                console.log('MAAAAAAAAAAARKKK');
+                console.log(this.marker);
+
+                // this.$refs.projectEditSection.markerLat = this.marker[0].LatLng.lat;
             }
         },
         mounted() {

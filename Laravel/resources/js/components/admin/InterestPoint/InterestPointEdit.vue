@@ -112,6 +112,7 @@
                     v => !!v || 'Naam is vereist',
                     v => (v && v.length <= 191) || 'Naam mag niet langer zijn dan 190 karakters'
                 ],
+                bool: false,
                 projectName: null,
                 projectId: null,
                 category: null,
@@ -122,7 +123,7 @@
                 text: '',
                 textRules: [
                     v => !!v || 'Beschreiving is vereist',
-                    v => (v && v.length <= 65535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
+                    v => (v && v.length <= 10000) || 'Tekst mag niet langer zijn dan 10.000x` karakters zijn'
                 ],
                 selectedProject: {
                     id: '', // ID is used to get data from database, as an example, to retrieve which image and youtube url is being used.
@@ -158,13 +159,19 @@
                 this.selectedProject = product;
                 console.log('prod');
                 console.log(product);
-                this.markerLat = product.location.coordinates[0];
-                this.markerLong = product.location.coordinates[1];
+                if(this.bool == false){
+                    this.markerLat = product.location.coordinates[1];
+                    this.markerLong = product.location.coordinates[0];
+                }
+
                 this.parent.$refs.mapSection.markers.push({
                     id: 1,
                     latlng: L.latLng(parseFloat(this.markerLong), parseFloat(this.markerLat)),
                     content: 'hoi!'
                 });
+                console.log("markers EDIT: ");
+                console.log(this.parent.$refs.mapSection.markers);
+
                 this.parent.$refs.mapSection.setdrawMode(true);
 
 
@@ -210,9 +217,10 @@
                 }
 
                 if(this.$refs.form.validate()) {
-                    console.log(this.markerLat),
-                        console.log(this.markerLong),
 
+                        console.log("validate: ");
+                        console.log(this.markerLat);
+                        console.log(this.markerLong);
                         axios({
                         method: 'post',
                         url: '/admin/updateProjectPoint',
@@ -223,8 +231,8 @@
                             information: this.selectedProject.information,
                             project_id: this.projectId,
 
-                            lat: this.markerLong,
-                            long: this.markerLat,
+                            lat: this.markerLat,
+                            long: this.markerLong,
                         }
                     });
                     this.close();

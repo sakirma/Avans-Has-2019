@@ -67,6 +67,8 @@
                 }
             },
             emitToParent (event) {
+                console.log("EMIT:");
+                console.log(this.markers[0].latlng);
                 this.$emit('childToParent', this.markers[0].latlng)
             },
             add(event) {
@@ -86,7 +88,8 @@
                     latlng: L.latLng(parseFloat(lat), parseFloat(lng)),
                     content: 'hoi!'
                 });
-                console.log("marked at " + event.latlng);
+                console.log('MArkers added: ');
+                    console.log(this.markers);
                 this.emitToParent(event);
 
             }},

@@ -129,7 +129,7 @@
                 text: '',
                 textRules: [
                     v => !!v || 'Beschreiving is vereist',
-                    v => (v && v.length <= 65535) || 'Tekst mag niet langer zijn dan 65.535 karakters zijn'
+                    v => (v && v.length <= 10000) || 'Tekst mag niet langer zijn dan 10.000 karakters zijn'
                 ],
             }
         },

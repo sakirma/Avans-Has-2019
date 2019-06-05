@@ -59,6 +59,7 @@
                 this.parent.newProjectButtonPressed();
             },
             rowSelected(selectedProject) {
+                console.log('SELECTED PROJECT');
                 console.log(selectedProject);
                 this.parent.editAProject(selectedProject);
             }
