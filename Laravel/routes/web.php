@@ -57,6 +57,7 @@ Route::get('getAllRoutes', "RoutesController@getAllRoutes");
 Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");
 
 Route::group(['middleware' => ['auth']], function () {
+
     Route::get('beheer', 'ProjectController@main');
 
     Route::get('/beheer/project/aanmaken', 'ProjectController@create');
@@ -74,14 +75,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/beheer/edit/{id}','ProjectController@edit');
     Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
 
-
-    Route::get('/admin/route', 'AdminRouteController@getRouteData');
-    Route::post('/admin/create/route', 'AdminRouteController@createRoute');
-    Route::post('/admin/remove/route', 'AdminRouteController@removeRoute');
-    Route::post('/admin/get/points', 'AdminRouteController@getRoutePoints');
-    Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint');
-
 });
+
+Route::get('/admin/route', 'AdminRouteController@getView');
+Route::post('/admin/route/data', 'AdminRouteController@getRouteData');
+Route::post('/admin/route/create', 'AdminRouteController@createRoute');
+Route::post('/admin/route/remove', 'AdminRouteController@removeRoute');
+Route::post('/admin/route/points', 'AdminRouteController@getRoutePoints');
+Route::post('/admin/route/projects', 'AdminRouteController@getProjectPoint');
 
 
 // Return only data
