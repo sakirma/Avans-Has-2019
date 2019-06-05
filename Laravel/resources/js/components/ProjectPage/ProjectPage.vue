@@ -15,7 +15,7 @@
                                 <v-card-text style="position: absolute;">
                                     {{ information }}
                                     <br>
-                                    {{ comments }}
+                                    <!-- {{ comments }} -->
                                 </v-card-text>
                             </v-card>
                         </v-flex>
@@ -69,7 +69,7 @@
                             <v-card-text style="position: absolute;">
                                 {{ information }}
                                 <br>
-                                {{ comments }}
+                                <!--{{ comments }} -->
                             </v-card-text>
                         </v-card>
                     </v-flex>

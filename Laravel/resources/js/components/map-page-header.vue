@@ -8,28 +8,30 @@
                    style="filter: brightness(0) invert(1);"
                    width="150px"/>
         </v-flex>
-        <v-layout align-center justify-center row fill-height>
-            <v-btn x-large flat icon color="white">
-                <v-icon x-large>first_page</v-icon>
-            </v-btn>
-            <v-btn large flat icon color="white">
-                <v-icon large>
-                    arrow_back_ios
-                </v-icon>
-            </v-btn>
-
-            <div :class="{'subheading': $vuetify.breakpoint.xs}"
-                 class="text-xs-center font-weight-black white--text display-1">
-                LAAT MIJ NATUUR ZIEN
-            </div>
-
-            <v-btn large flat icon color="white">
-                <v-icon large>arrow_forward_ios</v-icon>
-            </v-btn>
-            <v-btn x-large flat icon color="white">
-                <v-icon x-large>last_page</v-icon>
-            </v-btn>
-        </v-layout>
+        <v-flex mx-5>
+            <v-layout align-center justify-center row fill-height mx-5>
+                <v-flex>
+                    <v-card>
+                        Categorie 1
+                    </v-card>
+                </v-flex>
+                <v-flex>
+                    <v-card>
+                        Categorie 2
+                    </v-card>
+                </v-flex>
+                <v-flex>
+                    <v-card>
+                        Categorie 3
+                    </v-card>
+                </v-flex>
+                <v-flex>
+                    <v-card>
+                        Categorie 4
+                    </v-card>
+                </v-flex>
+            </v-layout>
+        </v-flex>
     </v-layout>
 </template>
 
@@ -42,7 +44,5 @@
 <style scoped>
     .v-card--reveal {
         margin-left: 1%;
-        position: absolute;
-        width: 100%;
     }
 </style>
