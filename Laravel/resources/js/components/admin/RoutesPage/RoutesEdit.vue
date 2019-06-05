@@ -52,12 +52,20 @@
 
                 <v-flex xs1 pt-5>
                     <v-layout row>
-                        <v-card-title class="title">Uitgerekende kilometers:</v-card-title>
+                        <v-card-title
+                                class="title"
+                                :key="routeInformation.distance"
+                        >Uitgerekende kilometers: {{routeInformation.distance}}
+                        </v-card-title>
                     </v-layout>
                 </v-flex>
                 <v-flex xs1>
                     <v-layout row>
-                        <v-card-title class="title">Uitgerekende duur:</v-card-title>
+                        <v-card-title
+                                class="title"
+                                :key="routeInformation.time"
+                        >Uitgerekende duur {{routeInformation.time}}
+                        </v-card-title>
                     </v-layout>
                 </v-flex>
 
@@ -121,6 +129,10 @@
                 map: null,
                 routingControl: null,
                 routeInfo: null,
+                routeInformation: {
+                    distance: 0,
+                    time: 0,
+                },
             }
         },
 
@@ -164,8 +176,7 @@
                 leaflet_create.default.removeMarker(point);
             },
             removeFromView(e) {
-                let id = e.layer.options.id;
-                this.$refs.selectionList.removeElementById(id);
+                this.$refs.selectionList.removeElementById(e.layer.options.id);
             },
             clearMarkers: function () {
                 leaflet_create.default.clearMarkers();
@@ -181,13 +192,21 @@
 
                 let markers = leaflet_create.default.getProjectMarkers();
                 markers.on('dblclick', this.removeFromView);
+
+                this.routingControl.on('routesfound', (e) => this.getRouteInformation(e));
             },
-            saveRouteToDatabase(){
+            getRouteInformation(e){
+                this.routeInformation = {
+                    distance: e.routes[0].summary.totalDistance,
+                    time: e.routes[0].summary.totalTime
+                };
+            },
+            saveRouteToDatabase() {
                 leaflet_create.default.uploadRoute(this.selectedRoute.name)
             },
-            removeRouteFromDatabase: function(){
+            removeRouteFromDatabase: function () {
                 console.log(this.selectedRoute);
-                if(!this.selectedRoute.projectId) return;
+                if (!this.selectedRoute.projectId) return;
                 leaflet_create.default.removeRouteFromDatabase(this.selectedRoute.projectId)
             },
             close() {

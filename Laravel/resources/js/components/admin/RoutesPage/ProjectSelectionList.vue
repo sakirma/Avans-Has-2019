@@ -116,9 +116,11 @@
                 let sp = this.currentSelectedProjects;
                 for (let i = 0; i < sp.length; i++) {
                     if (id === sp[i].id) {
-                        this.currentSelectedProjects.splice(i, i);
+                        let index = this.currentSelectedProjects.indexOf(sp[i]); //Moet nog een keer de index opvragen want si is blijkbaar niet de juiste index
+                        this.currentSelectedProjects.splice(index, 1);
                     }
                 }
+                console.log(this.currentSelectedProjects);
             },
             enableInterestPoints(points) {
                 for (let i = 0; i < points.length; i++) {

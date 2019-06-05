@@ -3,12 +3,7 @@ let map;
 
 let projectMarkers;
 let routingControl;
-let newMarkers = [];
 
-let routeInformation = {
-    distance: null,
-    time: null,
-};
 
 export default {
 
@@ -26,7 +21,6 @@ export default {
         }
     }*/
     getDistanceAndDuration: function () {
-        console.log(routeInformation);
         return routeInformation
     },
     getProjectMarkers: function () {
@@ -38,7 +32,7 @@ export default {
         map.doubleClickZoom.disable();
 
         routingControl = L.Routing.control({
-            router: L.Routing.mapbox('pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig', {profile: "mapbox/walking"}),
+            router: L.Routing.mapbox('pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig', {profile: "mapbox/cycling"}),
             waypoints: [null],
             routeWhileDragging: false,
             addWaypoints: false,
@@ -166,9 +160,6 @@ export default {
     mouseRemoveMarker: function (e) {
 
         projectMarkers.removeLayer(e.layer);
-
-        let checkbox = document.getElementById(e.layer.options.id);
-
         let routes = routingControl.getWaypoints();
         let newRoutes = [];
 
@@ -183,9 +174,6 @@ export default {
             }
         }
         routingControl.setWaypoints(newRoutes);
-
-        if (checkbox === null) return;
-        checkbox.checked = false;
     },
 
 
@@ -219,10 +207,8 @@ export default {
                     '<p> Informatie: ' + projectInfo + '</p>'
                 ).addTo(projectMarkers);
 
-            routeInformation = {
-                distance: e.routes[0].summary.totalDistance,
-                time: e.routes[0].summary.totalTime
-            };
+            /*let layers = projectMarkers.getLayers();
+            map.setView(layers[0].getLatLng());*/
             //.on('dragend', calculateRoute)
 
             //let c = elem.childNodes;
