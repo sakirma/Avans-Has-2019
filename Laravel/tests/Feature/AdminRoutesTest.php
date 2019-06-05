@@ -72,6 +72,5 @@ class AdminRoutes extends TestCase
         $this->assertTrue($update);
         $this->assertEquals($data['name'], $routes->name);
         $this->assertEquals($data['length'], $routes->length);
-
     }
 }

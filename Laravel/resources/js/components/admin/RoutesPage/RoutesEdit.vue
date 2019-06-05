@@ -20,7 +20,6 @@
                     </v-layout>
                 </v-flex>
 
-
                 <v-flex xs1>
                     <v-layout row>
                         <v-flex xs3>
@@ -135,31 +134,24 @@
                 },
             }
         },
-
         props: {
             parent: {
                 type: Object,
                 required: true,
             }
         },
-
         methods: {
-            //Kan meschien weg aangezien het word overgeneomen door currentSelectedProjects in de projectSelectionList.vue
-            //TODO: (bug) elke derde point word niet goed verwijderd op de view als hij op de kaart word weg gehaald.
             loadProjectPoints(id) {
-                let t = this;
 
+                let t = this;
                 axios.post('/admin/route/points', {
                     routeId: id,
                 }).then(response => {
-
                     let selectedPoints = [];
-
                     response.data.forEach(function (point) {
                         t.placePoint(point);
                         selectedPoints.push(point);
                     });
-
                     this.$refs.selectionList.enableInterestPoints(selectedPoints);
                 });
             },
@@ -187,7 +179,7 @@
                 this.map = map;
                 this.routingControl = leaflet_create.default.setVariables(map);
 
-                this.loadProjectPoints(product.projectId);
+                this.loadProjectPoints(product.route);
                 this.$refs.selectionList.addInterestPoints(points);
 
                 let markers = leaflet_create.default.getProjectMarkers();
@@ -195,17 +187,16 @@
 
                 this.routingControl.on('routesfound', (e) => this.getRouteInformation(e));
             },
-            getRouteInformation(e){
+            getRouteInformation(e) {
                 this.routeInformation = {
-                    distance: e.routes[0].summary.totalDistance,
-                    time: e.routes[0].summary.totalTime
+                    distance: Number(Math.round(e.routes[0].summary.totalDistance / 1000 + 'e2') + 'e-2'),
+                    time: Number(Math.round(e.routes[0].summary.totalTime / 3600 + 'e2') + 'e-2'),
                 };
             },
             saveRouteToDatabase() {
                 leaflet_create.default.uploadRoute(this.selectedRoute.name)
             },
             removeRouteFromDatabase: function () {
-                console.log(this.selectedRoute);
                 if (!this.selectedRoute.projectId) return;
                 leaflet_create.default.removeRouteFromDatabase(this.selectedRoute.projectId)
             },
@@ -214,7 +205,10 @@
                 this.map.removeControl(this.routingControl);
                 this.parent.enableViewMode();
                 this.$refs.selectionList.clearInterestPoints();
-
+                this.routeInformation = {
+                    distance: 0,
+                    time: 0,
+                };
             },
         },
         components: {

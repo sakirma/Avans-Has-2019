@@ -101,16 +101,10 @@
             }
         },
         methods: {
-            getSelectedProjectPoints() {
-                return this.currentSelectedProjects;
-            },
             addInterestPoints(points) {
                 for (let i = 0; i < points.length; i++) {
                     this.interestPoints.push(points[i]);
                 }
-            },
-            addInterestPointsToMap() {
-
             },
             removeElementById(id) {
                 let sp = this.currentSelectedProjects;

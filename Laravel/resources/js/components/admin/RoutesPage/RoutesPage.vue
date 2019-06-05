@@ -2,7 +2,7 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <routes-view :parent="this" :headers="headers" :desserts="routes"
+                <routes-view :parent="this" :headers="headers" :desserts="filteredRoutes"
                              v-show="currentPageState === ProjectPageStates.viewMode"></routes-view>
                 <routes-new :parent="this" ref="projectNewSection"
                             v-show="currentPageState === ProjectPageStates.newMode"></routes-new>
@@ -44,25 +44,21 @@
                     {
                         text: 'Categorie',
                         align: 'left',
-                        value: 'calories',
+                        value: 'category',
                     },
                     {
-                        text: 'Project',
+                        text: 'Route',
                         align: 'left',
-                        value: 'projectId',
+                        value: 'route',
                     },
                     {
                         text: 'Aantal Km',
                         align: 'left',
-                        value: 'AantalKm',
-                    },
-                    {
-                        text: 'Duur',
-                        align: 'left',
-                        value: 'duur',
+                        value: 'km',
                     },
                 ],
                 routes: [],
+                filteredRoutes: [],
                 points: []
             }
         },
@@ -80,10 +76,11 @@
                         for (let i = 0; i < r.length; i++) {
                             let t = {
                                 name: r[i].name,
-                                duur: r[i].length,
-                                projectId: r[i].id,
+                                km: r[i].length,
+                                route: r[i].id,
                             };
                             this.routes.push(t);
+                            this.filteredRoutes.push(t);
                         }
                         for (let i = 0; i < p.length; i++) {
                             //this.points = p.slice(0);
@@ -104,6 +101,11 @@
                     .catch(e => {
                         console.log(e);
                     });
+            },
+            filterList(search) {
+                this.filteredRoutes = this.routes.filter(route => {
+                    return route.name.toLowerCase().includes(search.toLowerCase());
+                });
             },
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;

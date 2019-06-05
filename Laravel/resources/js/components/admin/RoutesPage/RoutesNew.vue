@@ -87,12 +87,12 @@
 
                 <v-flex xs1 pt-5>
                     <v-layout row>
-                        <v-card-title class="title">Uitgerekende kilometers:</v-card-title>
+                        <v-card-title class="title">Uitgerekende kilometers: {{routeInformation.distance}}</v-card-title>
                     </v-layout>
                 </v-flex>
                 <v-flex xs1>
                     <v-layout row>
-                        <v-card-title class="title">Uitgerekende duur:</v-card-title>
+                        <v-card-title class="title">Uitgerekende duur: {{routeInformation.time}}</v-card-title>
                     </v-layout>
                 </v-flex>
 
@@ -137,6 +137,11 @@
             return {
                 newRoute: {},
                 routeList: [],
+
+                routeInformation: {
+                    distance: 0,
+                    time: 0,
+                },
             }
         },
         computed: {
@@ -168,6 +173,13 @@
                 if (markers.length < 2) return;
 
                 this.routingControl.setWaypoints(waypoints);
+                this.routingControl.on('routesfound', (e) => this.getRouteInformation(e));
+            },
+            getRouteInformation(e) {
+                this.routeInformation = {
+                    distance: Number(Math.round(e.routes[0].summary.totalDistance / 1000 + 'e2') + 'e-2'),
+                    time: Number(Math.round(e.routes[0].summary.totalTime / 3600 + 'e2') + 'e-2'),
+                };
             },
             removePoint: function (point) {
                 leaflet_create.default.removeMarker(point);
