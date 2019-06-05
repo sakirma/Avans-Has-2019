@@ -10,7 +10,7 @@
                             <list-routes :routesParent="this"></list-routes>
                         </v-layout>
                         <v-layout justify-end>
-                            <v-btn class="putOnTop" v-on:click="exportToGoogle">Volg deze route in Google Maps</v-btn>
+                            <v-btn class="putOnTop" v-on:click="exportToGoogle">Bekijk de route in Google Maps</v-btn>
                         </v-layout>
                     </v-container>
 
