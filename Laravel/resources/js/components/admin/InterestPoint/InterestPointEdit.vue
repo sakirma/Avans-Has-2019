@@ -61,7 +61,7 @@
                         </v-flex>
                         <input type="file">
 
-                        <v-carousel v-if="files.length > 0">
+                        <v-carousel v-if="images.length > 0">
                             <v-carousel-item
                                     v-for="(image,i) in images"
                                     :key="i"
@@ -150,7 +150,6 @@
                         }
                         this.offset = data.length;
                         this.startingMediaNumber = this.offset;
-                        console.log("offset " + this.offset);
                     }).catch((error) => {
                         console.log(error);
                     });
@@ -171,7 +170,7 @@
             },
             removeFile(index) {
                 if(index < this.offset){
-                    axios.post("/removemedia", {
+                    axios.post("/beheer/removemedia", {
                         medianame: this.files[index],
                         folder: "points"
                     }).catch((error) => {
@@ -185,7 +184,7 @@
                 }
             },
             save(){
-                axios.post("/updatePoint", {
+                axios.post("/beheer/updatePoint", {
                     id: this.id,
                     project_id: this.project,
                     lat: 51.50537683608064,
@@ -202,14 +201,14 @@
                         formData.append("name", data.id + "_" + (this.startingMediaNumber + i - this.offset));
                         formData.append("folder", "points");
                         formData.append("id", data.id);
-                        axios.post("/media", formData,
+                        axios.post("/beheer/media", formData,
                             {
                                 headers: {
                                     'Content-Type': 'multipart/form-data'
                                 }
                             }
                         ).catch((error) => {
-                            alert("Er ging iets mis bij het opslaan...2");
+                            alert("Er ging iets mis bij het opslaan...");
                             console.log(error);
                         });
                     }
@@ -220,7 +219,7 @@
                 this.close();
             },
             remove(){
-                axios.post("/removePoint", { id: this.id })
+                axios.post("/beheer/removePoint", { id: this.id })
                     .catch((error) => {
                         alert("Er ging iets mis bij het verwijderen...");
                     });

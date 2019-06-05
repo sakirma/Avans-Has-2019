@@ -6,7 +6,6 @@ use App\Models\Media;
 
 use App\Models\PointHasImage;
 use App\Models\Project;
-use Illuminate\Support\Facades\Log;
 use App\Models\ProjectHasImage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -15,12 +14,6 @@ use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
 {
-
-    //shows an view with just a form in it to create a post request
-    public function index(){
-        $media = new Media;
-        return view('mediaExample');
-    }
 
     private function is_valid_name($file) {
         return preg_match('/^([-\.\w]+)$/', $file) > 0;
@@ -57,7 +50,6 @@ class MediaController extends Controller
             }
             //return view('mediaExample', ["media" => $media]);
         }else{
-            Log::debug("Could not save media");
             return abort(400);
         }
     }

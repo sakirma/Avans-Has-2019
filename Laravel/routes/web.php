@@ -40,9 +40,7 @@ Route::post('admin/authenticate', 'Auth\LoginController@authenticate');
 
 
 Route::get('/media', "MediaController@index")->name('media');
-Route::post('/media', "MediaController@saveMedia")->name('media.save');
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
-Route::post('/removemedia', "MediaController@removeMedia");
 
 Route::get('/comments/remove', "CommentController@removeComment")->name('comments.remove');
 Route::post('/comments/add', "CommentController@addComment")->name('comments.add');
@@ -51,12 +49,9 @@ Route::get('details/{id}', "ProjectPointsController@GetDetails");
 Route::get('getMediaFromProjectPoint/{id}', "ProjectPointsController@getMedia");
 Route::get('/getAllProjectPoints', "ProjectPointsController@getAllPoints");
 Route::get('/getAllProjectPointsFullInfo', "ProjectPointsController@getAllPointsFullInfo");
-Route::post('/createPoint', "ProjectPointsController@createPoint");
-Route::post('/updatePoint', "ProjectPointsController@updatePoint");
 
 Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
 Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
-Route::post('removePoint', "ProjectPointsController@removePoint");
 
 Route::get('getAllRoutes', "RoutesController@getAllRoutes");
 Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");
@@ -64,8 +59,14 @@ Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRou
 Route::group(['middleware' => ['auth']], function () {
     Route::get('beheer', 'ProjectController@main');
 
-    Route::get('/beheer/projecten', 'ProjectController@createProjectPage');
     Route::get('/beheer/project/aanmaken', 'ProjectController@create');
+
+    Route::post('/beheer/createPoint', "ProjectPointsController@createPoint");
+    Route::post('/beheer/updatePoint', "ProjectPointsController@updatePoint");
+    Route::post('/beheer/removePoint', "ProjectPointsController@removePoint");
+
+    Route::post('/beheer/removemedia', "MediaController@removeMedia");
+    Route::post('/beheer/media', "MediaController@saveMedia");
 
     Route::post('/beheer/AddProject', 'ProjectController@addProject');
     Route::post('/beheer/updateProject', 'ProjectController@update');
@@ -86,6 +87,8 @@ Route::group(['middleware' => ['auth']], function () {
 // Return only data
 Route::get('/getCategories', 'MainPageController@getCatagories');
 Route::get('/getProjects', 'ProjectController@getProjects');
+Route::get('/getProject/{id}', 'ProjectController@getProject');
+Route::get('/getMediaFromProject/{id}', 'ProjectController@getMedia');
 
 // Unnecessary : Could be deleted
 Route::get('details', function() {

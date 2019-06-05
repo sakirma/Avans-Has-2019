@@ -2,12 +2,9 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <interest-point-view :parent="this" :headers="headers" :values="values"
-                                     v-if="currentPageState === ProjectPageStates.viewMode"></interest-point-view>
-                <interest-point-new :parent="this"
-                                    v-else-if="currentPageState === ProjectPageStates.newMode"></interest-point-new>
-                <interest-point-edit :parent="this" ref="projectEditSection"
-                                     v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
+                <interest-point-view :parent="this" :headers="headers" :values="values" v-if="currentPageState === ProjectPageStates.viewMode"></interest-point-view>
+                <interest-point-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></interest-point-new>
+                <interest-point-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
             </v-flex>
             <v-flex d-flex xs5>
                 <map-section></map-section>
@@ -65,6 +62,19 @@
             },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
+                this.values = [];
+                axios.get('/getAllProjectPointsFullInfo')
+                    .then(({data}) => {
+                        for(let i = 0; i < data.length; i++){
+                            this.values.push({
+                                id: data[i].id,
+                                name: data[i].name,
+                                category: data[i].category,
+                                project_id: data[i].project_id,
+                                information: data[i].information
+                            });
+                        }
+                    });
             },
             editAProject(product) {
                 this.currentPageState = this.ProjectPageStates.editMode;
@@ -72,19 +82,7 @@
             }
         },
         mounted() {
-            axios.get('/getAllProjectPointsFullInfo')
-                .then(({data}) => {
-                    console.log(data);
-                    for(let i = 0; i < data.length; i++){
-                        this.values.push({
-                            id: data[i].id,
-                            name: data[i].name,
-                            category: data[i].category,
-                            project_id: data[i].project_id,
-                            information: data[i].information
-                        });
-                    }
-                });
+            this.enableViewMode();
         }
     }
 </script>

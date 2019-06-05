@@ -84,6 +84,16 @@
             close() {
                 this.parent.enableViewMode();
             }
+        },
+        data() {
+            return {
+                input: null,
+                files: [],
+                images: [],
+                name: null,
+                information: null,
+                category: null
+            }
         }
     }
 </script>

@@ -130,7 +130,7 @@
                 this.images.splice(index, 1);
             },
             save(){
-                axios.post("/createPoint", {
+                axios.post("/beheer/createPoint", {
                     project_id: this.project,
                     lat: 51.50537683608064,
                     long: 5.357208251953125,
@@ -146,7 +146,7 @@
                         formData.append("name", data.id + "_" + i);
                         formData.append("folder", "points");
                         formData.append("id", data.id);
-                        axios.post("/media", formData,
+                        axios.post("/beheer/media", formData,
                             {
                                 headers: {
                                     'Content-Type': 'multipart/form-data'

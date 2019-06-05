@@ -71,6 +71,7 @@ class ProjectPointsController extends Controller
     }
 
     public function getMedia($id){
+        if(!isset($id)) return abort(400);
         $model = ProjectPoint::find($id);
         $images = $model->imagePoints;
         $names = [];
@@ -99,7 +100,7 @@ class ProjectPointsController extends Controller
             $point = ProjectPoint::find($request->id);
             $point->project_id = $request->project_id;
             $point->location = new Point($request->lat, $request->long);
-            $point->area = $request->area;
+            if(isset($request->area)) $point->area = $request->area;
             $point->name = $request->name;
             $point->information = $request->information;
             $point->category = $request->category;
