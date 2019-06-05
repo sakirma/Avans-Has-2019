@@ -63,9 +63,9 @@
 
                         <v-carousel v-if="files.length > 0">
                             <v-carousel-item
-                                    v-for="(file,i) in files"
+                                    v-for="(image,i) in images"
                                     :key="i"
-                                    :src="file"
+                                    :src="image"
                             ></v-carousel-item>
                         </v-carousel>
                     </v-layout>
@@ -111,6 +111,7 @@
                 offset: 0,
                 input: null,
                 files: [],
+                images: [],
                 project: null,
                 name: null,
                 information: null,
@@ -141,25 +142,47 @@
 
                 axios.get("/getMediaFromProjectPoint/"+product)
                     .then(({data}) => {
+                        this.files = [];
+                        this.images = [];
                         for(let i = 0; i < data.length; i++){
-                            this.files.push("getmedia/" + data[i]);
+                            this.files.push(data[i]);
+                            this.images.push("getmedia/" + data[i]);
                         }
+                        this.offset = data.length;
+                        this.startingMediaNumber = this.offset;
+                        console.log("offset " + this.offset);
+                    }).catch((error) => {
+                        console.log(error);
                     });
-                this.offset = this.files.length;
             },
             close() {
                 this.parent.enableViewMode();
             },
             onFileSelection() {
                 for (let file of this.input.files) {
-                    console.log("push: " + file);
                     this.files.push(file);
+                    let reader = new FileReader();
+                    reader.onload = (ev) => {
+                        this.images.push(ev.target.result);
+                    };
+                    reader.readAsDataURL(file);
                 }
                 this.input.value = null;
             },
             removeFile(index) {
-                if(index < this.offset) this.files[index] = null;
-                else this.files.splice(index, 1)
+                if(index < this.offset){
+                    axios.post("/removemedia", {
+                        medianame: this.files[index],
+                        folder: "points"
+                    }).catch((error) => {
+                        alert("Er ging iets mis bij het verwijderen van de foto...");
+                        return;
+                    });
+                    this.files.splice(index, 1);
+                    this.offset--;
+                }else{
+                    this.files.splice(index, 1)
+                }
             },
             save(){
                 axios.post("/updatePoint", {
@@ -172,12 +195,11 @@
                     information: this.information,
                     category: this.category
                 }).then(({ data }) => {
-                    console.log(data);
-                    for(let i = 0; i < this.files.length; i++){
+                    for(let i = this.offset; i < this.files.length; i++){
                         if(this.files[i] == null) continue;
                         let formData = new FormData();
                         formData.append("image", this.files[i]);
-                        formData.append("name", data.id + "_" + i);
+                        formData.append("name", data.id + "_" + (this.startingMediaNumber + i - this.offset));
                         formData.append("folder", "points");
                         formData.append("id", data.id);
                         axios.post("/media", formData,
@@ -186,16 +208,21 @@
                                     'Content-Type': 'multipart/form-data'
                                 }
                             }
-                        ).then(({ data }) => {
-                            console.log(data);
+                        ).catch((error) => {
+                            alert("Er ging iets mis bij het opslaan...2");
+                            console.log(error);
                         });
                     }
+                }).catch((error) => {
+                    alert("Er ging iets mis bij het opslaan...");
+                    console.log(error);
                 });
+                this.close();
             },
             remove(){
                 axios.post("/removePoint", { id: this.id })
-                    .then(({data}) => {
-                        console.log(data);
+                    .catch((error) => {
+                        alert("Er ging iets mis bij het verwijderen...");
                     });
             }
         }

@@ -62,21 +62,11 @@ class MediaController extends Controller
         }
     }
 
-    //id (point_id or project_id)
-    //media (array with files)
+    //media (name from media which needs to be deleted)
     //folder in which it has to search (projects/points)
-    public function updateMedia(Request $request){
-        if(isset($request->folder) && isset($request->media) && isset($request->id)){
-            if($request->folder == "points"){
-                $media = PointHasImage::where("point_id", "=", $request->id)->get();
-                foreach($request->media as $m1){
-                    foreach($media as $m2){
-
-                    }
-                }
-            }else if($request->folder == "projects"){
-
-            }else return abort(400);
+    public function removeMedia(Request $request){
+        if(isset($request->medianame) && isset($request->folder) && ($request->folder == "projects" || $request->folder == "points")){
+            Media::find($request->medianame)->delete();
         }else return abort(400);
     }
 

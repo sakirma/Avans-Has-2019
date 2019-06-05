@@ -40,7 +40,7 @@ Route::post('admin/authenticate', 'Auth\LoginController@authenticate');
 Route::get('/media', "MediaController@index")->name('media');
 Route::post('/media', "MediaController@saveMedia")->name('media.save');
 Route::get('/getmedia/{name}', "MediaController@getMedia")->name('media.get');
-Route::post('/updatemedia', "MediaController@updateMedia");
+Route::post('/removemedia', "MediaController@removeMedia");
 
 Route::get('/comments/remove', "CommentController@removeComment")->name('comments.remove');
 Route::post('/comments/add', "CommentController@addComment")->name('comments.add');

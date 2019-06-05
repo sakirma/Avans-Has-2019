@@ -2,7 +2,7 @@
     <div class="projectEditSection" v-bar >
         <div class="pr-2">
             <v-layout align-center justify-space-between row>
-                <v-card-title class="display-1">Nieuwe punt</v-card-title>
+                <v-card-title class="display-1">Nieuw punt</v-card-title>
                 <v-btn fab flat @click="close">
                     <v-icon x-large color="green"> close</v-icon>
                 </v-btn>
@@ -59,14 +59,13 @@
                             <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
                         </v-flex>
                         <input type="file">
-                        <ul>
-                            <li v-for="file,index in files">
-                                <button @click="removeFile(index)">
-                                    x
-                                </button>
-                                {{ file.name }}
-                            </li>
-                        </ul>
+                        <v-carousel v-if="images.length > 0">
+                            <v-carousel-item
+                                    v-for="(image,i) in images"
+                                    :key="i"
+                                    :src="image"
+                            ></v-carousel-item>
+                        </v-carousel>
                     </v-layout>
                 </v-flex>
 
@@ -104,6 +103,7 @@
             return {
                 input: null,
                 files: [],
+                images: [],
                 project: null,
                 name: null,
                 information: null,
@@ -117,11 +117,17 @@
             onFileSelection() {
                 for (let file of this.input.files) {
                     this.files.push(file);
+                    let reader = new FileReader();
+                    reader.onload = (ev) => {
+                        this.images.push(ev.target.result);
+                    };
+                    reader.readAsDataURL(file);
                 }
                 this.input.value = null;
             },
             removeFile(index) {
-                this.files.splice(index, 1)
+                this.files.splice(index, 1);
+                this.images.splice(index, 1);
             },
             save(){
                 axios.post("/createPoint", {
