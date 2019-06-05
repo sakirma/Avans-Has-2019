@@ -72,10 +72,19 @@
                         </v-layout>
                     </v-flex>
 
+                    <v-flex xs1 v-if="hidden">
+                        <v-layout column>
+                            <v-flex>
+                                <v-card-title class="title">*marker</v-card-title>
+                            </v-flex>
+                            <v-textarea v-model="marker" :rules="markerRules"></v-textarea>
+                        </v-layout>
+                    </v-flex>
+
                     <v-layout align-center justify-end row>
                         <v-btn @click="validate" style="max-width: 10%; height: 100%;" color="#89A226">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat class="white--text">
-                                Project Toevoegen
+                                Project punt Toevoegen
                             </v-card>
                         </v-btn>
                     </v-layout>
@@ -131,6 +140,9 @@
                     v => !!v || 'Beschreiving is vereist',
                     v => (v && v.length <= 10000) || 'Tekst mag niet langer zijn dan 10.000 karakters zijn'
                 ],
+                markerRules:[
+                    v=> !!v || 'U moet een locatie voor deze punt kiezen',
+                ]
             }
         },
         methods: {
@@ -151,8 +163,6 @@
                         }
                     }
                 }
-
-                if(confirm('Still missing Lat and Long are you sure you want to submit this form?')) {
                     if (this.$refs.form.validate()) {
                         axios({
                             method: 'post',
@@ -168,7 +178,6 @@
                             }
                         });
                     }
-                }
                 this.parent.loadPoints();
                 this.close();
             },
