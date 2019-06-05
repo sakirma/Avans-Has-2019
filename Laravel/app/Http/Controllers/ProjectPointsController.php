@@ -64,6 +64,12 @@ class ProjectPointsController extends Controller
         return json_encode($arr);
     }
 
+    public function searchForName($name){
+        if(isset($name)){
+            return json_encode(ProjectPoint::where("name", "LIKE", "%" . $name . "%")->get());
+        }else return abort(400);
+    }
+
     public function getProjectPointByID($projectPointId){
         $model = ProjectPoint::find($projectPointId);
         $model["comments"] = $model->comments;
