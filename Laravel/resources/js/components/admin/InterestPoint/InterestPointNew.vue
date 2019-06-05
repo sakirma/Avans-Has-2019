@@ -2,7 +2,7 @@
     <div class="projectEditSection" v-bar >
         <div class="pr-2">
             <v-layout align-center justify-space-between row>
-                <v-card-title class="display-1">Nieuwe punt</v-card-title>
+                <v-card-title class="display-1">Nieuw punt</v-card-title>
                 <v-btn fab flat @click="close">
                     <v-icon x-large color="green"> close</v-icon>
                 </v-btn>
@@ -15,7 +15,7 @@
                             <v-card-title class="title">Naam:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field></v-text-field>
+                            <v-text-field v-model="name"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -26,7 +26,7 @@
                             <v-card-title class="title">Kies een project:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field label="optioneel"></v-text-field>
+                            <v-text-field v-model="project" label="optioneel"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -37,7 +37,7 @@
                             <v-card-title class="title">Kies een categorie:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field></v-text-field>
+                            <v-text-field v-model="category"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -48,7 +48,7 @@
                             <v-card-title class="title">Beschrijving:</v-card-title>
                         </v-flex>
                         <v-flex xs4>
-                            <v-textarea box></v-textarea>
+                            <v-textarea v-model="information" box></v-textarea>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -58,7 +58,14 @@
                         <v-flex>
                             <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
                         </v-flex>
-                        <v-textarea box></v-textarea>
+                        <input type="file">
+                        <v-carousel v-if="images.length > 0">
+                            <v-carousel-item
+                                    v-for="(image,i) in images"
+                                    :key="i"
+                                    :src="image"
+                            ></v-carousel-item>
+                        </v-carousel>
                     </v-layout>
                 </v-flex>
 
@@ -72,7 +79,7 @@
                 </v-flex>
 
                 <v-layout align-center justify-end row>
-                    <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
+                    <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="save()">
                         <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat class="white--text">
                             Project Toevoegen
                         </v-card>
@@ -92,10 +99,71 @@
                 required: true
             }
         },
+        data() {
+            return {
+                input: null,
+                files: [],
+                images: [],
+                project: null,
+                name: null,
+                information: null,
+                category: null
+            }
+        },
         methods: {
             close() {
                 this.parent.enableViewMode();
+            },
+            onFileSelection() {
+                for (let file of this.input.files) {
+                    this.files.push(file);
+                    let reader = new FileReader();
+                    reader.onload = (ev) => {
+                        this.images.push(ev.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+                this.input.value = null;
+            },
+            removeFile(index) {
+                this.files.splice(index, 1);
+                this.images.splice(index, 1);
+            },
+            save(){
+                axios.post("/beheer/createPoint", {
+                    project_id: this.project,
+                    lat: 51.50537683608064,
+                    long: 5.357208251953125,
+                    area: null,
+                    name: this.name,
+                    information: this.information,
+                    category: this.category
+                }).then(({ data }) => {
+                    console.log(data);
+                    for(let i = 0; i < this.files.length; i++){
+                        let formData = new FormData();
+                        formData.append("image", this.files[i]);
+                        formData.append("name", data.id + "_" + i);
+                        formData.append("folder", "points");
+                        formData.append("id", data.id);
+                        axios.post("/beheer/media", formData,
+                            {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            }
+                        ).then(({ data }) => {
+                            console.log(data);
+                        });
+                    }
+                });
+                this.close();
             }
+        },
+        mounted() {
+            this.input = this.$el.querySelector('input[type=file]');
+            this.input.addEventListener('change', () => this.onFileSelection());
+            this.input.setAttribute('multiple', 'multiple');
         }
     }
 </script>
