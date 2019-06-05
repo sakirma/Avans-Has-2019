@@ -13,7 +13,7 @@
 
                     <v-container ma-0 pa-0 fluid grid-list-md>
                         <v-layout align-start justify-end row fill-height>
-                            <list-routes></list-routes>
+                            <list-routes :routes-parent="this"></list-routes>
                         </v-layout>
                     </v-container>
 

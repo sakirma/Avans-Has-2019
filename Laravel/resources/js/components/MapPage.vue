@@ -5,10 +5,43 @@
                 <map-page-header></map-page-header>
             </v-flex>
 
-            <v-flex>
+            <v-flex style="position: relative">
                 <map-component :parentPage="this">
-
                 </map-component>
+                <v-layout :class="{'ml-5': $vuetify.breakpoint.mdAndUp}"  align-end justify-start row style="position: absolute; bottom: 0; width: 100%;">
+                    <v-flex xs12 md3 lg2>
+                        <v-btn style="z-index: 1005;" depressed class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" @click="OpenRoutePagePressed">
+                            <v-layout column>
+                                <v-flex class="white--text font-weight-bold">
+                                    ROUTES MAKEN
+                                </v-flex>
+                            </v-layout>
+                        </v-btn>
+                    </v-flex>
+
+                    <v-flex xs12 md3 lg2 v-if="$vuetify.breakpoint.xsOnly">
+                        <v-card style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
+                            <v-layout column>
+                                <v-flex class="white--text font-weight-bold">
+                                    <v-text-field
+                                            class="mx-3"
+                                            style="padding-top: 8px;"
+                                            prepend-inner-icon="search"
+                                    ></v-text-field>
+                                </v-flex>
+                            </v-layout>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
+                <v-layout row justify-start class="searchBarAboveMap">
+                    <v-flex xs12>
+                        <v-text-field
+                            class="mx-3"
+                            style="padding-top: 8px;"
+                            prepend-inner-icon="search"
+                        ></v-text-field>
+                    </v-flex>
+                </v-layout>
             </v-flex>
 
             <v-flex xs1>
@@ -110,7 +143,7 @@
         mounted() {
             this.loadMapObjects();
 
-            let ToRoutePageComponent = {
+            let toRoutePageComponent = {
                 // language=HTML
                 template: `
                     <v-layout align-end justify-start row>
@@ -130,9 +163,9 @@
                                 <v-layout column>
                                     <v-flex class="white--text font-weight-bold">
                                         <v-text-field
-                                                class="mx-3"
-                                                style="padding-top: 8px;"
-                                                prepend-inner-icon="search"
+                                            class="mx-3"
+                                            style="padding-top: 8px;"
+                                            prepend-inner-icon="search"
                                         ></v-text-field>
                                     </v-flex>
                                 </v-layout>
@@ -140,18 +173,27 @@
                         </v-flex>
                     </v-layout>
                 `,
-
-
             }
+
+
         }
     }
 </script>
 
 <style scoped>
     .rounded-bottom-card {
-        margin: 0px 0px 0px 0px;
-        border-radius: 10px 10px 0px 0px;
+        margin: 0;
+        border-radius: 10px 10px 0 0;
         height: 50px;
         width: 100%;
+    }
+
+    .searchBarAboveMap {
+        position: absolute;
+        height: 100%;
+        z-index: 1000;
+        bottom: 0;
+        right: 0;
+        width: 25%;
     }
 </style>

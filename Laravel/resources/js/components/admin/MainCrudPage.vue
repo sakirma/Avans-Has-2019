@@ -1,19 +1,20 @@
 <template>
-    <div style="height: 100vh; background-color: #89a324">
-        <v-container fluid fill-height py-0 px-0>
-            <v-layout column>
-                <v-flex xs2 d-flex mx-5 my-3 style="max-height: 100px;">
-                    <c-r-u-d-page-header :parent="this"></c-r-u-d-page-header>
+    <v-content style="background-color: #89a324">
+        <v-container fill-height fluid pa-0 ma-0>
+            <v-layout column fill-height style="max-height: 100vh;">
+                <v-flex xs1 mx-5 my-3>
+                    <c-r-u-d-page-header :parent="this" style="z-index: 3"></c-r-u-d-page-header>
                 </v-flex>
-                <v-flex d-flex style="background-color: white;">
+                <v-flex style="background-color: white; overflow: hidden;" xs11 >
                     <project-page v-if="currentCrudPageState === crudPageState.Projects"></project-page>
                     <statistics-page v-else-if="currentCrudPageState === crudPageState.Statistics"></statistics-page>
-                    <interest-point-page v-else-if="currentCrudPageState === crudPageState.InterestPoints" ></interest-point-page>
+                    <interest-point-page
+                        v-else-if="currentCrudPageState === crudPageState.InterestPoints"></interest-point-page>
                     <routes-page v-else-if="currentCrudPageState === crudPageState.Routes"></routes-page>
                 </v-flex>
             </v-layout>
         </v-container>
-    </div>
+    </v-content>
 </template>
 
 <script>
@@ -34,7 +35,7 @@
         },
         data() {
             return {
-                crudPageState: { 'Projects': 0, 'InterestPoints': 1, 'Routes': 2, 'Statistics': 3 },
+                crudPageState: {'Projects': 0, 'InterestPoints': 1, 'Routes': 2, 'Statistics': 3},
                 currentCrudPageState: 3,
             }
         },
