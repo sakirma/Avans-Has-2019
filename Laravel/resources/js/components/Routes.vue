@@ -1,12 +1,7 @@
 <template>
     <div id="mapPage" style="height: 100vh;">
         <v-layout column fill-height style="background-color: #89a226">
-            <v-flex ma-3 xs1>
-                <v-layout justify-end>
-                    <v-btn v-on:click="exportToGoogle">Volg geselecteerde route in Google Maps</v-btn>
-                </v-layout>
-
-            </v-flex>
+            <v-flex ma-3 xs1></v-flex>
 
             <v-flex>
                 <l-map :center="center" :zoom="zoom" id="map" ref="map" style="height:100%;">
@@ -14,13 +9,10 @@
                         <v-layout align-start fill-height justify-end row>
                             <list-routes :routesParent="this"></list-routes>
                         </v-layout>
+                        <v-layout justify-end>
+                            <v-btn class="putOnTop" v-on:click="exportToGoogle">Volg deze route in Google Maps</v-btn>
+                        </v-layout>
                     </v-container>
-
-                    <v-layout align-start>
-                        <v-container>
-                            <v-btn>Test</v-btn>
-                        </v-container>
-                    </v-layout>
 
                     <l-tile-layer :attribution="attribution" :url="url"></l-tile-layer>
 
@@ -37,6 +29,7 @@
 
             <v-flex xs1>
                 <v-card color="rgb(137, 162, 38, 1)" height="100%"></v-card>
+
             </v-flex>
         </v-layout>
     </div>
@@ -118,5 +111,8 @@
 <style>
     .leaflet-top.leaflet-right {
         display: none;
+    }
+    .putOnTop {
+        z-index: 1000;
     }
 </style>
