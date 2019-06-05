@@ -34,6 +34,8 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('admin/logout', 'Auth\LoginController@logout');
+
 Route::post('admin/authenticate', 'Auth\LoginController@authenticate');
 
 
@@ -78,6 +80,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/admin/remove/route', 'AdminRouteController@removeRoute');
     Route::post('/admin/get/points', 'AdminRouteController@getRoutePoints');
     Route::post('/admin/get/project', 'AdminRouteController@getProjectPoint');
+
 });
 
 
