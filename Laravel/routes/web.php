@@ -23,7 +23,6 @@ Route::get('/project', function(){
     return view('project');
 });
 
-Route::get('routelist', "RoutesController@index");
 Route::post('GetProjectWithinDistance', "ProjectController@getProjectWithinDistance");
 
 Route::get('/project/info/{id}', "ProjectController@index")->name("project.info");
