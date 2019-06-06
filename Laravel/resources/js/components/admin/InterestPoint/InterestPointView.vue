@@ -6,18 +6,18 @@
         <v-flex style="background-color: white; overflow: auto; width: 100%;" class="removeScrollBar" v-bar>
             <v-data-table
                     :headers="headers"
-                    :items="values"
+                    :items="project_points"
                     class="projectTable elevation-1"
                     disable-initial-sort
                     hide-actions
                     :pagination.sync="pagination"
             >
                 <template v-slot:items="props">
-                    <tr @click="rowSelected(props.item.id)">
+                    <tr @click="rowSelected(props.item)">
                         <td>{{ props.item.name }}</td>
-                        <td class="text-xs-right">{{ props.item.category }}</td>
-                        <td class="text-xs-right">{{ props.item.project_id }}</td>
-                        <td class="text-xs-right">{{ props.item.information }}</td>
+                        <td class="text-xs-left">{{ props.item.category }}</td>
+                        <td class="text-xs-left">{{ props.item.project_id }}</td>
+                        <td class="text-xs-left">{{ props.item.information }}</td>
                     </tr>
                 </template>
             </v-data-table>
@@ -38,7 +38,7 @@
                 type: Array,
                 required: true
             },
-            values: {
+            project_points: {
                 type: Array,
                 required: true,
             },
@@ -47,19 +47,21 @@
                 required: true,
             }
         },
-        methods: {
-            EditProjects() {
-                this.parent.newProjectButtonPressed();
-            },
-            rowSelected(selectedProject) {
-                this.parent.editAProject(selectedProject);
-            }
-        },
         data() {
             return {
                 pagination: {
                     rowsPerPage: -1,
                 },
+            }
+        },
+        methods: {
+            EditProjects() {
+                this.parent.newProjectButtonPressed();
+            },
+            rowSelected(selectedProject) {
+                console.log('SELECTED PROJECT');
+                console.log(selectedProject);
+                this.parent.editAProject(selectedProject);
             }
         }
     }

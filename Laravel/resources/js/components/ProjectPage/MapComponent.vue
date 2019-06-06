@@ -7,25 +7,49 @@
 
         <template v-for="marker in markers">
             <l-marker :lat-lng="marker.latlng" :icon="redPin" style="transform: scale(0.1)">
-                <pop-up :id="marker.id" :parent="marker.parent"></pop-up>
+                <l-popup>
+                    <v-layout column align-center fill-height>
+                        <p class="text-xs-center title">dafq word dit wel groter als de text langer word?</p>
+                        <v-card-text class="text-xs-center">WOW</v-card-text>
+                        <v-btn dark @click="OpenProjectPagePressed(marker.id)">Open</v-btn>
+                    </v-layout>
+                </l-popup>
             </l-marker>
         </template>
 
         <template v-for="polygon in polygons">
             <l-polygon :lat-lngs="polygon.latlng" :color="polygonLineColor" :fill-color="polygonFillColor" :fill-opacity="0.6" >
-                <pop-up :id="polygon.id" :parent="polygon.parent"></pop-up>
+                <l-popup>
+                    <v-layout column align-center fill-height>
+                        <p class="text-xs-center title">dafq word dit wel groter als de text langer word?</p>
+                        <v-card-text class="text-xs-center">WOW</v-card-text>
+                        <v-btn dark @click="OpenProjectPagePressed(polygon.id)">Open</v-btn>
+                    </v-layout>
+                </l-popup>
             </l-polygon>
         </template>
 
         <template v-for="polyline in polylines">
             <l-polyline :lat-lngs="polyline.latlng">
-                <pop-up :id="polyline.id" :parent="polyline.parent"></pop-up>
+                <l-popup>
+                    <v-layout column align-center fill-height>
+                        <p class="text-xs-center title">dafq word dit wel groter als de text langer word?</p>
+                        <v-card-text class="text-xs-center">WOW</v-card-text>
+                        <v-btn dark @click="OpenProjectPagePressed(polyline.id)">Open</v-btn>
+                    </v-layout>
+                </l-popup>
             </l-polyline>
         </template>
 
         <template v-for="rectangle in rectangles">
             <l-polyline :lat-lngs="rectangle.latlng">
-                <pop-up :id="rectangle.id" :parent="rectangle.parent"></pop-up>
+                <l-popup>
+                    <v-layout column align-center fill-height>
+                        <p class="text-xs-center title">dafq word dit wel groter als de text langer word?</p>
+                        <v-card-text class="text-xs-center">WOW</v-card-text>
+                        <v-btn dark @click="OpenProjectPagePressed(rectangle.id)">Open</v-btn>
+                    </v-layout>
+                </l-popup>
             </l-polyline>
         </template>
     </l-map>
@@ -34,12 +58,10 @@
 <script>
     import {LMap, LTileLayer, LMarker, LPolygon, LPolyline, LRectangle, LPopup} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
-    import PopUp from "./PopUp";
 
     export default {
         name: 'MapPage',
         components: {
-            PopUp,
             LMap,
             LTileLayer,
             LMarker,
@@ -89,10 +111,10 @@
                 for (let k = 0; k < coordinates[0].length; k++) {
                     points.push(L.latLng(coordinates[0][k][1], coordinates[0][k][0]));
                 }
-                this.polygons.push({"id": id, "latlng": points, parent: this});
+                this.polygons.push({"id": id, "latlng": points});
             },
             createPoint: function (id, coordinates) {
-                this.markers.push({"id": id, "latlng": L.latLng(coordinates[1], coordinates[0]), parent: this});
+                this.markers.push({"id": id, "latlng": L.latLng(coordinates[1], coordinates[0])});
             },
             loadMapObjects: function () {
                 axios.get('/getAllProjectPoints').then(({data}) => {
@@ -112,13 +134,11 @@
                                     }
                                     if (data[i].info.geometries[j].type == "LineString") this.polylines.push({
                                         "id": data[i].id,
-                                        "latlng": points,
-                                        parent: this
+                                        "latlng": points
                                     });
                                     else if (data[i].info.geometries[j].type == "Rectangle") this.rectangles.push({
                                         "id": [data[i].id],
-                                        "latlng": points,
-                                        parent: this
+                                        "latlng": points
                                     });
                                 }
                             }

@@ -12,10 +12,7 @@
                         Route toevoegen
                     </v-card>
                 </v-btn>
-                <v-text-field solo hide-details round label="zoek een route" class="search-bar pa-0" flat
-                              append-icon="search"
-                              v-model="search"
-                ></v-text-field>
+                <v-text-field solo hide-details round label="zoek een project" class="search-bar pa-0" flat append-icon="search"></v-text-field>
             </v-layout>
         </v-flex>
     </v-layout>
@@ -28,20 +25,6 @@
             OnEditProjectButtonPressed: {
                 type: Function,
                 required: true,
-            },
-            parent: {
-                type: Object,
-                required: true,
-            }
-        },
-        data() {
-            return {
-                search: "",
-            }
-        },
-        watch: {
-            search() {
-                this.parent.filterList(this.search);
             }
         }
     }

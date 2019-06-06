@@ -15,20 +15,20 @@ class ProjectController extends Controller
      * pointWKT: Well Known Text for Point
      */
 
-    public function createProject(Request $request){
-        if(isset($request->category) && isset($request->name) && isset($request->information)){
-            $point = new Project();
-            if(isset($request->area)) $point->area = $request->area;
-            $point->name = $request->name;
-            $point->information= $request->information;
-            $point->category = $request->category;
-            $point->save();
-            return json_encode($point);
-        }else{
-            return abort(400);
-        }
-    }
+    public function addProject (Request $request) {
+        $project = new Project();
 
+        $point = new Point($request->lat, $request->long);
+        $geometryCollection = new GeometryCollection([$point]);
+
+        $project->name = $request->name;
+        $project->information = $request->information;
+        $project->category = $request->category;
+        $project->location = $point;
+        $project->geo_json = $geometryCollection;
+
+        $project->save();
+    }
     public function create() {
         return view('createProject');
     }
@@ -38,31 +38,30 @@ class ProjectController extends Controller
         return $project->toJson();
     }
 
-    public function update( Request $request){
-        if(isset($request->id) && isset($request->name) && isset($request->information) && isset($request->category)) {
-            $project = Project::find($request->id);
-            $project->name = $request->name;
-            $project->information = $request->information;
-            $project->category = $request->category;
-            if(isset($request->area)) $project->area = $request->area;
-            $project->save();
-            return json_encode($project);
-        }else{
-            return abort(400);
-        }
+    public function update( Request $request)
+    {
+        $project = Project::find($request->id);
+        $point = new Point($request->lat, $request->long);
+        $geometryCollection = new GeometryCollection([$point]);
+        $project->name = $request->name;
+        $project->information = $request->information;
+        $project->category = $request->category;
+        $project->location = $point;
+        $project->geo_json = $geometryCollection;
+        $project->update($request->all());
     }
 
+    public function viewProjects() {
+        return view('viewProjects');
+    }
     public function getProjects() {
-        return json_encode(Project::all());
+        $projects = Project::all();
+        return $projects->toJson();
     }
 
-    public function getMedia($id){
-        if(!isset($id)) return abort(400);
-        $model = Project::find($id);
-        $images = $model->imageProjects;
-        $names = [];
-        foreach($images as $image) $names[] = $image->media_name;
-        return json_encode($names);
+    public function getProjectNames() {
+        $projects = Project::all()->pluck('name','id');
+        return $projects->toJson();
     }
 
     /**
@@ -85,13 +84,17 @@ class ProjectController extends Controller
      *
      * @return Return View project
      */
-    public function getProject(Request $request){
-        if(!isset($request->id)) return abort(400);
-        return json_encode(Project::find($request->id));
+    public function index(Request $request){
+        $project = Project::find($request['id']);
+        return view('project')->with(["project" => $project]);
     }
 
     public function main(){
         return view('beheerder.MainModeratorPage');
+    }
+
+    public function createProjectPage(){
+        return view('mainCrudPage');
     }
 
     public function facetInfo(Request $request){
@@ -99,9 +102,11 @@ class ProjectController extends Controller
         return view('project')->with(["project" => $project, "facet_id" => $request['facet_id'], "direction" => $request['direction']]);
     }
 
-    public function remove(Request $request){
-        if(isset($request->id)){
-            Project::find($request->id)->delete();
-        }else return abort(400);
+    public function destroy(Request $request)
+    {
+        $project = Project::findOrFail($request->id);
+        $project->delete();
     }
+
+
 }

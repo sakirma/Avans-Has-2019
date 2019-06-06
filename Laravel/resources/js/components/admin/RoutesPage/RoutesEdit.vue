@@ -14,11 +14,11 @@
                             <v-card-title class="title">Naam:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field v-model="selectedRoute.name">
-                            </v-text-field>
+                            <v-text-field :label="selectedRoute.name"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
+
 
                 <v-flex xs1>
                     <v-layout row>
@@ -51,20 +51,12 @@
 
                 <v-flex xs1 pt-5>
                     <v-layout row>
-                        <v-card-title
-                                class="title"
-                                :key="routeInformation.distance"
-                        >Uitgerekende kilometers: {{routeInformation.distance}}
-                        </v-card-title>
+                        <v-card-title class="title">Uitgerekende kilometers:</v-card-title>
                     </v-layout>
                 </v-flex>
                 <v-flex xs1>
                     <v-layout row>
-                        <v-card-title
-                                class="title"
-                                :key="routeInformation.time"
-                        >Uitgerekende duur {{routeInformation.time}}
-                        </v-card-title>
+                        <v-card-title class="title">Uitgerekende duur:</v-card-title>
                     </v-layout>
                 </v-flex>
 
@@ -72,18 +64,14 @@
                     <v-layout reverse row xs1>
                         <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
-                                    class="white--text"
-                                    @click="saveRouteToDatabase"
-                            >
+                                    class="white--text">
                                 Aanpassing toepassen
                             </v-card>
                         </v-btn>
 
                         <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
-                                    class="white--text"
-                                    @click="removeRouteFromDatabase"
-                            >
+                                    class="white--text">
                                 Route verijderen
                             </v-card>
                         </v-btn>
@@ -98,24 +86,8 @@
     import draggable from "vuedraggable";
     import ProjectSelectionList from "./ProjectSelectionList";
 
-    import {LMap, LTileLayer, LMarker, LControl, LPopup} from 'vue2-leaflet';
-    import "leaflet/dist/leaflet.css";
-    import Options from "vue2-leaflet/src/mixins/Options";
-
-    import axios from 'axios';
-
-    let leaflet_create = require('../../../leaflet_create');
-
     export default {
         name: "ProjectsEdit",
-        components: {
-            Options,
-            LMap,
-            LTileLayer,
-            LMarker,
-            LPopup,
-            LControl,
-        },
         data() {
             return {
                 selectedRoute: {
@@ -123,14 +95,6 @@
                     name: '',
                     categorie: '',
                     beschrijving: '',
-                },
-
-                map: null,
-                routingControl: null,
-                routeInfo: null,
-                routeInformation: {
-                    distance: 0,
-                    time: 0,
                 },
             }
         },
@@ -141,74 +105,11 @@
             }
         },
         methods: {
-            loadProjectPoints(id) {
-
-                let t = this;
-                axios.post('/admin/route/points', {
-                    routeId: id,
-                }).then(response => {
-                    let selectedPoints = [];
-                    response.data.forEach(function (point) {
-                        t.placePoint(point);
-                        selectedPoints.push(point);
-                    });
-                    this.$refs.selectionList.enableInterestPoints(selectedPoints);
-                });
-            },
-            placePoint: function (point) {
-
-                let markers = leaflet_create.default.placeMarker(point);
-                let waypoints = leaflet_create.default.createWaypoints(markers);
-
-                if (markers.length < 2) return;
-
-                this.routingControl.setWaypoints(waypoints);
-            },
-            removePoint: function (point) {
-                leaflet_create.default.removeMarker(point);
-            },
-            removeFromView(e) {
-                this.$refs.selectionList.removeElementById(e.layer.options.id);
-            },
-            clearMarkers: function () {
-                leaflet_create.default.clearMarkers();
-            },
-            projectEditSection(product, points, map) {
+            projectEditSection(product) {
                 this.selectedRoute = product;
-
-                this.map = map;
-                this.routingControl = leaflet_create.default.setVariables(map);
-
-                this.loadProjectPoints(product.route);
-                this.$refs.selectionList.addInterestPoints(points);
-
-                let markers = leaflet_create.default.getProjectMarkers();
-                markers.on('dblclick', this.removeFromView);
-
-                this.routingControl.on('routesfound', (e) => this.getRouteInformation(e));
-            },
-            getRouteInformation(e) {
-                this.routeInformation = {
-                    distance: Number(Math.round(e.routes[0].summary.totalDistance / 1000 + 'e2') + 'e-2'),
-                    time: Number(Math.round(e.routes[0].summary.totalTime / 3600 + 'e2') + 'e-2'),
-                };
-            },
-            saveRouteToDatabase() {
-                leaflet_create.default.uploadRoute(this.selectedRoute.name)
-            },
-            removeRouteFromDatabase: function () {
-                if (!this.selectedRoute.projectId) return;
-                leaflet_create.default.removeRouteFromDatabase(this.selectedRoute.projectId)
             },
             close() {
-                this.clearMarkers();
-                this.map.removeControl(this.routingControl);
                 this.parent.enableViewMode();
-                this.$refs.selectionList.clearInterestPoints();
-                this.routeInformation = {
-                    distance: 0,
-                    time: 0,
-                };
             },
         },
         components: {
