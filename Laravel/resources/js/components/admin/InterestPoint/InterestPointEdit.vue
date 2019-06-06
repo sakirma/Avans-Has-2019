@@ -15,7 +15,7 @@
                             <v-card-title class="title">Naam:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field :label="selectedProject.name"></v-text-field>
+                            <v-text-field v-model="name"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -27,7 +27,7 @@
                             <v-card-title class="title">Kies een categorie:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field></v-text-field>
+                            <v-text-field v-model="category"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -38,7 +38,7 @@
                             <v-card-title class="title">Kies een Project:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field label="optioneel"></v-text-field>
+                            <v-text-field v-model="project" label="optioneel"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -49,7 +49,7 @@
                             <v-card-title class="title">Beschrijving</v-card-title>
                         </v-flex>
                         <v-flex xs4>
-                            <v-textarea box></v-textarea>
+                            <v-textarea v-model="information" box></v-textarea>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -59,7 +59,15 @@
                         <v-flex>
                             <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
                         </v-flex>
-                        <v-textarea box></v-textarea>
+                        <input type="file">
+
+                        <v-carousel v-if="images.length > 0">
+                            <v-carousel-item
+                                    v-for="(image,i) in images"
+                                    :key="i"
+                                    :src="image"
+                            ></v-carousel-item>
+                        </v-carousel>
                     </v-layout>
                 </v-flex>
 
@@ -74,14 +82,14 @@
 
                 <v-flex xs1 pr-5>
                     <v-layout reverse row xs1>
-                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
+                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="save()">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
                                     class="white--text">
                                 Aanpassingen Toepassen
                             </v-card>
                         </v-btn>
 
-                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
+                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="remove()">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
                                     class="white--text text-xs-center">
                                 Punt Verwijderen
@@ -99,12 +107,15 @@
         name: "InterestPointEdit",
         data() {
             return {
-                selectedProject: {
-                    id: '', // ID is used to get data from database, as an example, to retrieve which image and youtube url is being used.
-                    name: '',
-                    categorie: '',
-                    beschrijving: '',
-                },
+                id: 0,
+                offset: 0,
+                input: null,
+                files: [],
+                images: [],
+                project: null,
+                name: null,
+                information: null,
+                category: null
             }
         },
         props: {
@@ -113,12 +124,106 @@
                 required: true,
             }
         },
+        mounted(){
+            this.input = this.$el.querySelector('input[type=file]');
+            this.input.addEventListener('change', () => this.onFileSelection());
+            this.input.setAttribute('multiple', 'multiple');
+        },
         methods: {
             projectEditSection(product) {
-                this.selectedProject = product;
+                this.id = product;
+                axios.get("/getProjectPoint/"+product)
+                    .then(({data}) => {
+                        this.name = data.name;
+                        this.category = data.category;
+                        this.project = data.project_id;
+                        this.information = data.information;
+                    });
+
+                axios.get("/getMediaFromProjectPoint/"+product)
+                    .then(({data}) => {
+                        this.files = [];
+                        this.images = [];
+                        for(let i = 0; i < data.length; i++){
+                            this.files.push(data[i]);
+                            this.images.push("getmedia/" + data[i]);
+                        }
+                        this.offset = data.length;
+                        this.startingMediaNumber = this.offset;
+                    }).catch((error) => {
+                        console.log(error);
+                    });
             },
             close() {
                 this.parent.enableViewMode();
+            },
+            onFileSelection() {
+                for (let file of this.input.files) {
+                    this.files.push(file);
+                    let reader = new FileReader();
+                    reader.onload = (ev) => {
+                        this.images.push(ev.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+                this.input.value = null;
+            },
+            removeFile(index) {
+                if(index < this.offset){
+                    axios.post("/beheer/removemedia", {
+                        medianame: this.files[index],
+                        folder: "points"
+                    }).catch((error) => {
+                        alert("Er ging iets mis bij het verwijderen van de foto...");
+                        return;
+                    });
+                    this.files.splice(index, 1);
+                    this.offset--;
+                }else{
+                    this.files.splice(index, 1)
+                }
+            },
+            save(){
+                axios.post("/beheer/updatePoint", {
+                    id: this.id,
+                    project_id: this.project,
+                    lat: 51.50537683608064,
+                    long: 5.357208251953125,
+                    area: null,
+                    name: this.name,
+                    information: this.information,
+                    category: this.category
+                }).then(({ data }) => {
+                    for(let i = this.offset; i < this.files.length; i++){
+                        if(this.files[i] == null) continue;
+                        let formData = new FormData();
+                        formData.append("image", this.files[i]);
+                        formData.append("name", data.id + "_" + (this.startingMediaNumber + i - this.offset));
+                        formData.append("folder", "points");
+                        formData.append("id", data.id);
+                        axios.post("/beheer/media", formData,
+                            {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            }
+                        ).catch((error) => {
+                            alert("Er ging iets mis bij het opslaan...");
+                            console.log(error);
+                        });
+                    }
+                }).catch((error) => {
+                    alert("Er ging iets mis bij het opslaan...");
+                    console.log(error);
+                });
+                this.close();
+            },
+            remove(){
+                axios.post("/beheer/removePoint", { id: this.id })
+                    .catch((error) => {
+                        alert("Er ging iets mis bij het verwijderen...");
+                    });
+                this.close();
             }
         }
     }
