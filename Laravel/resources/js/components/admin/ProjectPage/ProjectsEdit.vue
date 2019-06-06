@@ -1,6 +1,6 @@
 <template>
     <div class="projectEditSection" v-bar>
-        <div class="testingCSS">
+        <div class="removeScrollbar">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Project</v-card-title>
                 <v-btn fab flat @click="close">
@@ -223,7 +223,7 @@
         border-color: #89a226;
     }
 
-    .testingCSS::-webkit-scrollbar {
+    .removeScrollbar::-webkit-scrollbar {
         display: none;
     }
 
