@@ -154,6 +154,11 @@
                 required: true
             }
         },
+        mounted(){
+            this.input = this.$el.querySelector('input[type=file]');
+            this.input.addEventListener('change', () => this.onFileSelection());
+            this.input.setAttribute('multiple', 'multiple');
+        },
         methods: {
             projectEditSection(product) {
                 this.selectedProject = product;
