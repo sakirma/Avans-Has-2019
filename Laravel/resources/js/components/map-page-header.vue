@@ -11,23 +11,26 @@
         <v-flex xs12 sm8 md7 lg4 :class="{ 'mx-5': $vuetify.breakpoint.smAndUp}" fill-height>
             <v-layout align-center justify-center row fill-height :class="{ 'mx-5': $vuetify.breakpoint.smAndUp}">
                 <v-flex d-flex>
-                    <v-img src="img/Symbolen_Activiteiten.png" :class="{'categoryButtonPressed': parent.pressedImages[0]}">
-                        <div class="categoryButton" @click="toggleCategory(Object.keys(parent.pressedImages)[0])"></div>
+                    <v-img src="img/Symbolen_Activiteiten.png"
+                           :class="{'categoryButtonPressed': toggleCatogory1}">
+                        <div class="categoryButton" @click="toggleCategory(0)"></div>
                     </v-img>
                 </v-flex>
                 <v-flex d-flex>
-                    <v-img src="img/Symbolen_Horeca.png" :class="{'categoryButtonPressed': parent.pressedImages[1]}">
-                        <div class="categoryButton" @click="toggleCategory(Object.keys(parent.pressedImages)[1])"></div>
+                    <v-img src="img/Symbolen_Horeca.png" :class="{'categoryButtonPressed': toggleCatogory2}">
+                        <div class="categoryButton" @click="toggleCategory(1)"></div>
                     </v-img>
                 </v-flex>
                 <v-flex d-flex>
-                    <v-img src="img/Symbolen_Bezienswaardigheden.png" :class="{'categoryButtonPressed': parent.pressedImages[2]}">
-                        <div class="categoryButton" @click="toggleCategory(Object.keys(parent.pressedImages)[2])"></div>
+                    <v-img src="img/Symbolen_Bezienswaardigheden.png"
+                           :class="{'categoryButtonPressed': toggleCatogory3}">
+                        <div class="categoryButton" @click="toggleCategory(2)"></div>
                     </v-img>
                 </v-flex>
                 <v-flex d-flex>
-                    <v-img src="img/Symbolen_Natuurgebieden.png" :class="{'categoryButtonPressed': parent.pressedImages[3]}">
-                        <div class="categoryButton" @click="toggleCategory(Object.keys(parent.pressedImages)[3])"></div>
+                    <v-img src="img/Symbolen_Natuurgebieden.png"
+                           :class="{'categoryButtonPressed': toggleCatogory4}">
+                        <div class="categoryButton" @click="toggleCategory(3)"></div>
                     </v-img>
                 </v-flex>
             </v-layout>
@@ -41,11 +44,29 @@
         props: {
             parent: {
                 type: Object
+            },
+        },
+        data() {
+            return {
+                toggleCatogory1: false,
+                toggleCatogory2: false,
+                toggleCatogory3: false,
+                toggleCatogory4: false,
             }
         },
         methods: {
-            toggleCategory(key) {
-                this.parent.filter(key);
+            toggleCategory(id) {
+                let cat = Object.keys(this.parent.pressedImages)[id];
+                this.parent.filter(cat);
+                if (cat === "activiteit") {
+                    this.toggleCatogory1 = !this.toggleCatogory1;
+                } else if (cat === "eten en drinken") {
+                    this.toggleCatogory2 = !this.toggleCatogory2;
+                } else if (cat === "bezienswaardigheid") {
+                    this.toggleCatogory3 = !this.toggleCatogory3;
+                } else if (cat === "natuurgebied") {
+                    this.toggleCatogory4 = !this.toggleCatogory4;
+                }
             }
         }
     }

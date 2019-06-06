@@ -6,25 +6,27 @@
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
         <template v-for="marker in markers">
-            <l-marker v-if="isAllowedCategory(marker.category)" :lat-lng="marker.latlng" :icon="redPin" style="transform: scale(0.1)">
+            <l-marker :key="marker.id" v-if="isAllowedCategory(marker.category)" :lat-lng="marker.latlng" :icon="redPin"
+                      style="transform: scale(0.1)">
                 <pop-up :id="marker.id" :parent="marker.parent"></pop-up>
             </l-marker>
         </template>
 
         <template v-for="polygon in polygons">
-            <l-polygon v-if="isAllowedCategory(polygon.category)" :lat-lngs="polygon.latlng" :color="polygonLineColor" :fill-color="polygonFillColor" :fill-opacity="0.6" >
+            <l-polygon :key="polygon.id" v-if="isAllowedCategory(polygon.category)" :lat-lngs="polygon.latlng"
+                       :color="polygonLineColor" :fill-color="polygonFillColor" :fill-opacity="0.6">
                 <pop-up :id="polygon.id" :parent="polygon.parent"></pop-up>
             </l-polygon>
         </template>
 
         <template v-for="polyline in polylines">
-            <l-polyline v-if="isAllowedCategory(polyline.category)" :lat-lngs="polyline.latlng">
+            <l-polyline :key="polyline.id" v-if="isAllowedCategory(polyline.category)" :lat-lngs="polyline.latlng">
                 <pop-up :id="polyline.id" :parent="polyline.parent"></pop-up>
             </l-polyline>
         </template>
 
         <template v-for="rectangle in rectangles">
-            <l-polyline v-if="isAllowedCategory(rectangle.category)" :lat-lngs="rectangle.latlng">
+            <l-polyline :key="rectangle.id" v-if="isAllowedCategory(rectangle.category)" :lat-lngs="rectangle.latlng">
                 <pop-up :id="rectangle.id" :parent="rectangle.parent"></pop-up>
             </l-polyline>
         </template>
@@ -78,10 +80,10 @@
             }
         },
         methods: {
-            isAllowedCategory(cat){
-                if(cat in this.parentPage.pressedImages){
+            isAllowedCategory(cat) {
+                if (cat in this.parentPage.pressedImages) {
                     return this.parentPage.pressedImages[cat];
-                }else return true;
+                } else return true;
             },
             disableInputEvents(element) {
                 this.$parent.disableInputEvents(element);
@@ -97,7 +99,12 @@
                 this.polygons.push({"id": id, "latlng": points, parent: this, category: category});
             },
             createPoint: function (id, coordinates, category) {
-                this.markers.push({"id": id, "latlng": L.latLng(coordinates[1], coordinates[0]), parent: this, category: category});
+                this.markers.push({
+                    "id": id,
+                    "latlng": L.latLng(coordinates[1], coordinates[0]),
+                    parent: this,
+                    category: category
+                });
             },
             loadMapObjects: function () {
                 axios.get('/getAllProjectPoints').then(({data}) => {
