@@ -2,10 +2,9 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <routes-view :parent="this" :headers="headers" :desserts="filteredRoutes"
-                             v-show="currentPageState === ProjectPageStates.viewMode"></routes-view>
-                <routes-new :parent="this" ref="projectNewSection"
-                            v-show="currentPageState === ProjectPageStates.newMode"></routes-new>
+                <routes-view :parent="this" :headers="headers" :desserts="desserts"
+                             v-if="currentPageState === ProjectPageStates.viewMode"></routes-view>
+                <routes-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></routes-new>
                 <routes-edit :parent="this" ref="projectEditSection"
                              v-show="currentPageState === ProjectPageStates.editMode"></routes-edit>
             </v-flex>
@@ -21,7 +20,6 @@
     import RoutesView from './RoutesView';
     import RoutesNew from './RoutesNew';
     import RoutesEdit from './RoutesEdit';
-    import axios from 'axios';
 
     export default {
         name: "ProjectList",
@@ -44,79 +42,59 @@
                     {
                         text: 'Categorie',
                         align: 'left',
-                        value: 'category',
+                        value: 'calories',
                     },
                     {
-                        text: 'Route',
+                        text: 'Project',
                         align: 'left',
-                        value: 'route',
+                        value: 'projectId',
                     },
                     {
                         text: 'Aantal Km',
                         align: 'left',
-                        value: 'km',
+                        value: 'AantalKm',
+                    },
+                    {
+                        text: 'Duur',
+                        align: 'left',
+                        value: 'duur',
                     },
                 ],
-                routes: [],
-                filteredRoutes: [],
-                points: []
+                desserts: [
+                    {
+                        name: 'Frozen Yogurt',
+                        calories: 159,
+                        fat: 6.0,
+                    },
+                    {
+                        name: 'Ice cream sandwich',
+                        calories: 237,
+                        fat: 9.0,
+                        carbs: 37,
+                        protein: 4.3,
+                        iron: '1%'
+                    },
+                    {
+                        name: 'Eclair',
+                        calories: 262,
+                        fat: 16.0,
+                        carbs: 23,
+                        protein: 6.0,
+                        iron: '7%'
+                    }
+                ]
             }
         },
-        mounted() {
-            this.initialize();
-        },
         methods: {
-            initialize: function () {
-
-                axios.post('/admin/route/data')
-                    .then(response => {
-                        let r = response.data.routes;
-                        let p = response.data.points;
-
-                        for (let i = 0; i < r.length; i++) {
-                            let t = {
-                                name: r[i].name,
-                                km: r[i].length,
-                                route: r[i].id,
-                            };
-                            this.routes.push(t);
-                            this.filteredRoutes.push(t);
-                        }
-                        for (let i = 0; i < p.length; i++) {
-                            //this.points = p.slice(0);
-                            let point = {
-                                area: p[i].area,
-                                category: p[i].category,
-                                id: p[i].id,
-                                information: p[i].information,
-                                location: p[i].location,
-                                name: p[i].name,
-                                project_id: p[i].project_id,
-                                selected: false,
-                            };
-
-                            this.points.push(point);
-                        }
-                    })
-                    .catch(e => {
-                        console.log(e);
-                    });
-            },
-            filterList(search) {
-                this.filteredRoutes = this.routes.filter(route => {
-                    return route.name.toLowerCase().includes(search.toLowerCase());
-                });
-            },
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
-                this.$refs.projectNewSection.createNewRouteButtonPressed(this.$refs.mapSection.getMapObject(), this.points);
             },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
             },
             editAProject(product) {
                 this.currentPageState = this.ProjectPageStates.editMode;
-                this.$refs.projectEditSection.projectEditSection(product, this.points, this.$refs.mapSection.getMapObject());
+                this.$refs.projectEditSection.projectEditSection(product);
             }
         }
     }

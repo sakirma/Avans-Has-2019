@@ -1,7 +1,7 @@
 <template>
     <v-layout align-center justify-center column fill-height>
         <v-flex xs2 style="width: 100%">
-            <routes-header :parent="parent" :OnEditProjectButtonPressed="EditProjects"></routes-header>
+            <routes-header :OnEditProjectButtonPressed="EditProjects"></routes-header>
         </v-flex>
         <v-flex style="background-color: white; overflow: auto; width: 100%;" class="removeScrollBar" v-bar>
             <v-data-table
@@ -15,9 +15,10 @@
                 <template v-slot:items="props">
                     <tr @click="rowSelected(props.item)">
                         <td>{{ props.item.name }}</td>
-                        <td class="text-xs-right">{{ props.item.category }}</td>
-                        <td class="text-xs-right">{{ props.item.route }}</td>
-                        <td class="text-xs-right">{{ props.item.km }}</td>
+                        <td class="text-xs-right">{{ props.item.calories }}</td>
+                        <td class="text-xs-right">{{ props.item.projectId }}</td>
+                        <td class="text-xs-right">{{ props.item.aantalKm }}</td>
+                        <td class="text-xs-right">{{ props.item.duur }}</td>
                     </tr>
                 </template>
             </v-data-table>

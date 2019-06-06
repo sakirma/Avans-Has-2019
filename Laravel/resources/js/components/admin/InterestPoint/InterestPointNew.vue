@@ -2,7 +2,7 @@
     <div class="projectEditSection" v-bar >
         <div class="pr-2">
             <v-layout align-center justify-space-between row>
-                <v-card-title class="display-1">Nieuw punt</v-card-title>
+                <v-card-title class="display-1">Nieuwe punt</v-card-title>
                 <v-btn fab flat @click="close">
                     <v-icon x-large color="green"> close</v-icon>
                 </v-btn>

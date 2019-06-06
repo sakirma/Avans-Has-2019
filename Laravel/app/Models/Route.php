@@ -8,7 +8,6 @@ class Route extends Model
 {
     protected $table = 'route';
     protected $id = 'id';
-    protected $fillable = ['name', 'length'];
 
     // Table does not have timestamps
     public $timestamps = false;

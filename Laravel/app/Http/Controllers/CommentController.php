@@ -33,4 +33,9 @@ class CommentController extends Controller
         }
         return redirect()->back();
     }
+
+    public function getAllComments(){
+        $comments = Comment::all();
+        return view('beheerder.ModeratorCommentsPage', ['comments' => $comments]);
+    }
 }

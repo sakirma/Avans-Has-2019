@@ -6,28 +6,18 @@
         <v-flex style="background-color: white; overflow: auto; width: 100%;" class="removeScrollBar" v-bar>
             <v-data-table
                     :headers="headers"
-<<<<<<< HEAD
                     :items="project_points"
-=======
-                    :items="values"
->>>>>>> development
                     class="projectTable elevation-1"
                     disable-initial-sort
                     hide-actions
                     :pagination.sync="pagination"
             >
                 <template v-slot:items="props">
-                    <tr @click="rowSelected(props.item.id)">
+                    <tr @click="rowSelected(props.item)">
                         <td>{{ props.item.name }}</td>
-<<<<<<< HEAD
                         <td class="text-xs-left">{{ props.item.category }}</td>
                         <td class="text-xs-left">{{ props.item.project_id }}</td>
                         <td class="text-xs-left">{{ props.item.information }}</td>
-=======
-                        <td class="text-xs-right">{{ props.item.category }}</td>
-                        <td class="text-xs-right">{{ props.item.project_id }}</td>
-                        <td class="text-xs-right">{{ props.item.information }}</td>
->>>>>>> development
                     </tr>
                 </template>
             </v-data-table>
@@ -48,11 +38,7 @@
                 type: Array,
                 required: true
             },
-<<<<<<< HEAD
             project_points: {
-=======
-            values: {
->>>>>>> development
                 type: Array,
                 required: true,
             },

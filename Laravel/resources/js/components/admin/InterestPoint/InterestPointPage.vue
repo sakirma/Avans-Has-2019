@@ -55,7 +55,7 @@
                     {
                         text: 'Project',
                         align: 'left',
-                        value: 'project_id',
+                        value: 'projectId',
                     },
                     {
                         text: 'Beschrijving',
@@ -63,7 +63,26 @@
                         value: 'text'
                     },
                 ],
-                values: []
+                desserts: [
+                    {
+                        name: 'Frozen Yogurt',
+                        calories: 159,
+                        projectId: 1,
+                        fat: 6.0,
+                    },
+                    {
+                        name: 'Ice cream sandwich',
+                        calories: 237,
+                        projectId: 2,
+                        fat: 9.0,
+                    },
+                    {
+                        name: 'Eclair',
+                        calories: 262,
+                        fat: 16.0,
+                        projectId: 1,
+                    }
+                ]
             }
         },
         methods: {
