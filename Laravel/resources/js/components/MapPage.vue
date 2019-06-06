@@ -13,7 +13,7 @@
                         <v-btn style="z-index: 1005;" depressed class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" @click="OpenRoutePagePressed">
                             <v-layout column>
                                 <v-flex class="white--text font-weight-bold">
-                                    ROUTES MAKEN
+                                    EEN ROUTE VOLGEN
                                 </v-flex>
                             </v-layout>
                         </v-btn>
