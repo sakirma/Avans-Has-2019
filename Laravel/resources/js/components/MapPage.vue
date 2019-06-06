@@ -60,14 +60,14 @@
                                             pt-0>
                                         <template v-for="(item, index) in items">
                                             <v-list-tile
-                                                    :key="item.title"
+                                                    :key="item.name"
                                                     avatar
                                                     ripple
                                                     style="background-color: rgba(137, 163, 36, 0.9);"
                                             >
                                                 <v-list-tile-content>
-                                                    <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                                                    <v-list-tile-sub-title class="white--text">{{ item.headline }}
+                                                    <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                                                    <v-list-tile-sub-title class="white--text">{{ item.information }}
                                                     </v-list-tile-sub-title>
                                                 </v-list-tile-content>
                                             </v-list-tile>
@@ -120,7 +120,11 @@
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 buttonImage: "img/MapPage/button.png",
 
-                pressedImages: { activiteit: false, "eten en drinken": false, bezienswaardigheid: false, natuurgebied: false }
+                pressedImages: { activiteit: false, "eten en drinken": false, bezienswaardigheid: false, natuurgebied: false },
+
+                searchFieldIsFocused: false,
+                searchInput: '',
+                items: []
             }
         },
         methods: {
@@ -137,7 +141,35 @@
                 this.onRoutePageOpened();
             }
         },
+        watch: {
+            searchInput: function(){
+                this.items = [];
+                axios.get("/searchForProjectPoint/"+this.searchInput)
+                    .then(({ data }) => {
+                        for(let i = 0; i < data.length; i++)
+                            this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
+                    });
+
+                axios.get("/searchForProject/"+this.searchInput)
+                    .then(({ data }) => {
+                        for(let i = 0; i < data.length; i++)
+                            this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
+                    });
+            }
+        },
         mounted() {
+            axios.get("/getAllProjectPointsFullInfo")
+                .then(({ data }) => {
+                    for(let i = 0; i < data.length; i++)
+                        this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
+                });
+
+            axios.get("/getProjects")
+                .then(({ data }) => {
+                    for(let i = 0; i < data.length; i++)
+                        this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: true});
+                });
+
             this.$watch(
                 () => {
                     return this.$refs.field.isFocused
