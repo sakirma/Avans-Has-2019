@@ -12,7 +12,12 @@
                         Project Toevoegen
                     </v-card>
                 </v-btn>
-                <v-text-field solo hide-details round label="zoek een project" class="search-bar pa-0" flat append-icon="search"></v-text-field>
+                <v-text-field solo hide-details round
+                              label="zoek een project"
+                              class="search-bar pa-0" flat
+                              append-icon="search"
+                              v-model="search"
+                ></v-text-field>
             </v-layout>
         </v-flex>
     </v-layout>
@@ -26,7 +31,14 @@
                 type: Function,
                 required: true,
             }
-        }
+        },
+        data() {
+            return {
+                search: ""
+            }
+        },
+
+
     }
 </script>
 

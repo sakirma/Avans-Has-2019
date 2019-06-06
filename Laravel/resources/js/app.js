@@ -63,11 +63,7 @@ Vue.component('edit-projects',
     require('./components/crudProject/EditProjects').default
 );
 Vue.component('main-crud-page',
-    require('./components/crudProjectPoint/CrudPage').default
-);
-
-Vue.component('crud-page',
-    require('./components/crudProjectPoint/CrudPage').default
+    require('./components/crudProject/MainCrudPage').default
 );
 
 Vue.component('view-project-points',
@@ -78,13 +74,6 @@ Vue.component('login-screen',
     require('./components/auth/loginScreen').default
 );
 
-Vue.component('add-project-point',
-    require('./components/crudProjectPoint/AddProjectPoint').default
-);
-
-Vue.component('edit-project-point',
-    require('./components/crudProjectPoint/EditProjectPoint').default
-);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

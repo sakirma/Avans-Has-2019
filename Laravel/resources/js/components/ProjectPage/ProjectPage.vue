@@ -14,6 +14,8 @@
                                     v-bar>
                                 <v-card-text style="position: absolute;">
                                     {{ information }}
+                                    <br>
+                                    <!-- {{ comments }} -->
                                 </v-card-text>
                             </v-card>
                         </v-flex>
@@ -21,7 +23,7 @@
                                 align-self-end>
                             <v-card flat class="primary" style="position:relative; overflow-y: hidden;" v-bar>
                                 <v-card-text style="position: absolute;">
-                                    <v-carousel>
+                                    <v-carousel v-if="images.length > 0">
                                         <v-carousel-item
                                                 v-for="(image,i) in images"
                                                 :key="i"
@@ -66,6 +68,8 @@
                                 v-bar>
                             <v-card-text style="position: absolute;">
                                 {{ information }}
+                                <br>
+                                <!--{{ comments }} -->
                             </v-card-text>
                         </v-card>
                     </v-flex>
@@ -74,7 +78,13 @@
                             align-self-end>
                         <v-card flat class="primary" style="position:relative; overflow-y: hidden;" v-bar>
                             <v-card-text style="position: absolute;">
-
+                                <v-carousel v-if="images.length > 0">
+                                    <v-carousel-item
+                                            v-for="(image,i) in images"
+                                            :key="i"
+                                            :src="image"
+                                    ></v-carousel-item>
+                                </v-carousel>
                             </v-card-text>
                         </v-card>
                     </v-flex>
@@ -120,7 +130,8 @@
         data() {
             return {
                 information: "",
-                images: []
+                images: [],
+                comments: []
             }
         },
         props: {
@@ -134,6 +145,7 @@
                 let id = this.$parent.selectedProjectPage.projectId;
                 axios.get("/getProjectPoint/"+id).then(({ data }) => {
                     this.information = data.information;
+                    this.comments = data.comments;
                 });
 
                 axios.get("/getMediaFromProjectPoint/"+id).then(({ data }) => {

@@ -2,7 +2,7 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <projects-view :parent="this" :headers="headers" :desserts="desserts"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
+                <projects-view :parent="this" :headers="headers" :values="values"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
                 <projects-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
                 <project-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
             </v-flex>
@@ -40,45 +40,15 @@
                     {
                         text: 'Categorie',
                         align: 'left',
-                        value: 'calories',
+                        value: 'category',
                     },
                     {
                         text: 'Beschrijving',
                         align: 'left',
-                        value: 'fat',
+                        value: 'information',
                     },
                 ],
-                desserts: [
-                    {
-                        name: 'Frozen Yogurt',
-                        calories: 159,
-                        fat: 6.0,
-                    },
-                    {
-                        name: 'Ice cream sandwich',
-                        calories: 237,
-                        fat: 9.0,
-                        carbs: 37,
-                        protein: 4.3,
-                        iron: '1%'
-                    },
-                    {
-                        name: 'Eclair',
-                        calories: 262,
-                        fat: 16.0,
-                        carbs: 23,
-                        protein: 6.0,
-                        iron: '7%'
-                    },
-                    {
-                        name: 'Cupcake',
-                        calories: 305,
-                        fat: 3.7,
-                        carbs: 67,
-                        protein: 4.3,
-                        iron: '8%'
-                    }
-                ]
+                values: []
             }
         },
         methods: {
@@ -87,11 +57,26 @@
             },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
+                this.values = [];
+                axios.get('/getProjects')
+                    .then(({data}) => {
+                        for(let i = 0; i < data.length; i++){
+                            this.values.push({
+                                id: data[i].id,
+                                name: data[i].name,
+                                category: data[i].category,
+                                information: data[i].information
+                            });
+                        }
+                    });
             },
             editAProject(product) {
                 this.currentPageState = this.ProjectPageStates.editMode;
                 this.$refs.projectEditSection.projectEditSection(product);
             }
+        },
+        mounted(){
+            this.enableViewMode();
         }
     }
 </script>
