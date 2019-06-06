@@ -11,6 +11,9 @@ window.Vuetify = require('vuetify');
 
 import L from 'leaflet';
 
+import 'leaflet-routing-machine';
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -37,6 +40,9 @@ import store from './store/session-store'
 
 Vue.component('main-crud-page',
     require('./components/admin/MainCrudPage').default
+);
+Vue.component('manage-routes',
+    require('./components/admin/ManageRoutes').default
 );
 
 /**

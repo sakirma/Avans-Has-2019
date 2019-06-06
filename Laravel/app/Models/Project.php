@@ -21,7 +21,7 @@ class Project extends Model
     protected $fillable = ['location', 'geo_json', 'category', 'name', 'information' ];
 
     protected $spatialFields = [
-        'geo_json',
+        'area',
         'location'
     ];
 
@@ -30,14 +30,8 @@ class Project extends Model
         return $this->hasMany('App\Models\ProjectPoint');
     }
 
-    public function images()
-    {
-        $images = array();
-        $medias = DB::table('project_has_image')->where("project_id", "=", $this->id)->get();
-        foreach($medias as $media){
-            $images[] = Media::find($media->media_name);
-        }
-        return $images;
+    public function imageProjects(){
+        return $this->hasMany("App\Models\ProjectHasImage", "project_id");
     }
 
     public function facets()
