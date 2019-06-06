@@ -1,7 +1,7 @@
 <template>
     <div id="mapPage" style="height: 100vh;">
         <v-layout column fill-height style="background-color: #89a226">
-            <v-flex xs1 ma-3>
+            <v-flex sm1 xs2 >
                 <map-page-header></map-page-header>
             </v-flex>
 
@@ -190,7 +190,6 @@
 
     .searchBarAboveMap {
         position: absolute;
-        height: 100%;
         z-index: 1000;
         bottom: 0;
         right: 0;
