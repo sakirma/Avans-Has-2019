@@ -87,25 +87,18 @@
         },
         methods: {
             clearmap(){
-                console.log("helloooo");
-              // this.marker = null;
             },
             onChildClick (value) {
-                console.log("value PPage:");
-                console.log(value);
                 this.marker = value;
-                console.log('marker PPAGE value');
-
-                console.log(value.lat);
-
                 this.$refs.projectEditSection.bool = true;
                 this.$refs.projectEditSection.markerLat = value.lng;
                 this.$refs.projectEditSection.markerLong = value.lat;
 
-
             },
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
+                this.marker.lat= null;
+                this.marker.lng= null;
                 this.$refs.mapSection.setdrawMode(true);
             },
              loadPoints(){
@@ -117,27 +110,14 @@
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
                 this.$refs.mapSection.setdrawMode(false);
-
             },
             editAProject(product) {
-                console.log("EDIT PP:");
-                console.log(this.marker);
-                console.log('PRODUCT');
-                console.log(product);
-
-
                 this.currentPageState = this.ProjectPageStates.editMode;
                 this.$refs.projectEditSection.projectEditSection(product);
-                console.log('MAAAAAAAAAAARKKK');
-                console.log(this.marker);
-
-                // this.$refs.projectEditSection.markerLat = this.marker[0].LatLng.lat;
             }
         },
         mounted() {
-
             this.loadPoints();
-
             // Get all project
             window.axios.get('/getProjects').then(response => {
                 let temp = response.data;
@@ -149,7 +129,6 @@
             }).catch(function (error) {
                 console.log(error);
             });
-
         }
     }
 </script>

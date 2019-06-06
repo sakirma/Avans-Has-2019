@@ -157,8 +157,6 @@
         methods: {
             projectEditSection(product) {
                 this.selectedProject = product;
-                console.log('prod');
-                console.log(product);
                 if(this.bool == false){
                     this.markerLat = product.location.coordinates[1];
                     this.markerLong = product.location.coordinates[0];
@@ -169,19 +167,12 @@
                     latlng: L.latLng(parseFloat(this.markerLong), parseFloat(this.markerLat)),
                     content: 'hoi!'
                 });
-                console.log("markers EDIT: ");
-                console.log(this.parent.$refs.mapSection.markers);
-
                 this.parent.$refs.mapSection.setdrawMode(true);
-
-
-
                 this.getUpdateProjectName();
             },
             close() {
                 this.parent.$refs.mapSection.setdrawMode(false);
                 this.parent.$refs.mapSection.clearMap();
-
                 this.parent.loadPoints();
                 this.parent.enableViewMode();
             },

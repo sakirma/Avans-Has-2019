@@ -97,7 +97,7 @@
 
 
                     <v-layout align-center justify-end row>
-                        <v-btn @click="validate" style="max-width: 10%; height: 100%;" color="#89A226" :class="{ red: !valid, green: valid }">
+                        <v-btn @click="validate" style="max-width: 10%; height: 100%;" color="#89A226" >
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat class="white--text">
                                 Project punt Toevoegen
                             </v-card>
@@ -164,13 +164,10 @@
             close() {
                 this.parent.$refs.mapSection.setdrawMode(false);
                 this.parent.$refs.mapSection.clearMap();
-                // this.marker = null;
-                this.$emit('close', this.marker)
+                this.$emit('close', this.marker);
                 this.parent.enableViewMode();
             },
             validate () {
-                console.log("TEEEEST");
-                console.log(this.marker);
                 if(this.projectName != null) {
                     for(let i = 0; i<this.projectNames.length;i++){
                         if(this.projects[i].name === this.projectName){
@@ -197,7 +194,6 @@
                     }else{
                         alert("u heeft niet alles ingevuld");
                     }
-
             },
         },
         mounted() {
