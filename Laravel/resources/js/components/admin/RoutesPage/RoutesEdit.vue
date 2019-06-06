@@ -197,8 +197,9 @@
                 leaflet_create.default.uploadRoute(this.selectedRoute.name)
             },
             removeRouteFromDatabase: function () {
-                if (!this.selectedRoute.projectId) return;
-                leaflet_create.default.removeRouteFromDatabase(this.selectedRoute.projectId)
+                console.log(this.selectedRoute.route);
+                if (!this.selectedRoute.route) return;
+                leaflet_create.default.removeRouteFromDatabase(this.selectedRoute.route)
             },
             close() {
                 this.clearMarkers();
