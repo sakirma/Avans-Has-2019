@@ -13,10 +13,10 @@
                     :pagination.sync="pagination"
             >
                 <template v-slot:items="props">
-                    <tr @click="rowSelected(props.item.id)">
+                    <tr @click="rowSelected(props.item)">
                         <td>{{ props.item.name }}</td>
                         <td class="text-xs-left">{{ props.item.category }}</td>
-                        <td class="text-xs-left">{{ props.item.project_id }}</td>
+                        <td class="text-xs-left">{{ getProjectName(props.item.project_id) }}</td>
                         <td class="text-xs-left">{{ props.item.information }}</td>
                     </tr>
                 </template>
@@ -42,6 +42,10 @@
                 type: Array,
                 required: true,
             },
+            projects: {
+                type: Array,
+                required: true
+            },
             parent: {
                 type: Object,
                 required: true,
@@ -59,9 +63,13 @@
                 this.parent.newProjectButtonPressed();
             },
             rowSelected(selectedProject) {
-                console.log('SELECTED PROJECT');
-                console.log(selectedProject);
                 this.parent.editAProject(selectedProject);
+            },
+            getProjectName(id){
+                for(let i = 0; i < this.projects.length; i++) {
+                    if (this.projects[i].id == id) return this.projects[i].name;
+                }
+                return "";
             }
         }
     }

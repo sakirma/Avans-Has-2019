@@ -2,7 +2,7 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <interest-point-view :parent="this" :headers="headers" :project_points="project_points"
+                <interest-point-view :parent="this" :headers="headers" :project_points="project_points" :projects="projects"
                                      v-if="currentPageState === ProjectPageStates.viewMode"></interest-point-view>
                 <interest-point-new  v-on:close="clearmap" :parent="this" :projects="projects" :projectNames="projectNames" :projectIds="projectIds" :marker="marker"
                                     v-else-if="currentPageState === ProjectPageStates.newMode"></interest-point-new>
@@ -39,7 +39,7 @@
                 projectNames: [],
                 projectIds: [],
                 categories: [],
-                marker:[],
+                marker:{},
 
                 headers: [
                     {
@@ -62,8 +62,7 @@
                         align: 'left',
                         value: 'text'
                     },
-                ],
-                values: []
+                ]
             }
         },
         methods: {
@@ -83,8 +82,9 @@
                 this.$refs.mapSection.setdrawMode(true);
             },
              loadPoints(){
-                axios.get("/getProjectPoints").then(response => {this.project_points = response.data})
-                    .catch(function (error) {
+                axios.get("/getProjectPoints").then(response => {
+                    this.project_points = response.data;
+                }).catch(function (error) {
                     console.log(error);
                 });
             },

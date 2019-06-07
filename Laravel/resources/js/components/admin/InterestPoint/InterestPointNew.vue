@@ -76,15 +76,6 @@
                         </v-layout>
                     </v-flex>
 
-                    <v-flex xs1>
-                        <v-layout column>
-                            <v-flex>
-                                <v-card-title class="title">*Afbeelding toevoegen:</v-card-title>
-                            </v-flex>
-                            <v-textarea box></v-textarea>
-                        </v-layout>
-                    </v-flex>
-
                 <v-flex xs1>
                     <v-layout column>
                         <v-flex>
@@ -100,8 +91,6 @@
                         </v-carousel>
                     </v-layout>
                 </v-flex>
-
-
 
                     <v-layout align-center justify-end row>
                         <v-btn @click="validate" style="max-width: 10%; height: 100%;" color="#89A226" >
@@ -140,7 +129,6 @@
             },
             marker:{
               type: Object,
-
             }
         },
         data() {
@@ -192,36 +180,6 @@
                 this.files.splice(index, 1);
                 this.images.splice(index, 1);
             },
-            save(){
-                axios.post("/beheer/createPoint", {
-                    project_id: this.project,
-                    lat: 51.50537683608064,
-                    long: 5.357208251953125,
-                    area: null,
-                    name: this.name,
-                    information: this.information,
-                    category: this.category
-                }).then(({ data }) => {
-                    console.log(data);
-                    for(let i = 0; i < this.files.length; i++){
-                        let formData = new FormData();
-                        formData.append("image", this.files[i]);
-                        formData.append("name", data.id + "_" + i);
-                        formData.append("folder", "points");
-                        formData.append("id", data.id);
-                        axios.post("/beheer/media", formData,
-                            {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data'
-                                }
-                            }
-                        ).then(({ data }) => {
-                            console.log(data);
-                        });
-                    }
-                });
-                this.close();
-            },
             validate () {
                 if(this.projectName != null) {
                     for(let i = 0; i<this.projectNames.length;i++){
@@ -243,7 +201,26 @@
                                 markerLong: this.marker.lng,
                                 area: null,
                             }
+                        }).then(response => {
+                            for(let i = 0; i < this.files.length; i++){
+                                let formData = new FormData();
+                                formData.append("image", this.files[i]);
+                                formData.append("name", response.data.id + "_" + i);
+                                formData.append("folder", "points");
+                                formData.append("id", response.data.id);
+                                console.log(response);
+                                axios.post("/beheer/media", formData,
+                                    {
+                                        headers: {
+                                            'Content-Type': 'multipart/form-data'
+                                        }
+                                    }
+                                ).then(({ data }) => {
+                                    console.log(data);
+                                });
+                            }
                         });
+
                         this.parent.loadPoints();
                         this.close();
                     }else{
