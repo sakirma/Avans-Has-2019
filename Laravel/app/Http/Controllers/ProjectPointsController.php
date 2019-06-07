@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\ProjectPoint;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 class ProjectPointsController extends Controller
 {
@@ -46,6 +47,10 @@ class ProjectPointsController extends Controller
         return abort(404);
     }
 
+    public function getAllPointsFullInfo(){
+        return json_encode(ProjectPoint::all());
+    }
+
     public function getAllPoints(){
         $points = ProjectPoint::all();
         $arr = [];
@@ -61,14 +66,54 @@ class ProjectPointsController extends Controller
 
     public function getProjectPointByID($projectPointId){
         $model = ProjectPoint::find($projectPointId);
+        $model["comments"] = $model->comments;
         return json_encode($model);
     }
 
     public function getMedia($id){
+        if(!isset($id)) return abort(400);
         $model = ProjectPoint::find($id);
         $images = $model->imagePoints;
         $names = [];
         foreach($images as $image) $names[] = $image->media_name;
         return json_encode($names);
+    }
+
+    public function createPoint(Request $request){
+        if(isset($request->lat) && isset($request->long) && isset($request->name) && isset($request->information)){
+            $point = new ProjectPoint();
+            $point->project_id = $request->project_id;
+            $point->location = new Point($request->lat, $request->long);
+            if(isset($request->area)) $point->area = $request->area;
+            $point->name = $request->name;
+            $point->information= $request->information;
+            $point->category = $request->category;
+            $point->save();
+            return json_encode($point);
+        }else{
+            return abort(400);
+        }
+    }
+
+    public function updatePoint(Request $request){
+        if(isset($request->id) && isset($request->lat) && isset($request->long) && isset($request->name) && isset($request->information)) {
+            $point = ProjectPoint::find($request->id);
+            $point->project_id = $request->project_id;
+            $point->location = new Point($request->lat, $request->long);
+            if(isset($request->area)) $point->area = $request->area;
+            $point->name = $request->name;
+            $point->information = $request->information;
+            $point->category = $request->category;
+            $point->save();
+            return json_encode($point);
+        }else{
+            return abort(400);
+        }
+    }
+
+    public function removePoint(Request $request){
+        if(isset($request->id)){
+            ProjectPoint::find($request->id)->delete();
+        }else return abort(400);
     }
 }
