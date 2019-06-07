@@ -11,9 +11,9 @@
 |
 */
 Route::get('/', 'MainPageController@index');
-Route::get('details/{id}', "ProjectPointsController@getDetails");
+Route::get('details/{id}', "ProjectPointController@getDetails");
 
-Route::post('/location', "ProjectPointsController@getLocationData");
+Route::post('/location', "ProjectPointController@getLocationData");
 
 Route::get('/about', function(){
     return view('about');
@@ -50,17 +50,30 @@ Route::get('/getAllProjectPoints', "ProjectPointsController@getAllPoints");
 Route::get('/getAllProjectPointsFullInfo', "ProjectPointsController@getAllPointsFullInfo");
 
 Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
-Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
-
+Route::get('getProjectPoint/{projectPointId}', "ProjectPointController@getProjectPointByID");
 Route::get('getAllRoutes', "RoutesController@getAllRoutes");
 Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");
+// Crud
+// TODO: Change beheer to admin.
+Route::get('admin', 'ProjectController@main')->middleware('auth');
 
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('beheer', 'ProjectController@main');
 
+//Route::post('/beheer/AddProjectPoint', 'ProjectController@addProject')->middleware('auth');
+//Route::post('/beheer/updateProject', 'ProjectController@update')->middleware('auth');
+//Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
+//Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
+//Route::get('/beheer/projectpoints/', 'ProjectPointController@index');
     Route::get('/beheer/project/aanmaken', 'ProjectController@create');
 
+    Route::get('/admin/projectpoints', 'ProjectPointController@viewProjectPoints')->middleware('auth');
+    Route::get('/admin/projectpoint/create', 'ProjectPointController@create')->middleware('auth');
+    Route::get('/admin/projectpoint/getDetails/{id}','ProjectPointController@edit')->middleware('auth');
+    Route::post('/admin/addProjectPoint', 'ProjectPointController@addProjectPoint')->middleware('auth');
+    Route::post('/admin/updateProjectPoint', 'ProjectPointController@update')->middleware('auth');
+    Route::post('/admin/deleteProjectPoint', 'ProjectPointController@destroy')->middleware('auth');
     Route::post('/beheer/createPoint', "ProjectPointsController@createPoint");
     Route::post('/beheer/updatePoint', "ProjectPointsController@updatePoint");
     Route::post('/beheer/removePoint', "ProjectPointsController@removePoint");
@@ -89,6 +102,9 @@ Route::get('/getCategories', 'MainPageController@getCatagories');
 Route::get('/getProjects', 'ProjectController@getProjects');
 Route::get('/getProject/{id}', 'ProjectController@getProject');
 Route::get('/getMediaFromProject/{id}', 'ProjectController@getMedia');
+Route::get('/getProjectNames', 'ProjectController@getProjectNames');
+
+Route::get('/getProjectPoints', 'ProjectPointController@getProjectPoints');
 
 // Unnecessary : Could be deleted
 Route::get('details', function() {

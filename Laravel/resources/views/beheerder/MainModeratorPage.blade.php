@@ -19,7 +19,7 @@
 <body>
 <div id="app">
     <v-app>
-        <main-crud-page/>
+        <main-crud-page></main-crud-page>
     </v-app>
 </div>
 <script src="../../js/admin.js"></script>

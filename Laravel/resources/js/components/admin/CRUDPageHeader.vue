@@ -40,6 +40,9 @@
             openStatisticsPage() {
                 this.parent.openStatisticsPage();
             },
+            openProjectPointPage() {
+                window.location.href = '/admin/projectpoints';
+            },
             openEditRoutesPage() {
                 this.parent.openInterestPointPage();
             },

@@ -10,6 +10,9 @@ class ProjectPoint extends Model
     use SpatialTrait;
 
     protected $table = 'interest_point';
+
+    protected $fillable = ['project_id', 'name', 'information', 'category' ];
+
     protected $spatialFields = [
         'location',
         'area'
