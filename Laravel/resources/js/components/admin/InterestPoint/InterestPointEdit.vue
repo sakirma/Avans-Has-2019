@@ -237,7 +237,7 @@
                         method: 'post',
                         url: '/admin/deleteProjectPoint',
                         data: {
-                            id: selectedProject.id,
+                            id: this.selectedProject.id,
                         }
                     });
                     this.close();
