@@ -100,7 +100,7 @@
                         </v-btn>
                     </v-layout>
                 </v-layout>
-            </v-layout>
+            </v-form>
         </div>
     </div>
 </template>
@@ -158,8 +158,10 @@
         },
         methods: {
             close() {
-                this.parent.enableViewMode();
-            },
+                this.parent.$refs.mapSection.setdrawMode(false);
+                this.parent.$refs.mapSection.clearMap();
+                this.$emit('close', this.marker);
+                this.parent.enableViewMode();            },
             onFileSelection() {
                 for (let file of this.input.files) {
                     this.files.push(file);

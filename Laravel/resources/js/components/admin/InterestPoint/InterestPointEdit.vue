@@ -146,7 +146,17 @@
             parent: {
                 type: Object,
                 required: true,
-            }
+            },
+            projectNames:{
+                type: Array,
+                required: true
+            },
+            projects: {
+                type: Array,
+                required: true
+            },
+
+
         },
         methods: {
             onFileSelection() {
