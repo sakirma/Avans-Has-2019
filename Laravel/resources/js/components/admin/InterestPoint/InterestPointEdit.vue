@@ -146,18 +146,6 @@
             parent: {
                 type: Object,
                 required: true,
-            },
-            projects: {
-                type: Array,
-                required: true
-            },
-            projectNames: {
-                type: Array,
-                required: true
-            },
-            projectIds: {
-                type: Array,
-                required: true
             }
         },
         methods: {

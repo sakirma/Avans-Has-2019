@@ -65,11 +65,6 @@ class ProjectController extends Controller
         return json_encode($names);
     }
 
-    public function getProjectNames() {
-        $projects = Project::all()->pluck('name','id');
-        return $projects->toJson();
-    }
-
     /**
      * @param Request $request
      *      pointWKT: Well Known Text for Point

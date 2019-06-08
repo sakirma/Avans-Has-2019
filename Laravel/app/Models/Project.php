@@ -18,7 +18,7 @@ class Project extends Model
     // Table does not have timestamps
     public $timestamps = false;
 
-    protected $fillable = ['area', 'category', 'name', 'information' ];
+    protected $fillable = ['location', 'geo_json', 'category', 'name', 'information' ];
 
     protected $spatialFields = [
         'area',

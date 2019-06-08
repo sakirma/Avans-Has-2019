@@ -51,13 +51,6 @@
                 required: true,
             }
         },
-        data() {
-            return {
-                pagination: {
-                    rowsPerPage: -1,
-                },
-            }
-        },
         methods: {
             EditProjects() {
                 this.parent.newProjectButtonPressed();
@@ -70,6 +63,13 @@
                     if (this.projects[i].id == id) return this.projects[i].name;
                 }
                 return "";
+            }
+        },
+        data() {
+            return {
+                pagination: {
+                    rowsPerPage: -1,
+                },
             }
         }
     }

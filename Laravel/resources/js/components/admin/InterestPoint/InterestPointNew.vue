@@ -100,7 +100,7 @@
                         </v-btn>
                     </v-layout>
                 </v-layout>
-            </v-form>
+            </v-layout>
         </div>
     </div>
 </template>
@@ -109,8 +109,6 @@
     export default {
         name: "InterestPointNew",
         props: {
-            parentData: Object,
-
             parent: {
                 type: Object,
                 required: true
@@ -160,9 +158,6 @@
         },
         methods: {
             close() {
-                this.parent.$refs.mapSection.setdrawMode(false);
-                this.parent.$refs.mapSection.clearMap();
-                this.$emit('close', this.marker);
                 this.parent.enableViewMode();
             },
             onFileSelection() {
