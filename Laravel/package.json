@@ -18,7 +18,7 @@
         "lodash": "^4.17.5",
         "popper.js": "^1.12",
         "resolve-url-loader": "^2.3.1",
-        "sass": "^1.20.3",
+        "sass": "^1.21.0",
         "sass-loader": "^7.1.0",
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.6.10"
@@ -27,6 +27,7 @@
         "chart.js": "^2.8.0",
         "leaflet": "^1.5.1",
         "leaflet-routing-machine": "^3.2.12",
+        "reload": "^3.0.1",
         "vue-chartjs": "^3.4.2",
         "vue-scroll-snap": "^0.1.4",
         "vue2-leaflet": "^2.1.1",

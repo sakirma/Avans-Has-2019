@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use function MongoDB\BSON\toJSON;
 use Validator;
 
-class ProjectPointController extends Controller
+class ProjectPointsController extends Controller
 {
     // Return view
     public function create() {
@@ -44,6 +44,7 @@ class ProjectPointController extends Controller
         $point->category = $request->category;
 
         $point->save();
+        return json_encode($point);
     }
 
     public function edit ($id) {
@@ -63,7 +64,7 @@ class ProjectPointController extends Controller
         $projectPoint->name = $request->name;
         $projectPoint->information = $request->information;
         $projectPoint->category = $request->category;
-        $projectPoint->update($request->all());
+        $projectPoint->save();
     }
 
     public function destroy(Request $request)

@@ -20,16 +20,6 @@
                             </v-flex>
                         </v-layout>
                     </v-flex>
-                    <v-flex xs1>
-                        <v-layout row>
-                            <v-flex xs3>
-                                <v-card-title class="title">Naam:</v-card-title>
-                            </v-flex>
-                            <v-flex xs3>
-                                <v-text-field v-model="name"></v-text-field>
-                            </v-flex>
-                        </v-layout>
-                    </v-flex>
 
                     <v-flex xs1>
                         <v-layout row>
@@ -60,16 +50,6 @@
                             </v-flex>
                         </v-layout>
                     </v-flex>
-                    <v-flex xs1>
-                        <v-layout row>
-                            <v-flex xs3>
-                                <v-card-title class="title">Kies een categorie:</v-card-title>
-                            </v-flex>
-                            <v-flex xs3>
-                                <v-text-field v-model="category"></v-text-field>
-                            </v-flex>
-                        </v-layout>
-                    </v-flex>
 
                     <v-flex xs1>
                         <v-layout row>
@@ -78,27 +58,6 @@
                             </v-flex>
                             <v-flex xs4>
                                 <v-textarea v-model="selectedProject.information" :rules="textRules" box></v-textarea>
-                            </v-flex>
-                        </v-layout>
-                    </v-flex>
-                    <v-flex xs1>
-                        <v-layout row>
-                            <v-flex xs3>
-                                <v-card-title class="title">Kies een Project:</v-card-title>
-                            </v-flex>
-                            <v-flex xs3>
-                                <v-text-field v-model="project" label="optioneel"></v-text-field>
-                            </v-flex>
-                        </v-layout>
-                    </v-flex>
-
-                    <v-flex xs1>
-                        <v-layout row>
-                            <v-flex xs3>
-                                <v-card-title class="title">Beschrijving</v-card-title>
-                            </v-flex>
-                            <v-flex xs4>
-                                <v-textarea v-model="information" box></v-textarea>
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -129,7 +88,7 @@
                                 </v-card>
                             </v-btn>
 
-                            <v-btn @click="deleteItem(selectedProject.id)" style="max-width: 10%; height: 100%;"
+                            <v-btn @click="deleteItem" style="max-width: 10%; height: 100%;"
                                    color="#89A226">
                                 <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
                                         class="white--text text-xs-center">
@@ -140,23 +99,6 @@
                     </v-flex>
                 </v-layout>
             </v-form>
-            <v-flex xs1 pr-5>
-                <v-layout reverse row xs1>
-                    <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="save()">
-                        <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
-                                class="white--text">
-                            Aanpassingen Toepassen
-                        </v-card>
-                    </v-btn>
-
-                    <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="remove()">
-                        <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
-                                class="white--text text-xs-center">
-                            Punt Verwijderen
-                        </v-card>
-                    </v-btn>
-                </v-layout>
-            </v-flex>
         </div>
     </div>
 </template>
@@ -193,15 +135,11 @@
                 },
                 markerLat: null,
                 markerLong: null,
-                id: 0,
                 offset: 0,
+                startingMediaNumber: 0,
                 input: null,
                 files: [],
                 images: [],
-                project: null,
-                name: null,
-                information: null,
-                category: null
             }
         },
         props: {
@@ -249,48 +187,6 @@
                     this.files.splice(index, 1)
                 }
             },
-            save() {
-                axios.post("/beheer/updatePoint", {
-                    id: this.id,
-                    project_id: this.project,
-                    lat: 51.50537683608064,
-                    long: 5.357208251953125,
-                    area: null,
-                    name: this.name,
-                    information: this.information,
-                    category: this.category
-                }).then(({data}) => {
-                    for (let i = this.offset; i < this.files.length; i++) {
-                        if (this.files[i] == null) continue;
-                        let formData = new FormData();
-                        formData.append("image", this.files[i]);
-                        formData.append("name", data.id + "_" + (this.startingMediaNumber + i - this.offset));
-                        formData.append("folder", "points");
-                        formData.append("id", data.id);
-                        axios.post("/beheer/media", formData,
-                            {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data'
-                                }
-                            }
-                        ).catch((error) => {
-                            alert("Er ging iets mis bij het opslaan...");
-                            console.log(error);
-                        });
-                    }
-                }).catch((error) => {
-                    alert("Er ging iets mis bij het opslaan...");
-                    console.log(error);
-                });
-                this.close();
-            },
-            remove() {
-                axios.post("/beheer/removePoint", {id: this.id})
-                    .catch((error) => {
-                        alert("Er ging iets mis bij het verwijderen...");
-                    });
-                this.close();
-            },
             projectEditSection(product) {
                 this.selectedProject = product;
                 if (this.bool == false) {
@@ -305,16 +201,8 @@
                 });
                 this.parent.$refs.mapSection.setdrawMode(true);
                 this.getUpdateProjectName();
-                this.id = product;
-                axios.get("/getProjectPoint/" + product)
-                    .then(({data}) => {
-                        this.name = data.name;
-                        this.category = data.category;
-                        this.project = data.project_id;
-                        this.information = data.information;
-                    });
 
-                axios.get("/getMediaFromProjectPoint/" + product)
+                axios.get("/getMediaFromProjectPoint/" + this.selectedProject.id)
                     .then(({data}) => {
                         this.files = [];
                         this.images = [];
@@ -343,13 +231,13 @@
                     }
                 }
             },
-            deleteItem(id) {
+            deleteItem() {
                 if (confirm('Weet u zeker dat deze interessepunt wilt verwijderen?')) {
                     axios({
                         method: 'post',
                         url: '/admin/deleteProjectPoint',
                         data: {
-                            id: id,
+                            id: this.selectedProject.id,
                         }
                     });
                     this.close();
@@ -383,6 +271,25 @@
                             long: this.markerLong,
                         }
                     });
+
+                    for (let i = this.offset; i < this.files.length; i++) {
+                        if (this.files[i] == null) continue;
+                        let formData = new FormData();
+                        formData.append("image", this.files[i]);
+                        formData.append("name", this.selectedProject.id + "_" + (this.startingMediaNumber + i - this.offset));
+                        formData.append("folder", "points");
+                        formData.append("id", this.selectedProject.id);
+                        axios.post("/beheer/media", formData,
+                            {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            }
+                        ).catch((error) => {
+                            alert("Er ging iets mis bij het opslaan...");
+                            console.log(error);
+                        });
+                    }
                     this.close();
                 }
             },
