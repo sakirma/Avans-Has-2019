@@ -1,7 +1,7 @@
 <template>
     <v-layout align-center justify-center column fill-height>
         <v-flex xs2 style="width: 100%">
-            <interest-point-header :OnEditProjectButtonPressed="EditProjects"></interest-point-header>
+            <interest-point-header :parent="parent" :OnEditProjectButtonPressed="EditProjects"></interest-point-header>
         </v-flex>
         <v-flex style="background-color: white; overflow: auto; width: 100%;" class="removeScrollBar" v-bar>
             <v-data-table
