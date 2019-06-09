@@ -50,12 +50,6 @@
             LRectangle,
             LPopup
         },
-        props: {
-            parentPage: {
-                type: Object,
-                required: true
-            }
-        },
         data() {
             return {
                 zoom: 11,
@@ -77,10 +71,17 @@
 
                     iconSize: [30, 60],
                 }),
+                parentPage: undefined,
             }
         },
         methods: {
+            assignParentPage(parent) {
+                this.parentPage = parent;
+            },
             isAllowedCategory(cat) {
+                if(!this.parentPage)
+                    return true;
+
                 if (cat in this.parentPage.pressedImages) {
                     return this.parentPage.pressedImages[cat];
                 } else return true;

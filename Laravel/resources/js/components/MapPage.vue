@@ -6,7 +6,7 @@
             </v-flex>
 
             <v-flex style="position: relative">
-                <map-component :parentPage="this">
+                <map-component ref="mapComponent">
                 </map-component>
                 <v-layout :class="{'ml-5': $vuetify.breakpoint.mdAndUp}" align-end justify-start row
                           style="position: absolute; bottom: 0; width: 100%;">
@@ -158,6 +158,7 @@
             }
         },
         mounted() {
+            this.$refs.mapComponent.assignParentPage(this);
             axios.get("/getAllProjectPointsFullInfo")
                 .then(({ data }) => {
                     for(let i = 0; i < data.length; i++)

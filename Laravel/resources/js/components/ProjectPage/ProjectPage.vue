@@ -37,23 +37,7 @@
 
                     <v-flex lg4>
                         <v-card height="100%">
-<!--                            <l-map ref="map"-->
-<!--                                   :zoom="zoom"-->
-<!--                                   :center="center"-->
-<!--                                   style="height:100%;">-->
-
-<!--                                <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>-->
-
-<!--                                <template v-for="(marker, index) in markers">-->
-<!--                                    <l-marker :lat-lng="marker">-->
-<!--                                        <l-popup>-->
-<!--                                            <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>-->
-<!--                                        </l-popup>-->
-<!--                                    </l-marker>-->
-<!--                                </template>-->
-<!--                            </l-map>-->
-                            <map-component :parent-page="this">
-                            </map-component>
+                            <map-component ref="mapComponent"></map-component>
                         </v-card>
                     </v-flex>
                 </v-layout>
@@ -91,22 +75,7 @@
 
                     <v-flex lg4>
                         <v-card height="100%">
-<!--                            <l-map ref="map"-->
-<!--                                   :zoom="zoom"-->
-<!--                                   :center="center"-->
-<!--                                   style="height:100%;">-->
-
-<!--                                <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>-->
-
-<!--                                <template v-for="(marker, index) in markers">-->
-<!--                                    <l-marker :lat-lng="marker">-->
-<!--                                        <l-popup>-->
-<!--                                            <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>-->
-<!--                                        </l-popup>-->
-<!--                                    </l-marker>-->
-<!--                                </template>-->
-<!--                            </l-map>-->
-                            <map-component :parentPage="this"></map-component>
+                            <map-component ref="mapComponent"></map-component>
                         </v-card>
                     </v-flex>
 
@@ -131,13 +100,18 @@
             return {
                 information: "",
                 images: [],
-                comments: []
+                comments: [],
+                mapPage: undefined,
             }
         },
         props: {
             onProjectOpened: {
                 type: Function,
             },
+            parent: {
+                type: Object,
+                required: true
+            }
         },
         methods: {
             init() {
@@ -156,6 +130,8 @@
         },
         mounted() {
             this.$vuetify.goTo('#projectPage');
+            this.$refs.mapComponent.assignParentPage(this.mapPage);
+            this.mapPage = this.parent.getMapPage();
         },
         components: {
             ProjectPageHeader,
