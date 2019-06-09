@@ -67,7 +67,8 @@
         },
         methods: {
             initialize: function () {
-
+                this.routes = [];
+                this.filteredRoutes = [];
                 axios.post('/admin/route/data')
                     .then(response => {
                         let r = response.data.routes;
@@ -113,6 +114,7 @@
             },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
+                this.initialize();
             },
             editAProject(product) {
                 this.currentPageState = this.ProjectPageStates.editMode;

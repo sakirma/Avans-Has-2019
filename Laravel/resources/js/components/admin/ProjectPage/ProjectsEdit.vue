@@ -136,7 +136,6 @@
                 axios.get("/getMediaFromProject/"+product)
                     .then(({data}) => {
                         for(let i = 0; i < data.length; i++){
-                            console.log(data[i]);
                             this.files.push(data[i]);
                             this.images.push("getmedia/" + data[i]);
                         }

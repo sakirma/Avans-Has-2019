@@ -123,7 +123,6 @@
                     information: this.information,
                     category: this.select
                 }).then(({ data }) => {
-                    console.log(data);
                     for(let i = 0; i < this.files.length; i++){
                         let formData = new FormData();
                         formData.append("image", this.files[i]);
@@ -136,9 +135,7 @@
                                     'Content-Type': 'multipart/form-data'
                                 }
                             }
-                        ).then(({ data }) => {
-                            console.log(data);
-                        });
+                        );
                     }
                 });
                 this.close();

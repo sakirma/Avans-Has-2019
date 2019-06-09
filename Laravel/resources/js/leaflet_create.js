@@ -61,19 +61,25 @@ export default {
             route.ids.push(layers[i].options.id);
         }
 
-        let xhttp = new XMLHttpRequest();
-        let token = document.getElementsByName('csrf-token')[0].getAttribute('content');
-        let jroute = JSON.stringify(route);
+        // let xhttp = new XMLHttpRequest();
+        // let token = document.getElementsByName('csrf-token')[0].getAttribute('content');
+        // let jroute = JSON.stringify(route);
+        //
+        //
+        // //TODO: verander dit naar fetch.
+        // xhttp.open('POST', '/admin/route/create');
+        // xhttp.setRequestHeader('X-CSRF-Token', token);
+        // xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        // xhttp.send(jroute);
 
+        axios.post('/admin/route/create', route).then(response => {
+           console.log(response);
+        }).catch(error => {
+            console.log(error);
+        });
 
-        //TODO: verander dit naar fetch.
-        xhttp.open('POST', '/admin/route/create');
-        xhttp.setRequestHeader('X-CSRF-Token', token);
-        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhttp.send(jroute);
-
-        window.alert("Route aangemaakt!");
-        location.reload();
+        //window.alert("Route aangemaakt!");
+        //location.reload();
     },
 
     placeMarker: function (point) {
@@ -292,8 +298,8 @@ export default {
                     return;
                 }
 
-                alert(xhttp.response);
-                location.reload();
+                console.log(xhttp.response);
+                //location.reload();
             };
 
             xhttp.setRequestHeader('X-CSRF-Token', token);
