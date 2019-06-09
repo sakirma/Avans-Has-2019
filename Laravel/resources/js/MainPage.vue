@@ -1,8 +1,8 @@
 <template>
     <div v-resize="UpdateScreen">
         <first-page id="firstPage" ref="firstPage" v-scroll="onScrollFirstPage" v-show="firstPageEnabled === true"></first-page>
-        <map-page id="mapPage" ref="mapPage" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
-        <project-page id="projectPage" ref="projectPage" :parent="this" :onProjectOpened="OpenProjectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
+        <map-page id="mapPage" ref="mapPage" :mapObjects="mapObjects" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
+        <project-page id="projectPage" ref="projectPage" :mapObjects="mapObjects" :parent="this" :onProjectOpened="OpenProjectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
         <RoutePage ref="routePage" id="routePage" :onProjectOpened="OpenProjectPage" v-if="selectedRoutePage === true"></RoutePage>
         <div v-else></div>
     </div>
@@ -39,6 +39,7 @@
                 firstPageEnabled: true,
                 scrolledOnFirstPage: false,
                 mapPage: null,
+                mapObjects: []
             }
         },
         methods: {
@@ -127,6 +128,8 @@
         mounted() {
             this.UpdateScreen();
             document.addEventListener("wheel", this.ScrollOnWheelEvent);
+
+
         }
     }
 </script>

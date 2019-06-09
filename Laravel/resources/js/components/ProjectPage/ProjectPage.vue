@@ -101,7 +101,8 @@
                 information: "",
                 images: [],
                 comments: [],
-                mapPage: undefined
+                mapPage: undefined,
+                mapObjects: []
             }
         },
         props: {
@@ -136,8 +137,16 @@
         },
         mounted() {
             this.$vuetify.goTo('#projectPage');
-            this.$refs.mapComponent.assignParentPage(this.mapPage);
             this.mapPage = this.parent.getMapPage();
+            this.$refs.mapComponent.assignParentPage(this.mapPage);
+
+            axios.get("/getAllMapObjects")
+                .then(({ data }) => {
+                    for(let i = 0; i < data.length; i++) {
+                        this.mapObjects.push(data[i]);
+                    }
+                    this.$refs.mapComponent.loadMapObjects(this.mapObjects);
+                });
         },
         components: {
             ProjectPageHeader,

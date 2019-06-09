@@ -58,7 +58,7 @@
                                     <v-list style="background-color: transparent; width: 100%; padding: 0;"
                                             class="white--text" two-line
                                             pt-0>
-                                        <template v-for="(item, index) in filteredItems">
+                                        <template v-for="(item, index) in filteredMapObjects">
                                             <v-list-tile
                                                     :key="item.name"
                                                     avatar
@@ -72,7 +72,7 @@
                                                 </v-list-tile-content>
                                             </v-list-tile>
                                             <v-divider
-                                                    v-if="index + 1 < items.length"
+                                                    v-if="index + 1 < mapObjects.length"
                                                     :key="index"
                                             ></v-divider>
                                         </template>
@@ -110,6 +110,10 @@
             },
             onRoutePageOpened: {
                 type: Function,
+            },
+            mapObjects: {
+                type: Array,
+                required: true
             }
         },
         data() {
@@ -124,8 +128,7 @@
 
                 searchFieldIsFocused: false,
                 searchInput: '',
-                items: [],
-                filteredItems: []
+                filteredMapObjects: []
             }
         },
         methods: {
@@ -140,14 +143,11 @@
             },
             OpenRoutePagePressed: function () {
                 this.onRoutePageOpened();
-            },
-            GetItems: function () {
-                return this.items;
             }
         },
         watch: {
             searchInput: function(n, o){
-                this.filteredItems = this.items.filter(item => {
+                this.filteredMapObjects = this.mapObjects.filter(item => {
                     return item.name.toLowerCase().includes(n.toLowerCase());
                 });
             }
@@ -157,10 +157,9 @@
             axios.get("/getAllMapObjects")
                 .then(({ data }) => {
                     for(let i = 0; i < data.length; i++) {
-                        this.items.push(data[i]);
+                        this.mapObjects.push(data[i]);
                     }
-                    console.log(this.items);
-                    this.$refs.mapComponent.loadMapObjects(this.items);
+                    this.$refs.mapComponent.loadMapObjects(this.mapObjects);
                 });
 
             this.$watch(
