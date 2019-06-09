@@ -132,9 +132,6 @@
                     for(let i = 0; i < data.length; i++)
                         this.images.push("getmedia/" + data[i]);
                 });
-            },
-            setProject(){
-                this.init(true);
             }
         },
         mounted() {

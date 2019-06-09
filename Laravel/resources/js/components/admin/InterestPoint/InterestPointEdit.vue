@@ -252,7 +252,7 @@
                 }
             },
             deleteItem() {
-                if (confirm('Weet u zeker dat deze interessepunt wilt verwijderen?')) {
+                if (confirm('Weet u zeker dat u dit interessepunt wilt verwijderen?')) {
                     axios({
                         method: 'post',
                         url: '/admin/deleteProjectPoint',

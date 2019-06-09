@@ -17,7 +17,10 @@ export function calculateRoute(map, markers) {
         router: L.Routing.mapbox('pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig'),
         waypoints: markers,
         routeWhileDragging: false,
-        show: false
+        show: false,
+        createMarker: function () {
+            return null;
+        }
     }, { show: false });
     routingControl.addTo(map);
     routingControl.show();

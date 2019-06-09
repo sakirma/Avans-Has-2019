@@ -55,7 +55,7 @@
                         text: 'Aantal Km',
                         align: 'left',
                         value: 'km',
-                    },
+                    }
                 ],
                 routes: [],
                 filteredRoutes: [],

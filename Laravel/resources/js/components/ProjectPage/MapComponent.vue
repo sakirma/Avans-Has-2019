@@ -79,7 +79,7 @@
                 this.parentPage = parent;
             },
             isAllowedCategory(cat) {
-                if(!this.parentPage)
+                if(!this.parentPage || typeof(this.parentPage.pressedImages) == 'undefined')
                     return true;
 
                 if (cat in this.parentPage.pressedImages)
@@ -106,7 +106,14 @@
                 data.parent = this;
                 this.markers.push(data);
             },
+            getMapObject(){
+                return this.$refs.map.mapObject;
+            },
             loadMapObjects: function (data) {
+                this.markers = [];
+                this.polygons = [];
+                this.polylines = [];
+                this.rectangles = [];
                 for (let i = 0; i < data.length; i++) {
                     if(data[i].area) data[i].info = data[i].area;
                     else if(data[i].location) {
@@ -141,8 +148,6 @@
                     }
                 }
             }
-        },
-        mounted() {
         }
     }
 </script>
