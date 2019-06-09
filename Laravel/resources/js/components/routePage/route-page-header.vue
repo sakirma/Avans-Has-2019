@@ -8,7 +8,7 @@
         <v-flex fill-height xs5 py-4 style="background-color: #89a226">
             <v-card style="" flat color="transparent" class="white--text text-xs-center display-2 font-weight-black first-page-title"
                     :class="{'createOwnRouteTitle': $vuetify.breakpoint.xsOnly}">
-                MAAK JE EIGEN ROUTE!
+                VOLG EEN ROUTE!
             </v-card>
         </v-flex>
     </v-layout>

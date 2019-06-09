@@ -15,7 +15,7 @@
                                @click="OpenRoutePagePressed">
                             <v-layout column>
                                 <v-flex class="white--text font-weight-bold">
-                                    ROUTES MAKEN
+                                    EEN ROUTE VOLGEN
                                 </v-flex>
                             </v-layout>
                         </v-btn>
