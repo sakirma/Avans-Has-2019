@@ -3,7 +3,7 @@
         <v-layout column align-center fill-height>
             <p class="text-xs-center title">{{ this.item.name }}
                 <br>
-                {{(!this.item.project_id) ? '(Project)' : ''}}
+                {{(typeof(this.item.project_id) == 'undefined') ? '(Project)' : ''}}
             </p>
             <v-card-text class="text-xs-center">{{ this.item.information }}</v-card-text>
             <v-btn dark @click="parent.OpenProjectPagePressed(this.item.id)">Open</v-btn>
