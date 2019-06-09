@@ -2,7 +2,7 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <projects-view :parent="this" :headers="headers" :values="values"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
+                <projects-view :parent="this" :headers="headers" :values="filteredProjects"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
                 <projects-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
                 <project-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
             </v-flex>
@@ -48,7 +48,8 @@
                         value: 'information',
                     },
                 ],
-                values: []
+                values: [],
+                filteredProjects: []
             }
         },
         methods: {
@@ -68,11 +69,17 @@
                                 information: data[i].information
                             });
                         }
+                        this.filteredProjects = this.values;
                     });
             },
             editAProject(product) {
                 this.currentPageState = this.ProjectPageStates.editMode;
                 this.$refs.projectEditSection.projectEditSection(product);
+            },
+            filterList(search) {
+                this.filteredProjects = this.values.filter(project => {
+                    return project.name.toLowerCase().includes(search.toLowerCase());
+                });
             }
         },
         mounted(){

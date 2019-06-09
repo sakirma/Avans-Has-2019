@@ -2,13 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Validator;
 use App\Models\ProjectPoint;
+use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
+use Grimzy\LaravelMysqlSpatial\Types\Polygon;
+use Grimzy\LaravelMysqlSpatial\Types\LineString;
+use console;
+
+
+use Illuminate\Http\Request;
+use function MongoDB\BSON\toJSON;
+use Validator;
 
 class ProjectPointsController extends Controller
 {
+    // Return view
+    public function create() {
+        return view('createProjectPoint');
+    }
+
+    public function viewProjectPoints(){
+        return view('mainCrudPage');
+    }
+
+    // Methods
+    public function getProjectPoints() {
+        $points = ProjectPoint::all();
+        return $points->toJson();
+    }
+
+    public function addProjectPoint (Request $request) {
+        $point = new ProjectPoint();
+
+        $location = new Point($request->markerLat, $request->markerLong);
+
+        $point->project_id = $request->project_id;
+        $point->location = $location;
+        $point->area = $request->area;
+        $point->name = $request->name;
+        $point->information = $request->information;
+        $point->category = $request->category;
+
+        $point->save();
+        return json_encode($point);
+    }
+
+    public function edit ($id) {
+        $point = ProjectPoint::find($id);
+        return $point->toJson();
+    }
+
+    public function update( Request $request)
+    {
+        $projectPoint = ProjectPoint::find($request->id);
+
+        $location = new Point($request->lat, $request->long);
+
+        $projectPoint->project_id = $request->project_id;
+        $projectPoint->location = $location;
+        $projectPoint->area = null;
+        $projectPoint->name = $request->name;
+        $projectPoint->information = $request->information;
+        $projectPoint->category = $request->category;
+        $projectPoint->save();
+    }
+
+    public function destroy(Request $request)
+    {
+        $point = ProjectPoint::findOrFail($request->id);
+        $point->delete();
+    }
+
     public function getLocationData(Request $request)
     {
         $allowedLocations=[];

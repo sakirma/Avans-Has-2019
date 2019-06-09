@@ -67,7 +67,8 @@
         },
         methods: {
             initialize: function () {
-
+                this.routes = [];
+                this.filteredRoutes = [];
                 axios.post('/admin/route/data')
                     .then(response => {
                         let r = response.data.routes;

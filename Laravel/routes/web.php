@@ -51,7 +51,6 @@ Route::get('/getAllProjectPointsFullInfo', "ProjectPointsController@getAllPoints
 
 Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
 Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
-
 Route::get('getAllRoutes', "RoutesController@getAllRoutes");
 Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");
 
@@ -59,8 +58,19 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('beheer', 'ProjectController@main');
 
+//Route::post('/beheer/AddProjectPoint', 'ProjectController@addProject')->middleware('auth');
+//Route::post('/beheer/updateProject', 'ProjectController@update')->middleware('auth');
+//Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
+//Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
+//Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
     Route::get('/beheer/project/aanmaken', 'ProjectController@create');
 
+    Route::get('/admin/projectpoints', 'ProjectPointsController@viewProjectPoints')->middleware('auth');
+    Route::get('/admin/projectpoint/create', 'ProjectPointsController@create')->middleware('auth');
+    Route::get('/admin/projectpoint/getDetails/{id}','ProjectPointsController@edit')->middleware('auth');
+    Route::post('/admin/addProjectPoint', 'ProjectPointsController@addProjectPoint')->middleware('auth');
+    Route::post('/admin/updateProjectPoint', 'ProjectPointsController@update');
+    Route::post('/admin/deleteProjectPoint', 'ProjectPointsController@destroy')->middleware('auth');
     Route::post('/beheer/createPoint', "ProjectPointsController@createPoint");
     Route::post('/beheer/updatePoint', "ProjectPointsController@updatePoint");
     Route::post('/beheer/removePoint', "ProjectPointsController@removePoint");
@@ -89,6 +99,9 @@ Route::get('/getCategories', 'MainPageController@getCatagories');
 Route::get('/getProjects', 'ProjectController@getProjects');
 Route::get('/getProject/{id}', 'ProjectController@getProject');
 Route::get('/getMediaFromProject/{id}', 'ProjectController@getMedia');
+Route::get('/getProjectNames', 'ProjectController@getProjectNames');
+
+Route::get('/getProjectPoints', 'ProjectPointsController@getProjectPoints');
 
 // Unnecessary : Could be deleted
 Route::get('details', function() {

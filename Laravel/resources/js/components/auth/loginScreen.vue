@@ -33,6 +33,7 @@
                                         flat
                                         hide-details
                                         color="green"
+                                        @keyup.enter="authenticate"
                                 ></v-text-field>
                             </v-card>
                             <v-btn large class="mt-4" style="border-radius: 8px">

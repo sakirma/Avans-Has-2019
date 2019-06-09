@@ -20,29 +20,6 @@
                     </v-layout>
                 </v-flex>
 
-
-                <v-flex xs1>
-                    <v-layout row>
-                        <v-flex xs3>
-                            <v-card-title class="title">Kies een categorie:</v-card-title>
-                        </v-flex>
-                        <v-flex xs3>
-                            <v-text-field v-model="newRoute.category"></v-text-field>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
-
-                <v-flex xs1>
-                    <v-layout row>
-                        <v-flex xs3>
-                            <v-card-title v-model="newRoute.info" class="title">Beschrijving</v-card-title>
-                        </v-flex>
-                        <v-flex xs4>
-                            <v-textarea box></v-textarea>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
-
                 <v-flex xs1>
                     <v-layout row align-start>
                         <v-card-title style="padding-top: 0 !important;" class="title">Punten toevoegen:</v-card-title>
@@ -98,10 +75,9 @@
 
                 <v-flex xs1>
                     <v-layout reverse row xs1>
-                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
+                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="saveRouteToDatabase">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
                                     class="white--text"
-                                    @click="saveRouteToDatabase"
                             >
                                 Route toevoegen
                             </v-card>
@@ -189,7 +165,8 @@
                 this.$refs.selectionList.removeElementById(id);
             },
             saveRouteToDatabase() {
-                leaflet_create.default.uploadRoute(this.newRoute.name)
+                leaflet_create.default.uploadRoute(this.newRoute.name);
+                this.close();
             },
             close() {
 

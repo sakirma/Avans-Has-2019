@@ -180,6 +180,7 @@
                 this.routingControl = leaflet_create.default.setVariables(map);
 
                 this.loadProjectPoints(product.route);
+                console.log(points);
                 this.$refs.selectionList.addInterestPoints(points);
 
                 let markers = leaflet_create.default.getProjectMarkers();
@@ -195,21 +196,24 @@
             },
             saveRouteToDatabase() {
                 leaflet_create.default.uploadRoute(this.selectedRoute.name)
+                this.close();
             },
             removeRouteFromDatabase: function () {
-                console.log(this.selectedRoute.route);
                 if (!this.selectedRoute.route) return;
                 leaflet_create.default.removeRouteFromDatabase(this.selectedRoute.route)
+                this.close();
             },
             close() {
                 this.clearMarkers();
                 this.map.removeControl(this.routingControl);
-                this.parent.enableViewMode();
                 this.$refs.selectionList.clearInterestPoints();
+
                 this.routeInformation = {
                     distance: 0,
                     time: 0,
                 };
+
+                this.parent.enableViewMode();
             },
         },
         components: {
