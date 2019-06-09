@@ -101,7 +101,7 @@
                 information: "",
                 images: [],
                 comments: [],
-                mapPage: undefined,
+                mapPage: undefined
             }
         },
         props: {
@@ -117,18 +117,24 @@
             init() {
                 this.images = [];
                 let id = this.$parent.selectedProjectPage.projectId;
-                axios.get("/getProjectPoint/"+id).then(({ data }) => {
+                let linkOne = "/getProjectPoint/";
+                let linkTwo = "/getMediaFromProjectPoint/";
+                if(this.$parent.selectedProjectPage.project){
+                    linkOne = "/getProject/";
+                    linkTwo = "/getMediaFromProject/";
+                }
+                axios.get(linkOne+id).then(({ data }) => {
                     this.information = data.information;
                     this.comments = data.comments;
                 });
 
-                axios.get("/getMediaFromProjectPoint/"+id).then(({ data }) => {
+                axios.get(linkTwo+id).then(({ data }) => {
                     for(let i = 0; i < data.length; i++)
                         this.images.push("getmedia/" + data[i]);
                 });
             },
-            setProject(project){
-
+            setProject(){
+                this.init(true);
             }
         },
         mounted() {

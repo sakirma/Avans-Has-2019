@@ -89,8 +89,8 @@
             disableInputEvents(element) {
                 this.$parent.disableInputEvents(element);
             },
-            OpenProjectPagePressed: function (projectId) {
-                this.parentPage.onProjectOpened(projectId);
+            OpenProjectPagePressed: function (projectId, isProject) {
+                this.parentPage.onProjectOpened(projectId, isProject);
             },
             createPolygon: function (data, coordinates) {
                 let points = [];

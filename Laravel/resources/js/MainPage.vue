@@ -42,10 +42,11 @@
             }
         },
         methods: {
-            OpenProjectPage(projectId, project) {
+            OpenProjectPage(projectId, isProject) {
                 this.selectedProjectPage = {
                     isSelected: true,
-                    projectId: projectId
+                    projectId: projectId,
+                    project: isProject
                 };
                 this.selectedRoutePage = false;
 
@@ -55,7 +56,6 @@
                 if (this.$refs.projectPage !== undefined) {
                     this.UpdateScreen();
                 }
-                this.$refs.projectPage.setProject(project);
             },
             OpenRoutePage() {
                 this.selectedRoutePage = true;

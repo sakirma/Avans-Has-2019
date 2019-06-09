@@ -135,8 +135,8 @@
             disableInputEvents(element) {
                 this.$parent.disableInputEvents(element);
             },
-            OpenProjectPagePressed: function (projectId) {
-                this.onProjectOpened(projectId);
+            OpenProjectPagePressed: function (projectId, isProject){
+                this.onProjectOpened(projectId, isProject);
             },
             OpenRoutePagePressed: function () {
                 this.onRoutePageOpened();
