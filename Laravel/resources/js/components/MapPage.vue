@@ -6,7 +6,7 @@
             </v-flex>
 
             <v-flex style="position: relative">
-                <map-component ref="mapComponent">
+                <map-component :GetItems="GetItems" ref="mapComponent">
                 </map-component>
                 <v-layout :class="{'ml-5': $vuetify.breakpoint.mdAndUp}" align-end justify-start row
                           style="position: absolute; bottom: 0; width: 100%;">
@@ -58,7 +58,7 @@
                                     <v-list style="background-color: transparent; width: 100%; padding: 0;"
                                             class="white--text" two-line
                                             pt-0>
-                                        <template v-for="(item, index) in items">
+                                        <template v-for="(item, index) in filteredItems">
                                             <v-list-tile
                                                     :key="item.name"
                                                     avatar
@@ -124,7 +124,8 @@
 
                 searchFieldIsFocused: false,
                 searchInput: '',
-                items: []
+                items: [],
+                filteredItems: []
             }
         },
         methods: {
@@ -139,36 +140,32 @@
             },
             OpenRoutePagePressed: function () {
                 this.onRoutePageOpened();
+            },
+            GetItems: function () {
+                return this.items;
             }
         },
         watch: {
-            searchInput: function(){
-                this.items = [];
-                axios.get("/searchForProjectPoint/"+this.searchInput)
-                    .then(({ data }) => {
-                        for(let i = 0; i < data.length; i++)
-                            this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
-                    });
-
-                axios.get("/searchForProject/"+this.searchInput)
-                    .then(({ data }) => {
-                        for(let i = 0; i < data.length; i++)
-                            this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
-                    });
+            searchInput: function(n, o){
+                this.filteredItems = this.items.filter(item => {
+                    return item.name.toLowerCase().includes(n.toLowerCase());
+                });
             }
         },
         mounted() {
             this.$refs.mapComponent.assignParentPage(this);
             axios.get("/getAllProjectPointsFullInfo")
                 .then(({ data }) => {
-                    for(let i = 0; i < data.length; i++)
-                        this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
+                    for(let i = 0; i < data.length; i++) {
+                        this.items.push(data[i]);
+                    }
                 });
 
             axios.get("/getProjects")
                 .then(({ data }) => {
-                    for(let i = 0; i < data.length; i++)
-                        this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: true});
+                    for(let i = 0; i < data.length; i++){
+                        this.items.push(data[i]);
+                    }
                 });
 
             this.$watch(

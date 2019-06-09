@@ -74,6 +74,12 @@
                 parentPage: undefined,
             }
         },
+        props: {
+            GetItems: {
+                type: Function,
+                required: true
+            }
+        },
         methods: {
             assignParentPage(parent) {
                 this.parentPage = parent;
@@ -82,9 +88,9 @@
                 if(!this.parentPage)
                     return true;
 
-                if (cat in this.parentPage.pressedImages) {
+                if (cat in this.parentPage.pressedImages)
                     return this.parentPage.pressedImages[cat];
-                } else return true;
+                else return true;
             },
             disableInputEvents(element) {
                 this.$parent.disableInputEvents(element);
@@ -108,38 +114,43 @@
                 });
             },
             loadMapObjects: function () {
-                axios.get('/getAllProjectPoints').then(({data}) => {
-                    for (let i = 0; i < data.length; i++) {
-                        if (data[i].info.type == "Point") {
-                            this.createPoint(data[i].id, data[i].info.coordinates);
-                        } else if (data[i].info.type == "GeometryCollection") {
-                            for (let j = 0; j < data[i].info.geometries.length; j++) {
-                                if (data[i].info.geometries[j].type == "Point") {
-                                    this.createPoint(data[i].id, data[i].info.geometries[j].coordinates, data[i].category);
-                                } else if (data[i].info.geometries[j].type == "Polygon") {
-                                    this.createPolygon(data[i].id, data[i].info.geometries[j].coordinates, data[i].category);
-                                } else {
-                                    let points = [];
-                                    for (let k = 0; k < data[i].info.geometries[j].coordinates.length; k++) {
-                                        points.push(L.latLng(data[i].info.geometries[j].coordinates[k][1], data[i].info.geometries[j].coordinates[k][0]));
-                                    }
-                                    if (data[i].info.geometries[j].type == "LineString") this.polylines.push({
-                                        "id": data[i].id,
-                                        "latlng": points,
-                                        parent: this,
-                                        category: data[i].category
-                                    });
-                                    else if (data[i].info.geometries[j].type == "Rectangle") this.rectangles.push({
-                                        "id": [data[i].id],
-                                        "latlng": points,
-                                        parent: this,
-                                        category: data[i].category
-                                    });
+                this.items = this.GetItems();
+                console.log(this.GetItems().length);
+                for (let i = 0; i < this.items.length; i++) {
+                    let info = "";
+                    if(data[i].location) info = data[i].location;
+                    else if(data[i].area) info = data[i].area;
+                    else continue;
+
+                    if (info.type == "Point") {
+                        this.createPoint(data[i].id, data[i].info.coordinates, data[i].category);
+                    } else if (info.type == "GeometryCollection") {
+                        for (let j = 0; j < data[i].info.geometries.length; j++) {
+                            if (info.geometries[j].type == "Point") {
+                                this.createPoint(data[i].id, data[i].info.geometries[j].coordinates, data[i].category);
+                            } else if (info.geometries[j].type == "Polygon") {
+                                this.createPolygon(data[i].id, data[i].info.geometries[j].coordinates, data[i].category);
+                            } else {
+                                let points = [];
+                                for (let k = 0; k < data[i].info.geometries[j].coordinates.length; k++) {
+                                    points.push(L.latLng(data[i].info.geometries[j].coordinates[k][1], data[i].info.geometries[j].coordinates[k][0]));
                                 }
+                                if (data[i].info.geometries[j].type == "LineString") this.polylines.push({
+                                    "id": data[i].id,
+                                    "latlng": points,
+                                    parent: this,
+                                    category: data[i].category
+                                });
+                                else if (data[i].info.geometries[j].type == "Rectangle") this.rectangles.push({
+                                    "id": [data[i].id],
+                                    "latlng": points,
+                                    parent: this,
+                                    category: data[i].category
+                                });
                             }
                         }
                     }
-                });
+                }
             }
         },
         mounted() {
