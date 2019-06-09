@@ -27,7 +27,15 @@
                             <v-card-title class="title">Kies een categorie:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field v-model="category"></v-text-field>
+                            <v-select
+                                    v-model="select"
+                                    :items="categories"
+                                    menu-props="auto"
+                                    label="Selecteren"
+                                    :rules="[v => !!v || 'Categorie is vereist']"
+                                    required
+                                    single-line>
+                            </v-select>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -113,7 +121,7 @@
                     project_id: this.project,
                     name: this.name,
                     information: this.information,
-                    category: this.category
+                    category: this.select
                 }).then(({ data }) => {
                     console.log(data);
                     for(let i = 0; i < this.files.length; i++){
@@ -143,13 +151,23 @@
                 images: [],
                 name: null,
                 information: null,
-                category: null
+                categories: [],
+                select: null
             }
         },
         mounted(){
             this.input = this.$el.querySelector('input[type=file]');
             this.input.addEventListener('change', () => this.onFileSelection());
             this.input.setAttribute('multiple', 'multiple');
+
+            window.axios.get('/getCategories').then(response => {
+                let temp = response.data;
+                for (let i = 0; i < temp.length; i++) {
+                    this.categories.push(temp[i].name);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
     }
 </script>
