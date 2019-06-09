@@ -1,7 +1,7 @@
 <template>
     <v-layout align-start justify-center column fill-height>
         <v-flex xs2 style="width: 100%">
-            <projects-header :OnEditProjectButtonPressed="EditProjects"></projects-header>
+            <projects-header :parent="parent" :OnEditProjectButtonPressed="EditProjects"></projects-header>
         </v-flex>
         <v-flex style="background-color: white; overflow: auto; width: 100%;" class="removeScrollBar" v-bar>
             <v-data-table

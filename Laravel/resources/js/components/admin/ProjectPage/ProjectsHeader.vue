@@ -30,6 +30,10 @@
             OnEditProjectButtonPressed: {
                 type: Function,
                 required: true,
+            },
+            parent: {
+                type: Object,
+                required: true,
             }
         },
         data() {
@@ -37,8 +41,11 @@
                 search: ""
             }
         },
-
-
+        watch: {
+            search() {
+                this.parent.filterList(this.search);
+            }
+        }
     }
 </script>
 
