@@ -114,7 +114,6 @@
             },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
-                this.initialize();
             },
             editAProject(product) {
                 this.currentPageState = this.ProjectPageStates.editMode;
