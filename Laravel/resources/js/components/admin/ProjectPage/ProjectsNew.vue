@@ -140,11 +140,11 @@
                             console.log(error);
                         });
                     }
+                    this.close();
                 }).catch(error => {
                     alert("Er ging iets mis bij het opslaan van het project!");
                     console.log(error);
                 });
-                this.close();
             }
         },
         data() {

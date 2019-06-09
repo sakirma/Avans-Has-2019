@@ -219,13 +219,13 @@
                                     console.log(error);
                                 });
                             }
+
+                            this.parent.loadPoints();
+                            this.close();
                         }).catch(error => {
                             alert("Er ging iets mis bij het opslaan van het interesse punt!");
                             console.log(error);
                         });
-
-                        this.parent.loadPoints();
-                        this.close();
                     }else{
                         alert("U heeft niet alles ingevuld");
                     }
