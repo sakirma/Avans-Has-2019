@@ -63,6 +63,28 @@
                     </v-flex>
 
                     <v-flex xs1>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-card-title class="title">Locatie Latidude:</v-card-title>
+                            </v-flex>
+                            <v-flex xs4>
+                                <v-textarea v-model="markerLat" :rules="markerRules" box></v-textarea>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+
+                    <v-flex xs1>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-card-title class="title">Locatie Longitude::</v-card-title>
+                            </v-flex>
+                            <v-flex xs4>
+                                <v-textarea v-model="markerLong" :rules="markerRules" box></v-textarea>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+
+                    <v-flex xs1>
                         <v-layout column>
                             <v-flex>
                                 <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
