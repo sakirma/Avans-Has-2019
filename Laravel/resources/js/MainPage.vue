@@ -1,14 +1,13 @@
 <template>
     <div v-resize="UpdateScreen">
         <first-page id="firstPage" ref="firstPage" v-scroll="onScrollFirstPage" v-show="firstPageEnabled === true"></first-page>
-        <map-page id="mapPage" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
-        <project-page ref="projectPage" id="projectPage" :onProjectOpened="OpenProjectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
-        <RoutePage ref="routePage" id="routePage" v-else-if="selectedRoutePage === true"></RoutePage>
+        <map-page id="mapPage" ref="mapPage" :onProjectOpened="OpenProjectPage" :onRoutePageOpened="OpenRoutePage"></map-page>
+        <project-page id="projectPage" ref="projectPage" :parent="this" :onProjectOpened="OpenProjectPage" v-if="selectedProjectPage.isSelected === true"></project-page>
+        <RoutePage ref="routePage" id="routePage" v-if="selectedRoutePage === true"></RoutePage>
         <div v-else></div>
     </div>
 </template>
 
-<!-- TODO: Scroll back to project page when the window is re-sized. -->
 <script>
     import MapPage from './components/MapPage';
     import FirstPage from './components/FirstPage';
@@ -39,6 +38,7 @@
                 selectedRoutePage: false,
                 firstPageEnabled: true,
                 scrolledOnFirstPage: false,
+                mapPage: null,
             }
         },
         methods: {
@@ -119,10 +119,12 @@
                     this.firstPageEnabled = false;
                 }
             },
+            getMapPage(){
+                return this.$refs.mapPage;
+            }
         },
         mounted() {
             this.UpdateScreen();
-
             document.addEventListener("wheel", this.ScrollOnWheelEvent);
         }
     }
