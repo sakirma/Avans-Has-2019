@@ -268,27 +268,30 @@
                             lat: this.markerLat,
                             long: this.markerLong,
                         }
-                    });
-
-                    for (let i = this.offset; i < this.files.length; i++) {
-                        if (this.files[i] == null) continue;
-                        let formData = new FormData();
-                        formData.append("image", this.files[i]);
-                        formData.append("name", this.selectedProject.id + "_" + (this.startingMediaNumber + i - this.offset));
-                        formData.append("folder", "points");
-                        formData.append("id", this.selectedProject.id);
-                        axios.post("/beheer/media", formData,
-                            {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data'
+                    }).then(({ data }) => {
+                        for (let i = this.offset; i < this.files.length; i++) {
+                            if (this.files[i] == null) continue;
+                            let formData = new FormData();
+                            formData.append("image", this.files[i]);
+                            formData.append("name", this.selectedProject.id + "_" + (this.startingMediaNumber + i - this.offset));
+                            formData.append("folder", "points");
+                            formData.append("id", this.selectedProject.id);
+                            axios.post("/beheer/media", formData,
+                                {
+                                    headers: {
+                                        'Content-Type': 'multipart/form-data'
+                                    }
                                 }
-                            }
-                        ).catch((error) => {
-                            alert("Er ging iets mis bij het opslaan...");
-                            console.log(error);
-                        });
-                    }
-                    this.close();
+                            ).catch((error) => {
+                                alert("Er ging iets mis bij het opslaan...");
+                                console.log(error);
+                            });
+                        }
+                        this.close();
+                    }).catch(error => {
+                        alert("Er ging iets mis bij het opslaan van het interesse punt!");
+                        console.log(error);
+                    });
                 }
             },
             removeProject() {

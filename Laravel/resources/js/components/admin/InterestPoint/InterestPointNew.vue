@@ -214,14 +214,20 @@
                                     }
                                 ).then(({ data }) => {
                                     console.log(data);
+                                }).catch(error => {
+                                    alert("Er ging iets mis bij het opslaan van het interesse punt!");
+                                    console.log(error);
                                 });
                             }
+                        }).catch(error => {
+                            alert("Er ging iets mis bij het opslaan van het interesse punt!");
+                            console.log(error);
                         });
 
                         this.parent.loadPoints();
                         this.close();
                     }else{
-                        alert("u heeft niet alles ingevuld");
+                        alert("U heeft niet alles ingevuld");
                     }
             },
         },
