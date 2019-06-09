@@ -91,12 +91,10 @@
             }
         },
         watch: {
-            currentSelectedProjects(n, o) {
-                for (let i = 0; i < o.length; i++) {
-                    if (!n.includes(o[i])) this.$parent.removePoint(o[i]);
-                }
-                for (let i = 0; i < n.length; i++) {
-                    if (!o.includes(n[i])) this.$parent.placePoint(n[i]);
+            currentSelectedProjects(n) {
+                this.$parent.clearMarkers();
+                for (let i = 0; i < n.length; i++){
+                    this.$parent.placePoint(n[i]);
                 }
             }
         },

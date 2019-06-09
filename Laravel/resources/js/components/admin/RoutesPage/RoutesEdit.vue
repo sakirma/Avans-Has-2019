@@ -21,28 +21,6 @@
                 </v-flex>
 
                 <v-flex xs1>
-                    <v-layout row>
-                        <v-flex xs3>
-                            <v-card-title class="title">Kies een categorie:</v-card-title>
-                        </v-flex>
-                        <v-flex xs3>
-                            <v-text-field></v-text-field>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
-
-                <v-flex xs1>
-                    <v-layout row>
-                        <v-flex xs3>
-                            <v-card-title class="title">Beschrijving</v-card-title>
-                        </v-flex>
-                        <v-flex xs4>
-                            <v-textarea box></v-textarea>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
-
-                <v-flex xs1>
                     <v-layout row align-start>
                         <v-card-title style="padding-top: 0 !important;" class="title">Punten toevoegen:</v-card-title>
                         <project-selection-list ref="selectionList"></project-selection-list>
