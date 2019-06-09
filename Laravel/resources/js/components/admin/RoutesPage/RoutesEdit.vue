@@ -180,6 +180,7 @@
                 this.routingControl = leaflet_create.default.setVariables(map);
 
                 this.loadProjectPoints(product.route);
+                console.log(points);
                 this.$refs.selectionList.addInterestPoints(points);
 
                 let markers = leaflet_create.default.getProjectMarkers();
@@ -206,10 +207,12 @@
                 this.clearMarkers();
                 this.map.removeControl(this.routingControl);
                 this.$refs.selectionList.clearInterestPoints();
+
                 this.routeInformation = {
                     distance: 0,
                     time: 0,
                 };
+
                 this.parent.enableViewMode();
             },
         },
