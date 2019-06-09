@@ -1,8 +1,8 @@
 <template>
     <div id="mapPage" style="height: 100vh;">
         <v-layout column fill-height style="background-color: #89a226">
-            <v-flex sm1 xs2>
-                <map-page-header></map-page-header>
+            <v-flex sm1 xs2 >
+                <map-page-header :parent="this"></map-page-header>
             </v-flex>
 
             <v-flex style="position: relative">
@@ -60,14 +60,14 @@
                                             pt-0>
                                         <template v-for="(item, index) in items">
                                             <v-list-tile
-                                                    :key="item.title"
+                                                    :key="item.name"
                                                     avatar
                                                     ripple
                                                     style="background-color: rgba(137, 163, 36, 0.9);"
                                             >
                                                 <v-list-tile-content>
-                                                    <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                                                    <v-list-tile-sub-title class="white--text">{{ item.headline }}
+                                                    <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                                                    <v-list-tile-sub-title class="white--text">{{ item.information }}
                                                     </v-list-tile-sub-title>
                                                 </v-list-tile-content>
                                             </v-list-tile>
@@ -118,110 +118,19 @@
                 center: L.latLng(51.7142669290121, 5.3173828125),
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                markers: [],
-                polygons: [],
-                polylines: [],
-                rectangles: [],
                 buttonImage: "img/MapPage/button.png",
-                LeftDropDownButton: ['Projectnaam A', 'Projectnaam B', 'Projectnaam C'],
-                RightDropDownButton: ['Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks'],
-                popupContent: ' <button href="javascript:;" @click="console.log("wow")">terms</button>',
+
+                pressedImages: { activiteit: false, "eten en drinken": false, bezienswaardigheid: false, natuurgebied: false },
 
                 searchFieldIsFocused: false,
                 searchInput: '',
-                items: [
-                    {
-                        action: '15 min',
-                        headline: 'Brunch this weekend?',
-                        title: 'Ali Connors',
-                        subtitle: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-                    },
-                    {
-                        action: '2 hr',
-                        headline: 'Summer BBQ',
-                        title: 'me, Scrott, Jennifer',
-                        subtitle: "Wish I could come, but I'm out of town this weekend."
-                    },
-                    {
-                        action: '6 hr',
-                        headline: 'Oui oui',
-                        title: 'Sandra Adams',
-                        subtitle: 'Do you have Paris recommendations? Have you ever been?'
-                    },
-                    {
-                        action: '12 hr',
-                        headline: 'Birthday gift',
-                        title: 'Trevor Hansen',
-                        subtitle: 'Have any ideas about what we should get Heidi for her birthday?'
-                    },
-                    {
-                        action: '18hr',
-                        headline: 'Recipe to try',
-                        title: 'Britta Holt',
-                        subtitle: 'We should eat this: Grate, Squash, Corn, and tomatillo Tacos.'
-                    }, {
-                        action: '15 min',
-                        headline: 'Brunch this weekend?',
-                        title: 'WOW',
-                        subtitle: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-                    },
-                    {
-                        action: '2 hr',
-                        headline: 'Summer BBQ',
-                        title: 'Wow2',
-                        subtitle: "Wish I could come, but I'm out of town this weekend."
-                    },
-                    {
-                        action: '6 hr',
-                        headline: 'Oui oui',
-                        title: 'Wow3',
-                        subtitle: 'Do you have Paris recommendations? Have you ever been?'
-                    },
-                    {
-                        action: '12 hr',
-                        headline: 'Birthday gift',
-                        title: 'Wow4',
-                        subtitle: 'Have any ideas about what we should get Heidi for her birthday?'
-                    },
-                    {
-                        action: '18hr',
-                        headline: 'Recipe to try',
-                        title: 'Wow10',
-                        subtitle: 'We should eat this: Grate, Squash, Corn, and tomatillo Tacos.'
-                    }, {
-                        action: '15 min',
-                        headline: 'Brunch this weekend?',
-                        title: 'Wow5',
-                        subtitle: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-                    },
-                    {
-                        action: '2 hr',
-                        headline: 'Summer BBQ',
-                        title: 'Wow6',
-                        subtitle: "Wish I could come, but I'm out of town this weekend."
-                    },
-                    {
-                        action: '6 hr',
-                        headline: 'Oui oui',
-                        title: 'Wow7',
-                        subtitle: 'Do you have Paris recommendations? Have you ever been?'
-                    },
-                    {
-                        action: '12 hr',
-                        headline: 'Birthday gift',
-                        title: 'Wow8',
-                        subtitle: 'Have any ideas about what we should get Heidi for her birthday?'
-                    },
-                    {
-                        action: '18hr',
-                        headline: 'Recipe to try',
-                        title: 'Wow9',
-                        subtitle: 'We should eat this: Grate, Squash, Corn, and tomatillo Tacos.'
-                    }
-                ]
+                items: []
             }
         },
         methods: {
+            filter(key){
+                this.pressedImages[key] = !this.pressedImages[key];
+            },
             disableInputEvents(element) {
                 this.$parent.disableInputEvents(element);
             },
@@ -230,50 +139,36 @@
             },
             OpenRoutePagePressed: function () {
                 this.onRoutePageOpened();
-            },
-            createPolygon: function (id, coordinates) {
-                let points = [];
-                for (let k = 0; k < coordinates[0].length; k++) {
-                    points.push(L.latLng(coordinates[0][k][1], coordinates[0][k][0]));
-                }
-                this.polygons.push({"id": id, "latlng": points});
-            },
-            createPoint: function (id, coordinates) {
-                this.markers.push({"id": id, "latlng": L.latLng(coordinates[1], coordinates[0])});
-            },
-            loadMapObjects: function () {
-                axios.get('/getAllProjectPoints').then(({data}) => {
-                    for (let i = 0; i < data.length; i++) {
-                        if (data[i].info.type === "Point") {
-                            this.createPoint(data[i].id, data[i].info.coordinates);
-                        } else if (data[i].info.type === "GeometryCollection") {
-                            for (let j = 0; j < data[i].info.geometries.length; j++) {
-                                if (data[i].info.geometries[j].type === "Point") {
-                                    this.createPoint(data[i].id, data[i].info.geometries[j].coordinates);
-                                } else if (data[i].info.geometries[j].type === "Polygon") {
-                                    this.createPolygon(data[i].id, data[i].info.geometries[j].coordinates);
-                                } else {
-                                    let points = [];
-                                    for (let k = 0; k < data[i].info.geometries[j].coordinates.length; k++) {
-                                        points.push(L.latLng(data[i].info.geometries[j].coordinates[k][1], data[i].info.geometries[j].coordinates[k][0]));
-                                    }
-                                    if (data[i].info.geometries[j].type === "LineString") this.polylines.push({
-                                        "id": data[i].id,
-                                        "latlng": points
-                                    });
-                                    else if (data[i].info.geometries[j].type === "Rectangle") this.rectangles.push({
-                                        "id": [data[i].id],
-                                        "latlng": points
-                                    });
-                                }
-                            }
-                        }
-                    }
-                });
-            },
+            }
+        },
+        watch: {
+            searchInput: function(){
+                this.items = [];
+                axios.get("/searchForProjectPoint/"+this.searchInput)
+                    .then(({ data }) => {
+                        for(let i = 0; i < data.length; i++)
+                            this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
+                    });
+
+                axios.get("/searchForProject/"+this.searchInput)
+                    .then(({ data }) => {
+                        for(let i = 0; i < data.length; i++)
+                            this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
+                    });
+            }
         },
         mounted() {
-            this.loadMapObjects();
+            axios.get("/getAllProjectPointsFullInfo")
+                .then(({ data }) => {
+                    for(let i = 0; i < data.length; i++)
+                        this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
+                });
+
+            axios.get("/getProjects")
+                .then(({ data }) => {
+                    for(let i = 0; i < data.length; i++)
+                        this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: true});
+                });
 
             this.$watch(
                 () => {
@@ -360,7 +255,7 @@
     .searchBarAboveMap {
         position: absolute;
         z-index: 1000;
-        top: 0;
+        bottom: 0;
         right: 0;
         width: 25%;
     }

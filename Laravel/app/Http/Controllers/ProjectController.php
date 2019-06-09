@@ -29,6 +29,12 @@ class ProjectController extends Controller
         }
     }
 
+    public function searchForName($name){
+        if(isset($name)){
+            return json_encode(Project::where("name", "LIKE", "%" . $name . "%")->get());
+        }else return abort(400);
+    }
+
     public function create() {
         return view('createProject');
     }

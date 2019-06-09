@@ -6,25 +6,27 @@
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
         <template v-for="marker in markers">
-            <l-marker :lat-lng="marker.latlng" :icon="redPin" style="transform: scale(0.1)">
+            <l-marker :key="marker.id" v-if="isAllowedCategory(marker.category)" :lat-lng="marker.latlng" :icon="redPin"
+                      style="transform: scale(0.1)">
                 <pop-up :id="marker.id" :parent="marker.parent"></pop-up>
             </l-marker>
         </template>
 
         <template v-for="polygon in polygons">
-            <l-polygon :lat-lngs="polygon.latlng" :color="polygonLineColor" :fill-color="polygonFillColor" :fill-opacity="0.6" >
+            <l-polygon :key="polygon.id" v-if="isAllowedCategory(polygon.category)" :lat-lngs="polygon.latlng"
+                       :color="polygonLineColor" :fill-color="polygonFillColor" :fill-opacity="0.6">
                 <pop-up :id="polygon.id" :parent="polygon.parent"></pop-up>
             </l-polygon>
         </template>
 
         <template v-for="polyline in polylines">
-            <l-polyline :lat-lngs="polyline.latlng">
+            <l-polyline :key="polyline.id" v-if="isAllowedCategory(polyline.category)" :lat-lngs="polyline.latlng">
                 <pop-up :id="polyline.id" :parent="polyline.parent"></pop-up>
             </l-polyline>
         </template>
 
         <template v-for="rectangle in rectangles">
-            <l-polyline :lat-lngs="rectangle.latlng">
+            <l-polyline :key="rectangle.id" v-if="isAllowedCategory(rectangle.category)" :lat-lngs="rectangle.latlng">
                 <pop-up :id="rectangle.id" :parent="rectangle.parent"></pop-up>
             </l-polyline>
         </template>
@@ -78,21 +80,31 @@
             }
         },
         methods: {
+            isAllowedCategory(cat) {
+                if (cat in this.parentPage.pressedImages) {
+                    return this.parentPage.pressedImages[cat];
+                } else return true;
+            },
             disableInputEvents(element) {
                 this.$parent.disableInputEvents(element);
             },
             OpenProjectPagePressed: function (projectId) {
                 this.parentPage.onProjectOpened(projectId);
             },
-            createPolygon: function (id, coordinates) {
+            createPolygon: function (id, coordinates, category) {
                 let points = [];
                 for (let k = 0; k < coordinates[0].length; k++) {
                     points.push(L.latLng(coordinates[0][k][1], coordinates[0][k][0]));
                 }
-                this.polygons.push({"id": id, "latlng": points, parent: this});
+                this.polygons.push({"id": id, "latlng": points, parent: this, category: category});
             },
-            createPoint: function (id, coordinates) {
-                this.markers.push({"id": id, "latlng": L.latLng(coordinates[1], coordinates[0]), parent: this});
+            createPoint: function (id, coordinates, category) {
+                this.markers.push({
+                    "id": id,
+                    "latlng": L.latLng(coordinates[1], coordinates[0]),
+                    parent: this,
+                    category: category
+                });
             },
             loadMapObjects: function () {
                 axios.get('/getAllProjectPoints').then(({data}) => {
@@ -102,9 +114,9 @@
                         } else if (data[i].info.type == "GeometryCollection") {
                             for (let j = 0; j < data[i].info.geometries.length; j++) {
                                 if (data[i].info.geometries[j].type == "Point") {
-                                    this.createPoint(data[i].id, data[i].info.geometries[j].coordinates);
+                                    this.createPoint(data[i].id, data[i].info.geometries[j].coordinates, data[i].category);
                                 } else if (data[i].info.geometries[j].type == "Polygon") {
-                                    this.createPolygon(data[i].id, data[i].info.geometries[j].coordinates);
+                                    this.createPolygon(data[i].id, data[i].info.geometries[j].coordinates, data[i].category);
                                 } else {
                                     let points = [];
                                     for (let k = 0; k < data[i].info.geometries[j].coordinates.length; k++) {
@@ -113,12 +125,14 @@
                                     if (data[i].info.geometries[j].type == "LineString") this.polylines.push({
                                         "id": data[i].id,
                                         "latlng": points,
-                                        parent: this
+                                        parent: this,
+                                        category: data[i].category
                                     });
                                     else if (data[i].info.geometries[j].type == "Rectangle") this.rectangles.push({
                                         "id": [data[i].id],
                                         "latlng": points,
-                                        parent: this
+                                        parent: this,
+                                        category: data[i].category
                                     });
                                 }
                             }

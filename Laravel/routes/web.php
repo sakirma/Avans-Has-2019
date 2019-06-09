@@ -83,6 +83,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 });
 
+Route::get("/searchForProject/{name}", "ProjectController@searchForName");
+Route::get("/searchForProjectPoint/{name}", "ProjectPointsController@searchForName");
 
 // Return only data
 Route::get('/getCategories', 'MainPageController@getCatagories');
