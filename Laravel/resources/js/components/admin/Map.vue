@@ -43,6 +43,11 @@
                 center: L.latLng(51.7142669290121, 5.3173828125),
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
             }
+        },
+        methods: {
+            getMapObject(){
+                return this.$refs.map.mapObject;
+            },
         }
     }
 </script>

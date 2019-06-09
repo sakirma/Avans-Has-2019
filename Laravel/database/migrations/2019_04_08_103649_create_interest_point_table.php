@@ -21,14 +21,14 @@ class CreateInterestPointTable extends Migration
             $table->point('location');
             $table->geometryCollection('area')->nullable();
 
-            $table->string('name', 255);
+            $table->string('name', 255)->unique();
             $table->longText('information');
-            $table->string('category')->nullable();
+            $table->string('category');
         });
 
         Schema::table('interest_point', function (Blueprint $table) {
             $table->foreign('project_id')->references('id')->on('project')->onDelete('cascade');
-            $table->foreign('category')->references('name')->on('category')->onDelete('set null');
+            $table->foreign('category')->references('name')->on('category')->onDelete('restrict');
         });
     }
 
