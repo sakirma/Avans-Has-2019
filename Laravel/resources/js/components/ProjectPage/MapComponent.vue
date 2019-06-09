@@ -92,10 +92,6 @@
             OpenProjectPagePressed: function (projectId) {
                 this.parentPage.onProjectOpened(projectId);
             },
-            isProject(item){
-                if(item.project_id) return true;
-                return false;
-            },
             createPolygon: function (data, coordinates) {
                 let points = [];
                 for (let k = 0; k < coordinates[0].length; k++) {
@@ -112,9 +108,9 @@
             },
             loadMapObjects: function (data) {
                 for (let i = 0; i < data.length; i++) {
-                    if(data[i].location) data[i].info = data[i].location;
-                    else if(data[i].area) {
-                        data[i].info = data[i].area;
+                    if(data[i].area) data[i].info = data[i].area;
+                    else if(data[i].location) {
+                        data[i].info = data[i].location;
                     }
                     else continue;
 
