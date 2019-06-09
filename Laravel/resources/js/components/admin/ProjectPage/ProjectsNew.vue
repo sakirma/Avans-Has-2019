@@ -135,8 +135,14 @@
                                     'Content-Type': 'multipart/form-data'
                                 }
                             }
-                        );
+                        ).catch(error => {
+                            alert("Er ging iets mis bij het opslaan van het project!");
+                            console.log(error);
+                        });
                     }
+                }).catch(error => {
+                    alert("Er ging iets mis bij het opslaan van het project!");
+                    console.log(error);
                 });
                 this.close();
             }
