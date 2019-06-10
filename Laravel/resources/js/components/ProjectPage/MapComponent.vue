@@ -83,8 +83,8 @@
                     return true;
 
                 if (cat in this.parentPage.pressedImages)
-                    return this.parentPage.pressedImages[cat];
-                else return true;
+                    return !this.parentPage.pressedImages[cat];
+                else return false;
             },
             disableInputEvents(element) {
                 this.$parent.disableInputEvents(element);
