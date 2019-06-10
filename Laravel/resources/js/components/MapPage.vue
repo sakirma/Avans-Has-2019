@@ -1,7 +1,7 @@
 <template>
     <div id="mapPage" style="height: 100vh;">
         <v-layout column fill-height style="background-color: #89a226">
-            <v-flex sm1 xs2 >
+            <v-flex sm1 xs2>
                 <map-page-header :parent="this"></map-page-header>
             </v-flex>
 
@@ -38,8 +38,8 @@
 
                 <v-layout column justify-start class="searchBarAboveMap" :fill-height="searchFieldIsFocused === true"
                           :class="{'backgroundOnFieldFocused': searchFieldIsFocused === true}">
-                    <v-flex d-flex>
-                        <v-layout row align-center justify-center>
+                    <v-flex xs1>
+                        <v-layout row align-start justify-center>
                             <v-text-field
                                     hide-details
                                     class="mx-3 py-2"
@@ -47,8 +47,11 @@
                                     prepend-inner-icon="search"
                                     solo
                                     v-model="searchInput"
-                            >  </v-text-field>
-                            <v-btn fab v-if="searchFieldIsFocused === true" @click="() => {this.searchFieldIsFocused = false}"> <v-icon large>close</v-icon> </v-btn>
+                            ></v-text-field>
+                            <v-btn fab v-if="searchFieldIsFocused === true"
+                                   @click="() => {this.searchFieldIsFocused = false}">
+                                <v-icon large>close</v-icon>
+                            </v-btn>
                         </v-layout>
                     </v-flex>
                     <div v-bar>
@@ -64,6 +67,7 @@
                                                     avatar
                                                     ripple
                                                     style="background-color: rgba(137, 163, 36, 0.9);"
+                                                    @click="searchTileClicked(item)"
                                             >
                                                 <v-list-tile-content>
                                                     <v-list-tile-title>{{ item.name }}</v-list-tile-title>
@@ -124,7 +128,12 @@
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 buttonImage: "img/MapPage/button.png",
 
-                pressedImages: { activiteit: false, "eten en drinken": false, bezienswaardigheid: false, natuurgebied: false },
+                pressedImages: {
+                    activiteit: false,
+                    "eten en drinken": false,
+                    bezienswaardigheid: false,
+                    natuurgebied: false
+                },
 
                 searchFieldIsFocused: false,
                 searchInput: '',
@@ -132,21 +141,24 @@
             }
         },
         methods: {
-            filter(key){
+            filter(key) {
                 this.pressedImages[key] = !this.pressedImages[key];
             },
             disableInputEvents(element) {
                 this.$parent.disableInputEvents(element);
             },
-            OpenProjectPagePressed: function (projectId, isProject){
+            OpenProjectPagePressed: function (projectId, isProject) {
                 this.onProjectOpened(projectId, isProject);
             },
             OpenRoutePagePressed: function () {
                 this.onRoutePageOpened();
+            },
+            searchTileClicked(item) {
+                this.OpenProjectPagePressed(item.id, !item.project_id);
             }
         },
         watch: {
-            searchInput: function(n, o){
+            searchInput: function (n, o) {
                 this.filteredMapObjects = this.mapObjects.filter(item => {
                     return item.name.toLowerCase().includes(n.toLowerCase());
                 });
@@ -155,11 +167,12 @@
         mounted() {
             this.$refs.mapComponent.assignParentPage(this);
             axios.get("/getAllMapObjects")
-                .then(({ data }) => {
-                    for(let i = 0; i < data.length; i++) {
+                .then(({data}) => {
+                    for (let i = 0; i < data.length; i++) {
                         this.mapObjects.push(data[i]);
                     }
                     this.$refs.mapComponent.loadMapObjects(this.mapObjects);
+                    this.filteredMapObjects = this.mapObjects;
                 });
 
             this.$watch(
@@ -247,7 +260,7 @@
     .searchBarAboveMap {
         position: absolute;
         z-index: 1000;
-        bottom: 0;
+        top: 0;
         right: 0;
         width: 25%;
     }
