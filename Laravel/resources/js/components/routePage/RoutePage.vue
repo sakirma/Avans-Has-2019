@@ -16,27 +16,6 @@
                         </v-layout>
                     </v-container>
                 </div>
-<!--                <l-map :center="center" :zoom="zoom" id="map" ref="map" style="height:100%;">-->
-<!--                    <v-container fluid grid-list-md ma-0 pa-0>-->
-                <!--                        <v-layout align-start fill-height justify-end row>-->
-                <!--                            <list-routes :routesParent="this"></list-routes>-->
-                <!--                        </v-layout>-->
-                <!--                        <v-layout justify-end>-->
-                <!--                            <v-btn class="putOnTop" v-on:click="exportToGoogle">Bekijk de route in Google Maps</v-btn>-->
-                <!--                        </v-layout>-->
-                <!--                    </v-container>-->
-
-<!--                    <l-tile-layer :attribution="attribution" :url="url"></l-tile-layer>-->
-
-<!--                    <template v-for="(marker, index) in markers">-->
-<!--                        <l-marker :key="index" :lat-lng="marker.latlng">-->
-<!--                            <l-popup>-->
-<!--                                <v-btn @click="OpenProjectPagePressed(1)">To Project Page</v-btn>-->
-<!--                            </l-popup>-->
-<!--                        </l-marker>-->
-<!--                    </template>-->
-
-<!--                </l-map>-->
                 <map-component ref="mapComponent"></map-component>
             </v-flex>
 
