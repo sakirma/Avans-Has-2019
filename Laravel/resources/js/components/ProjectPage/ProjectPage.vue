@@ -2,7 +2,7 @@
     <div style="height: 100vh;  background-color: #89a226;">
         <v-layout column fill-height>
             <v-flex xs1 ma-3>
-                <project-page-header></project-page-header>
+                <project-page-header :name="name"></project-page-header>
             </v-flex>
 
             <v-container ml-0 pl-0 fluid grid-list-md style="background-color: white; "
@@ -102,7 +102,8 @@
                 images: [],
                 comments: [],
                 mapPage: undefined,
-                mapObjects: []
+                mapObjects: [],
+                name: ''
             }
         },
         props: {
@@ -127,6 +128,7 @@
                 axios.get(linkOne+id).then(({ data }) => {
                     this.information = data.information;
                     this.comments = data.comments;
+                    this.name = data.name;
                 });
 
                 axios.get(linkTwo+id).then(({ data }) => {
