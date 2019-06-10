@@ -206,12 +206,14 @@
                 });
             },
             remove(){
-                axios.post("/beheer/removeProject", { id: this.id })
-                    .catch((error) => {
-                        alert("Er ging iets mis bij het verwijderen...");
-                        console.log(error.message);
-                    });
-                this.close();
+                if (confirm('Weet u zeker dat u dit project wilt verwijderen?')) {
+                    axios.post("/beheer/removeProject", {id: this.id})
+                        .catch((error) => {
+                            alert("Er ging iets mis bij het verwijderen...");
+                            console.log(error.message);
+                        });
+                    this.close();
+                }
             }
         },
         mounted(){

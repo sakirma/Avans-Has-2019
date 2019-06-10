@@ -58,7 +58,7 @@
                                     <v-list style="background-color: transparent; width: 100%; padding: 0;"
                                             class="white--text" two-line
                                             pt-0>
-                                        <template v-for="(item, index) in items">
+                                        <template v-for="(item, index) in filteredMapObjects">
                                             <v-list-tile
                                                     :key="item.name"
                                                     avatar
@@ -72,7 +72,7 @@
                                                 </v-list-tile-content>
                                             </v-list-tile>
                                             <v-divider
-                                                    v-if="index + 1 < items.length"
+                                                    v-if="index + 1 < mapObjects.length"
                                                     :key="index"
                                             ></v-divider>
                                         </template>
@@ -110,6 +110,10 @@
             },
             onRoutePageOpened: {
                 type: Function,
+            },
+            mapObjects: {
+                type: Array,
+                required: true
             }
         },
         data() {
@@ -124,7 +128,7 @@
 
                 searchFieldIsFocused: false,
                 searchInput: '',
-                items: []
+                filteredMapObjects: []
             }
         },
         methods: {
@@ -134,41 +138,28 @@
             disableInputEvents(element) {
                 this.$parent.disableInputEvents(element);
             },
-            OpenProjectPagePressed: function (projectId) {
-                this.onProjectOpened(projectId);
+            OpenProjectPagePressed: function (projectId, isProject){
+                this.onProjectOpened(projectId, isProject);
             },
             OpenRoutePagePressed: function () {
                 this.onRoutePageOpened();
             }
         },
         watch: {
-            searchInput: function(){
-                this.items = [];
-                axios.get("/searchForProjectPoint/"+this.searchInput)
-                    .then(({ data }) => {
-                        for(let i = 0; i < data.length; i++)
-                            this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
-                    });
-
-                axios.get("/searchForProject/"+this.searchInput)
-                    .then(({ data }) => {
-                        for(let i = 0; i < data.length; i++)
-                            this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
-                    });
+            searchInput: function(n, o){
+                this.filteredMapObjects = this.mapObjects.filter(item => {
+                    return item.name.toLowerCase().includes(n.toLowerCase());
+                });
             }
         },
         mounted() {
             this.$refs.mapComponent.assignParentPage(this);
-            axios.get("/getAllProjectPointsFullInfo")
+            axios.get("/getAllMapObjects")
                 .then(({ data }) => {
-                    for(let i = 0; i < data.length; i++)
-                        this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
-                });
-
-            axios.get("/getProjects")
-                .then(({ data }) => {
-                    for(let i = 0; i < data.length; i++)
-                        this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: true});
+                    for(let i = 0; i < data.length; i++) {
+                        this.mapObjects.push(data[i]);
+                    }
+                    this.$refs.mapComponent.loadMapObjects(this.mapObjects);
                 });
 
             this.$watch(

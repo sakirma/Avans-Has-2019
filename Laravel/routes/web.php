@@ -100,6 +100,7 @@ Route::get("/searchForProjectPoint/{name}", "ProjectPointsController@searchForNa
 // Return only data
 Route::get('/getCategories', 'MainPageController@getCatagories');
 Route::get('/getProjects', 'ProjectController@getProjects');
+Route::get("/getAllMapObjects", "ProjectController@getAllMapObjects");
 Route::get('/getProject/{id}', 'ProjectController@getProject');
 Route::get('/getMediaFromProject/{id}', 'ProjectController@getMedia');
 Route::get('/getProjectNames', 'ProjectController@getProjectNames');
