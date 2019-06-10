@@ -7,22 +7,6 @@ let routingControl;
 
 export default {
 
-    //
-    /*function mousePlaceMarker(e) {
-
-        L.marker(e.latlng,{
-            draggable: true,
-            riseOnHover:true
-        }).on('dragend', calculateRoute).addTo(projectMarkers);
-
-        if (projectMarkers.getLayers().length > 1) {
-            console.log(projectMarkers);
-            calculateRoute();
-        }
-    }*/
-    getDistanceAndDuration: function () {
-        return routeInformation
-    },
     getProjectMarkers: function () {
         return projectMarkers;
     },
@@ -61,27 +45,15 @@ export default {
             route.ids.push(layers[i].options.id);
         }
 
-        // let xhttp = new XMLHttpRequest();
-        // let token = document.getElementsByName('csrf-token')[0].getAttribute('content');
-        // let jroute = JSON.stringify(route);
-        //
-        //
-        // //TODO: verander dit naar fetch.
-        // xhttp.open('POST', '/admin/route/create');
-        // xhttp.setRequestHeader('X-CSRF-Token', token);
-        // xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        // xhttp.send(jroute);
-
         axios.post('/admin/route/create', route).then(response => {
            console.log(response);
         }).catch(error => {
             console.log(error);
         });
 
-        //window.alert("Route aangemaakt!");
-        //location.reload();
+        window.alert("Route aangemaakt!");
+        location.reload();
     },
-
     placeMarker: function (point) {
 
         //let projectInfo = await this.getProjectInfo(id);
@@ -155,14 +127,6 @@ export default {
         routingControl.setWaypoints(newRoutes);
     },
 
-    checkCheckbox: function (id) {
-        let checkbox = document.getElementById(id);
-        if (checkbox === null) return;
-
-        checkbox.checked = true;
-    },
-
-
     mouseRemoveMarker: function (e) {
 
         projectMarkers.removeLayer(e.layer);
@@ -213,37 +177,9 @@ export default {
                     '<p> Informatie: ' + projectInfo + '</p>'
                 ).addTo(projectMarkers);
 
-            /*let layers = projectMarkers.getLayers();
-            map.setView(layers[0].getLatLng());*/
-            //.on('dragend', calculateRoute)
-
-            //let c = elem.childNodes;
-            //c[1].innerHTML = "Totale km: " + Math.round((e.routes[0].summary.totalDistance / 1000) * 100) / 100;
-            //c[3].innerHTML = "Totale reistijd: " + (timeConvert(e.routes[0].summary.totalTime));
         }
     },
 
-    timeConvert: function (n) {
-        let num = n;
-        let min = (num / 60);
-        let rmin = Math.floor(min);
-        let hours = (rmin / 60);
-        let rhours = Math.floor(hours);
-        let minutes = (hours - rhours) * 60;
-        let rminutes = Math.round(minutes);
-        return rhours + " uur(en) en " + rminutes + " minuut(en).";
-    },
-
-    saveMarker: function (id) {
-        let layers = projectMarkers.getLayers();
-
-        for (let i = 0; i < layers.length; i++) {
-            if (layers[i].options.id === id) {
-                let content = layers[i].getPopup().getContent();
-                console.log(content);
-            }
-        }
-    },
 
     createWaypoints: function () {
 
@@ -257,7 +193,6 @@ export default {
                 info: markers[i].options.info
             }));
         }
-
         return waypoints;
     },
 
@@ -299,7 +234,8 @@ export default {
                 }
 
                 console.log(xhttp.response);
-                //location.reload();
+                window.alert("Route succesvol verwijderd!");
+                location.reload();
             };
 
             xhttp.setRequestHeader('X-CSRF-Token', token);

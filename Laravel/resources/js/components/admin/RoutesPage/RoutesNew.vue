@@ -8,6 +8,14 @@
                 </v-btn>
             </v-layout>
 
+            <v-alert
+                    :value="alert.success"
+                    type="success"
+                    transition="scale-transition"
+            >
+                Route is aangemaakt.
+            </v-alert>
+
             <v-layout column>
                 <v-flex xs1>
                     <v-layout row>
@@ -118,6 +126,12 @@
                     distance: 0,
                     time: 0,
                 },
+
+                alert: {
+                    success: false,
+                    failed: false,
+                    warning: false,
+                },
             }
         },
         computed: {
@@ -156,6 +170,9 @@
                     distance: Number(Math.round(e.routes[0].summary.totalDistance / 1000 + 'e2') + 'e-2'),
                     time: Number(Math.round(e.routes[0].summary.totalTime / 3600 + 'e2') + 'e-2'),
                 };
+            },
+            clearMarkers: function () {
+                leaflet_create.default.clearMarkers();
             },
             removePoint: function (point) {
                 leaflet_create.default.removeMarker(point);
