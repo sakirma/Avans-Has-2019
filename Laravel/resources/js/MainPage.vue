@@ -33,7 +33,8 @@
             return {
                 selectedProjectPage: {
                     isSelected: false,
-                    projectId: undefined
+                    projectId: undefined,
+                    project: false
                 },
                 selectedRoutePage: false,
                 firstPageEnabled: true,
