@@ -114,7 +114,12 @@ class ProjectPointsController extends Controller
     public function getAllPointsFullInfo(){
         return json_encode(ProjectPoint::all());
     }
+    public function getSimilarCatagories(Request $request){
+        $category = $request->category;
+        $categories =  ProjectPoint::where('category', $category)->get();
 
+        return json_encode($categories);
+    }
     public function getAllPoints(){
         $points = ProjectPoint::all();
         $arr = [];

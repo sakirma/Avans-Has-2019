@@ -10,14 +10,38 @@
                 <v-layout row fill-height>
                     <v-layout column fill-height>
                         <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
-                            <v-card flat style="background-color: #A0B550; position:relative; overflow-y: hidden;"
-                                    v-bar>
-                                <v-card-text style="position: absolute;">
-                                    {{ information }}
-                                    <br>
-                                    <!-- {{ comments }} -->
-                                </v-card-text>
-                            </v-card>
+                            <v-layout column fill-height style="background-color: #A0B550;">
+
+                                <v-flex xs8>
+                                    <v-card flat
+                                            style=" background-color: transparent; position:relative; overflow-y: hidden; height: 100%;"
+                                            v-bar>
+                                        <v-card-text style="position: absolute;">
+                                            {{ information }}
+                                            <br>
+                                            <!-- {{ comments }} -->
+                                        </v-card-text>
+                                    </v-card>
+                                </v-flex>
+
+                                <v-flex xs4>
+                                    <v-layout row fill-height>
+                                        <v-card v-for="(suggestion, i) in suggestions"
+                                                :key="i"
+                                                flat
+                                                style="cursor: pointer; background-color: #acb581;; position:relative; overflow-y: hidden;"
+                                                @click="init(suggestion.id)"
+                                        >
+
+                                            <v-card-text>
+                                                {{suggestion.name}} <br>
+                                                {{suggestion.category}}
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-layout>
+                                </v-flex>
+
+                            </v-layout>
                         </v-flex>
                         <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]"
                                 align-self-end>
@@ -103,7 +127,9 @@
                 comments: [],
                 mapPage: undefined,
                 mapObjects: [],
-                name: ''
+                name: '',
+
+                suggestions: [],
             }
         },
         props: {
@@ -116,24 +142,58 @@
             }
         },
         methods: {
-            init() {
+            init(pid) {
+
                 this.images = [];
-                let id = this.$parent.selectedProjectPage.projectId;
+                this.suggestions = [];
+
+                let id = pid;
+                if(!id) { id = this.$parent.selectedProjectPage.projectId; }
+
                 let linkOne = "/getProjectPoint/";
                 let linkTwo = "/getMediaFromProjectPoint/";
-                if(this.$parent.selectedProjectPage.project){
+                let t = this;
+
+                if (this.$parent.selectedProjectPage.project) {
                     linkOne = "/getProject/";
                     linkTwo = "/getMediaFromProject/";
                 }
-                axios.get(linkOne+id).then(({ data }) => {
+                axios.get(linkOne + id).then(({data}) => {
                     this.information = data.information;
                     this.comments = data.comments;
                     this.name = data.name;
+
+                    this.findRecommendations(data.category, t);
                 });
 
-                axios.get(linkTwo+id).then(({ data }) => {
-                    for(let i = 0; i < data.length; i++)
+                axios.get(linkTwo + id).then(({data}) => {
+                    for (let i = 0; i < data.length; i++)
                         this.images.push("getmedia/" + data[i]);
+                });
+            },
+            findRecommendations(category, t) {
+                axios.post('/projectpoints/similar', {
+                    category: category,
+                }).then(function (response) {
+
+                    let data = response.data;
+
+                    for (let i = 0; i < data.length; i++) {
+
+                        if(i > 4) break;
+
+                        let suggestion = {
+                            id: data[i].id,
+                            name: data[i].name,
+                            information: data[i].information,
+                            category: data[i].category,
+                        };
+
+                        t.suggestions.push(suggestion);
+                    }
+
+                }).catch(function (error) {
+                    console.log(error);
                 });
             }
         },
@@ -143,8 +203,8 @@
             this.$refs.mapComponent.assignParentPage(this.mapPage);
 
             axios.get("/getAllMapObjects")
-                .then(({ data }) => {
-                    for(let i = 0; i < data.length; i++) {
+                .then(({data}) => {
+                    for (let i = 0; i < data.length; i++) {
                         this.mapObjects.push(data[i]);
                     }
                     this.$refs.mapComponent.loadMapObjects(this.mapObjects);
