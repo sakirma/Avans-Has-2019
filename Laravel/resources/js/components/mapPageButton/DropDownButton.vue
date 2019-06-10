@@ -6,9 +6,11 @@
                 <v-flex class="white--text font-weight-bold">
                     {{ buttonTitle }}
                 </v-flex>
-                <v-icon style="height: 10px;" large color="white">
-                    expand_more
-                </v-icon>
+                <transition name="fade">
+                    <v-icon style="height: 10px;" id="arrow_down" large color="white" :class="{'rotateArrow': expand}">
+                        expand_more
+                    </v-icon>
+                </transition>
             </v-layout>
         </v-btn>
 
@@ -97,10 +99,17 @@
         display: none;
     }
 
-    .vb-dragger {
-    }
-
     .removeScrollBar {
         scrollbar-width: none;
+    }
+
+    #arrow_down {
+        -webkit-transition: -webkit-transform 0.2s; /* Safari */
+        transition: transform 0.2s;
+    }
+
+    #arrow_down.rotateArrow {
+        -webkit-transform: rotate(180deg); /* Safari */
+        transform: rotate(180deg);
     }
 </style>

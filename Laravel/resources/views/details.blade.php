@@ -27,6 +27,7 @@
                 <img src="{{ asset('img/about-banner2.jpg') }}" alt="den bosch bossen">
                 <h1>Details van {{ $model->name }}</h1>
             </div>
+
             <table>
                 <tr>
                     <th>Naam:</th>
@@ -38,17 +39,39 @@
                 </tr>
                 <tr>
                     <th>Category:</th>
-                    <td>{{ $project->category }}</td>
+                    <td>{{ $model->project->category }}</td>
                 </tr>
                 <tr>
                     <th>Name:</th>
-                    <td>{{ $project->name }}</td>
+                    <td>{{ $model->project->name }}</td>
                 </tr>
                 <tr>
                     <th>Category informatie:</th>
-                    <td>{{ $project->information }}</td>
+                    <td>{{ $model->project->information }}</td>
                 </tr>
             </table>
+
+            <br><br><br><br>
+
+            <p>Suggesties:</p>
+            <table border="2">
+                @foreach($model->comments as $comment)
+                    <tr>
+                        <td>{{ $comment->text }}</td>
+                        <td>{{ $comment->created_at }}</td>
+                    </tr>
+                @endforeach
+            </table>
+
+            <br><br><br><br>
+
+            <p>Laat een suggestie achter:</p>
+            <form method="post" action="{{ route('comments.add') }}">
+                @csrf
+                <input type="hidden" name="point_id" value="{{ $model->id }}">
+                <input type="text" name="text"><br>
+                <input type="submit" value="Toevoegen">
+            </form>
         </div>
     </body>
 </html>

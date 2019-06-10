@@ -2,7 +2,7 @@
     <div>
         <v-img
                 height="100vh"
-                src="img/FirstPage/wet-rainy-road-leaf-fallen-hd-gl.jpg">
+                src="/img/FirstPage/wet-rainy-road-leaf-fallen-hd-gl.jpg">
             <v-layout justify-end row fill-height style="transition: none;">
                 <v-flex xs12 sm4 lg5 xl4>
                     <v-card height="100vh" color="rgb(100, 130, 0, 0.5)"
@@ -22,7 +22,8 @@
                                 </v-card-text>
                             </v-flex>
 
-                            <v-flex shrink pa-3>
+                            <v-flex shrink pa-3
+                                    :class="{'mb-5': $vuetify.breakpoint.smAndDown, 'ma-0': $vuetify.breakpoint.mdAndUp}">
                                 <v-btn color="rgb(0, 0, 0, 1)" large fab @click="GoToMapPage">
                                     <v-icon x-large color="white">arrow_drop_down_circle</v-icon>
                                 </v-btn>
@@ -40,13 +41,35 @@
 
     export default {
         name: "FirstPage",
+        data() {
+            return {
+                ts: 0,
+            }
+        },
         methods: {
             GoToMapPage() {
-                this.$vuetify.goTo('#mapPage');
-                let pageStates = this.$store.getters.pageStates;
-                this.$store.commit('setPageState', pageStates.mapPage);
+                document.removeEventListener('touchmove', this.touchHandler);
+                document.removeEventListener('touchstart', this.touchStart);
+                this.$parent.OpenMapPage();
             },
-        }
+            touchHandler(e) {
+                let te = e.touches[0].clientY;
+                if (this.ts > te) {
+                    if ((this.ts - te) > 60) {
+
+                        this.GoToMapPage();
+                    }
+                }
+            },
+            touchStart(e) {
+                this.ts = e.touches[0].clientY;
+            },
+        },
+
+        mounted() {
+            document.addEventListener('touchmove', this.touchHandler, false);
+            document.addEventListener('touchstart', this.touchStart, false);
+        },
     }
 </script>
 

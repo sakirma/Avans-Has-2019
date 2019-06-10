@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use Grimzy\LaravelMysqlSpatial\Types\Geometry;
+use App\Models\ProjectPoint;
+use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
 {
@@ -15,22 +15,71 @@ class ProjectController extends Controller
      * featureCollection: JSON format of featureCollection GeoJson
      * pointWKT: Well Known Text for Point
      */
-    public function AddProject(Request $request)
-    {
-        $project = new Project;
 
-        $featureCollection = Geometry::fromJson($request->featureCollection);
-        $location = Point::fromWKT($request->pointWKT);
-
-        $project->geo_json = $featureCollection;
-        $project->location = $location;
-        $project->category = "c_lol";
-        $project->name = "gebruiker";
-        $project->information = "information_lol";
-
-        $project->save();
+    public function createProject(Request $request){
+        if(isset($request->category) && isset($request->name) && isset($request->information)){
+            $point = new Project();
+            if(isset($request->area)) $point->area = $request->area;
+            $point->name = $request->name;
+            $point->information= $request->information;
+            $point->category = $request->category;
+            $point->save();
+            return json_encode($point);
+        }else{
+            return abort(400);
+        }
     }
 
+    public function searchForName($name){
+        if(isset($name)){
+            return json_encode(Project::where("name", "LIKE", "%" . $name . "%")->get());
+        }else return abort(400);
+    }
+
+    public function create() {
+        return view('createProject');
+    }
+
+    public function edit ($id) {
+        $project = Project::find($id);
+        return $project->toJson();
+    }
+
+    public function update( Request $request){
+        if(isset($request->id) && isset($request->name) && isset($request->information) && isset($request->category)) {
+            $project = Project::find($request->id);
+            $project->name = $request->name;
+            $project->information = $request->information;
+            $project->category = $request->category;
+            if(isset($request->area)) $project->area = $request->area;
+            $project->save();
+            return json_encode($project);
+        }else{
+            return abort(400);
+        }
+    }
+
+    public function getProjects() {
+        return json_encode(Project::all());
+    }
+
+    public function getAllMapObjects() {
+        $projects = Project::all();
+        $points = ProjectPoint::all();
+        $arr = [];
+        foreach($projects as $project) $arr[] = $project;
+        foreach($points as $point) $arr[] = $point;
+        return json_encode($arr);
+    }
+
+    public function getMedia($id){
+        if(!isset($id)) return abort(400);
+        $model = Project::find($id);
+        $images = $model->imageProjects;
+        $names = [];
+        foreach($images as $image) $names[] = $image->media_name;
+        return json_encode($names);
+    }
 
     /**
      * @param Request $request
@@ -39,8 +88,7 @@ class ProjectController extends Controller
      *
      * @return Return Point Models
      */
-    public function GetProjectWithinDistance(Request $request)
-    {
+    public function getProjectWithinDistance(Request $request) {
         $usersPosition = Point::fromWKT($request->pointWKT);
         $containsPoint = Project::distance('location', $usersPosition, $request->withinDistance)->get();
 
@@ -53,13 +101,23 @@ class ProjectController extends Controller
      *
      * @return Return View project
      */
-    public function index(Request $request){
-        $project = Project::find($request['id']);
-        return view('project')->with(["project" => $project]);
+    public function getProject(Request $request){
+        if(!isset($request->id)) return abort(400);
+        return json_encode(Project::find($request->id));
+    }
+
+    public function main(){
+        return view('beheerder.MainModeratorPage');
     }
 
     public function facetInfo(Request $request){
         $project = Project::find($request['project']);
         return view('project')->with(["project" => $project, "facet_id" => $request['facet_id'], "direction" => $request['direction']]);
+    }
+
+    public function remove(Request $request){
+        if(isset($request->id)){
+            Project::find($request->id)->delete();
+        }else return abort(400);
     }
 }

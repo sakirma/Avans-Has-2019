@@ -1,63 +1,87 @@
 <template>
     <div id="mapPage" style="height: 100vh;">
         <v-layout column fill-height style="background-color: #89a226">
-            <v-flex xs1 ma-3>
-                <map-page-header></map-page-header>
+            <v-flex sm1 xs2 >
+                <map-page-header :parent="this"></map-page-header>
             </v-flex>
 
-            <v-flex>
-                <l-map ref="map"
-                       :zoom="zoom"
-                       :center="center"
-                       style="height:100%;">
-                    <v-layout :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.lgAndUp}"  column fill-height>
-                        <v-layout align-start justify-start row mt-0>
-                            <!--Leaflet map's z-index is 1000-->
-                            <v-flex style="z-index: 701" xs12 md3 lg2>
-                                <drop-down-button buttonTitle="IK WIL MEER ZIEN!"
-                                                  title="NATUURLIEFHEBER, DIT HEBBEN WE VOOR JE"
-                                                  :items="LeftDropDownButton"></drop-down-button>
-                            </v-flex>
+            <v-flex style="position: relative">
+                <map-component ref="mapComponent">
+                </map-component>
+                <v-layout :class="{'ml-5': $vuetify.breakpoint.mdAndUp}" align-end justify-start row
+                          style="position: absolute; bottom: 0; width: 100%;">
+                    <v-flex xs12 md3 lg2>
+                        <v-btn style="z-index: 1005;" depressed class="rounded-bottom-card" color="rgb(160, 181, 80, 1)"
+                               @click="OpenRoutePagePressed">
+                            <v-layout column>
+                                <v-flex class="white--text font-weight-bold">
+                                    EEN ROUTE VOLGEN
+                                </v-flex>
+                            </v-layout>
+                        </v-btn>
+                    </v-flex>
 
-                            <!--Leaflet map's z-index is 1000-->
-                            <v-flex style="z-index: 701" xs12 md3 lg2
-                                    :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-3': $vuetify.breakpoint.lgAndUp}">
-                                <drop-down-button buttonTitle="IK WIL RECREËEREN!"
-                                                  title="GENIET VAN HET LEVEN DOORMIDDEL VAN"
-                                                  :items="RightDropDownButton"></drop-down-button>
-                            </v-flex>
-                            <v-spacer></v-spacer>
+                    <v-flex xs12 md3 lg2 v-if="$vuetify.breakpoint.xsOnly">
+                        <v-card style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
+                            <v-layout column>
+                                <v-flex class="white--text font-weight-bold">
+                                    <v-text-field
+                                            class="mx-3"
+                                            style="padding-top: 8px;"
+                                            prepend-inner-icon="search"
+                                    ></v-text-field>
+                                </v-flex>
+                            </v-layout>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
 
-                            <!--Leaflet map's z-index is 1000-->
-                            <!--TODO: Remove the events handler from searchbar. -->
-                            <v-flex style="z-index: 701" shrink pt-1>
-                                <v-text-field
-                                        class="mx-3"
-                                        solo
-                                        prepend-inner-icon="search"
-                                ></v-text-field>
-                            </v-flex>
+                <v-layout column justify-start class="searchBarAboveMap" :fill-height="searchFieldIsFocused === true"
+                          :class="{'backgroundOnFieldFocused': searchFieldIsFocused === true}">
+                    <v-flex d-flex>
+                        <v-layout row align-center justify-center>
+                            <v-text-field
+                                    hide-details
+                                    class="mx-3 py-2"
+                                    ref="field"
+                                    prepend-inner-icon="search"
+                                    solo
+                                    v-model="searchInput"
+                            >  </v-text-field>
+                            <v-btn fab v-if="searchFieldIsFocused === true" @click="() => {this.searchFieldIsFocused = false}"> <v-icon large>close</v-icon> </v-btn>
                         </v-layout>
-                        <v-layout pb-3 align-end justify-start row>
-                            <v-btn style="z-index: 1001" fab @click="OpenRoutePagePressed">
-                                <v-icon color="blue">
-                                    near_me
-                                </v-icon>
-                            </v-btn>
-                        </v-layout>
-                    </v-layout>
-
-
-                    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-
-                    <template v-for="(marker, index) in markers">
-                        <l-marker :lat-lng="marker">
-                            <l-popup>
-                                <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>
-                            </l-popup>
-                        </l-marker>
-                    </template>
-                </l-map>
+                    </v-flex>
+                    <div v-bar>
+                        <div>
+                            <v-flex id="testing" class="removeScrollbar" xs12 v-if="searchFieldIsFocused === true">
+                                <v-layout fill-height align-start justify-start>
+                                    <v-list style="background-color: transparent; width: 100%; padding: 0;"
+                                            class="white--text" two-line
+                                            pt-0>
+                                        <template v-for="(item, index) in filteredMapObjects">
+                                            <v-list-tile
+                                                    :key="item.name"
+                                                    avatar
+                                                    ripple
+                                                    style="background-color: rgba(137, 163, 36, 0.9);"
+                                            >
+                                                <v-list-tile-content>
+                                                    <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                                                    <v-list-tile-sub-title class="white--text">{{ item.information }}
+                                                    </v-list-tile-sub-title>
+                                                </v-list-tile-content>
+                                            </v-list-tile>
+                                            <v-divider
+                                                    v-if="index + 1 < mapObjects.length"
+                                                    :key="index"
+                                            ></v-divider>
+                                        </template>
+                                    </v-list>
+                                </v-layout>
+                            </v-flex>
+                        </div>
+                    </div>
+                </v-layout>
             </v-flex>
 
             <v-flex xs1>
@@ -69,21 +93,16 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker, LPopup} from 'vue2-leaflet';
-    import "leaflet/dist/leaflet.css";
-
     import MapPageHeader from "./map-page-header";
     import DropDownButton from "./mapPageButton/DropDownButton"
+    import MapComponent from './ProjectPage/MapComponent';
 
     export default {
         name: 'MapPage',
         components: {
             MapPageHeader,
             DropDownButton,
-            LMap,
-            LTileLayer,
-            LMarker,
-            LPopup
+            MapComponent
         },
         props: {
             onProjectOpened: {
@@ -91,42 +110,145 @@
             },
             onRoutePageOpened: {
                 type: Function,
+            },
+            mapObjects: {
+                type: Array,
+                required: true
             }
         },
         data() {
             return {
                 zoom: 11,
                 center: L.latLng(51.7142669290121, 5.3173828125),
-                url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+                url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                markers: [L.latLng(51.7142669290121, 5.3173828125), L.latLng(51.7142669290121, 5.3153828125), L.latLng(51.7142669290121, 5.33828125)],
                 buttonImage: "img/MapPage/button.png",
-                LeftDropDownButton: ['Projectnaam A', 'Projectnaam B', 'Projectnaam C'],
-                RightDropDownButton: ['Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks', 'Een kopje koffie', 'Mooie kunst', 'promenade', 'Heerlijke Snacks'],
 
-                popupContent: ' <button href="javascript:;" @click="console.log("wow")">terms</button>',
+                pressedImages: { activiteit: false, "eten en drinken": false, bezienswaardigheid: false, natuurgebied: false },
+
+                searchFieldIsFocused: false,
+                searchInput: '',
+                filteredMapObjects: []
             }
         },
         methods: {
-            disableInputEvents(element) {
-                L.DomEvent.disableClickPropagation(element.$el);
-                L.DomEvent.disableScrollPropagation(element.$el);
+            filter(key){
+                this.pressedImages[key] = !this.pressedImages[key];
             },
-            OpenProjectPagePressed: function (projectId) {
-                this.onProjectOpened(projectId);
+            disableInputEvents(element) {
+                this.$parent.disableInputEvents(element);
+            },
+            OpenProjectPagePressed: function (projectId, isProject){
+                this.onProjectOpened(projectId, isProject);
             },
             OpenRoutePagePressed: function () {
                 this.onRoutePageOpened();
             }
-
+        },
+        watch: {
+            searchInput: function(n, o){
+                this.filteredMapObjects = this.mapObjects.filter(item => {
+                    return item.name.toLowerCase().includes(n.toLowerCase());
+                });
+            }
         },
         mounted() {
-            this.$refs.map.mapObject.zoomControl.remove();
-            this.$refs.map.mapObject.scrollWheelZoom.disable();
+            this.$refs.mapComponent.assignParentPage(this);
+            axios.get("/getAllMapObjects")
+                .then(({ data }) => {
+                    for(let i = 0; i < data.length; i++) {
+                        this.mapObjects.push(data[i]);
+                    }
+                    this.$refs.mapComponent.loadMapObjects(this.mapObjects);
+                });
+
+            this.$watch(
+                () => {
+                    return this.$refs.field.isFocused
+                },
+                (val) => {
+                    if (val === true)
+                        this.searchFieldIsFocused = true;
+                }
+            );
         }
     }
 </script>
 
-<style scoped>
+<style>
+    .searchBarAboveMap .flex .v-input__control .v-input__slot {
+        border-radius: 10px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #b4c9cf;
+    }
 
+    .vb > .vb-dragger {
+        z-index: 5;
+        width: 12px;
+        right: 0;
+    }
+
+    .vb > .vb-dragger > .vb-dragger-styler {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transform: rotate3d(0, 0, 0, 0);
+        transform: rotate3d(0, 0, 0, 0);
+        -webkit-transition: background-color 100ms ease-out,
+        margin 100ms ease-out,
+        height 100ms ease-out;
+        transition: background-color 100ms ease-out,
+        margin 100ms ease-out,
+        height 100ms ease-out;
+        background-color: rgba(38, 38, 38, 0.1);
+        margin: 5px 5px 5px 0;
+        border-radius: 20px;
+        height: calc(100% - 10px);
+        display: block;
+    }
+
+    .vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler {
+        background-color: rgba(38, 38, 38, 0.3);
+    }
+
+    .vb > .vb-dragger:hover > .vb-dragger-styler {
+        background-color: rgba(38, 38, 38, 0.5);
+        margin: 0px;
+        height: 100%;
+    }
+
+    .vb.vb-dragging > .vb-dragger > .vb-dragger-styler {
+        background-color: rgba(38, 38, 38, 0.5);
+        margin: 0px;
+        height: 100%;
+    }
+
+    .vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {
+        background-color: rgba(38, 38, 38, 0.5);
+    }
+</style>
+
+<style scoped>
+    .removeScrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .backgroundOnFieldFocused {
+        background-color: rgba(137, 163, 36, 0.58);
+    }
+
+    .rounded-bottom-card {
+        margin: 0;
+        border-radius: 10px 10px 0 0;
+        height: 50px;
+        width: 100%;
+    }
+
+    .searchBarAboveMap {
+        position: absolute;
+        z-index: 1000;
+        bottom: 0;
+        right: 0;
+        width: 25%;
+    }
 </style>
