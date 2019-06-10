@@ -1,6 +1,6 @@
 <template>
     <div class="projectEditSection" v-bar>
-        <div class="testingCSS">
+        <div class="removeScrollbar">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Punt</v-card-title>
                 <v-btn fab flat @click="close">
@@ -58,6 +58,28 @@
                             </v-flex>
                             <v-flex xs4>
                                 <v-textarea v-model="selectedProject.information" :rules="textRules" box></v-textarea>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+
+                    <v-flex xs1>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-card-title class="title">Locatie Latidude:</v-card-title>
+                            </v-flex>
+                            <v-flex xs4>
+                                <v-textarea v-model="markerLat" :rules="markerRules" box></v-textarea>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+
+                    <v-flex xs1>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <v-card-title class="title">Locatie Longitude::</v-card-title>
+                            </v-flex>
+                            <v-flex xs4>
+                                <v-textarea v-model="markerLong" :rules="markerRules" box></v-textarea>
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -230,7 +252,7 @@
                 }
             },
             deleteItem() {
-                if (confirm('Weet u zeker dat deze interessepunt wilt verwijderen?')) {
+                if (confirm('Weet u zeker dat u dit interessepunt wilt verwijderen?')) {
                     axios({
                         method: 'post',
                         url: '/admin/deleteProjectPoint',
@@ -333,7 +355,7 @@
         border-color: #89a226;
     }
 
-    .testingCSS::-webkit-scrollbar {
+    .removeScrollbar::-webkit-scrollbar {
         display: none;
     }
 

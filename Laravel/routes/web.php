@@ -94,9 +94,13 @@ Route::post('/admin/route/points', 'AdminRouteController@getRoutePoints');
 Route::post('/admin/route/projects', 'AdminRouteController@getProjectPoint');
 
 
+Route::get("/searchForProject/{name}", "ProjectController@searchForName");
+Route::get("/searchForProjectPoint/{name}", "ProjectPointsController@searchForName");
+
 // Return only data
 Route::get('/getCategories', 'MainPageController@getCatagories');
 Route::get('/getProjects', 'ProjectController@getProjects');
+Route::get("/getAllMapObjects", "ProjectController@getAllMapObjects");
 Route::get('/getProject/{id}', 'ProjectController@getProject');
 Route::get('/getMediaFromProject/{id}', 'ProjectController@getMedia');
 Route::get('/getProjectNames', 'ProjectController@getProjectNames');

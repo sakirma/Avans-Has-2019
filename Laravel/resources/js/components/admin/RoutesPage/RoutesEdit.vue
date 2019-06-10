@@ -225,7 +225,7 @@
         border-color: #89a226;
     }
 
-    .testingCSS::-webkit-scrollbar {
+    .removeScrollbar::-webkit-scrollbar {
         display: none;
     }
 

@@ -120,12 +120,18 @@ class ProjectPointsController extends Controller
         $arr = [];
         foreach($points as $point){
             if($point["area"] != null){
-                $arr[] = ["id" => $point["id"], "info" => $point["area"]];
+                $arr[] = ["id" => $point["id"], "info" => $point["area"], "category" => $point->category];
             }else{
-                $arr[] = ["id" => $point["id"], "info" => $point["location"]];
+                $arr[] = ["id" => $point["id"], "info" => $point["location"], "category" => $point->category];
             }
         }
         return json_encode($arr);
+    }
+
+    public function searchForName($name){
+        if(isset($name)){
+            return json_encode(ProjectPoint::where("name", "LIKE", "%" . $name . "%")->get());
+        }else return abort(400);
     }
 
     public function getProjectPointByID($projectPointId){

@@ -1,6 +1,6 @@
 <template>
     <div class="projectEditSection" v-bar>
-        <div class="testingCSS">
+        <div class="removeScrollbar">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Project</v-card-title>
                 <v-btn fab flat @click="close">
@@ -206,12 +206,14 @@
                 });
             },
             remove(){
-                axios.post("/beheer/removeProject", { id: this.id })
-                    .catch((error) => {
-                        alert("Er ging iets mis bij het verwijderen...");
-                        console.log(error.message);
-                    });
-                this.close();
+                if (confirm('Weet u zeker dat u dit project wilt verwijderen?')) {
+                    axios.post("/beheer/removeProject", {id: this.id})
+                        .catch((error) => {
+                            alert("Er ging iets mis bij het verwijderen...");
+                            console.log(error.message);
+                        });
+                    this.close();
+                }
             }
         },
         mounted(){
@@ -240,7 +242,7 @@
         border-color: #89a226;
     }
 
-    .testingCSS::-webkit-scrollbar {
+    .removeScrollbar::-webkit-scrollbar {
         display: none;
     }
 
