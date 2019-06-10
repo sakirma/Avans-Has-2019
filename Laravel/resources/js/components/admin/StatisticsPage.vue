@@ -168,6 +168,19 @@
                     width: `25vw`
                 }
             }
+        },
+        mounted(){
+            axios.get("/getAllVisitors")
+                .then(({ data }) => {
+                    for(let i = 0; i < data.length; i++){
+                        let dateParts = data[i].date.split("-");
+                        let date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                        //divide into months for the bar-chart
+                        //get all the visitors for this week
+                        //get all the visitors for this day
+
+                    }
+                });
         }
     }
 </script>
