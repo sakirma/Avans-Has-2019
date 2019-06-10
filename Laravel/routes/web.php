@@ -53,6 +53,8 @@ Route::get('getProjectPointIDs/{id}', "RoutesController@getProjectPointIDs");
 Route::get('getProjectPoint/{projectPointId}', "ProjectPointsController@getProjectPointByID");
 Route::get('getAllRoutes', "RoutesController@getAllRoutes");
 Route::get('getProjectPointOfRoute/{id}', "RoutesController@getProjectPointOfRoute");
+Route::get('increasePopularityOfRoute/{id}', "RoutesController@increasePopularity");
+Route::get('getPopularRoutes', "RoutesController@getPopularRoutes");
 
 Route::group(['middleware' => ['auth']], function () {
 

@@ -18,6 +18,7 @@ class RoutesTableSeeder extends Seeder
             DB::table('route')->insert([
                 'name' => $faker->streetName,
                 'length' => rand(0, 100),
+                'amount_clicks' => rand(0, 50)
             ]);
         }
     }

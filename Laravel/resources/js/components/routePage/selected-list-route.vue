@@ -48,15 +48,13 @@
             };
         },
         methods: {
-            followRoute($id) {
-                window.axios.get("getProjectPointOfRoute/" + $id)
+            followRoute(id) {
+                window.axios.get("getProjectPointOfRoute/" + id)
                     .then(response => {
+                        this.routesParent.routeId = id;
                         this.routesParent.drawPoints(response.data);
                     });
             },
-            exportToGoogle(){
-
-            }
         }
     };
 </script>

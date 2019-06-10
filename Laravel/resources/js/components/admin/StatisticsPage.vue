@@ -20,7 +20,7 @@
 
                     <v-flex xs6 d-flex fill-height>
                         <v-card color="#8DA659" class="roundedCard">
-                            <v-card-title class="headline white--text">
+                            <v-card-title class="headline white--text" >
                                 <v-layout column align-start fill-height>
 
 
@@ -30,12 +30,12 @@
                                                 Meest bezochte routes
                                             </v-flex>
                                             <v-flex xs6>
-                                                <v-card-text class="body-2">
-                                                    1. Route van de avonturier <br>
-                                                    2. Route van Napoleon <br>
-                                                    3. Traditionele route <br>
-                                                    4.Vlinder tocht <br>
-                                                    5. Herfst promenade <br>
+                                                <v-card-text class="body-2" v-if="popularRoutes">
+                                                    1. {{popularRoutes[0]}} <br>
+                                                    2. {{popularRoutes[1]}} <br>
+                                                    3. {{popularRoutes[2]}} <br>
+                                                    4. {{popularRoutes[3]}} <br>
+                                                    5. {{popularRoutes[4]}} <br>
                                                 </v-card-text>
                                             </v-flex>
                                         </v-layout>
@@ -156,11 +156,23 @@
                         data: [40, 30, 20, 10, 0, 50, 60, 70]
                     }]
                 },
+
+                popularRoutes: [],
             }
         },
         components: {
             BarChart,
         },
+
+        mounted(){
+            window.axios.get("getPopularRoutes").then(({data}) => {
+
+                for(let i = 0; i < data.length; i++){
+                    this.popularRoutes.push(data[i].name + " (" + data[i].amount_clicks + ")") 
+                }
+            }).then(console.log(this.popularRoutes));
+        },
+
         computed: {
             myStyles() {
                 return {

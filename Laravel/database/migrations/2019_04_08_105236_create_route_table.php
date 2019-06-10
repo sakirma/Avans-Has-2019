@@ -18,6 +18,7 @@ class CreateRouteTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->decimal('length');
+            $table->bigInteger('amount_clicks');
         });
     }
 

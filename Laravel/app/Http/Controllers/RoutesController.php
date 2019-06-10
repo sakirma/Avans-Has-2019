@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 use App\Models\Route;
 use App\Models\ProjectPoint;
 use App\Models\RouteHasProjectPoint;
@@ -20,6 +20,17 @@ class RoutesController extends Controller
     {
         $ppids = RouteHasProjectPoint::all();
         return $ppids->toJson();
+    }
+
+    public function increasePopularity($id){       
+        $route = Route::find($id);
+        $route->amount_clicks += 1;
+        $route->save();
+    }
+
+    public function getPopularRoutes(){
+        $route = Route::orderBy('amount_clicks','DESC')->limit(5)->get();
+        return $route;
     }
 
     public function getAllRoutes()

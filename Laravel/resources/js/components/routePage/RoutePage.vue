@@ -59,8 +59,10 @@
                 projectPoints: [],
                 routingControl: null,
                 mapObject: null,
+                routeId: 0
             };
         },
+
         components: {
             RoutePageHeader,
             ListRoutes,
@@ -94,6 +96,7 @@
                     for (let i = 0; i < this.projectPoints.length; i++) {
                         url = url.toString() + this.projectPoints[i].location.coordinates[1].toString() + "," + this.projectPoints[i].location.coordinates[0].toString() + "/";
                     }
+                    window.axios.get("increasePopularityOfRoute/" + this.routeId);
                     window.open(url, "_blank");
                 }
             },
