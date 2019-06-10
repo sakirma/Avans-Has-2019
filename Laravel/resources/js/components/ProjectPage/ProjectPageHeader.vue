@@ -20,7 +20,14 @@
                 </v-btn>
             </v-layout>
         </v-flex>
-        <v-flex grow>
+<!--        <v-flex grow>-->
+<!--            <v-card-title>{{ name }}</v-card-title>-->
+<!--        </v-flex>-->
+        <v-flex fill-height xs5 py-4 style="background-color: #89a226">
+            <v-card style="" flat color="transparent" class="white--text text-xs-center display-2 font-weight-black first-page-title"
+                    :class="{'createOwnRouteTitle': $vuetify.breakpoint.xsOnly}">
+                {{ name }}
+            </v-card>
         </v-flex>
     </v-layout>
 </template>
@@ -28,6 +35,9 @@
 <script>
     export default {
         name: "ProjectPageHeader",
+        props: {
+            name: ''
+        },
         methods: {
             GoBackToMapPage() {
                 let pageStates = this.$store.getters.pageStates;
@@ -40,5 +50,13 @@
 </script>
 
 <style scoped>
+    .first-page-title {
+        font-family: "Market Deco", Market_Deco !important;
+        font-weight: bold !important;
+    }
 
+    .createOwnRouteTitle {
+        font-size: 14px!important;
+        line-height: 16px !important;
+    }
 </style>
