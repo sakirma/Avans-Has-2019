@@ -149,7 +149,7 @@
                     v => (v && v.length <= 10000) || 'Tekst mag niet langer zijn dan 10.000 karakters zijn'
                 ],
                 markerRules:[
-                    v=> !!v || 'U moet een locatie voor deze punt kiezen',
+                    v => !!v || 'U moet een locatie voor deze punt kiezen',
                 ],
                 input: null,
                 files: [],

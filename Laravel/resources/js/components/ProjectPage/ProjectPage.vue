@@ -164,7 +164,8 @@
                     this.comments = data.comments;
                     this.name = data.name;
 
-                    this.findRecommendationsInterestPoint(data, this);
+                    //this.findRecommendationsInterestPoint(data, this);
+                    this.findRecommendationsProjects(data, this);
                 });
 
                 axios.get(linkTwo + id).then(({data}) => {
@@ -191,22 +192,47 @@
                             path: ''
                         };
 
-                        for (let i = 0; i < images.length; i++) {
-                            if (images.id === suggestion.id) {
-                                suggestion.path = images.path;
+                        for (let j = 0; j < images.length; j++) {
+                            if (images[j].id === suggestion.id) {
+                                suggestion.path = images[j].location;
                                 break;
                             }
                         }
                         t.suggestions.push(suggestion);
                     }
-
-
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
             findRecommendationsProjects(d, t) {
+                axios.post('/projectpoints/similarProject', {
+                    id: d.id,
+                    category: d.category,
+                }).then(function (response) {
+                    let projects = response.data[0];
+                    let images = response.data[1];
 
+                    for (let i = 0; i < projects.length; i++) {
+
+                        let suggestion = {
+                            id: projects[i].id,
+                            name: projects[i].name,
+                            information: projects[i].information,
+                            category: projects[i].category,
+                            path: ''
+                        };
+
+                        for (let j = 0; j < images.length; j++) {
+                            if (images[j].id === suggestion.id) {
+                                suggestion.path = "getmedia/" + images[j].location;
+                                break;
+                            }
+                        }
+                        t.suggestions.push(suggestion);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
             }
         },
         mounted() {

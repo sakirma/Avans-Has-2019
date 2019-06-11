@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Media;
 use App\Models\PointHasImage;
 use App\Models\Project;
+use App\Models\ProjectHasImage;
 use App\Models\ProjectPoint;
 use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
@@ -140,9 +141,19 @@ class ProjectPointsController extends Controller
         $id = $request->id;
         $category = $request->category;
 
-        $categories =  Project::where(['category' => $category, ['id', '!=', $id]])->inRandomOrder()->limit(3)->get();
+        $projects =  Project::where(['category' => $category, ['id', '!=', $id]])->inRandomOrder()->limit(3)->get();
 
-        return json_encode($categories);
+        $images = [];
+        foreach ($projects as $key => $project){
+            $projectHasImage = ProjectHasImage::where('project_id', $project->id)->first();
+
+            if($projectHasImage === null) continue;
+
+            $location = Media::where('name', $projectHasImage->media_name)->first();
+            array_push($images, ['id' => $project->id, 'location' => $location->path]);
+        }
+
+        return json_encode([$projects, $images]);
     }
     public function getAllPoints(){
         $points = ProjectPoint::all();
