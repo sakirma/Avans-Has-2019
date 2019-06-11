@@ -153,7 +153,7 @@ class ProjectPointsController extends Controller
             if($projectHasImage === null) continue;
 
             $location = Media::where('name', $projectHasImage->media_name)->first();
-            array_push($images, ['id' => $project->id, 'location' => $location->path]);
+            array_push($images, ['id' => $project->id, 'location' => $location->name]);
         }
 
         return json_encode([$projects, $images]);
