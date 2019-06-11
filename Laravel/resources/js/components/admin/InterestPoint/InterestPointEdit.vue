@@ -90,13 +90,20 @@
                                 <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
                             </v-flex>
                             <input type="file">
-
-                            <v-carousel v-if="images.length > 0">
+                            <v-carousel ref="carousel" v-if="currentImages.length > 0" style="height:100%"
+                                        class="blackButtonCarousel" :cycle="false">
                                 <v-carousel-item
-                                    v-for="(image,i) in images"
-                                    :key="i"
-                                    :src="image"
-                                ></v-carousel-item>
+                                        v-for="(image,i) in currentImages"
+                                        v-if="!image.isRemoved"
+                                        :key="i"
+                                        :src="image.imageLocation"
+                                        class="containCarouselItem"
+                                >
+                                    <v-btn absolute dark fab top right color="red" class="deleteButtonCarousel"
+                                           @click="removeFile(i)">
+                                        <v-icon>close</v-icon>
+                                    </v-btn>
+                                </v-carousel-item>
                             </v-carousel>
                         </v-layout>
                     </v-flex>
@@ -157,11 +164,8 @@
                 },
                 markerLat: null,
                 markerLong: null,
-                offset: 0,
-                startingMediaNumber: 0,
                 input: null,
-                files: [],
-                images: [],
+                currentImages: [],
             }
         },
         props: {
@@ -169,7 +173,7 @@
                 type: Object,
                 required: true,
             },
-            projectNames:{
+            projectNames: {
                 type: Array,
                 required: true
             },
@@ -193,23 +197,14 @@
                 this.input.value = null;
             },
             removeFile(index) {
-                if (index < this.offset) {
-                    axios.post("/beheer/removemedia", {
-                        medianame: this.files[index],
-                        folder: "points"
-                    }).catch((error) => {
-                        alert("Er ging iets mis bij het verwijderen van de foto...");
-                        return;
-                    });
-                    this.files.splice(index, 1);
-                    this.offset--;
-                } else {
-                    this.files.splice(index, 1)
-                }
+                if(!this.currentImages[index].newFile)
+                    this.currentImages[index].isRemoved = true;
+                else
+                    this.currentImages.splice(index, 1);
             },
             projectEditSection(product) {
                 this.selectedProject = product;
-                if (this.bool == false) {
+                if (!this.bool) {
                     this.markerLat = product.location.coordinates[1];
                     this.markerLong = product.location.coordinates[0];
                 }
@@ -224,17 +219,10 @@
 
                 axios.get("/getMediaFromProjectPoint/" + this.selectedProject.id)
                     .then(({data}) => {
-                        this.files = [];
-                        this.images = [];
                         for (let i = 0; i < data.length; i++) {
-                            this.files.push(data[i]);
-                            this.images.push("getmedia/" + data[i]);
+                            this.currentImages.push({imageLocation: "getmedia/" + data[i], isRemoved: false, imageName: data[i]});
                         }
-                        this.offset = data.length;
-                        this.startingMediaNumber = this.offset;
-                    }).catch((error) => {
-                    console.log(error);
-                });
+                    })
             },
             close() {
                 this.parent.$refs.mapSection.setdrawMode(false);
@@ -244,7 +232,7 @@
             },
             getUpdateProjectName() {
                 for (let i = 0; i < this.projects.length; i++) {
-                    if (this.projects[i].id == this.selectedProject.project_id) {
+                    if (this.projects[i].id === this.selectedProject.project_id) {
                         this.projectName = this.projects[i].name;
                     } else {
                         console.log(this.projects[i].id + " - " + this.selectedProject.project_id);
@@ -266,17 +254,13 @@
             validate() {
                 if (this.projectName != null) {
                     for (let i = 0; i < this.projectNames.length; i++) {
-                        if (this.projects[i].name == this.projectName) {
+                        if (this.projects[i].name === this.projectName) {
                             this.projectId = this.projects[i].id;
                         }
                     }
                 }
 
                 if (this.$refs.form.validate()) {
-
-                    console.log("validate: ");
-                    console.log(this.markerLat);
-                    console.log(this.markerLong);
                     axios({
                         method: 'post',
                         url: '/admin/updateProjectPoint',
@@ -290,24 +274,30 @@
                             lat: this.markerLat,
                             long: this.markerLong,
                         }
-                    }).then(({ data }) => {
-                        for (let i = this.offset; i < this.files.length; i++) {
-                            if (this.files[i] == null) continue;
-                            let formData = new FormData();
-                            formData.append("image", this.files[i]);
-                            formData.append("name", this.selectedProject.id + "_" + (this.startingMediaNumber + i - this.offset));
-                            formData.append("folder", "points");
-                            formData.append("id", this.selectedProject.id);
-                            axios.post("/beheer/media", formData,
-                                {
-                                    headers: {
-                                        'Content-Type': 'multipart/form-data'
+                    }).then(({data}) => {
+                        for (let i = 0; i < this.currentImages.length; i++) {
+                            let projectImage = this.currentImages[i];
+
+                            // Remove existing file of the project
+                            if (!projectImage.newFile && projectImage.isRemoved) {
+                                axios.post("/beheer/removemedia", {
+                                    medianame: projectImage.imageName,
+                                    folder: "projects"
+                                });
+                            } else if (projectImage.newFile) {
+                                let formData = new FormData();
+                                formData.append("image", projectImage.newFile);
+                                formData.append("name", projectImage.newFile.name);
+                                formData.append("folder", "projects");
+                                formData.append("id", data.id);
+                                axios.post("/beheer/media", formData,
+                                    {
+                                        headers: {
+                                            'Content-Type': 'multipart/form-data'
+                                        }
                                     }
-                                }
-                            ).catch((error) => {
-                                alert("Er ging iets mis bij het opslaan...");
-                                console.log(error);
-                            });
+                                )
+                            }
                         }
                         this.close();
                     }).catch(error => {
@@ -347,6 +337,23 @@
 </script>
 
 <style>
+    .deleteButtonCarousel.v-btn--top.v-btn--absolute {
+        top: 10px;
+    }
+
+    .containCarouselItem .v-carousel__item .v-image__image {
+        background-size: contain;
+    }
+
+    .blackButtonCarousel .v-carousel__next .v-btn {
+        background-color: gray;
+    }
+
+    .blackButtonCarousel .v-carousel__prev .v-btn {
+        background-color: gray;
+    }
+
+
     .projectEditSection {
         height: 100%;
         border-radius: 20px;
