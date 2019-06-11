@@ -9,7 +9,7 @@
                                 <v-layout align-start column>
                                     Statistieken
                                     <div class="chart-container">
-                                        <bar-chart :data="datasets" :styles="myStyles"/>
+                                        <bar-chart ref="barChart" :styles="myStyles"/>
                                     </div>
 
                                 </v-layout>
@@ -79,7 +79,7 @@
                                             <v-flex grow>
                                                 <v-layout align-end justify-center row fill-height>
                                                     <p class="display-4 font-weight-bold white--text">
-                                                        --
+                                                        {{ visitorsToday }}
                                                     </p>
                                                     <p class="text-xs-right body-1">
                                                         Bezoekers
@@ -104,7 +104,7 @@
                                             <v-flex grow>
                                                 <v-layout align-end justify-center row fill-height>
                                                     <p class="display-4 font-weight-bold white--text">
-                                                        --
+                                                        {{ visitorsThisWeek }}
                                                     </p>
                                                     <p class="text-xs-right body-1">
                                                         Bezoekers
@@ -148,14 +148,18 @@
         name: "StatisticsPage",
         data() {
             return {
+                months: ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'],
                 datasets: {
                     labels: ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'],
                     datasets: [{
                         label: 'bezoekers',
                         backgroundColor: '#d9decd',
-                        data: [40, 30, 20, 10, 0, 50, 60, 70]
+                        data: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
                     }]
                 },
+                dates: {year: [], lastYear: []},
+                visitorsThisWeek: 0,
+                visitorsToday: 0
             }
         },
         components: {
@@ -168,6 +172,63 @@
                     width: `25vw`
                 }
             }
+        },
+        methods: {
+            getWeekNumber(d) {
+                d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+                d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+                var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+                return Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+            }
+        },
+        mounted(){
+            axios.get("/getAllVisitors")
+                .then(({ data }) => {
+                    this.datasets.labels = [];
+                    this.datasets.datasets[0].data = [];
+                    let today = new Date();
+                    let day = String(today.getDate());
+                    let month = String(today.getMonth() + 1);
+                    let year = today.getFullYear();
+
+                    for(let i = month; i > month - 12; i--){
+                        if(i > 0) {
+                            this.dates.year[this.months[i-1]] = [];
+                            this.datasets.labels.unshift(this.months[i-1]);
+                        }else{
+                            this.dates.lastYear[this.months[12 + i-1]] = [];
+                            this.datasets.labels.unshift(this.months[12 + i-1]);
+                        }
+                    }
+
+                    for(let i = 0; i < data.length; i++){
+                        let dateParts = data[i].date.split("-");
+                        let date = new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
+                        if(date.getFullYear() === year) this.dates.year[this.months[date.getMonth()]].push(date);
+                        else if(date.getFullYear() === year-1) this.dates.lastYear[this.months[date.getMonth()]].push(date);
+                    }
+
+                    for (let property in this.dates.year) {
+                        if (this.dates.year.hasOwnProperty(property)) {
+                            this.datasets.datasets[0].data.unshift(this.dates.year[property].length);
+                        }
+                    }
+
+                    for (let property in this.dates.lastYear) {
+                        if (this.dates.lastYear.hasOwnProperty(property)) {
+                            this.datasets.datasets[0].data.unshift(this.dates.lastYear[property].length);
+                        }
+                    }
+
+                    this.$refs.barChart.update(this.datasets);
+
+                    for(let i = 0; i < this.dates.year[this.months[month-1]].length; i++){
+                        if(this.getWeekNumber(today) === this.getWeekNumber(this.dates.year[this.months[month-1]][i])){
+                            this.visitorsThisWeek++;
+                            if(today.toDateString() === this.dates.year[this.months[month-1]][i].toDateString()) this.visitorsToday++;
+                        }
+                    }
+                });
         }
     }
 </script>
