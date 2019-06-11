@@ -13,6 +13,7 @@ class MainPageController extends Controller
 
     function index()
     {
+        VisitorController::addVisitor();
         return view('mainPage');
     }
 }
