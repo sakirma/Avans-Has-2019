@@ -96,7 +96,8 @@ Route::post('/admin/route/projects', 'AdminRouteController@getProjectPoint');
 
 Route::get("/searchForProject/{name}", "ProjectController@searchForName");
 Route::get("/searchForProjectPoint/{name}", "ProjectPointsController@searchForName");
-Route::post("/projectpoints/similar", "ProjectPointsController@getSimilarCatagories");
+Route::post("/projectpoints/similarIntrestPoint", "ProjectPointsController@getSimilarInterestPoints");
+Route::post("/projectpoints/similarProject", "ProjectPointsController@getSimilarProjects");
 
 // Return only data
 Route::get('/getCategories', 'MainPageController@getCatagories');

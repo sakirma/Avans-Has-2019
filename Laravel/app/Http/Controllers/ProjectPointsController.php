@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Media;
+use App\Models\PointHasImage;
+use App\Models\Project;
 use App\Models\ProjectPoint;
 use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
@@ -114,9 +117,30 @@ class ProjectPointsController extends Controller
     public function getAllPointsFullInfo(){
         return json_encode(ProjectPoint::all());
     }
-    public function getSimilarCatagories(Request $request){
+    public function getSimilarInterestPoints(Request $request){
+        $id = $request->id;
         $category = $request->category;
-        $categories =  ProjectPoint::where('category', $category)->get();
+
+        $projectPoints =  ProjectPoint::where(['category' => $category, ['id', '!=', $id]])->inRandomOrder()->limit(3)->get();
+
+        $images = [];
+        foreach ($projectPoints as $key => $point){
+            $pointHasImage = PointHasImage::where('point_id', $point->id)->first();
+
+            if($pointHasImage === null) continue;
+
+            $location = Media::where('name', $pointHasImage->media_name)->first();
+            $images[$key] = ['id' => $point->id, 'location' => $location->path];
+        }
+
+        return json_encode([$projectPoints, $images]);
+    }
+
+    public function getSimilarProjects(Request $request){
+        $id = $request->id;
+        $category = $request->category;
+
+        $categories =  Project::where(['category' => $category, ['id', '!=', $id]])->inRandomOrder()->limit(3)->get();
 
         return json_encode($categories);
     }

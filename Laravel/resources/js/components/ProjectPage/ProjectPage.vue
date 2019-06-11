@@ -10,7 +10,7 @@
                 <v-layout row fill-height>
                     <v-layout column fill-height>
                         <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
-                            <v-layout column fill-height style="background-color: #A0B550;">
+                            <v-layout row fill-height style="background-color: #A0B550;">
 
                                 <v-flex xs8>
                                     <v-card flat
@@ -25,14 +25,14 @@
                                 </v-flex>
 
                                 <v-flex xs4>
-                                    <v-layout row fill-height>
+                                    <v-layout column fill-height>
                                         <v-card v-for="(suggestion, i) in suggestions"
                                                 :key="i"
                                                 flat
                                                 style="cursor: pointer; background-color: #acb581;; position:relative; overflow-y: hidden;"
                                                 @click="init(suggestion.id)"
                                         >
-
+                                            <v-img :src="suggestion.path"></v-img>
                                             <v-card-text>
                                                 {{suggestion.name}} <br>
                                                 {{suggestion.category}}
@@ -148,11 +148,12 @@
                 this.suggestions = [];
 
                 let id = pid;
-                if(!id) { id = this.$parent.selectedProjectPage.projectId; }
+                if (!id) {
+                    id = this.$parent.selectedProjectPage.projectId;
+                }
 
                 let linkOne = "/getProjectPoint/";
                 let linkTwo = "/getMediaFromProjectPoint/";
-                let t = this;
 
                 if (this.$parent.selectedProjectPage.project) {
                     linkOne = "/getProject/";
@@ -163,7 +164,7 @@
                     this.comments = data.comments;
                     this.name = data.name;
 
-                    this.findRecommendations(data.category, t);
+                    this.findRecommendationsInterestPoint(data, this);
                 });
 
                 axios.get(linkTwo + id).then(({data}) => {
@@ -171,30 +172,41 @@
                         this.images.push("getmedia/" + data[i]);
                 });
             },
-            findRecommendations(category, t) {
-                axios.post('/projectpoints/similar', {
-                    category: category,
+            findRecommendationsInterestPoint(d, t) {
+                axios.post('/projectpoints/similarIntrestPoint', {
+                    id: d.id,
+                    category: d.category,
                 }).then(function (response) {
+                    let projectPoints = response.data[0];
+                    let images = response.data[1];
 
-                    let data = response.data;
 
-                    for (let i = 0; i < data.length; i++) {
-
-                        if(i > 4) break;
+                    for (let i = 0; i < projectPoints.length; i++) {
 
                         let suggestion = {
-                            id: data[i].id,
-                            name: data[i].name,
-                            information: data[i].information,
-                            category: data[i].category,
+                            id: projectPoints[i].id,
+                            name: projectPoints[i].name,
+                            information: projectPoints[i].information,
+                            category: projectPoints[i].category,
+                            path: ''
                         };
 
+                        for (let i = 0; i < images.length; i++) {
+                            if (images.id === suggestion.id) {
+                                suggestion.path = images.path;
+                                break;
+                            }
+                        }
                         t.suggestions.push(suggestion);
                     }
+
 
                 }).catch(function (error) {
                     console.log(error);
                 });
+            },
+            findRecommendationsProjects(d, t) {
+
             }
         },
         mounted() {
