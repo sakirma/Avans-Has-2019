@@ -39,8 +39,7 @@ class MediaController extends Controller
             $path = $request['folder'] . "/" . $newMediaName . "." . $image->getClientOriginalExtension();
             Storage::disk('public')->put($path, File::get($image));
             $media = new Media;
-            $media->fill(["name" => $request['name'],
-                "path" => $path]);
+            $media->fill(["name" => $newMediaName, "path" => $path]);
             $media->save();
 
             if ($folder == "projects") {
