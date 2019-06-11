@@ -39,8 +39,9 @@ class ProjectPointsController extends Controller
         $point = new ProjectPoint();
 
         $location = new Point($request->markerLat, $request->markerLong);
-
-        $point->project_id = $request->project_id;
+        if(isset($request->prokect_id)){
+             $point->project_id = $request->project_id;
+            }
         $point->location = $location;
         $point->area = $request->area;
         $point->name = $request->name;
@@ -61,7 +62,9 @@ class ProjectPointsController extends Controller
         $projectPoint = ProjectPoint::find($request->id);
 
         $location = new Point($request->lat, $request->long);
-
+        if(isset($request->prokect_id)){
+            $projectPoint->project_id = $request->project_id;
+        }
         $projectPoint->project_id = $request->project_id;
         $projectPoint->location = $location;
         $projectPoint->area = null;

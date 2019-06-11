@@ -46,13 +46,13 @@ class MediaController extends Controller
             if ($folder == "projects") {
                 $phi = new ProjectHasImage();
                 $phi->project_id = $request["id"];
-                $phi->media_name = $media->name;
+                $phi->media_name = $newMediaName;
                 $phi->save();
                 return json_encode($phi);
             } else if ($folder == "points") {
                 $phi = new PointHasImage();
                 $phi->point_id = $request["id"];
-                $phi->media_name = $media->name;
+                $phi->media_name = $newMediaName;
                 $phi->save();
                 return json_encode($phi);
             }
