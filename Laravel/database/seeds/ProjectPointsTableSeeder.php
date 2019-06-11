@@ -3509,11 +3509,6 @@ class ProjectPointsTableSeeder extends Seeder
     );
     } 
 
-
-
-
-
-
     public function AddProjectPoint($lat, $lng)
     {
       factory(App\Models\ProjectPoint::class)->create([

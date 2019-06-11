@@ -5,7 +5,6 @@ use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 $factory->define(App\Models\ProjectPoint::class, function (Faker $faker) {
     return [
-        'project_id' => 1,
         'location' => new Point(5.1031494140625, 52.0946950569013),
         'area' => Geometry::fromJson('{
                 "type": "FeatureCollection",

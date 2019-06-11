@@ -84,15 +84,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/beheer/edit/{id}','ProjectController@edit');
     Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
 
+    Route::get('/admin/route', 'AdminRouteController@getView');
+    Route::post('/admin/route/data', 'AdminRouteController@getRouteData');
+    Route::post('/admin/route/create', 'AdminRouteController@createRoute');
+    Route::post('/admin/route/remove', 'AdminRouteController@removeRoute');
+    Route::post('/admin/route/points', 'AdminRouteController@getRoutePoints');
+    Route::post('/admin/route/projects', 'AdminRouteController@getProjectPoint');
 });
 
-Route::get('/admin/route', 'AdminRouteController@getView');
-Route::post('/admin/route/data', 'AdminRouteController@getRouteData');
-Route::post('/admin/route/create', 'AdminRouteController@createRoute');
-Route::post('/admin/route/remove', 'AdminRouteController@removeRoute');
-Route::post('/admin/route/points', 'AdminRouteController@getRoutePoints');
-Route::post('/admin/route/projects', 'AdminRouteController@getProjectPoint');
-
+Route::get("/getAllVisitors", "VisitorController@getAllVisitors");
+Route::post("/addVisitor", "VisitorController@addVisitormm");
 
 Route::get("/searchForProject/{name}", "ProjectController@searchForName");
 Route::get("/searchForProjectPoint/{name}", "ProjectPointsController@searchForName");
