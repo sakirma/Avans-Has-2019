@@ -12,7 +12,7 @@
                         <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
                             <v-layout row fill-height style="background-color: #A0B550;">
 
-                                <v-flex xs8>
+                                <v-flex xs10>
                                     <v-card flat
                                             style=" background-color: transparent; position:relative; overflow-y: hidden; height: 100%;"
                                             v-bar>
@@ -24,23 +24,27 @@
                                     </v-card>
                                 </v-flex>
 
-                                <v-flex xs4>
-                                    <v-layout column fill-height>
+                                <v-flex xs2>
+                                    <v-layout column fill-height style="background-color: rgba(255,255,255,0.3);">
+                                        <div class="headline text-xs-center">Meer zoals dit.</div>
                                         <v-card v-for="(suggestion, i) in suggestions"
                                                 :key="i"
                                                 flat
-                                                style="cursor: pointer; background-color: #acb581;; position:relative; overflow-y: hidden;"
+                                                style="cursor: pointer; position:relative; overflow-y: hidden; background-color: rgba(255,255,255,0.3);"
                                                 @click="init(suggestion.id)"
                                         >
-                                            <v-img :src="suggestion.path"></v-img>
+                                            <v-img :aspect-ratio="16/9"
+                                                   height="125px"
+                                                   :src="suggestion.path"
+
+                                            ></v-img>
                                             <v-card-text>
-                                                {{suggestion.name}} <br>
+                                                <b>{{suggestion.name}}</b> <br>
                                                 {{suggestion.category}}
                                             </v-card-text>
                                         </v-card>
                                     </v-layout>
                                 </v-flex>
-
                             </v-layout>
                         </v-flex>
                         <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]"
@@ -164,8 +168,10 @@
                     this.comments = data.comments;
                     this.name = data.name;
 
-                    //this.findRecommendationsInterestPoint(data, this);
-                    this.findRecommendationsProjects(data, this);
+                    if(this.$parent.selectedProjectPage.project) { this.findRecommendationsProjects(data, this); }
+                    else { this.findRecommendationsInterestPoint(data, this); }
+
+
                 });
 
                 axios.get(linkTwo + id).then(({data}) => {
