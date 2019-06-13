@@ -9,7 +9,7 @@
                          v-if="!$vuetify.breakpoint.xsOnly">
                 <v-layout row fill-height>
                     <v-layout column fill-height>
-                        <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
+                        <v-flex d-flex xs6 :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
                             <v-card flat style="background-color: #A0B550; position:relative; overflow-y: hidden;"
                                     v-bar>
                                 <v-card-text style="position: absolute;">
@@ -19,19 +19,15 @@
                                 </v-card-text>
                             </v-card>
                         </v-flex>
-                        <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]"
+                        <v-flex d-flex xs6 :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]"
                                 align-self-end>
-                            <v-card flat class="primary" style="position:relative; overflow-y: hidden;" v-bar>
-                                <v-card-text style="position: absolute;">
-                                    <v-carousel v-if="images.length > 0">
-                                        <v-carousel-item
-                                                v-for="(image,i) in images"
-                                                :key="i"
-                                                :src="image"
-                                        ></v-carousel-item>
-                                    </v-carousel>
-                                </v-card-text>
-                            </v-card>
+                            <v-carousel v-if="images.length > 0" height="100%">
+                                <v-carousel-item
+                                        v-for="(image,i) in images"
+                                        :key="i"
+                                        :src="image"
+                                ></v-carousel-item>
+                            </v-carousel>
                         </v-flex>
                     </v-layout>
 
@@ -47,7 +43,7 @@
             <v-container ma-0 pa-0 pt-1 fluid grid-list-md style="background-color: white; " v-else>
                 <v-layout column fill-height>
 
-                    <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
+                    <v-flex d-flex xs6 :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
                         <v-card flat style="background-color: #A0B550; position:relative; overflow-y: hidden;"
                                 v-bar>
                             <v-card-text style="position: absolute;">
@@ -58,19 +54,15 @@
                         </v-card>
                     </v-flex>
 
-                    <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]"
+                    <v-flex d-flex xs6 :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]"
                             align-self-end>
-                        <v-card flat class="primary" style="position:relative; overflow-y: hidden;" v-bar>
-                            <v-card-text style="position: absolute;">
-                                <v-carousel v-if="images.length > 0">
-                                    <v-carousel-item
-                                            v-for="(image,i) in images"
-                                            :key="i"
-                                            :src="image"
-                                    ></v-carousel-item>
-                                </v-carousel>
-                            </v-card-text>
-                        </v-card>
+                        <v-carousel v-if="images.length > 0" height="100%">
+                            <v-carousel-item
+                                    v-for="(image,i) in images"
+                                    :key="i"
+                                    :src="image"
+                            ></v-carousel-item>
+                        </v-carousel>
                     </v-flex>
 
                     <v-flex lg4>
@@ -121,18 +113,18 @@
                 let id = this.$parent.selectedProjectPage.projectId;
                 let linkOne = "/getProjectPoint/";
                 let linkTwo = "/getMediaFromProjectPoint/";
-                if(this.$parent.selectedProjectPage.project){
+                if (this.$parent.selectedProjectPage.project) {
                     linkOne = "/getProject/";
                     linkTwo = "/getMediaFromProject/";
                 }
-                axios.get(linkOne+id).then(({ data }) => {
+                axios.get(linkOne + id).then(({data}) => {
                     this.information = data.information;
                     this.comments = data.comments;
                     this.name = data.name;
                 });
 
-                axios.get(linkTwo+id).then(({ data }) => {
-                    for(let i = 0; i < data.length; i++)
+                axios.get(linkTwo + id).then(({data}) => {
+                    for (let i = 0; i < data.length; i++)
                         this.images.push("getmedia/" + data[i]);
                 });
             }
@@ -143,8 +135,8 @@
             this.$refs.mapComponent.assignParentPage(this.mapPage);
 
             axios.get("/getAllMapObjects")
-                .then(({ data }) => {
-                    for(let i = 0; i < data.length; i++) {
+                .then(({data}) => {
+                    for (let i = 0; i < data.length; i++) {
                         this.mapObjects.push(data[i]);
                     }
                     this.$refs.mapComponent.loadMapObjects(this.mapObjects);
