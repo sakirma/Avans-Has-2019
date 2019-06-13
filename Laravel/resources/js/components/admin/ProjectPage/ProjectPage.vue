@@ -7,14 +7,14 @@
                 <project-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section></map-section>
+                <map-section ref="mapSection" :parent="this" v-on:childToParent="onChildClick" :markers="marker"></map-section>
             </v-flex>
         </v-layout>
     </v-container>
 </template>
 
 <script>
-    import MapSection from '../Map';
+    import MapSection from './ProjectMap';
     import ProjectsView from './ProjectsView';
     import ProjectsNew from './ProjectsNew';
     import ProjectEdit from './ProjectsEdit';
@@ -55,7 +55,8 @@
         methods: {
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
-            },
+                this.$refs.mapSection.setdrawMode(true);
+                },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
                 this.values = [];
