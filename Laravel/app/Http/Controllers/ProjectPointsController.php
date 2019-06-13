@@ -21,27 +21,31 @@ use Validator;
 class ProjectPointsController extends Controller
 {
     // Return view
-    public function create() {
+    public function create()
+    {
         return view('createProjectPoint');
     }
 
-    public function viewProjectPoints(){
+    public function viewProjectPoints()
+    {
         return view('mainCrudPage');
     }
 
     // Methods
-    public function getProjectPoints() {
+    public function getProjectPoints()
+    {
         $points = ProjectPoint::all();
         return $points->toJson();
     }
 
-    public function addProjectPoint (Request $request) {
+    public function addProjectPoint(Request $request)
+    {
         $point = new ProjectPoint();
 
         $location = new Point($request->markerLat, $request->markerLong);
-        if(isset($request->prokect_id)){
-             $point->project_id = $request->project_id;
-            }
+        if (isset($request->prokect_id)) {
+            $point->project_id = $request->project_id;
+        }
         $point->location = $location;
         $point->area = $request->area;
         $point->name = $request->name;
@@ -52,17 +56,18 @@ class ProjectPointsController extends Controller
         return json_encode($point);
     }
 
-    public function edit ($id) {
+    public function edit($id)
+    {
         $point = ProjectPoint::find($id);
         return $point->toJson();
     }
 
-    public function update( Request $request)
+    public function update(Request $request)
     {
         $projectPoint = ProjectPoint::find($request->id);
 
         $location = new Point($request->lat, $request->long);
-        if(isset($request->prokect_id)){
+        if (isset($request->prokect_id)) {
             $projectPoint->project_id = $request->project_id;
         }
         $projectPoint->project_id = $request->project_id;
@@ -82,7 +87,7 @@ class ProjectPointsController extends Controller
 
     public function getLocationData(Request $request)
     {
-        $allowedLocations=[];
+        $allowedLocations = [];
         $pointsInfo = ProjectPoint::select('geo_json')->get();
         /*for ($i=0; $i < $pointInfo.count(); $i){
             if($pointInfo[$i]->distance < $request->distance){
@@ -99,7 +104,9 @@ class ProjectPointsController extends Controller
         // Loading model
         $model = ProjectPoint::find($id);
 
-        if(empty($model)) { return view('/project'); }
+        if (empty($model)) {
+            return view('/project');
+        }
 
         $project = $model->project;
 
@@ -118,115 +125,127 @@ class ProjectPointsController extends Controller
         return abort(404);
     }
 
-    public function getAllPointsFullInfo(){
+    public function getAllPointsFullInfo()
+    {
         return json_encode(ProjectPoint::all());
     }
-    public function getSimilarInterestPoints(Request $request){
+
+    public function getSimilarInterestPoints(Request $request)
+    {
         $id = $request->id;
         $category = $request->category;
 
-        $projectPoints =  ProjectPoint::where(['category' => $category, ['id', '!=', $id]])->inRandomOrder()->limit(3)->get();
+        $projectPoints = ProjectPoint::where(['category' => $category, ['id', '!=', $id]])->inRandomOrder()->limit(3)->get();
 
+        $ids = array_pluck($projectPoints, 'id');
         $images = [];
-        foreach ($projectPoints as $key => $point){
-            $pointHasImage = PointHasImage::where('point_id', $point->id)->first();
 
-            if($pointHasImage === null) continue;
+        $pointHasImage = PointHasImage::whereIn('point_id', $ids)->get();
 
-            $location = Media::where('name', $pointHasImage->media_name)->first();
-            $images[$key] = ['id' => $point->id, 'location' => $location->path];
+        for ($i = 0; $i < count($pointHasImage); $i++){
+            if(in_array($pointHasImage[$i]->point_id, $images)) continue;
+            $images[] = ['id' => $pointHasImage[$i]->point_id, 'location' => $pointHasImage[$i]->media_name];
         }
 
         return json_encode([$projectPoints, $images]);
     }
 
-    public function getSimilarProjects(Request $request){
+    public function getSimilarProjects(Request $request)
+    {
         $id = $request->id;
         $category = $request->category;
 
-        $projects =  Project::where(['category' => $category, ['id', '!=', $id]])->inRandomOrder()->limit(3)->get();
+        $projects = Project::where(['category' => $category, ['id', '!=', $id]])->inRandomOrder()->limit(3)->get();
 
+        $ids = array_pluck($projects, 'id');
         $images = [];
-        foreach ($projects as $key => $project){
-            $projectHasImage = ProjectHasImage::where('project_id', $project->id)->first();
 
-            if($projectHasImage === null) continue;
+        $projectHasImage = ProjectHasImage::whereIn('project_id', $ids)->get();
 
-            $location = Media::where('name', $projectHasImage->media_name)->first();
-            array_push($images, ['id' => $project->id, 'location' => $location->name]);
+        for ($i = 0; $i < count($projectHasImage); $i++){
+            if(in_array($projectHasImage[$i]->project_id, $images)) continue;
+            $images[] = ['id' => $projectHasImage[$i]->project_id, 'location' => $projectHasImage[$i]->media_name];
         }
 
         return json_encode([$projects, $images]);
     }
-    public function getAllPoints(){
+
+    public function getAllPoints()
+    {
         $points = ProjectPoint::all();
         $arr = [];
-        foreach($points as $point){
-            if($point["area"] != null){
+        foreach ($points as $point) {
+            if ($point["area"] != null) {
                 $arr[] = ["id" => $point["id"], "info" => $point["area"], "category" => $point->category];
-            }else{
+            } else {
                 $arr[] = ["id" => $point["id"], "info" => $point["location"], "category" => $point->category];
             }
         }
         return json_encode($arr);
     }
 
-    public function searchForName($name){
-        if(isset($name)){
+    public function searchForName($name)
+    {
+        if (isset($name)) {
             return json_encode(ProjectPoint::where("name", "LIKE", "%" . $name . "%")->get());
-        }else return abort(400);
+        } else return abort(400);
     }
 
-    public function getProjectPointByID($projectPointId){
+    public function getProjectPointByID($projectPointId)
+    {
         $model = ProjectPoint::find($projectPointId);
         $model["comments"] = $model->comments;
         return json_encode($model);
     }
 
-    public function getMedia($id){
-        if(!isset($id)) return abort(400);
+    public function getMedia($id)
+    {
+        if (!isset($id)) return abort(400);
         $model = ProjectPoint::find($id);
         $images = $model->imagePoints;
         $names = [];
-        foreach($images as $image) $names[] = $image->media_name;
+        foreach ($images as $image) $names[] = $image->media_name;
         return json_encode($names);
     }
 
-    public function createPoint(Request $request){
-        if(isset($request->lat) && isset($request->long) && isset($request->name) && isset($request->information)){
+    public function createPoint(Request $request)
+    {
+        if (isset($request->lat) && isset($request->long) && isset($request->name) && isset($request->information)) {
             $point = new ProjectPoint();
             $point->project_id = $request->project_id;
             $point->location = new Point($request->lat, $request->long);
-            if(isset($request->area)) $point->area = $request->area;
-            $point->name = $request->name;
-            $point->information= $request->information;
-            $point->category = $request->category;
-            $point->save();
-            return json_encode($point);
-        }else{
-            return abort(400);
-        }
-    }
-
-    public function updatePoint(Request $request){
-        if(isset($request->id) && isset($request->lat) && isset($request->long) && isset($request->name) && isset($request->information)) {
-            $point = ProjectPoint::find($request->id);
-            $point->project_id = $request->project_id;
-            $point->location = new Point($request->lat, $request->long);
-            if(isset($request->area)) $point->area = $request->area;
+            if (isset($request->area)) $point->area = $request->area;
             $point->name = $request->name;
             $point->information = $request->information;
             $point->category = $request->category;
             $point->save();
             return json_encode($point);
-        }else{
+        } else {
             return abort(400);
         }
     }
 
-    public function removePoint(Request $request){
-        if(isset($request->id)){
+    public function updatePoint(Request $request)
+    {
+        if (isset($request->id) && isset($request->lat) && isset($request->long) && isset($request->name) && isset($request->information)) {
+            $point = ProjectPoint::find($request->id);
+            $point->project_id = $request->project_id;
+            $point->location = new Point($request->lat, $request->long);
+            if (isset($request->area)) $point->area = $request->area;
+            $point->name = $request->name;
+            $point->information = $request->information;
+            $point->category = $request->category;
+            $point->save();
+            return json_encode($point);
+        } else {
+            return abort(400);
+        }
+    }
+
+    public function removePoint(Request $request)
+    {
+        if (isset($request->id)) {
             ProjectPoint::find($request->id)->delete();
-        }else return abort(400);
+        } else return abort(400);
     }
 }
