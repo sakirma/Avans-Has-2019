@@ -155,6 +155,9 @@
                     v => !!v || 'Beschreiving is vereist',
                     v => (v && v.length <= 10000) || 'Tekst mag niet langer zijn dan 10.000x` karakters zijn'
                 ],
+                markerRules:[
+                    v => !!v || 'U moet een locatie voor deze punt kiezen',
+                ],
                 selectedProject: {
                     id: '', // ID is used to get data from database, as an example, to retrieve which image and youtube url is being used.
                     name: '',
