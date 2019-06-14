@@ -10,14 +10,14 @@
                                      v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section  ref="map" :parent-page="this" :map-objects="project_points"></map-section>
+                <map-section ref="map" :parent-page="this" :map-objects="project_points"></map-section>
             </v-flex>
         </v-layout>
     </v-container>
 </template>
 
 <script>
-    import MapSection from './InterestPointMap';
+    import MapSection from '../Map';
     import InterestPointView from './InterestPointView';
     import InterestPointNew from './InterestPointNew';
     import InterestPointEdit from './InterestPointEdit'
