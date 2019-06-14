@@ -27,7 +27,15 @@
                             <v-card-title class="title">Kies een categorie:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field v-model="category"></v-text-field>
+                            <v-select
+                                    v-model="select"
+                                    :items="categories"
+                                    menu-props="auto"
+                                    label="Selecteren"
+                                    :rules="[v => !!v || 'Categorie is vereist']"
+                                    required
+                                    single-line>
+                            </v-select>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -103,7 +111,8 @@
                 images: [],
                 name: null,
                 information: null,
-                category: null
+                categories: [],
+                select: null
             }
         },
         props: {
@@ -120,14 +129,13 @@
                 axios.get("/getProject/"+product)
                     .then(({data}) => {
                         this.name = data.name;
-                        this.category = data.category;
+                        this.select = data.category;
                         this.information = data.information;
                     });
 
                 axios.get("/getMediaFromProject/"+product)
                     .then(({data}) => {
                         for(let i = 0; i < data.length; i++){
-                            console.log(data[i]);
                             this.files.push(data[i]);
                             this.images.push("getmedia/" + data[i]);
                         }
@@ -171,7 +179,7 @@
                     id: this.id,
                     name: this.name,
                     information: this.information,
-                    category: this.category
+                    category: this.select
                 }).then(({ data }) => {
                     for(let i = this.offset; i < this.files.length; i++){
                         if(this.files[i] == null) continue;
@@ -191,25 +199,36 @@
                             console.log(error);
                         });
                     }
+                    this.close();
                 }).catch((error) => {
-                    alert("Er ging iets mis bij het opslaan...");
+                    alert("Er ging iets mis bij het opslaan van het project!");
                     console.log(error);
                 });
-                this.close();
             },
             remove(){
-                axios.post("/beheer/removeProject", { id: this.id })
-                    .catch((error) => {
-                        alert("Er ging iets mis bij het verwijderen...");
-                        console.log(error.message);
-                    });
-                this.close();
+                if (confirm('Weet u zeker dat u dit project wilt verwijderen?')) {
+                    axios.post("/beheer/removeProject", {id: this.id})
+                        .catch((error) => {
+                            alert("Er ging iets mis bij het verwijderen...");
+                            console.log(error.message);
+                        });
+                    this.close();
+                }
             }
         },
         mounted(){
             this.input = this.$el.querySelector('input[type=file]');
             this.input.addEventListener('change', () => this.onFileSelection());
             this.input.setAttribute('multiple', 'multiple');
+
+            window.axios.get('/getCategories').then(response => {
+                let temp = response.data;
+                for (let i = 0; i < temp.length; i++) {
+                    this.categories.push(temp[i].name);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
     }
 </script>

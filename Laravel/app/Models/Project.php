@@ -22,7 +22,7 @@ class Project extends Model
 
     protected $spatialFields = [
         'area',
-        'location'
+
     ];
 
     public function project_points()

@@ -1,12 +1,12 @@
 <template>
     <div id="mapPage" style="height: 100vh;">
         <v-layout column fill-height style="background-color: #89a226">
-            <v-flex sm1 xs2 >
+            <v-flex sm1 xs2>
                 <map-page-header :parent="this"></map-page-header>
             </v-flex>
 
             <v-flex style="position: relative">
-                <map-component :parentPage="this">
+                <map-component ref="mapComponent">
                 </map-component>
                 <v-layout :class="{'ml-5': $vuetify.breakpoint.mdAndUp}" align-end justify-start row
                           style="position: absolute; bottom: 0; width: 100%;">
@@ -15,7 +15,7 @@
                                @click="OpenRoutePagePressed">
                             <v-layout column>
                                 <v-flex class="white--text font-weight-bold">
-                                    ROUTES MAKEN
+                                    EEN ROUTE VOLGEN
                                 </v-flex>
                             </v-layout>
                         </v-btn>
@@ -38,8 +38,8 @@
 
                 <v-layout column justify-start class="searchBarAboveMap" :fill-height="searchFieldIsFocused === true"
                           :class="{'backgroundOnFieldFocused': searchFieldIsFocused === true}">
-                    <v-flex d-flex>
-                        <v-layout row align-center justify-center>
+                    <v-flex xs1>
+                        <v-layout row align-start justify-center>
                             <v-text-field
                                     hide-details
                                     class="mx-3 py-2"
@@ -47,8 +47,11 @@
                                     prepend-inner-icon="search"
                                     solo
                                     v-model="searchInput"
-                            >  </v-text-field>
-                            <v-btn fab v-if="searchFieldIsFocused === true" @click="() => {this.searchFieldIsFocused = false}"> <v-icon large>close</v-icon> </v-btn>
+                            ></v-text-field>
+                            <v-btn fab v-if="searchFieldIsFocused === true"
+                                   @click="() => {this.searchFieldIsFocused = false}">
+                                <v-icon large>close</v-icon>
+                            </v-btn>
                         </v-layout>
                     </v-flex>
                     <div v-bar>
@@ -58,12 +61,13 @@
                                     <v-list style="background-color: transparent; width: 100%; padding: 0;"
                                             class="white--text" two-line
                                             pt-0>
-                                        <template v-for="(item, index) in items">
+                                        <template v-for="(item, index) in filteredMapObjects">
                                             <v-list-tile
                                                     :key="index"
                                                     avatar
                                                     ripple
                                                     style="background-color: rgba(137, 163, 36, 0.9);"
+                                                    @click="searchTileClicked(item)"
                                             >
                                                 <v-list-tile-content>
                                                     <v-list-tile-title>{{ item.name }}</v-list-tile-title>
@@ -106,6 +110,10 @@
             },
             onRoutePageOpened: {
                 type: Function,
+            },
+            mapObjects: {
+                type: Array,
+                required: true
             }
         },
         data() {
@@ -116,57 +124,51 @@
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 buttonImage: "img/MapPage/button.png",
 
-                pressedImages: { activiteit: false, "eten en drinken": false, bezienswaardigheid: false, natuurgebied: false },
+                pressedImages: {
+                    activiteit: false,
+                    "eten en drinken": false,
+                    bezienswaardigheid: false,
+                    natuurgebied: false
+                },
 
                 searchFieldIsFocused: false,
                 searchInput: '',
-                items: []
+                filteredMapObjects: []
             }
         },
         methods: {
-            filter(key){
+            filter(key) {
                 this.pressedImages[key] = !this.pressedImages[key];
             },
             disableInputEvents(element) {
                 this.$parent.disableInputEvents(element);
             },
-            OpenProjectPagePressed: function (projectId) {
-                this.onProjectOpened(projectId);
+            OpenProjectPagePressed: function (projectId, isProject) {
+                this.onProjectOpened(projectId, isProject);
             },
             OpenRoutePagePressed: function () {
                 this.onRoutePageOpened();
+            },
+            searchTileClicked(item) {
+                this.OpenProjectPagePressed(item.id, !item.project_id);
             }
         },
         watch: {
-            searchInput: function(){
-                this.items = [];
-                axios.get("/searchForProjectPoint/"+this.searchInput)
-                    .then(({ data }) => {
-                        console.log(data.length + ", " + this.searchInput);
-                        for(let i = 0; i < data.length; i++)
-                            this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
-                    });
-
-                axios.get("/searchForProject/"+this.searchInput)
-                    .then(({ data }) => {
-                        console.log(data.length + ", " + this.searchInput);
-                        for(let i = 0; i < data.length; i++)
-                            this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
-                    });
-                console.log("length: " + this.items.length);
+            searchInput: function (n, o) {
+                this.filteredMapObjects = this.mapObjects.filter(item => {
+                    return item.name.toLowerCase().includes(n.toLowerCase());
+                });
             }
         },
         mounted() {
-            axios.get("/getAllProjectPointsFullInfo")
-                .then(({ data }) => {
-                    for(let i = 0; i < data.length; i++)
-                        this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
-                });
-
-            axios.get("/getProjects")
-                .then(({ data }) => {
-                    for(let i = 0; i < data.length; i++)
-                        this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: true});
+            this.$refs.mapComponent.assignParentPage(this);
+            axios.get("/getAllMapObjects")
+                .then(({data}) => {
+                    for (let i = 0; i < data.length; i++) {
+                        this.mapObjects.push(data[i]);
+                    }
+                    this.$refs.mapComponent.loadMapObjects(this.mapObjects);
+                    this.filteredMapObjects = this.mapObjects;
                 });
 
             this.$watch(
@@ -254,7 +256,7 @@
     .searchBarAboveMap {
         position: absolute;
         z-index: 1000;
-        bottom: 0;
+        top: 0;
         right: 0;
         width: 25%;
     }

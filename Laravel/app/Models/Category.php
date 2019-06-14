@@ -7,7 +7,7 @@ use App\Models\Project;
 
 class Category extends Model
 {
-    protected $table = 'project_category';
+    protected $table = 'category';
 
     // Table does not have timestamps
     public $timestamps = false;

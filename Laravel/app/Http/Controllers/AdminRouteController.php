@@ -14,21 +14,25 @@ use Illuminate\Http\Request;
 
 class AdminRouteController extends Controller
 {
+    function getView(){
+        return view('ManageRoutes');
+    }
+
     function getRouteData()
     {
         $points = ProjectPoint::all();
         $routes = Route::all();
         $routePoints = RouteHasProjectPoint::all();
 
-        return view('createRoute')->with(['points' => $points, 'routes' => $routes, 'routePoints' => $routePoints]);
+        return (['points' => $points, 'routes' => $routes, 'routePoints' => $routePoints]);
     }
 
     function getProjectPoint(Request $request){
 
         $id = $request->id;
-        $project = ProjectPoint::where('id', $id)->get();
+        $projectPoints = ProjectPoint::where('id', $id)->get();
 
-        return $project;
+        return $projectPoints;
     }
 
     function insertMarkers(Request $request){
@@ -57,17 +61,16 @@ class AdminRouteController extends Controller
         $routeId = $request->routeId;
         $response = [];
 
-        $ids = RouteHasProjectPoint::select('project_point_id')
+        $ids = RouteHasProjectPoint::select('point_id')
             ->where('route_id', $routeId)
             ->get();
         //Twee querys voor de spatial data
         $routePoints = ProjectPoint::whereIn('id', $ids)->get();
 
-        foreach($routePoints as $r){
+        /*foreach($routePoints as $r){
              array_push($response, [$r->id, $r->location]);
-        }
-
-        return $response;
+        }*/
+        return $routePoints;
     }
 
     function createRoute(Request $request){
@@ -105,7 +108,7 @@ class AdminRouteController extends Controller
         for ($i = 0; $i < count($ids); $i++) {
             $routepoints = new RouteHasProjectPoint();
 
-            $routepoints->project_point_id = $ids[$i];
+            $routepoints->point_id = $ids[$i];
             $routepoints->route_id = $route->id;
             $routepoints->save();
         }

@@ -51,28 +51,10 @@ Vue.component('map-page',
     require('./components/MapPage').default
 );
 
-Vue.component('add-project',
-    require('./components/crudProject/AddProject').default
-);
-
-Vue.component('view-projects',
-    require('./components/crudProject/ViewProjects').default
-);
-
-Vue.component('edit-projects',
-    require('./components/crudProject/EditProjects').default
-);
-Vue.component('main-crud-page',
-    require('./components/crudProject/MainCrudPage').default
-);
-
-Vue.component('view-project-points',
-    require('./components/crudProjectPoint/ViewProjectPoints').default
-);
-
 Vue.component('login-screen',
     require('./components/auth/loginScreen').default
 );
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -89,9 +71,6 @@ const app = new Vue({
         disableInputEvents(element) {
             L.DomEvent.disableClickPropagation(element.$el);
             L.DomEvent.disableScrollPropagation(element.$el);
-        },
-        onProjectOpened(projectId) {
-            console.log('app.js: wooow');
         }
     }
 });

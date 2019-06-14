@@ -1,5 +1,5 @@
 <template>
-    <div class="projectEditSection" v-bar >
+    <div class="projectEditSection" v-bar>
         <div class="pr-2">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Route</v-card-title>
@@ -8,6 +8,14 @@
                 </v-btn>
             </v-layout>
 
+            <v-alert
+                    :value="alert.success"
+                    type="success"
+                    transition="scale-transition"
+            >
+                Route is aangemaakt.
+            </v-alert>
+
             <v-layout column>
                 <v-flex xs1>
                     <v-layout row>
@@ -15,30 +23,7 @@
                             <v-card-title class="title">Naam:</v-card-title>
                         </v-flex>
                         <v-flex xs3>
-                            <v-text-field></v-text-field>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
-
-
-                <v-flex xs1>
-                    <v-layout row>
-                        <v-flex xs3>
-                            <v-card-title class="title">Kies een categorie:</v-card-title>
-                        </v-flex>
-                        <v-flex xs3>
-                            <v-text-field></v-text-field>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
-
-                <v-flex xs1>
-                    <v-layout row>
-                        <v-flex xs3>
-                            <v-card-title class="title">Beschrijving</v-card-title>
-                        </v-flex>
-                        <v-flex xs4>
-                            <v-textarea box></v-textarea>
+                            <v-text-field v-model="newRoute.name"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -61,7 +46,8 @@
                                                 <div style="width: 100%;" class="my-1 routeDrag" flat>
                                                     <v-layout align-center justify-center row fill-height
                                                               class="routeButton">
-                                                        <v-card-text class="py-0 headline " style="color: rgba(137,163,36,0.75)">
+                                                        <v-card-text class="py-0 headline "
+                                                                     style="color: rgba(137,163,36,0.75)">
                                                             {{route.name}}
                                                         </v-card-text>
                                                         <v-icon color="#89a324" class="mr-1">
@@ -86,20 +72,21 @@
 
                 <v-flex xs1 pt-5>
                     <v-layout row>
-                        <v-card-title class="title">Uitgerekende kilometers:</v-card-title>
+                        <v-card-title class="title">Uitgerekende kilometers: {{routeInformation.distance}}</v-card-title>
                     </v-layout>
                 </v-flex>
                 <v-flex xs1>
                     <v-layout row>
-                        <v-card-title class="title">Uitgerekende duur:</v-card-title>
+                        <v-card-title class="title">Uitgerekende duur: {{routeInformation.time}}</v-card-title>
                     </v-layout>
                 </v-flex>
 
                 <v-flex xs1>
                     <v-layout reverse row xs1>
-                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226">
+                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="saveRouteToDatabase">
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
-                                    class="white--text">
+                                    class="white--text"
+                            >
                                 Route toevoegen
                             </v-card>
                         </v-btn>
@@ -114,23 +101,37 @@
     import draggable from "vuedraggable";
     import ProjectSelectionList from "./ProjectSelectionList";
 
+    import "leaflet/dist/leaflet.css";
+
+    let leaflet_create = require('../../../leaflet_create');
+
     export default {
         name: "ProjectsEdit",
+        components: {
+            draggable,
+            ProjectSelectionList,
+        },
         props: {
             parent: {
                 type: Object,
                 required: true
             }
         },
-        methods: {
-            close() {
-                this.parent.enableViewMode();
-            }
-        },
         data() {
             return {
-                routeList: [
-                ],
+                newRoute: {},
+                routeList: [],
+
+                routeInformation: {
+                    distance: 0,
+                    time: 0,
+                },
+
+                alert: {
+                    success: false,
+                    failed: false,
+                    warning: false,
+                },
             }
         },
         computed: {
@@ -143,10 +144,56 @@
                 };
             }
         },
-        components: {
-            draggable,
-            ProjectSelectionList,
-        }
+        methods: {
+            createNewRouteButtonPressed(map, points) {
+                console.log("Hij is hier!");
+                this.map = map;
+                this.routingControl = leaflet_create.default.setVariables(map);
+
+                this.$refs.selectionList.addInterestPoints(points);
+
+                let markers = leaflet_create.default.getProjectMarkers();
+                markers.on('dblclick', this.removeFromView);
+            },
+            placePoint: function (point) {
+
+                let markers = leaflet_create.default.placeMarker(point);
+                let waypoints = leaflet_create.default.createWaypoints(markers);
+
+                if (markers.length < 2) return;
+
+                this.routingControl.setWaypoints(waypoints);
+                this.routingControl.on('routesfound', (e) => this.getRouteInformation(e));
+            },
+            getRouteInformation(e) {
+                this.routeInformation = {
+                    distance: Number(Math.round(e.routes[0].summary.totalDistance / 1000 + 'e2') + 'e-2'),
+                    time: Number(Math.round(e.routes[0].summary.totalTime / 3600 + 'e2') + 'e-2'),
+                };
+            },
+            clearMarkers: function () {
+                leaflet_create.default.clearMarkers();
+            },
+            removePoint: function (point) {
+                leaflet_create.default.removeMarker(point);
+            },
+            removeFromView(e) {
+                let id = e.layer.options.id;
+                this.$refs.selectionList.removeElementById(id);
+            },
+            saveRouteToDatabase() {
+                leaflet_create.default.uploadRoute(this.newRoute.name);
+                this.close();
+            },
+            close() {
+
+                leaflet_create.default.clearMarkers();
+                this.map.removeControl(this.routingControl);
+                this.$refs.selectionList.clearInterestPoints();
+
+                this.parent.enableViewMode();
+            }
+        },
     }
 </script>
 

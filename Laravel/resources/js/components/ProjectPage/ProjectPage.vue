@@ -2,7 +2,7 @@
     <div style="height: 100vh;  background-color: #89a226;">
         <v-layout column fill-height>
             <v-flex xs1 ma-3>
-                <project-page-header></project-page-header>
+                <project-page-header :name="name"></project-page-header>
             </v-flex>
 
             <v-container ml-0 pl-0 fluid grid-list-md style="background-color: white; "
@@ -37,23 +37,7 @@
 
                     <v-flex lg4>
                         <v-card height="100%">
-<!--                            <l-map ref="map"-->
-<!--                                   :zoom="zoom"-->
-<!--                                   :center="center"-->
-<!--                                   style="height:100%;">-->
-
-<!--                                <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>-->
-
-<!--                                <template v-for="(marker, index) in markers">-->
-<!--                                    <l-marker :lat-lng="marker">-->
-<!--                                        <l-popup>-->
-<!--                                            <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>-->
-<!--                                        </l-popup>-->
-<!--                                    </l-marker>-->
-<!--                                </template>-->
-<!--                            </l-map>-->
-                            <map-component :parent-page="this">
-                            </map-component>
+                            <map-component ref="mapComponent"></map-component>
                         </v-card>
                     </v-flex>
                 </v-layout>
@@ -91,22 +75,7 @@
 
                     <v-flex lg4>
                         <v-card height="100%">
-<!--                            <l-map ref="map"-->
-<!--                                   :zoom="zoom"-->
-<!--                                   :center="center"-->
-<!--                                   style="height:100%;">-->
-
-<!--                                <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>-->
-
-<!--                                <template v-for="(marker, index) in markers">-->
-<!--                                    <l-marker :lat-lng="marker">-->
-<!--                                        <l-popup>-->
-<!--                                            <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>-->
-<!--                                        </l-popup>-->
-<!--                                    </l-marker>-->
-<!--                                </template>-->
-<!--                            </l-map>-->
-                            <map-component :parentPage="this"></map-component>
+                            <map-component ref="mapComponent"></map-component>
                         </v-card>
                     </v-flex>
 
@@ -131,24 +100,38 @@
             return {
                 information: "",
                 images: [],
-                comments: []
+                comments: [],
+                mapPage: undefined,
+                mapObjects: [],
+                name: ''
             }
         },
         props: {
             onProjectOpened: {
                 type: Function,
             },
+            parent: {
+                type: Object,
+                required: true
+            }
         },
         methods: {
             init() {
                 this.images = [];
                 let id = this.$parent.selectedProjectPage.projectId;
-                axios.get("/getProjectPoint/"+id).then(({ data }) => {
+                let linkOne = "/getProjectPoint/";
+                let linkTwo = "/getMediaFromProjectPoint/";
+                if(this.$parent.selectedProjectPage.project){
+                    linkOne = "/getProject/";
+                    linkTwo = "/getMediaFromProject/";
+                }
+                axios.get(linkOne+id).then(({ data }) => {
                     this.information = data.information;
                     this.comments = data.comments;
+                    this.name = data.name;
                 });
 
-                axios.get("/getMediaFromProjectPoint/"+id).then(({ data }) => {
+                axios.get(linkTwo+id).then(({ data }) => {
                     for(let i = 0; i < data.length; i++)
                         this.images.push("getmedia/" + data[i]);
                 });
@@ -156,6 +139,16 @@
         },
         mounted() {
             this.$vuetify.goTo('#projectPage');
+            this.mapPage = this.parent.getMapPage();
+            this.$refs.mapComponent.assignParentPage(this.mapPage);
+
+            axios.get("/getAllMapObjects")
+                .then(({ data }) => {
+                    for(let i = 0; i < data.length; i++) {
+                        this.mapObjects.push(data[i]);
+                    }
+                    this.$refs.mapComponent.loadMapObjects(this.mapObjects);
+                });
         },
         components: {
             ProjectPageHeader,

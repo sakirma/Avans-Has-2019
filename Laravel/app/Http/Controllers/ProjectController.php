@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\ProjectPoint;
 use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
@@ -60,6 +61,15 @@ class ProjectController extends Controller
 
     public function getProjects() {
         return json_encode(Project::all());
+    }
+
+    public function getAllMapObjects() {
+        $projects = Project::all();
+        $points = ProjectPoint::all();
+        $arr = [];
+        foreach($projects as $project) $arr[] = $project;
+        foreach($points as $point) $arr[] = $point;
+        return json_encode($arr);
     }
 
     public function getMedia($id){
