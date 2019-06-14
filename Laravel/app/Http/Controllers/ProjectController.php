@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\ProjectPoint;
 use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
+use Grimzy\LaravelMysqlSpatial\Types\Polygon;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
+use Grimzy\LaravelMysqlSpatial\Types\LineString;
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -17,14 +21,30 @@ class ProjectController extends Controller
      */
 
     public function createProject(Request $request){
+        $points = Array();
+
+        $string = '';
+        for($i = 0; $i<sizeof($request->latlngs);$i++){
+            $lat = $request->latlngs[$i][0];
+            $lng = $request->latlngs[$i][1];
+            $points[$i] = new Point($lat, $lng);
+            $string .= $lat.' '. $lng.',';
+        }
+        $lat = $request->latlngs[0][0];
+        $lng = $request->latlngs[0][1];
+        $string .= $lat.' '.$lng;
+        $points[sizeof($points)] = new Point($lat,$lng);
+
+//        $area = DB::raw('ST_GeomFromText(\'POLYGON('.$string.'))\')');
+
+        $area = new GeometryCollection($points);
         if(isset($request->category) && isset($request->name) && isset($request->information)){
             $point = new Project();
-            if(isset($request->area)) $point->area = $request->area;
+            $point->area = $area;
             $point->name = $request->name;
             $point->information= $request->information;
             $point->category = $request->category;
             $point->save();
-            return json_encode($point);
         }else{
             return abort(400);
         }

@@ -3,11 +3,11 @@
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
                 <projects-view :parent="this" :headers="headers" :values="filteredProjects"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
-                <projects-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
+                <projects-new ref="newSection" :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
                 <project-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section ref="mapSection" :parent="this" v-on:childToParent="onChildClick" :markers="marker"></map-section>
+                <map-section ref="mapSection" :parent="this"></map-section>
             </v-flex>
         </v-layout>
     </v-container>

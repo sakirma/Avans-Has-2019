@@ -82,6 +82,15 @@
                         </v-card>
                     </v-btn>
                 </v-layout>
+
+                <v-layout align-center justify-end row>
+                    <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="reset()">
+                        <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
+                                class="white--text">
+                           reset polygon
+                        </v-card>
+                    </v-btn>
+                </v-layout>
             </v-layout>
         </div>
     </div>
@@ -95,7 +104,9 @@
                 type: Object,
                 required: true
             }
+
         },
+
         methods: {
             close() {
                 this.parent.enableViewMode();
@@ -115,12 +126,17 @@
                 this.files.splice(index, 1);
                 this.images.splice(index, 1);
             },
+            reset(){
+                this.parent.$refs.mapSection.polygon.latlngs = new Array();
+            },
             save() {
+                console.log(this.polygon)
                 axios.post("/beheer/createProject", {
                     project_id: this.project,
                     name: this.name,
                     information: this.information,
-                    category: this.select
+                    category: this.select,
+                    latlngs: this.polygon.latlngs
                 }).then(({data}) => {
                     for (let i = 0; i < this.files.length; i++) {
                         let formData = new FormData();
@@ -154,7 +170,10 @@
                 name: null,
                 information: null,
                 categories: [],
-                select: null
+                select: null,
+                polygon: {
+                    latlngs: [],
+                },
             }
         },
         mounted() {

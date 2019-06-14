@@ -18,13 +18,12 @@
         </v-flex>
         <v-flex>
             <div style="height: 100%;">
-                <l-map :center="center" :zoom="zoom" id="map" ref="map" style="height:100%;" v-on:click="add($event)">
+                <l-map  :center="center" :zoom="zoom" id="map" ref="map"  style="height:100%;" v-on:click="add($event) ">
                     <l-tile-layer :url="url"></l-tile-layer>
-
-                    <v-polygon v-for="s in coordinates"
-                               :lat-lngs="s.coordinates"
-                               >
-                    </v-polygon>
+                    <LPolygon ref="poly"
+                            :lat-lngs="polygon.latlngs"
+                            :color="polygon.color">
+                    </LPolygon>
                 </l-map>
             </div>
         </v-flex>
@@ -32,23 +31,28 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker, LPolygon, LPolyline, LRectangle, LPopup} from 'vue2-leaflet';
-    import Vue.component('v-polygon', Vue2Leaflet.Polygon)
+    import {LMap, LTileLayer, LMarker, LPolygon, LPolyline, LRectangle, LPopup, } from 'vue2-leaflet';
 
+    import LDraw from 'leaflet-draw';
     import "leaflet/dist/leaflet.css";
     export default {
         name: "InterestPointMap",
         components: {
+            LPolygon,
             LMap,
             LTileLayer,
             LMarker,
-            v-polygon,
         },
         props: {
             parent: {
                 type: Object,
                 required: true
-            }
+            },
+            latLngs: {
+                type: Array,
+                default: () => []
+            },
+
         },
         data() {
             return {
@@ -58,6 +62,11 @@
                 isDrawMode: false,
                 markers: [],
                 coordinates: [],
+                polygon: {
+                    latlngs: [],
+                    color: 'green'
+                },
+
 
 
             }
@@ -78,15 +87,15 @@
             },
             add(event) {
                 if(this.isDrawMode){
-                    console.log(event);
-                    console.log(event.latlng);
-                    console.log(event.latlng.lng);
-
-                    this.coordinates.push([event.latlng.lat, event.latlng.lng]);
 
 
-                }},
-        }
+                    this.polygon.latlngs.push([event.latlng.lat, event.latlng.lng]);
+                    this.parent.$refs.newSection.polygon.latlngs =  this.polygon.latlngs;
+
+                }
+},
+        },
+
     }
 </script>
 
