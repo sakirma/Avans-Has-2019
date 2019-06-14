@@ -2,16 +2,20 @@
     <v-layout column fill-height justify-center>
         <v-flex xs1>
             <v-layout row align-center justify-center fill-height>
-                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324" @click="filter(Object.keys(pressedImages)[0])">
+                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324"
+                       :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[0]]}" @click="filter(Object.keys(pressedImages)[0])">
                     Activiteiten
                 </v-btn>
-                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324" @click="filter(Object.keys(pressedImages)[1])">
+                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324"
+                       :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[1]]}" @click="filter(Object.keys(pressedImages)[1])">
                     Eten & Drinken
                 </v-btn>
-                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324" @click="filter(Object.keys(pressedImages)[2])">
+                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324"
+                       :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[2]]}" @click="filter(Object.keys(pressedImages)[2])">
                     Bezienswaardigheden
                 </v-btn>
-                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324" @click="filter(Object.keys(pressedImages)[3])">
+                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324"
+                       :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[3]]}" @click="filter(Object.keys(pressedImages)[3])">
                     Natuurgebieden
                 </v-btn>
             </v-layout>
@@ -76,5 +80,9 @@
 <style scoped>
 .categorieButton {
     border-radius: 5px;
+}
+
+.categoryButtonPressed {
+    filter: brightness(0.5);
 }
 </style>

@@ -52,7 +52,7 @@ export default {
         });
 
         window.alert("Route aangemaakt!");
-        location.reload();
+        //location.reload();
     },
     placeMarker: function (point) {
 
@@ -235,7 +235,7 @@ export default {
 
                 console.log(xhttp.response);
                 window.alert("Route succesvol verwijderd!");
-                location.reload();
+                //location.reload();
             };
 
             xhttp.setRequestHeader('X-CSRF-Token', token);

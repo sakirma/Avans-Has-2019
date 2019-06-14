@@ -209,6 +209,7 @@
             },
             projectEditSection(product) {
                 this.selectedProject.id = product;
+                console.log(product);
                 axios.get('/getProjectPoint/'+this.selectedProject.id)
                     .then(({ data }) => {
                         this.selectedProject.name = data.name;
@@ -229,8 +230,6 @@
                     })
             },
             close() {
-                this.parent.$refs.mapSection.setdrawMode(false);
-                this.parent.$refs.mapSection.clearMap();
                 this.parent.loadPoints();
                 this.parent.enableViewMode();
             },
@@ -277,7 +276,6 @@
                             long: this.markerLong,
                         }
                     }).then(({data}) => {
-                        console.log(this.currentImages);
                         for (let i = 0; i < this.currentImages.length; i++) {
                             let projectImage = this.currentImages[i];
 
