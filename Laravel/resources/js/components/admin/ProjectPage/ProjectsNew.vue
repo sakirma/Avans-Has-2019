@@ -109,6 +109,9 @@
 
         methods: {
             close() {
+                this.parent.$refs.mapSection.polygon.latlngs = new Array();
+                this.parent.$refs.mapSection.setdrawMode(false);
+                this.polygon.latlngs = new Array();
                 this.parent.enableViewMode();
             },
             onFileSelection() {
@@ -130,7 +133,7 @@
                 this.parent.$refs.mapSection.polygon.latlngs = new Array();
             },
             save() {
-                console.log(this.polygon)
+                  this.polygon.latlngs = this.parent.$refs.mapSection.polygon.latlngs ;
                 axios.post("/beheer/createProject", {
                     project_id: this.project,
                     name: this.name,
@@ -155,6 +158,7 @@
                             console.log(error);
                         });
                     }
+
                     this.close();
                 }).catch(error => {
                     alert("Er ging iets mis bij het opslaan van het project!");

@@ -23,19 +23,15 @@ class ProjectController extends Controller
     public function createProject(Request $request){
         $points = Array();
 
-        $string = '';
         for($i = 0; $i<sizeof($request->latlngs);$i++){
             $lat = $request->latlngs[$i][0];
             $lng = $request->latlngs[$i][1];
             $points[$i] = new Point($lat, $lng);
-            $string .= $lat.' '. $lng.',';
         }
         $lat = $request->latlngs[0][0];
         $lng = $request->latlngs[0][1];
-        $string .= $lat.' '.$lng;
         $points[sizeof($points)] = new Point($lat,$lng);
 
-//        $area = DB::raw('ST_GeomFromText(\'POLYGON('.$string.'))\')');
 
         $area = new GeometryCollection($points);
         if(isset($request->category) && isset($request->name) && isset($request->information)){
@@ -66,12 +62,25 @@ class ProjectController extends Controller
     }
 
     public function update( Request $request){
+        $points = Array();
+
+        for($i = 0; $i<sizeof($request->latlngs);$i++){
+            $lat = $request->latlngs[$i][0];
+            $lng = $request->latlngs[$i][1];
+            $points[$i] = new Point($lat, $lng);
+        }
+        $lat = $request->latlngs[0][0];
+        $lng = $request->latlngs[0][1];
+        $points[sizeof($points)] = new Point($lat,$lng);
+
+
+        $area = new GeometryCollection($points);
         if(isset($request->id) && isset($request->name) && isset($request->information) && isset($request->category)) {
             $project = Project::find($request->id);
             $project->name = $request->name;
             $project->information = $request->information;
             $project->category = $request->category;
-            if(isset($request->area)) $project->area = $request->area;
+            $project->area = $area;
             $project->save();
             return json_encode($project);
         }else{

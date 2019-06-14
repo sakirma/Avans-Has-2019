@@ -72,10 +72,15 @@
                         }
                         this.filteredProjects = this.values;
                     });
+                this.$refs.mapSection.polygon.latlngs = new Array();
+
             },
             editAProject(product) {
+                this.$refs.mapSection.polygon.latlngs = new Array();
                 this.currentPageState = this.ProjectPageStates.editMode;
                 this.$refs.projectEditSection.projectEditSection(product);
+                this.$refs.mapSection.setdrawMode(true);
+
             },
             filterList(search) {
                 this.filteredProjects = this.values.filter(project => {

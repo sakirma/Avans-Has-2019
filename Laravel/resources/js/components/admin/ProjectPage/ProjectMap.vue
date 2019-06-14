@@ -90,7 +90,7 @@
 
 
                     this.polygon.latlngs.push([event.latlng.lat, event.latlng.lng]);
-                    this.parent.$refs.newSection.polygon.latlngs =  this.polygon.latlngs;
+                    console.log(this.polygon.latlngs);
 
                 }
 },
