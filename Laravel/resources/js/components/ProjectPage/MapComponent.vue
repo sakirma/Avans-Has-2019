@@ -118,8 +118,7 @@
                     if(data[i].area) data[i].info = data[i].area;
                     else if(data[i].location) {
                         data[i].info = data[i].location;
-                    }
-                    else continue;
+                    }else continue;
 
                     if (data[i].info.type == "Point") {
                         this.createPoint(data[i], data[i].info.coordinates);

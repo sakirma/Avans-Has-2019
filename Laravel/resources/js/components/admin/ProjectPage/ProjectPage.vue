@@ -7,7 +7,7 @@
                 <project-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section></map-section>
+                <map-section ref="map" :parent-page="this" :map-objects="filteredProjects"></map-section>
             </v-flex>
         </v-layout>
     </v-container>
@@ -62,14 +62,10 @@
                 axios.get('/getProjects')
                     .then(({data}) => {
                         for(let i = 0; i < data.length; i++){
-                            this.values.push({
-                                id: data[i].id,
-                                name: data[i].name,
-                                category: data[i].category,
-                                information: data[i].information
-                            });
+                            this.values.push(data[i]);
                         }
                         this.filteredProjects = this.values;
+                        this.$refs.map.loadMapObjects(this.filteredProjects);
                     });
             },
             editAProject(product) {

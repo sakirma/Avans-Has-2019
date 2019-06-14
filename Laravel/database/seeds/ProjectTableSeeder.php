@@ -32,8 +32,8 @@ class ProjectTableSeeder extends Seeder
         ]);
         
         //factory(App\Models\Project::class)->create();
-        $this->AddProjectPoint(51.61716386256088, 5.506896972656249);
-        $this->AddProjectPoint(51.61716386256088, 5.506896972656249);
+        $this->AddProjectPoint(5.506896972656249, 51.61716386256088);
+        $this->AddProjectPoint(5.516896972656249, 51.63716386256092);
 
         // Example of changing default values of the factory.
         factory(App\Models\Project::class)->create([

@@ -21,7 +21,7 @@ class CreateInterestPointTable extends Migration
             $table->point('location');
             $table->geometryCollection('area')->nullable();
 
-            $table->string('name', 255)->unique();
+            $table->string('name')->unique();
             $table->longText('information');
             $table->string('category');
         });
