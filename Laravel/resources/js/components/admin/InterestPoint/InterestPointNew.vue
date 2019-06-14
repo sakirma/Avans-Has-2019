@@ -60,7 +60,7 @@
                                 <v-card-title class="title">Locatie Latidude:</v-card-title>
                             </v-flex>
                             <v-flex xs4>
-                                <v-textarea v-model="marker.lat" :rules="markerRules" box></v-textarea>
+                                <v-text-field v-model="marker.lat" :rules="markerRules" box readonly></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -71,7 +71,7 @@
                                 <v-card-title class="title">Locatie Longitude::</v-card-title>
                             </v-flex>
                             <v-flex xs4>
-                                <v-textarea v-model="marker.lng" :rules="markerRules" box></v-textarea>
+                                <v-text-field v-model="marker.lng" :rules="markerRules" box readonly></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-flex>
