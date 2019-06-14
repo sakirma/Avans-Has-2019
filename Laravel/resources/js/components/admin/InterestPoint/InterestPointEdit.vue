@@ -190,10 +190,14 @@
         methods: {
             onFileSelection() {
                 for (let file of this.input.files) {
-                    this.files.push(file);
                     let reader = new FileReader();
                     reader.onload = (ev) => {
-                        this.images.push(ev.target.result);
+                        this.currentImages.push({
+                            newFile: file,
+                            imageLocation: ev.target.result,
+                            isRemoved: false,
+                            number: this.currentImages.length
+                        });
                     };
                     reader.readAsDataURL(file);
                 }
@@ -237,8 +241,6 @@
                 for (let i = 0; i < this.projects.length; i++) {
                     if (this.projects[i].id === this.selectedProject.project_id) {
                         this.projectName = this.projects[i].name;
-                    } else {
-                        console.log(this.projects[i].id + " - " + this.selectedProject.project_id);
                     }
                 }
             },
@@ -278,6 +280,7 @@
                             long: this.markerLong,
                         }
                     }).then(({data}) => {
+                        console.log(this.currentImages);
                         for (let i = 0; i < this.currentImages.length; i++) {
                             let projectImage = this.currentImages[i];
 
