@@ -32,6 +32,21 @@
                 </v-flex>
             </v-layout>
         </v-flex>
+        <v-flex class="tooltipTopRight">
+            <v-tooltip right content-class="tooltip-inner">
+                <template v-slot:activator="{ on }">
+                    <v-img class="tooltipImage"
+                           contain
+                           v-on="on"
+                           src="img/context-sensitive-help.png"/>
+                </template>
+                <span>
+                    Dit is de Roadleaf homepagina. Filter op de kaart d.m.v. de 4 knoppen bovenin of gebruik de
+                    zoekfunctie. Scroll op de kaart om in en uit te zoomen. Klik op een interessepunt voor meer informatie.
+                </span>
+            </v-tooltip>
+        </v-flex>
+
     </v-layout>
 </template>
 
@@ -74,6 +89,27 @@
         height: 60%;
         left: 15%;
         top: 14%;
+    }
+
+    .tooltipTopRight {
+        max-width: 30px;
+        right: 10px;
+        position: relative;
+    }
+
+    .tooltipImage {
+        width: 20px;
+        height: 20px;
+    }
+
+    .tooltip-inner {
+        color: white;
+        padding: 24px;
+        border-radius: 5px;
+        box-shadow: 0 5px 30px;
+        max-height: 100px;
+        max-width: 450px;
+        z-index: 99999999;
     }
 
     .categoryButtonPressed {

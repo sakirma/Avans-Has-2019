@@ -15,6 +15,22 @@
         <v-btn class="button-page-title title" flat @click="openEditRoutesPage"> Interessepunten</v-btn>
         <v-btn class="button-page-title title" flat @click="routesPage"> Routes</v-btn>
         <v-spacer></v-spacer>
+        <v-flex class="tooltipTopRight">
+            <v-tooltip left content-class="tooltip-inner">
+                <template v-slot:activator="{ on }">
+                    <v-img class="tooltipImage"
+                           contain
+                           v-on="on"
+                           src="img/context-sensitive-help.png"/>
+                </template>
+                <span>
+                    Dit is het Roadleaf content management systeem.
+                    Hiermee kan de inhoud van de website worden beheerd.
+                    Druk op Projecten, Interessepunten of Routes om te beginnen.
+                    Druk op het Roadleaf logo om terug te gaan naar het beheerder overzicht.
+                </span>
+            </v-tooltip>
+        </v-flex>
         <v-btn class="button-page-title title" icon flat color="white" @click="goBackToPage">
             <v-icon large color="#032C4A"> web</v-icon>
         </v-btn>
@@ -80,5 +96,26 @@
 
     .roadleafPhoto:hover {
         filter: brightness(0) invert(0);
+    }
+
+    .tooltipTopRight {
+        max-width: 30px;
+
+        right: 10px;
+        position: relative;
+    }
+
+    .tooltipImage {
+        width: 20px;
+        height: 20px;
+    }
+
+    .tooltip-inner {
+        color: white;
+        padding: 24px;
+        border-radius: 5px;
+        box-shadow: 0 5px 30px;
+        max-width: 550px;
+        z-index: 99999999;
     }
 </style>
