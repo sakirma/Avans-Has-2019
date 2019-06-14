@@ -10,7 +10,7 @@
                              v-show="currentPageState === ProjectPageStates.editMode"></routes-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section parent-page="this  " ref="mapSection"></map-section>
+                <map-section :parent-page="this" ref="mapSection"></map-section>
             </v-flex>
         </v-layout>
     </v-container>

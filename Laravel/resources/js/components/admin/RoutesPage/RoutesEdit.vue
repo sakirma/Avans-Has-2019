@@ -158,7 +158,6 @@
                 this.routingControl = leaflet_create.default.setVariables(map);
 
                 this.loadProjectPoints(product.route);
-                console.log(points);
                 this.$refs.selectionList.addInterestPoints(points);
 
                 let markers = leaflet_create.default.getProjectMarkers();

@@ -10,7 +10,7 @@
                                      v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section ref="map" :parent-page="this" :map-objects="project_points"></map-section>
+                <map-section ref="map" :parent-page="this"></map-section>
             </v-flex>
         </v-layout>
     </v-container>
@@ -72,6 +72,7 @@
              loadPoints(){
                 axios.get("/getProjectPoints").then(response => {
                     this.project_points = this.filteredPoints = response.data;
+                    this.$refs.map.loadMapObjects(this.project_points);
                 }).catch(function (error) {
                     console.log(error);
                 });

@@ -58,7 +58,7 @@
                 this.pressedImages[key] = !this.pressedImages[key];
             },
             getMapObject(){
-                return this.$refs.map.mapObject;
+                return this.$refs.mapComponent.getMapObject();
             },
             onProjectOpened(projectId, isProject){
                 this.parentPage.editAProject(projectId);

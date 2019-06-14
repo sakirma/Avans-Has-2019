@@ -184,8 +184,6 @@
                 type: Array,
                 required: true
             },
-
-
         },
         methods: {
             onFileSelection() {
@@ -210,20 +208,19 @@
                     this.currentImages.splice(index, 1);
             },
             projectEditSection(product) {
-                this.selectedProject = product;
-                if (!this.bool) {
-                    this.markerLat = product.location.coordinates[1];
-                    this.markerLong = product.location.coordinates[0];
-                }
+                this.selectedProject.id = product;
+                axios.get('/getProjectPoint/'+this.selectedProject.id)
+                    .then(({ data }) => {
+                        this.selectedProject.name = data.name;
+                        this.selectedProject.category = data.category;
+                        this.selectedProject.information = data.information;
+                        this.selectedProject.project_id = data.project_id;
+                        this.getUpdateProjectName();
+                        this.markerLat = data.location.coordinates[1];
+                        this.markerLong = data.location.coordinates[0];
+                    });
 
-                this.parent.$refs.mapSection.markers.push({
-                    id: 1,
-                    latlng: L.latLng(parseFloat(this.markerLong), parseFloat(this.markerLat)),
-                    content: 'hoi!'
-                });
-                this.parent.$refs.mapSection.setdrawMode(true);
-                this.getUpdateProjectName();
-
+                this.currentImages = [];
                 axios.get("/getMediaFromProjectPoint/" + this.selectedProject.id)
                     .then(({data}) => {
                         for (let i = 0; i < data.length; i++) {
@@ -239,7 +236,7 @@
             },
             getUpdateProjectName() {
                 for (let i = 0; i < this.projects.length; i++) {
-                    if (this.projects[i].id === this.selectedProject.project_id) {
+                    if (this.projects[i].id == this.selectedProject.project_id) {
                         this.projectName = this.projects[i].name;
                     }
                 }
