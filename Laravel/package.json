@@ -26,6 +26,7 @@
     "dependencies": {
         "chart.js": "^2.8.0",
         "leaflet": "^1.5.1",
+        "leaflet-draw": "^1.0.4",
         "leaflet-routing-machine": "^3.2.12",
         "reload": "^3.0.1",
         "vue-chartjs": "^3.4.2",

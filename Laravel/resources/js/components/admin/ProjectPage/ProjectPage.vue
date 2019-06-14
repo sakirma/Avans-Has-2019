@@ -3,18 +3,18 @@
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
                 <projects-view :parent="this" :headers="headers" :values="filteredProjects"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
-                <projects-new :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
+                <projects-new ref="newSection" :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
                 <project-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section></map-section>
+                <map-section ref="mapSection" :parent="this"></map-section>
             </v-flex>
         </v-layout>
     </v-container>
 </template>
 
 <script>
-    import MapSection from '../Map';
+    import MapSection from './ProjectMap';
     import ProjectsView from './ProjectsView';
     import ProjectsNew from './ProjectsNew';
     import ProjectEdit from './ProjectsEdit';
@@ -55,7 +55,8 @@
         methods: {
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
-            },
+                this.$refs.mapSection.setdrawMode(true);
+                },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
                 this.values = [];
@@ -71,10 +72,15 @@
                         }
                         this.filteredProjects = this.values;
                     });
+                this.$refs.mapSection.polygon.latlngs = new Array();
+
             },
             editAProject(product) {
+                this.$refs.mapSection.polygon.latlngs = new Array();
                 this.currentPageState = this.ProjectPageStates.editMode;
                 this.$refs.projectEditSection.projectEditSection(product);
+                this.$refs.mapSection.setdrawMode(true);
+
             },
             filterList(search) {
                 this.filteredProjects = this.values.filter(project => {
