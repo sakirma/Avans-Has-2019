@@ -116,6 +116,5 @@
         border-radius: 5px;
         box-shadow: 0 5px 30px;
         max-width: 550px;
-        z-index: 99999999;
     }
 </style>

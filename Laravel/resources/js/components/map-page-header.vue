@@ -109,7 +109,6 @@
         box-shadow: 0 5px 30px;
         max-height: 100px;
         max-width: 450px;
-        z-index: 99999999;
     }
 
     .categoryButtonPressed {
