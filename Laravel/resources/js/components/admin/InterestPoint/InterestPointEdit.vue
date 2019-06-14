@@ -211,6 +211,7 @@
             },
             projectEditSection(product) {
                 this.selectedProject = product;
+                this.currentImages = [];
                 if (!this.bool) {
                     this.markerLat = product.location.coordinates[1];
                     this.markerLong = product.location.coordinates[0];
@@ -293,7 +294,7 @@
                                 let formData = new FormData();
                                 formData.append("image", projectImage.newFile);
                                 formData.append("name", projectImage.newFile.name);
-                                formData.append("folder", "point");
+                                formData.append("folder", "points");
                                 formData.append("id", data.id);
                                 axios.post("/beheer/media", formData,
                                     {
