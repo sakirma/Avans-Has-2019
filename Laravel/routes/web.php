@@ -97,6 +97,8 @@ Route::post("/addVisitor", "VisitorController@addVisitormm");
 
 Route::get("/searchForProject/{name}", "ProjectController@searchForName");
 Route::get("/searchForProjectPoint/{name}", "ProjectPointsController@searchForName");
+Route::post("/projectpoints/similarIntrestPoint", "ProjectPointsController@getSimilarInterestPoints");
+Route::post("/projectpoints/similarProject", "ProjectPointsController@getSimilarProjects");
 
 // Return only data
 Route::get('/getCategories', 'MainPageController@getCatagories');

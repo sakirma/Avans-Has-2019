@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Media;
 
 use App\Models\PointHasImage;
-use App\Models\Project;
 use App\Models\ProjectHasImage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -27,31 +26,32 @@ class MediaController extends Controller
         if (isset($request["name"]) && isset($request['folder']) && $image && isset($request["id"])) {
             $request["name"] = htmlspecialchars($request["name"], ENT_QUOTES, 'UTF-8');
             if (!$this->is_valid_name($request["name"])) {
-                return abort(302,"Bestandsnaam is niet toegestaan, de naam mag geen speciale tekens bevatten");
+                return abort(302, "Bestandsnaam is niet toegestaan, de naam mag geen speciale tekens bevatten");
             }
 
             $id = $request["id"];
             $folder = $request["folder"];
 
+            // 1. Check how many images the project/point has
+            // 2. Generate the new name for the image.
             $mediaRow = ($folder == "projects") ? ProjectHasImage::where('project_id', $id) : PointHasImage::where('point_id', $id);
             $newMediaName = $this->createNameForMedia($id, $mediaRow);
-
-            $path = $request['folder'] . "/" . $newMediaName . "." . $image->getClientOriginalExtension();
+            $path = $folder . "/" . $newMediaName . "." . $image->getClientOriginalExtension();
             Storage::disk('public')->put($path, File::get($image));
             $media = new Media;
-            $media->fill(["name" => $newMediaName, "path" => $path]);
+            $media->fill(["name" => (($folder === "projects") ? 'p_' : 'i_') . $newMediaName, "path" => $path]);
             $media->save();
 
             if ($folder == "projects") {
                 $phi = new ProjectHasImage();
-                $phi->project_id = $request["id"];
-                $phi->media_name = $newMediaName;
+                $phi->project_id = $id;
+                $phi->media_name = 'p_' . $newMediaName;
                 $phi->save();
                 return json_encode($phi);
             } else if ($folder == "points") {
                 $phi = new PointHasImage();
-                $phi->point_id = $request["id"];
-                $phi->media_name = $newMediaName;
+                $phi->point_id = $id;
+                $phi->media_name = 'i_' . $newMediaName;
                 $phi->save();
                 return json_encode($phi);
             }
@@ -78,17 +78,13 @@ class MediaController extends Controller
     {
         $media = Media::find($mediaUsedByProject->get(['media_name']));
         $highestPictureNumber = 0;
-        $eenArray = [];
-        foreach( $media->toArray() as $key => $value )
-        {
+        foreach ($media->toArray() as $key => $value) {
             $matches = '';
 
             preg_match('/\d+(?=\.)/', $value['path'], $matches);
-            if((int)$matches[0] >= $highestPictureNumber)
-            {
+            if ((int)$matches[0] >= $highestPictureNumber) {
                 $highestPictureNumber = (int)$matches[0] + 1;
             }
-            $eenArray[$key] = ['matches' => (int)$matches[0], 'highest' => $highestPictureNumber];
         }
         return $id . '_' . $highestPictureNumber;
     }

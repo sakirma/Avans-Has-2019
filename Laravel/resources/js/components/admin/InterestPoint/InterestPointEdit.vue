@@ -155,6 +155,9 @@
                     v => !!v || 'Beschreiving is vereist',
                     v => (v && v.length <= 10000) || 'Tekst mag niet langer zijn dan 10.000x` karakters zijn'
                 ],
+                markerRules:[
+                    v => !!v || 'U moet een locatie voor deze punt kiezen',
+                ],
                 selectedProject: {
                     id: '', // ID is used to get data from database, as an example, to retrieve which image and youtube url is being used.
                     name: '',
@@ -187,10 +190,14 @@
         methods: {
             onFileSelection() {
                 for (let file of this.input.files) {
-                    this.files.push(file);
                     let reader = new FileReader();
                     reader.onload = (ev) => {
-                        this.images.push(ev.target.result);
+                        this.currentImages.push({
+                            newFile: file,
+                            imageLocation: ev.target.result,
+                            isRemoved: false,
+                            number: this.currentImages.length
+                        });
                     };
                     reader.readAsDataURL(file);
                 }
@@ -204,6 +211,7 @@
             },
             projectEditSection(product) {
                 this.selectedProject = product;
+                this.currentImages = [];
                 if (!this.bool) {
                     this.markerLat = product.location.coordinates[1];
                     this.markerLong = product.location.coordinates[0];
@@ -234,8 +242,6 @@
                 for (let i = 0; i < this.projects.length; i++) {
                     if (this.projects[i].id === this.selectedProject.project_id) {
                         this.projectName = this.projects[i].name;
-                    } else {
-                        console.log(this.projects[i].id + " - " + this.selectedProject.project_id);
                     }
                 }
             },
@@ -274,7 +280,7 @@
                             lat: this.markerLat,
                             long: this.markerLong,
                         }
-                    }).then(({data}) => {
+                    }).then( ({data}) => {
                         for (let i = 0; i < this.currentImages.length; i++) {
                             let projectImage = this.currentImages[i];
 
@@ -282,13 +288,13 @@
                             if (!projectImage.newFile && projectImage.isRemoved) {
                                 axios.post("/beheer/removemedia", {
                                     medianame: projectImage.imageName,
-                                    folder: "projects"
+                                    folder: "points"
                                 });
                             } else if (projectImage.newFile) {
                                 let formData = new FormData();
                                 formData.append("image", projectImage.newFile);
                                 formData.append("name", projectImage.newFile.name);
-                                formData.append("folder", "projects");
+                                formData.append("folder", "points");
                                 formData.append("id", data.id);
                                 axios.post("/beheer/media", formData,
                                     {
