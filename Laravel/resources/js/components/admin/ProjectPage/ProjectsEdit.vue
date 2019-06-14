@@ -8,7 +8,7 @@
                 </v-btn>
             </v-layout>
 
-            <v-layout column >
+            <v-layout column>
                 <v-flex xs1>
                     <v-layout row>
                         <v-flex xs3>
@@ -57,23 +57,20 @@
                             <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
                         </v-flex>
                         <input type="file">
-
-                        <v-carousel v-if="images.length > 0">
+                        <v-carousel ref="carousel" v-if="currentImages.length > 0" style="height:100%" class="blackButtonCarousel" :cycle="false">
                             <v-carousel-item
-                                    v-for="(image,i) in images"
+                                    v-for="(image,i) in currentImages"
+                                    v-if="!image.isRemoved"
                                     :key="i"
-                                    :src="image"
-                            ></v-carousel-item>
+                                    :src="image.imageLocation"
+                                    class="containCarouselItem"
+                            >
+                                <v-btn absolute dark fab top right color="red" class="deleteButtonCarousel"
+                                       @click="removeFile(i)">
+                                    <v-icon>close</v-icon>
+                                </v-btn>
+                            </v-carousel-item>
                         </v-carousel>
-                    </v-layout>
-                </v-flex>
-
-                <v-flex xs1>
-                    <v-layout column>
-                        <v-flex>
-                            <v-card-title class="title">Video toevoegen:</v-card-title>
-                        </v-flex>
-                        <v-textarea box></v-textarea>
                     </v-layout>
                 </v-flex>
 
@@ -105,10 +102,8 @@
         data() {
             return {
                 id: 0,
-                offset: 0,
+                currentImages: [],
                 input: null,
-                files: [],
-                images: [],
                 name: null,
                 information: null,
                 categories: [],
@@ -124,80 +119,75 @@
         methods: {
             projectEditSection(product) {
                 this.id = product;
-                this.files = [];
-                this.images = [];
-                axios.get("/getProject/"+product)
+                this.currentImages = [];
+                axios.get("/getProject/" + product)
                     .then(({data}) => {
                         this.name = data.name;
                         this.select = data.category;
                         this.information = data.information;
                     });
 
-                axios.get("/getMediaFromProject/"+product)
+                axios.get("/getMediaFromProject/" + product)
                     .then(({data}) => {
-                        for(let i = 0; i < data.length; i++){
-                            this.files.push(data[i]);
-                            this.images.push("getmedia/" + data[i]);
+                        for (let i = 0; i < data.length; i++) {
+                            this.currentImages.push({imageLocation: "getmedia/" + data[i], isRemoved: false, imageName: data[i]});
                         }
-                        this.offset = data.length;
-                        this.startingMediaNumber = this.offset;
-                    }).catch((error) => {
-                    console.log(error);
-                });
+                    })
             },
             close() {
                 this.parent.enableViewMode();
             },
             onFileSelection() {
                 for (let file of this.input.files) {
-                    this.files.push(file);
                     let reader = new FileReader();
                     reader.onload = (ev) => {
-                        this.images.push(ev.target.result);
+                        this.currentImages.push({
+                            newFile: file,
+                            imageLocation: ev.target.result,
+                            isRemoved: false,
+                            number: this.currentImages.length
+                        });
                     };
                     reader.readAsDataURL(file);
                 }
                 this.input.value = null;
             },
             removeFile(index) {
-                if(index < this.offset){
-                    axios.post("/beheer/removemedia", {
-                        medianame: this.files[index],
-                        folder: "projects"
-                    }).catch((error) => {
-                        alert("Er ging iets mis bij het verwijderen van de foto...");
-                        return;
-                    });
-                    this.files.splice(index, 1);
-                    this.offset--;
-                }else{
-                    this.files.splice(index, 1)
-                }
+                if(!this.currentImages[index].newFile)
+                    this.currentImages[index].isRemoved = true;
+                else
+                    this.currentImages.splice(index, 1);
             },
-            save(){
+            save() {
                 axios.post("/beheer/updateProject", {
                     id: this.id,
                     name: this.name,
                     information: this.information,
                     category: this.select
-                }).then(({ data }) => {
-                    for(let i = this.offset; i < this.files.length; i++){
-                        if(this.files[i] == null) continue;
-                        let formData = new FormData();
-                        formData.append("image", this.files[i]);
-                        formData.append("name", data.id + "_" + (this.startingMediaNumber + i - this.offset));
-                        formData.append("folder", "projects");
-                        formData.append("id", data.id);
-                        axios.post("/beheer/media", formData,
-                            {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data'
+                }).then(({data}) => {
+                    for (let i = 0; i < this.currentImages.length; i++) {
+                        let projectImage = this.currentImages[i];
+
+                        // Remove existing file of the project
+                        if (!projectImage.newFile && projectImage.isRemoved) {
+                            axios.post("/beheer/removemedia", {
+                                medianame: projectImage.imageName,
+                                folder: "projects"
+                            });
+                        } else if (projectImage.newFile) {
+                            let formData = new FormData();
+                            formData.append("image", projectImage.newFile);
+                            formData.append("name", projectImage.newFile.name);
+                            formData.append("folder", "projects");
+                            formData.append("id", data.id);
+                            axios.post("/beheer/media", formData,
+                                {
+                                    headers: {
+                                        'Content-Type': 'multipart/form-data'
+                                    }
                                 }
-                            }
-                        ).catch((error) => {
-                            alert("Er ging iets mis bij het opslaan...");
-                            console.log(error);
-                        });
+                            )
+                        }
                     }
                     this.close();
                 }).catch((error) => {
@@ -205,7 +195,7 @@
                     console.log(error);
                 });
             },
-            remove(){
+            remove() {
                 if (confirm('Weet u zeker dat u dit project wilt verwijderen?')) {
                     axios.post("/beheer/removeProject", {id: this.id})
                         .catch((error) => {
@@ -216,7 +206,7 @@
                 }
             }
         },
-        mounted(){
+        mounted() {
             this.input = this.$el.querySelector('input[type=file]');
             this.input.addEventListener('change', () => this.onFileSelection());
             this.input.setAttribute('multiple', 'multiple');
@@ -234,6 +224,22 @@
 </script>
 
 <style>
+    .deleteButtonCarousel.v-btn--top.v-btn--absolute {
+        top: 10px;
+    }
+
+    .containCarouselItem .v-carousel__item .v-image__image {
+        background-size: contain;
+    }
+
+    .blackButtonCarousel .v-carousel__next .v-btn {
+        background-color: gray;
+    }
+
+    .blackButtonCarousel .v-carousel__prev .v-btn {
+        background-color: gray;
+    }
+
     .projectEditSection {
         height: 100%;
         border-radius: 20px;
