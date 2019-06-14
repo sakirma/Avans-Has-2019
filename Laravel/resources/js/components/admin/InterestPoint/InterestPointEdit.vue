@@ -279,8 +279,7 @@
                             lat: this.markerLat,
                             long: this.markerLong,
                         }
-                    }).then(({data}) => {
-                        console.log(this.currentImages);
+                    }).then( ({data}) => {
                         for (let i = 0; i < this.currentImages.length; i++) {
                             let projectImage = this.currentImages[i];
 
@@ -288,13 +287,13 @@
                             if (!projectImage.newFile && projectImage.isRemoved) {
                                 axios.post("/beheer/removemedia", {
                                     medianame: projectImage.imageName,
-                                    folder: "projects"
+                                    folder: "points"
                                 });
                             } else if (projectImage.newFile) {
                                 let formData = new FormData();
                                 formData.append("image", projectImage.newFile);
                                 formData.append("name", projectImage.newFile.name);
-                                formData.append("folder", "projects");
+                                formData.append("folder", "point");
                                 formData.append("id", data.id);
                                 axios.post("/beheer/media", formData,
                                     {
