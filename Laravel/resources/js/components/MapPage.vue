@@ -53,14 +53,14 @@
                     </v-flex>
                     <div v-bar>
                         <div>
-                            <v-flex id="testing" class="removeScrollbar" xs12 v-if="searchFieldIsFocused === true">
+                            <v-flex class="removeScrollbar" xs12 v-if="searchFieldIsFocused === true">
                                 <v-layout fill-height align-start justify-start>
                                     <v-list style="background-color: transparent; width: 100%; padding: 0;"
                                             class="white--text" two-line
                                             pt-0>
                                         <template v-for="(item, index) in items">
                                             <v-list-tile
-                                                    :key="item.name"
+                                                    :key="index"
                                                     avatar
                                                     ripple
                                                     style="background-color: rgba(137, 163, 36, 0.9);"
@@ -71,10 +71,6 @@
                                                     </v-list-tile-sub-title>
                                                 </v-list-tile-content>
                                             </v-list-tile>
-                                            <v-divider
-                                                    v-if="index + 1 < items.length"
-                                                    :key="index"
-                                            ></v-divider>
                                         </template>
                                     </v-list>
                                 </v-layout>
@@ -146,15 +142,18 @@
                 this.items = [];
                 axios.get("/searchForProjectPoint/"+this.searchInput)
                     .then(({ data }) => {
+                        console.log(data.length + ", " + this.searchInput);
                         for(let i = 0; i < data.length; i++)
                             this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
                     });
 
                 axios.get("/searchForProject/"+this.searchInput)
                     .then(({ data }) => {
+                        console.log(data.length + ", " + this.searchInput);
                         for(let i = 0; i < data.length; i++)
                             this.items.push({id: data[i].id, name: data[i].name, information: data[i].information, project: false});
                     });
+                console.log("length: " + this.items.length);
             }
         },
         mounted() {
