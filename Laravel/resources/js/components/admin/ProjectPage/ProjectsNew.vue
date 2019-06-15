@@ -109,8 +109,8 @@
 
         methods: {
             close() {
-                this.parent.$refs.mapSection.polygon.latlngs = new Array();
-                this.parent.$refs.mapSection.setDrawMode(false);
+                this.parent.$refs.map.polygon.latlngs = new Array();
+                this.parent.$refs.map.setDrawMode(false);
                 this.polygon.latlngs = new Array();
                 this.parent.enableViewMode();
             },
@@ -130,10 +130,10 @@
                 this.images.splice(index, 1);
             },
             reset(){
-                this.parent.$refs.mapSection.polygon.latlngs = new Array();
+                this.parent.$refs.map.polygon.latlngs = [];
             },
             save() {
-                  this.polygon.latlngs = this.parent.$refs.mapSection.polygon.latlngs ;
+                  this.polygon.latlngs = this.parent.$refs.map.polygon.latlngs ;
                 axios.post("/beheer/createProject", {
                     project_id: this.project,
                     name: this.name,
