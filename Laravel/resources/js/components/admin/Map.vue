@@ -74,6 +74,7 @@
             loadMapObjects: function(arr) {
                 this.$refs.mapComponent.loadMapObjects(arr);
             }
+
         },
         mounted() {
 

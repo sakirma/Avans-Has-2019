@@ -30,7 +30,11 @@
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
                 isDrawMode: false,
                 markers: [],
+                mapObject: null,
             }
+        },
+        mounted() {
+            this.mapObject = this.$refs.map.getMapObject();
         },
         methods: {
             setDrawMode(value) {
