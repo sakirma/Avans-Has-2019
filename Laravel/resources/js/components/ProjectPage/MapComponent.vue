@@ -2,7 +2,8 @@
     <l-map ref="map"
            :zoom="zoom"
            :center="center"
-           style="height:100%;">
+           style="height:100%;"
+           @click="addEvent($event)"  >
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
         <template v-for="(marker, index) in markers">
@@ -43,6 +44,9 @@
         props: {
             parent: {
                 type: Object,
+            },
+            addEvent: {
+                type: Function,
             }
         },
         components: {

@@ -26,7 +26,7 @@
         </v-flex>
         <v-flex>
             <div style="height: 100%;">
-                <map-component ref="mapComponent" :parent="this"></map-component>
+                <map-component ref="mapComponent" :parent="this" :add-event="addEvent"></map-component>
             </div>
         </v-flex>
     </v-layout>
@@ -46,6 +46,9 @@
             parentPage: {
                 type: Object,
                 required: true
+            },
+            addEvent: {
+                type: Function,
             }
         },
         data() {
