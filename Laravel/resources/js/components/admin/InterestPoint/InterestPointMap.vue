@@ -32,12 +32,20 @@
                 markers: [],
                 mapObject: null,
                 placedMarker: null,
+                newMode: false,
+                editMode: false
             }
         },
         mounted() {
             this.mapObject = this.$refs.map.getMapObject();
         },
         methods: {
+            setNewMode(value) {
+                this.newMode = value;
+            },
+            setEditMode(value) {
+                this.editMode = value;
+            },
             setDrawMode(value) {
                 this.isDrawMode = value;
             },
@@ -45,21 +53,37 @@
                 this.$refs.map.loadMapObjects(points);
             },
             clearMap() {
-                if (this.markers.length > 0) {
-                    this.markers.splice(-1, 1);
-                }
+                this.mapObject.removeLayer(this.placedMarker);
+
+            },
+            editPoint(lat, lng){
+                this.placedMarker = L.marker([lat, lng]);
+                this.placedMarker.addTo(this.mapObject);
             },
             add(event) {
+
                 if (this.isDrawMode) {
                     var coord = event.latlng;
                     var lat = coord.lat;
                     var lng = coord.lng;
+                    console.log("teesssst");
 
                     if(this.placedMarker)
                         this.mapObject.removeLayer(this.placedMarker);
 
                     this.placedMarker = L.marker([lat, lng]);
                     this.placedMarker.addTo(this.mapObject);
+
+                    if(this.newMode){
+                    this.parentPage.$refs.newInterstPage.marker = this.placedMarker._latlng;
+                        this.parentPage.$refs.newInterstPage.markerLat = this.placedMarker._latlng.lat;
+                        this.parentPage.$refs.newInterstPage.markerLng = this.placedMarker._latlng.lng;
+
+
+                    } if(this.editMode){
+                        this.parentPage.$refs.projectEditSection.markerLat = this.placedMarker._latlng.lat;
+                        this.parentPage.$refs.projectEditSection.markerLong = this.placedMarker._latlng.lng;
+                    }
                 }
             },
         }

@@ -99,10 +99,11 @@
                 this.leafletPolygon.addTo(this.mapObject);
             },
             resetPolygon() {
-                if(this.leafletPolygon)
-                    this.mapObject.removeLayer(this.leafletPolygon);
+                // if(this.leafletPolygon)
+                //     this.leafletPolygon = [];
 
-                this.leafletPolygon = [];
+                this.mapObject.removeLayer(this.leafletPolygon);
+
             },
             loadMapObjects(projects) {
                 this.$refs.map.loadMapObjects(projects);

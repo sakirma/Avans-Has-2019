@@ -6,7 +6,7 @@
                                      :projects="projects"
                                      v-if="currentPageState === ProjectPageStates.viewMode"></interest-point-view>
                 <interest-point-new :parent="this" :projects="projects" :projectNames="projectNames"
-                                    :projectIds="projectIds" :marker="marker"
+                                    :projectIds="projectIds" :marker="marker" ref="newInterstPage"
                                     v-else-if="currentPageState === ProjectPageStates.newMode"></interest-point-new>
                 <interest-point-edit :parent="this" ref="projectEditSection" :projects="projects"
                                      :projectNames="projectNames" :projectIds="projectIds"
@@ -72,6 +72,8 @@
         methods: {
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
+                this.$refs.map.setDrawMode(true);
+                this.$refs.map.setNewMode(true);
             },
             loadPoints() {
                 axios.get("/getProjectPoints").then(response => {
@@ -85,8 +87,19 @@
                 this.currentPageState = this.ProjectPageStates.viewMode;
             },
             editAProject(product) {
-                this.currentPageState = this.ProjectPageStates.editMode;
                 this.$refs.projectEditSection.projectEditSection(product);
+                this.$refs.map.setDrawMode(true);
+                this.$refs.map.setEditMode(true);
+                var $point = null;
+                for( let i = 0; i< this.project_points.length;i++){
+                    if(this.project_points[i].id === product){
+                        $point = this.project_points[i];
+                    }
+                }
+                    this.$refs.projectEditSection.markerLat = $point.latlng.lat;
+                    this.$refs.projectEditSection.markerLong = $point.latlng.lng;
+                this.$refs.map.editPoint($point.latlng.lng,$point.latlng.lat);
+                this.currentPageState = this.ProjectPageStates.editMode;
             },
             filterList(search) {
                 this.filteredPoints = this.project_points.filter(point => {

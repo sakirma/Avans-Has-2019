@@ -107,6 +107,8 @@ Route::get("/getAllMapObjects", "ProjectController@getAllMapObjects");
 Route::get('/getProject/{id}', 'ProjectController@getProject');
 Route::get('/getMediaFromProject/{id}', 'ProjectController@getMedia');
 Route::get('/getProjectNames', 'ProjectController@getProjectNames');
+Route::get('/getSingleProjectPoint/{id}', 'ProjectPointsController@getSingleProjectPoint');
+
 
 Route::get('/getProjectPoints', 'ProjectPointsController@getProjectPoints');
 

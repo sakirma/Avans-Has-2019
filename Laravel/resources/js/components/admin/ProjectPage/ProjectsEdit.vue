@@ -130,9 +130,9 @@
         },
         methods: {
             reset(){
-                this.parent.$refs.map.polygon.latlngs = [];
                 this.polygon.latlngs = [];
                 this.parent.$refs.map.resetPolygon();
+
             },
             projectEditSection(product) {
                 this.id = product;

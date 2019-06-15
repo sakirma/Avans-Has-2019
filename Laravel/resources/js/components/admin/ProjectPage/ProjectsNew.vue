@@ -131,6 +131,8 @@
             },
             reset(){
                 this.parent.$refs.map.polygon.latlngs = [];
+                this.parent.$refs.map.resetPolygon();
+
             },
             save() {
                   this.polygon.latlngs = this.parent.$refs.map.polygon.latlngs ;

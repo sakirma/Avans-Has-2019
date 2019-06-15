@@ -171,6 +171,10 @@
                 markerLong: null,
                 input: null,
                 currentImages: [],
+                project_points:[],
+                point:{
+
+                },
             }
         },
         props: {
@@ -210,12 +214,17 @@
                     this.currentImages.splice(index, 1);
             },
             projectEditSection(product) {
-                this.selectedProject = product;
                 this.currentImages = [];
-                if (!this.bool) {
-                    this.markerLat = product.location.coordinates[1];
-                    this.markerLong = product.location.coordinates[0];
-                }
+                axios.get("/getSingleProjectPoint/" + product)
+                    .then(({data}) => {
+                        for (let i = 0; i < data.length; i++) {
+                            this.selectedProject = data[0];
+                            console.log(this.selectedProject);
+                            let projectId = this.selectedProject.project_id;
+                            projectId = projectId -1;
+                            this.projectName = this.projects[projectId].name;
+                        }
+                    });
 
                 this.currentImages = [];
                 axios.get("/getMediaFromProjectPoint/" + this.selectedProject.id)
@@ -223,19 +232,14 @@
                         for (let i = 0; i < data.length; i++) {
                             this.currentImages.push({imageLocation: "getmedia/" + data[i], isRemoved: false, imageName: data[i]});
                         }
-                    })
+                    });
             },
             close() {
                 this.parent.loadPoints();
+                this.parent.$refs.map.clearMap();
                 this.parent.enableViewMode();
             },
-            getUpdateProjectName() {
-                for (let i = 0; i < this.projects.length; i++) {
-                    if (this.projects[i].id == this.selectedProject.project_id) {
-                        this.projectName = this.projects[i].name;
-                    }
-                }
-            },
+
             deleteItem() {
                 if (confirm('Weet u zeker dat u dit interessepunt wilt verwijderen?')) {
                     axios({
@@ -267,7 +271,6 @@
                             category: this.selectedProject.category,
                             information: this.selectedProject.information,
                             project_id: this.projectId,
-
                             lat: this.markerLat,
                             long: this.markerLong,
                         }
@@ -321,10 +324,7 @@
                 console.log(error);
             });
             window.axios.get('/getProjectPoints').then(response => {
-                let temp = response.data;
-                for (let i = 0; i < temp.length; i++) {
-
-                }
+               // this.project_points = response.data;
             }).catch(function (error) {
                 console.log(error);
             });

@@ -60,7 +60,7 @@
                                 <v-card-title class="title">Locatie Latidude:</v-card-title>
                             </v-flex>
                             <v-flex xs4>
-                                <v-text-field v-model="marker.lat" :rules="markerRules" box readonly></v-text-field>
+                                <v-text-field v-model="markerLat" :rules="markerRules" box readonly></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -71,7 +71,7 @@
                                 <v-card-title class="title">Locatie Longitude::</v-card-title>
                             </v-flex>
                             <v-flex xs4>
-                                <v-text-field v-model="marker.lng" :rules="markerRules" box readonly></v-text-field>
+                                <v-text-field v-model="markerLng" :rules="markerRules" box readonly></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -155,13 +155,19 @@
                 input: null,
                 files: [],
                 images: [],
+                markerLat:null,
+                markerLng: null,
             }
         },
         methods: {
             close() {
-                this.parent.$refs.map.setDrawMode(false);
                 this.parent.$refs.map.clearMap();
-                this.$emit('close', this.marker);
+
+                this.parent.$refs.map.setDrawMode(false);
+                this.parent.$refs.map.setNewMode(false);
+                this.markerLat = null;
+                this.markerLng = null;
+
                 this.parent.enableViewMode();
             },
             onFileSelection() {
@@ -182,11 +188,12 @@
             validate() {
                 if (this.projectName != null) {
                     for (let i = 0; i < this.projectNames.length; i++) {
-                        if (this.projects[i].name === this.projectName) {
+                        if (this.projects[i].name == this.projectName) {
                             this.projectId = this.projects[i].id;
                         }
                     }
                 }
+                console.log(this.projectId);
                 if (this.$refs.form.validate()) {
                     axios({
                         method: 'post',
@@ -196,8 +203,8 @@
                             name: this.name,
                             category: this.category,
                             information: this.text,
-                            markerLat: this.marker.lat,
-                            markerLong: this.marker.lng,
+                            markerLat: this.markerLat,
+                            markerLong: this.markerLng,
                             area: null,
                         }
                     }).then(response => {
