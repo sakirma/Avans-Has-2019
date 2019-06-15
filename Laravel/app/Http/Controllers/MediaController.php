@@ -36,7 +36,6 @@ class MediaController extends Controller
             // 2. Generate the new name for the image.
             $mediaRow = ($folder == "projects") ? ProjectHasImage::where('project_id', $id) : PointHasImage::where('point_id', $id);
             $newMediaName = $this->createNameForMedia($id, $mediaRow);
-
             $path = $folder . "/" . $newMediaName . "." . $image->getClientOriginalExtension();
             Storage::disk('public')->put($path, File::get($image));
             $media = new Media;

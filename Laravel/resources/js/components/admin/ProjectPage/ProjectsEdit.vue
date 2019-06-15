@@ -90,6 +90,15 @@
                             </v-card>
                         </v-btn>
                     </v-layout>
+
+                    <v-layout align-center justify-end row>
+                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="reset()">
+                            <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
+                                    class="white--text">
+                                reset polygon
+                            </v-card>
+                        </v-btn>
+                    </v-layout>
                 </v-flex>
             </v-layout>
         </div>
@@ -107,7 +116,10 @@
                 name: null,
                 information: null,
                 categories: [],
-                select: null
+                select: null,
+                polygon: {
+                    latlngs: [],
+                },
             }
         },
         props: {
@@ -117,6 +129,10 @@
             }
         },
         methods: {
+            reset(){
+                this.parent.$refs.mapSection.polygon.latlngs = new Array();
+                this.polygon.latlngs = new Array();
+            },
             projectEditSection(product) {
                 this.id = product;
                 this.currentImages = [];
@@ -125,6 +141,11 @@
                         this.name = data.name;
                         this.select = data.category;
                         this.information = data.information;
+                       for(let i = 0; i < data.area.geometries.length;i++){
+                           this.polygon.latlngs.push([data.area.geometries[i].coordinates[1],data.area.geometries[i].coordinates[0]]);
+
+                       }
+                        this.parent.$refs.mapSection.polygon.latlngs = this.polygon.latlngs;
                     });
 
                 axios.get("/getMediaFromProject/" + product)
@@ -135,6 +156,9 @@
                     })
             },
             close() {
+                this.parent.$refs.mapSection.polygon.latlngs = new Array();
+                this.parent.$refs.mapSection.setdrawMode(false);
+                this.polygon.latlngs = new Array();
                 this.parent.enableViewMode();
             },
             onFileSelection() {
@@ -159,11 +183,16 @@
                     this.currentImages.splice(index, 1);
             },
             save() {
+                console.log("sdfsadfasdf");
+                console.log(this.polygon.latlngs);
+                this.polygon.latlngs = this.parent.$refs.mapSection.polygon.latlngs;
                 axios.post("/beheer/updateProject", {
                     id: this.id,
                     name: this.name,
                     information: this.information,
-                    category: this.select
+                    category: this.select,
+                    latlngs: this.polygon.latlngs
+
                 }).then(({data}) => {
                     for (let i = 0; i < this.currentImages.length; i++) {
                         let projectImage = this.currentImages[i];

@@ -62,13 +62,15 @@
                         </v-layout>
                     </v-flex>
 
+
+
                     <v-flex xs1>
                         <v-layout row>
                             <v-flex xs3>
                                 <v-card-title class="title">Locatie Latidude:</v-card-title>
                             </v-flex>
                             <v-flex xs4>
-                                <v-textarea v-model="markerLat" :rules="markerRules" box></v-textarea>
+                                <v-text-field v-model="markerLat" :rules="markerRules" box></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -79,7 +81,7 @@
                                 <v-card-title class="title">Locatie Longitude::</v-card-title>
                             </v-flex>
                             <v-flex xs4>
-                                <v-textarea v-model="markerLong" :rules="markerRules" box></v-textarea>
+                                <v-text-field v-model="markerLong" :rules="markerRules" box></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -208,18 +210,12 @@
                     this.currentImages.splice(index, 1);
             },
             projectEditSection(product) {
-                this.selectedProject.id = product;
-                console.log(product);
-                axios.get('/getProjectPoint/'+this.selectedProject.id)
-                    .then(({ data }) => {
-                        this.selectedProject.name = data.name;
-                        this.selectedProject.category = data.category;
-                        this.selectedProject.information = data.information;
-                        this.selectedProject.project_id = data.project_id;
-                        this.getUpdateProjectName();
-                        this.markerLat = data.location.coordinates[1];
-                        this.markerLong = data.location.coordinates[0];
-                    });
+                this.selectedProject = product;
+                this.currentImages = [];
+                if (!this.bool) {
+                    this.markerLat = product.location.coordinates[1];
+                    this.markerLong = product.location.coordinates[0];
+                }
 
                 this.currentImages = [];
                 axios.get("/getMediaFromProjectPoint/" + this.selectedProject.id)
@@ -283,13 +279,13 @@
                             if (!projectImage.newFile && projectImage.isRemoved) {
                                 axios.post("/beheer/removemedia", {
                                     medianame: projectImage.imageName,
-                                    folder: "projects"
+                                    folder: "points"
                                 });
                             } else if (projectImage.newFile) {
                                 let formData = new FormData();
                                 formData.append("image", projectImage.newFile);
                                 formData.append("name", projectImage.newFile.name);
-                                formData.append("folder", "projects");
+                                formData.append("folder", "points");
                                 formData.append("id", data.id);
                                 axios.post("/beheer/media", formData,
                                     {

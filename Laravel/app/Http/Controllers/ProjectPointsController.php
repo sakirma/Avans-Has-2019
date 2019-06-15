@@ -77,6 +77,8 @@ class ProjectPointsController extends Controller
         $projectPoint->information = $request->information;
         $projectPoint->category = $request->category;
         $projectPoint->save();
+
+        return json_encode($projectPoint);
     }
 
     public function destroy(Request $request)
