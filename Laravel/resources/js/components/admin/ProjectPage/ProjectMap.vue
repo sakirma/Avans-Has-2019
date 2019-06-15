@@ -18,11 +18,11 @@
         </v-flex>
         <v-flex>
             <div style="height: 100%;">
-                <l-map  :center="center" :zoom="zoom" id="map" ref="map"  style="height:100%;" v-on:click="add($event) ">
+                <l-map :center="center" :zoom="zoom" id="map" ref="map" style="height:100%;" v-on:click="add($event) ">
                     <l-tile-layer :url="url"></l-tile-layer>
                     <LPolygon ref="poly"
-                            :lat-lngs="polygon.latlngs"
-                            :color="polygon.color">
+                              :lat-lngs="polygon.latlngs"
+                              :color="polygon.color">
                     </LPolygon>
                 </l-map>
             </div>
@@ -31,10 +31,11 @@
 </template>
 
 <script>
-    import {LMap, LTileLayer, LMarker, LPolygon, LPolyline, LRectangle, LPopup, } from 'vue2-leaflet';
+    import {LMap, LTileLayer, LMarker, LPolygon, LPolyline, LRectangle, LPopup,} from 'vue2-leaflet';
 
     import LDraw from 'leaflet-draw';
     import "leaflet/dist/leaflet.css";
+
     export default {
         name: "ProjectMap",
         components: {
@@ -66,34 +67,31 @@
                     latlngs: [],
                     color: 'green'
                 },
-
-
-
             }
         },
         methods: {
             setDrawMode(value) {
                 this.isDrawMode = value;
             },
-            clearMap(){
-                if(this.markers.length > 0){
+            clearMap() {
+                if (this.markers.length > 0) {
                     this.markers.splice(-1, 1);
                 }
             },
-            emitToParent (event) {
+            emitToParent(event) {
                 console.log("EMIT:");
                 console.log(this.markers[0].latlng);
                 this.$emit('childToParent', this.markers[0].latlng)
             },
             add(event) {
-                if(this.isDrawMode){
+                if (this.isDrawMode) {
 
 
                     this.polygon.latlngs.push([event.latlng.lat, event.latlng.lng]);
                     console.log(this.polygon.latlngs);
 
                 }
-},
+            },
         },
 
     }

@@ -1,5 +1,5 @@
 <template>
-    <map-component ref="map" :parent-page="this.parentPage">
+    <map-component ref="map" :parent-page="parentPage" :add-event="add">
 
     </map-component>
 </template>
@@ -18,10 +18,10 @@
             mapComponent,
         },
         props: {
-          parentPage: {
-              type: Object,
-              required: true,
-          }
+            parentPage: {
+                type: Object,
+                required: true,
+            }
         },
         data() {
             return {
@@ -31,6 +31,7 @@
                 isDrawMode: false,
                 markers: [],
                 mapObject: null,
+                placedMarker: null,
             }
         },
         mounted() {
@@ -43,34 +44,24 @@
             loadMapObjects(points) {
                 this.$refs.map.loadMapObjects(points);
             },
-            clearMap(){
-                if(this.markers.length > 0){
+            clearMap() {
+                if (this.markers.length > 0) {
                     this.markers.splice(-1, 1);
                 }
             },
-            emitToParent (event) {
-                console.log("EMIT:");
-                console.log(this.markers[0].latlng);
-                this.$emit('childToParent', this.markers[0].latlng)
-            },
             add(event) {
-                if(this.isDrawMode){
-                    if(this.markers.length > 0){
-                        this.markers.splice(-1, 1);
-                    }
-                    this.id++;
+                if (this.isDrawMode) {
                     var coord = event.latlng;
                     var lat = coord.lat;
                     var lng = coord.lng;
-                    this.long = lng;
-                    this.lat = lat;
-                    this.markers.push({
-                        id: this.id,
-                        latlng: L.latLng(parseFloat(lat), parseFloat(lng)),
-                        content: 'hoi!'
-                    });
-                    this.emitToParent(event);
-                }},
+
+                    if(this.placedMarker)
+                        this.mapObject.removeLayer(this.placedMarker);
+
+                    this.placedMarker = L.marker([lat, lng]);
+                    this.placedMarker.addTo(this.mapObject);
+                }
+            },
         }
     }
 </script>
