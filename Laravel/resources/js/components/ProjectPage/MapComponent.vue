@@ -40,6 +40,11 @@
 
     export default {
         name: 'MapPage',
+        props: {
+            parent: {
+                type: Object,
+            }
+        },
         components: {
             PopUp,
             LMap,
@@ -147,6 +152,8 @@
                     }
                 }
             }
+        },
+        mounted() {
         }
     }
 </script>

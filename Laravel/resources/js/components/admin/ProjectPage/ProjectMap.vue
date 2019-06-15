@@ -36,7 +36,7 @@
     import LDraw from 'leaflet-draw';
     import "leaflet/dist/leaflet.css";
     export default {
-        name: "InterestPointMap",
+        name: "ProjectMap",
         components: {
             LPolygon,
             LMap,
@@ -72,7 +72,7 @@
             }
         },
         methods: {
-            setdrawMode(value) {
+            setDrawMode(value) {
                 this.isDrawMode = value;
             },
             clearMap(){

@@ -55,7 +55,7 @@
         methods: {
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
-                this.$refs.mapSection.setdrawMode(true);
+                this.$refs.mapSection.setDrawMode(true);
                 },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
@@ -75,7 +75,7 @@
                 this.$refs.mapSection.polygon.latlngs = new Array();
                 this.currentPageState = this.ProjectPageStates.editMode;
                 this.$refs.projectEditSection.projectEditSection(product);
-                this.$refs.mapSection.setdrawMode(true);
+                this.$refs.mapSection.setDrawMode(true);
 
             },
             filterList(search) {

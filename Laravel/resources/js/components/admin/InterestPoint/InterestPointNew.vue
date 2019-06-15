@@ -158,7 +158,7 @@
         },
         methods: {
             close() {
-                this.parent.$refs.mapSection.setdrawMode(false);
+                this.parent.$refs.mapSection.setDrawMode(false);
                 this.parent.$refs.mapSection.clearMap();
                 this.$emit('close', this.marker);
                 this.parent.enableViewMode();            },

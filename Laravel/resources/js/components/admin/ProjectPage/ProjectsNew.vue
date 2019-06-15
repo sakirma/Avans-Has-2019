@@ -110,7 +110,7 @@
         methods: {
             close() {
                 this.parent.$refs.mapSection.polygon.latlngs = new Array();
-                this.parent.$refs.mapSection.setdrawMode(false);
+                this.parent.$refs.mapSection.setDrawMode(false);
                 this.polygon.latlngs = new Array();
                 this.parent.enableViewMode();
             },

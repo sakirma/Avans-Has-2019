@@ -2,11 +2,14 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <interest-point-view :parent="this" :headers="headers" :project_points="filteredPoints" :projects="projects"
+                <interest-point-view :parent="this" :headers="headers" :project_points="filteredPoints"
+                                     :projects="projects"
                                      v-if="currentPageState === ProjectPageStates.viewMode"></interest-point-view>
-                <interest-point-new  :parent="this" :projects="projects" :projectNames="projectNames" :projectIds="projectIds" :marker="marker"
+                <interest-point-new :parent="this" :projects="projects" :projectNames="projectNames"
+                                    :projectIds="projectIds" :marker="marker"
                                     v-else-if="currentPageState === ProjectPageStates.newMode"></interest-point-new>
-                <interest-point-edit :parent="this" ref="projectEditSection" :projects="projects" :projectNames="projectNames" :projectIds="projectIds"
+                <interest-point-edit :parent="this" ref="projectEditSection" :projects="projects"
+                                     :projectNames="projectNames" :projectIds="projectIds"
                                      v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
             </v-flex>
             <v-flex d-flex xs5>
@@ -17,7 +20,7 @@
 </template>
 
 <script>
-    import MapSection from '../Map';
+    import MapSection from './InterestPointMap';
     import InterestPointView from './InterestPointView';
     import InterestPointNew from './InterestPointNew';
     import InterestPointEdit from './InterestPointEdit'
@@ -39,7 +42,7 @@
                 projectNames: [],
                 projectIds: [],
                 categories: [],
-                marker:{},
+                marker: {},
                 filteredPoints: [],
 
                 headers: [
@@ -68,8 +71,9 @@
         },
         methods: {
             newProjectButtonPressed() {
-                this.currentPageState = this.ProjectPageStates.newMode;          },
-             loadPoints(){
+                this.currentPageState = this.ProjectPageStates.newMode;
+            },
+            loadPoints() {
                 axios.get("/getProjectPoints").then(response => {
                     this.project_points = this.filteredPoints = response.data;
                     this.$refs.map.loadMapObjects(this.project_points);
@@ -96,8 +100,8 @@
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
                     this.projects.push({id: temp[i].id.toString(), name: temp[i].name.toString()});
-                    this.projectNames.push( temp[i].name.toString());
-                    this.projectIds.push( temp[i].id.toString());
+                    this.projectNames.push(temp[i].name.toString());
+                    this.projectIds.push(temp[i].id.toString());
                 }
             }).catch(function (error) {
                 console.log(error);

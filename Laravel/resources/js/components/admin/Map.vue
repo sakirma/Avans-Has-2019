@@ -3,26 +3,30 @@
         <v-flex xs1>
             <v-layout row align-center justify-center fill-height>
                 <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324"
-                       :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[0]]}" @click="filter(Object.keys(pressedImages)[0])">
+                       :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[0]]}"
+                       @click="filter(Object.keys(pressedImages)[0])">
                     Activiteiten
                 </v-btn>
                 <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324"
-                       :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[1]]}" @click="filter(Object.keys(pressedImages)[1])">
+                       :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[1]]}"
+                       @click="filter(Object.keys(pressedImages)[1])">
                     Eten & Drinken
                 </v-btn>
                 <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324"
-                       :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[2]]}" @click="filter(Object.keys(pressedImages)[2])">
+                       :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[2]]}"
+                       @click="filter(Object.keys(pressedImages)[2])">
                     Bezienswaardigheden
                 </v-btn>
                 <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324"
-                       :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[3]]}" @click="filter(Object.keys(pressedImages)[3])">
+                       :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[3]]}"
+                       @click="filter(Object.keys(pressedImages)[3])">
                     Natuurgebieden
                 </v-btn>
             </v-layout>
         </v-flex>
         <v-flex>
             <div style="height: 100%;">
-                <map-component ref="mapComponent"></map-component>
+                <map-component ref="mapComponent" :parent="this"></map-component>
             </div>
         </v-flex>
     </v-layout>
@@ -61,28 +65,28 @@
             filter(key) {
                 this.pressedImages[key] = !this.pressedImages[key];
             },
-            getMapObject(){
+            getMapObject() {
                 return this.$refs.mapComponent.getMapObject();
             },
-            onProjectOpened(projectId, isProject){
+            onProjectOpened(projectId, isProject) {
                 this.parentPage.editAProject(projectId);
             },
-            loadMapObjects(arr){
+            loadMapObjects: function(arr) {
                 this.$refs.mapComponent.loadMapObjects(arr);
             }
         },
         mounted() {
-            this.$refs.mapComponent.assignParentPage(this);
+
         }
     }
 </script>
 
 <style scoped>
-.categorieButton {
-    border-radius: 5px;
-}
+    .categorieButton {
+        border-radius: 5px;
+    }
 
-.categoryButtonPressed {
-    filter: brightness(0.5);
-}
+    .categoryButtonPressed {
+        filter: brightness(0.5);
+    }
 </style>
