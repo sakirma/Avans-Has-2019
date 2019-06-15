@@ -2,12 +2,15 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <projects-view :parent="this" :headers="headers" :values="filteredProjects"  v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
-                <projects-new ref="newSection" :parent="this" v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
-                <project-edit :parent="this" ref="projectEditSection" v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
+                <projects-view :parent="this" :headers="headers" :values="filteredProjects"
+                               v-if="currentPageState === ProjectPageStates.viewMode"></projects-view>
+                <projects-new ref="newSection" :parent="this"
+                              v-else-if="currentPageState === ProjectPageStates.newMode"></projects-new>
+                <project-edit :parent="this" ref="projectEditSection"
+                              v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section ref="mapSection" :parent="this"></map-section>
+                <map-section ref="map" :parent="this"></map-section>
             </v-flex>
         </v-layout>
     </v-container>
@@ -20,7 +23,7 @@
     import ProjectEdit from './ProjectsEdit';
 
     export default {
-        name: "ProjectList",
+        name: "ProjectPage",
         components: {
             MapSection,
             ProjectsView,
@@ -55,27 +58,27 @@
         methods: {
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
-                this.$refs.mapSection.setDrawMode(true);
-                },
+                this.$refs.map.setDrawMode(true);
+            },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
                 this.values = [];
                 axios.get('/getProjects')
                     .then(({data}) => {
-                        for(let i = 0; i < data.length; i++){
+                        for (let i = 0; i < data.length; i++) {
                             this.values.push(data[i]);
                         }
                         this.filteredProjects = this.values;
                         this.$refs.map.loadMapObjects(this.filteredProjects);
                     });
-                this.$refs.mapSection.polygon.latlngs = new Array();
+                this.$refs.map.polygon.latlngs = new Array();
 
             },
             editAProject(product) {
-                this.$refs.mapSection.polygon.latlngs = new Array();
+                this.$refs.map.polygon.latlngs = [];
                 this.currentPageState = this.ProjectPageStates.editMode;
                 this.$refs.projectEditSection.projectEditSection(product);
-                this.$refs.mapSection.setDrawMode(true);
+                this.$refs.map.setDrawMode(true);
 
             },
             filterList(search) {
@@ -84,7 +87,7 @@
                 });
             }
         },
-        mounted(){
+        mounted() {
             this.enableViewMode();
         }
     }

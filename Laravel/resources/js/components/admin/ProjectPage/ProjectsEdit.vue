@@ -130,8 +130,9 @@
         },
         methods: {
             reset(){
-                this.parent.$refs.mapSection.polygon.latlngs = new Array();
-                this.polygon.latlngs = new Array();
+                this.parent.$refs.map.polygon.latlngs = [];
+                this.polygon.latlngs = [];
+                this.parent.$refs.map.resetPolygon();
             },
             projectEditSection(product) {
                 this.id = product;
@@ -145,7 +146,8 @@
                            this.polygon.latlngs.push([data.area.geometries[i].coordinates[1],data.area.geometries[i].coordinates[0]]);
 
                        }
-                        this.parent.$refs.mapSection.polygon.latlngs = this.polygon.latlngs;
+                        this.parent.$refs.map.polygon.latlngs = this.polygon.latlngs;
+                        this.parent.$refs.map.onPolygonChanged();
                     });
 
                 axios.get("/getMediaFromProject/" + product)
@@ -156,8 +158,8 @@
                     })
             },
             close() {
-                this.parent.$refs.mapSection.polygon.latlngs = new Array();
-                this.parent.$refs.mapSection.setDrawMode(false);
+                this.parent.$refs.map.polygon.latlngs = new Array();
+                this.parent.$refs.map.setDrawMode(false);
                 this.polygon.latlngs = new Array();
                 this.parent.enableViewMode();
             },
@@ -185,7 +187,7 @@
             save() {
                 console.log("sdfsadfasdf");
                 console.log(this.polygon.latlngs);
-                this.polygon.latlngs = this.parent.$refs.mapSection.polygon.latlngs;
+                this.polygon.latlngs = this.parent.$refs.map.polygon.latlngs;
                 axios.post("/beheer/updateProject", {
                     id: this.id,
                     name: this.name,
