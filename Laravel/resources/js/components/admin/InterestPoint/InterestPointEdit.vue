@@ -17,6 +17,7 @@
                             Een overkoepelend project kan gekozen worden, maar dit hoeft niet.
                             Kies de categorie die het beste past bij het punt.
                             Klik op de kaart om aan te geven waar dit punt is.
+                            Klik op 'aanpassingen toepassen' om de wijzigingen door te voeren of op 'punt verwijderen' om het punt weg te gooien.
                         </span>
                     </v-tooltip>
                 </v-flex>

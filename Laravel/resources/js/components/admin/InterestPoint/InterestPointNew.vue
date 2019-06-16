@@ -17,6 +17,7 @@
                             Een overkoepelend project kan gekozen worden, maar dit hoeft niet.
                             Kies de categorie die het beste past bij het nieuwe punt.
                             Klik op de kaart om aan te geven waar dit punt is.
+                            Druk op 'punt toevoegen' als u klaar bent.
                         </span>
                     </v-tooltip>
                 </v-flex>
@@ -112,7 +113,7 @@
                     <v-layout align-center justify-end row>
                         <v-btn @click="validate" style="max-width: 10%; height: 100%;" color="#89A226" >
                             <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat class="white--text">
-                                Project punt Toevoegen
+                                Punt Toevoegen
                             </v-card>
                         </v-btn>
                     </v-layout>

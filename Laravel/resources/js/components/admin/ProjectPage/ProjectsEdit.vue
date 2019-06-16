@@ -3,6 +3,23 @@
         <div class="testingCSS">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Project</v-card-title>
+                <v-flex class="tooltipTopRight">
+                    <v-tooltip top content-class="tooltip-inner">
+                        <template v-slot:activator="{ on }">
+                            <v-img class="tooltipImage"
+                                   contain
+                                   v-on="on"
+                                   src="img/context-sensitive-help.png"/>
+                        </template>
+                        <span>
+                            Op deze pagina kan een project worden aangepast.
+                            Geef het project een passende naam en beschrijving.
+                            Kies de categorie die het beste past bij het project.
+                            Klik op de kaart om het gebied aan te geven waar dit project is (niet verplicht).
+                            Klik op 'project wijzigen' om de aanpassingen door te voeren of op 'project verwijderen' om het project weg te gooien.
+                        </span>
+                    </v-tooltip>
+                </v-flex>
                 <v-btn fab flat @click="close">
                     <v-icon x-large color="green"> close</v-icon>
                 </v-btn>

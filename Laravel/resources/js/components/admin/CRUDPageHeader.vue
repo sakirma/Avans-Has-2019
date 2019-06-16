@@ -100,7 +100,6 @@
 
     .tooltipTopRight {
         max-width: 30px;
-
         right: 10px;
         position: relative;
     }
