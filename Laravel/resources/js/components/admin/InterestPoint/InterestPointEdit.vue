@@ -3,6 +3,23 @@
         <div class="testingCSS">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Punt</v-card-title>
+                <v-flex class="tooltipTopRight">
+                    <v-tooltip top content-class="tooltip-inner">
+                        <template v-slot:activator="{ on }">
+                            <v-img class="tooltipImage"
+                                   contain
+                                   v-on="on"
+                                   src="img/context-sensitive-help.png"/>
+                        </template>
+                        <span>
+                            Op deze pagina kan een interessepunt worden aangepast.
+                            Geef het punt een passende naam en beschrijving.
+                            Een overkoepelend project kan gekozen worden, maar dit hoeft niet.
+                            Kies de categorie die het beste past bij het punt.
+                            Klik op de kaart om aan te geven waar dit punt is.
+                        </span>
+                    </v-tooltip>
+                </v-flex>
                 <v-btn fab flat @click="close">
                     <v-icon x-large color="green"> close</v-icon>
                 </v-btn>
@@ -388,5 +405,25 @@
 
     .vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {
         background-color: rgba(38, 38, 38, 0.5);
+    }
+
+    .tooltipTopRight {
+        max-width: 30px;
+        right: 10px;
+        position: relative;
+    }
+
+    .tooltipImage {
+        width: 20px;
+        height: 20px;
+    }
+
+    .tooltip-inner {
+        color: white;
+        padding: 24px;
+        border-radius: 5px;
+        box-shadow: 0 5px 30px;
+        max-height: 100px;
+        max-width: 450px;
     }
 </style>
