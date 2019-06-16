@@ -80,26 +80,26 @@
 
                     iconSize: [30, 60],
                 }),
-                parentPage: undefined,
             }
         },
         methods: {
             assignParentPage(parent) {
-                this.parentPage = parent;
+                this.parent = parent;
             },
             isAllowedCategory(cat) {
-                if(!this.parentPage || typeof(this.parentPage.pressedImages) == 'undefined')
+                if(!this.parent || typeof(this.parent.pressedImages) == 'undefined')
                     return true;
 
-                if (cat in this.parentPage.pressedImages)
-                    return !this.parentPage.pressedImages[cat];
+
+                if (cat in this.parent.pressedImages)
+                    return !this.parent.pressedImages[cat];
                 else return false;
             },
             disableInputEvents(element) {
                 this.$parent.disableInputEvents(element);
             },
             OpenProjectPagePressed: function (projectId, isProject) {
-                this.parentPage.onProjectOpened(projectId, isProject);
+                this.parent.onProjectOpened(projectId, isProject);
             },
             createPolygon: function (data, coordinates) {
                 let points = [];

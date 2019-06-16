@@ -210,12 +210,18 @@
                     this.currentImages.splice(index, 1);
             },
             projectEditSection(product) {
-                this.selectedProject = product;
-                this.currentImages = [];
-                if (!this.bool) {
-                    this.markerLat = product.location.coordinates[1];
-                    this.markerLong = product.location.coordinates[0];
-                }
+                this.selectedProject.id = product;
+                axios.get('/getProjectPoint/'+this.selectedProject.id)
+                    .then(({ data }) => {
+                        this.selectedProject.name = data.name;
+                        this.selectedProject.category = data.category;
+                        this.selectedProject.information = data.information;
+                        this.selectedProject.project_id = data.project_id;
+                        this.getUpdateProjectName();
+
+                        this.markerLat = data.location.coordinates[1];
+                        this.markerLong = data.location.coordinates[0];
+                    });
 
                 this.currentImages = [];
                 axios.get("/getMediaFromProjectPoint/" + this.selectedProject.id)
