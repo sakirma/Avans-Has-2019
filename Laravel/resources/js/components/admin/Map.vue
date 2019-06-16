@@ -58,7 +58,7 @@
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
                 pressedImages: {
                     activiteit: false,
-                    "eten en drinken": false,
+                    etenEnDrinken: false,
                     bezienswaardigheid: false,
                     natuurgebied: false
                 },
@@ -74,7 +74,7 @@
             onProjectOpened(projectId, isProject) {
                 this.parentPage.editAProject(projectId);
             },
-            loadMapObjects: function(arr) {
+            loadMapObjects: function (arr) {
                 this.$refs.mapComponent.loadMapObjects(arr);
             }
 

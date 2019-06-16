@@ -224,6 +224,13 @@
                             projectId = projectId -1;
                             this.projectName = this.projects[projectId].name;
                         }
+                        this.selectedProject.name = data.name;
+                        this.selectedProject.category = data.category;
+                        this.selectedProject.information = data.information;
+                    });
+
+                        this.markerLat = data.location.coordinates[1];
+                        this.markerLong = data.location.coordinates[0];
                     });
 
                 this.currentImages = [];
