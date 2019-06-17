@@ -56,14 +56,14 @@
                     </v-flex>
                     <div v-bar>
                         <div>
-                            <v-flex id="testing" class="removeScrollbar" xs12 v-if="searchFieldIsFocused === true">
+                            <v-flex class="removeScrollbar" xs12 v-if="searchFieldIsFocused === true">
                                 <v-layout fill-height align-start justify-start>
                                     <v-list style="background-color: transparent; width: 100%; padding: 0;"
                                             class="white--text" two-line
                                             pt-0>
                                         <template v-for="(item, index) in filteredMapObjects">
                                             <v-list-tile
-                                                    :key="item.name"
+                                                    :key="index"
                                                     avatar
                                                     ripple
                                                     style="background-color: rgba(137, 163, 36, 0.9);"
@@ -75,10 +75,6 @@
                                                     </v-list-tile-sub-title>
                                                 </v-list-tile-content>
                                             </v-list-tile>
-                                            <v-divider
-                                                    v-if="index + 1 < mapObjects.length"
-                                                    :key="index"
-                                            ></v-divider>
                                         </template>
                                     </v-list>
                                 </v-layout>
@@ -169,7 +165,7 @@
             axios.get("/getAllMapObjects")
                 .then(({data}) => {
                     for (let i = 0; i < data.length; i++) {
-                        this.mapObjects.push(data[i]);
+                        if(typeof(data[i].project_id) === 'undefined') this.mapObjects.push(data[i]);
                     }
                     this.$refs.mapComponent.loadMapObjects(this.mapObjects);
                     this.filteredMapObjects = this.mapObjects;

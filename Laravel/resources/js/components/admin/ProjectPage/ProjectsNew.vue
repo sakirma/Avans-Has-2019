@@ -109,9 +109,9 @@
 
         methods: {
             close() {
-                this.parent.$refs.mapSection.polygon.latlngs = new Array();
-                this.parent.$refs.mapSection.setdrawMode(false);
-                this.polygon.latlngs = new Array();
+                this.reset();
+                this.parent.$refs.mapSection.setDrawMode(false);
+                this.polygon.latlngs = [];
                 this.parent.enableViewMode();
             },
             onFileSelection() {
@@ -130,7 +130,8 @@
                 this.images.splice(index, 1);
             },
             reset(){
-                this.parent.$refs.mapSection.polygon.latlngs = new Array();
+                this.parent.$refs.mapSection.polygon.latlngs = [];
+                this.parent.$refs.mapSection.resetPolygon();
             },
             save() {
                   this.polygon.latlngs = this.parent.$refs.mapSection.polygon.latlngs ;
