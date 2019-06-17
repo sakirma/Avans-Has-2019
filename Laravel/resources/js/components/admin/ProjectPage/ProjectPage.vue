@@ -10,7 +10,7 @@
                               v-show="currentPageState === ProjectPageStates.editMode"></project-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section ref="map" :parent="this"></map-section>
+                <map-section ref="mapSection" :parent="this"></map-section>
             </v-flex>
         </v-layout>
     </v-container>
@@ -58,7 +58,7 @@
         methods: {
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
-                this.$refs.map.setDrawMode(true);
+                this.$refs.mapSection.setDrawMode(true);
             },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
@@ -69,17 +69,18 @@
                             this.values.push(data[i]);
                         }
                         this.filteredProjects = this.values;
-                        this.$refs.map.loadMapObjects(this.filteredProjects);
+                        this.$refs.mapSection.loadMapObjects(this.filteredProjects);
                     });
-                this.$refs.map.polygon.latlngs = new Array();
+                this.$refs.mapSection.polygon.latlngs = new Array();
 
             },
-            editAProject(product) {
-                this.$refs.map.polygon.latlngs = [];
+            editAProject(projectId) {
+                this.$refs.mapSection.polygon.latlngs = [];
+                this.$refs.projectEditSection.loadEditSection(projectId);
+                // this.$refs.mapSection.removeEventListenerPolygon(projectId);
+                this.$refs.mapSection.setDrawMode(true);
+                
                 this.currentPageState = this.ProjectPageStates.editMode;
-                this.$refs.projectEditSection.projectEditSection(product);
-                this.$refs.map.setDrawMode(true);
-
             },
             filterList(search) {
                 this.filteredProjects = this.values.filter(project => {

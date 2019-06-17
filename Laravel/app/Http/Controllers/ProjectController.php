@@ -78,8 +78,8 @@ class ProjectController extends Controller
         $lng = $request->latlngs[0][1];
         $points[sizeof($points)] = new Point($lat, $lng);
 
+        $area = new GeometryCollection([new Polygon([new LineString($points)])]);
 
-        $area = new GeometryCollection($points);
         if (isset($request->id) && isset($request->name) && isset($request->information) && isset($request->category)) {
             $project = Project::find($request->id);
             $project->name = $request->name;

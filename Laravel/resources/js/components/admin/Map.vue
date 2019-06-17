@@ -76,8 +76,10 @@
             },
             loadMapObjects: function (arr) {
                 this.$refs.mapComponent.loadMapObjects(arr);
-            }
-
+            },
+            setPolygonsInteractive(isInteractive) {
+                this.$refs.mapComponent.setPolygonsInteractive(isInteractive);
+            },
         },
         mounted() {
 

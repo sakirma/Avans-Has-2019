@@ -1,33 +1,4 @@
 <template>
-    <!--    <v-layout column fill-height justify-center>-->
-    <!--        <v-flex xs1>-->
-    <!--            <v-layout row align-center justify-center fill-height>-->
-    <!--                <v-btn depressed block class="categorieButton mx-1 white&#45;&#45;text" color="#89A324">-->
-    <!--                    Natuurgebieden-->
-    <!--                </v-btn>-->
-    <!--                <v-btn depressed block class="categorieButton mx-1 white&#45;&#45;text" color="#89A324">-->
-    <!--                    Bezienswaardigheden-->
-    <!--                </v-btn>-->
-    <!--                <v-btn depressed block class="categorieButton mx-1 white&#45;&#45;text" color="#89A324">-->
-    <!--                    Eten & Drinken-->
-    <!--                </v-btn>-->
-    <!--                <v-btn depressed block class="categorieButton mx-1 white&#45;&#45;text" color="#89A324">-->
-    <!--                    Activiteiten-->
-    <!--                </v-btn>-->
-    <!--            </v-layout>-->
-    <!--        </v-flex>-->
-    <!--        <v-flex>-->
-    <!--            <div style="height: 100%;">-->
-    <!--                <l-map :center="center" :zoom="zoom" id="map" ref="map" style="height:100%;" v-on:click="add($event) ">-->
-    <!--                    <l-tile-layer :url="url"></l-tile-layer>-->
-    <!--                    <LPolygon ref="poly"-->
-    <!--                              :lat-lngs="polygon.latlngs"-->
-    <!--                              :color="polygon.color">-->
-    <!--                    </LPolygon>-->
-    <!--                </l-map>-->
-    <!--            </div>-->
-    <!--        </v-flex>-->
-    <!--    </v-layout>-->
     <map-component ref="map" :parent-page="this" :add-event="add"></map-component>
 </template>
 
@@ -75,15 +46,13 @@
         },
         methods: {
             setDrawMode(value) {
+                this.setPolygonsInteractive(!value);
                 this.isDrawMode = value;
             },
             clearMap() {
                 if (this.markers.length > 0) {
                     this.markers.splice(-1, 1);
                 }
-            },
-            emitToParent(event) {
-                this.$emit('childToParent', this.markers[0].latlng)
             },
             add(event) {
                 if (this.isDrawMode) {
@@ -98,12 +67,13 @@
                 this.leafletPolygon = L.polygon(this.polygon.latlngs);
                 this.leafletPolygon.addTo(this.mapObject);
             },
+            setPolygonsInteractive(isInteractive) {
+                console.log(isInteractive);
+               this.$refs.map.setPolygonsInteractive(isInteractive);
+            },
             resetPolygon() {
-                // if(this.leafletPolygon)
-                //     this.leafletPolygon = [];
-
+                this.polygon.latlngs = [];
                 this.mapObject.removeLayer(this.leafletPolygon);
-
             },
             loadMapObjects(projects) {
                 this.$refs.map.loadMapObjects(projects);

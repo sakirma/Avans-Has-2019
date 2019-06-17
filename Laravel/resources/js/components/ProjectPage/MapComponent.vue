@@ -3,7 +3,7 @@
            :zoom="zoom"
            :center="center"
            style="height:100%;"
-           @click="addEvent($event)"  >
+           @click="addEvent($event)">
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
         <template v-for="(marker, index) in markers">
@@ -13,21 +13,24 @@
             </l-marker>
         </template>
 
-        <template v-for="(polygon, index) in polygons">
-            <l-polygon :key="index + markers.length" v-if="isAllowedCategory(polygon.category)" :lat-lngs="polygon.latlng"
+        <div v-for="(polygon, index) in polygons">
+            <l-polygon :key="index + markers.length" v-if="isAllowedCategory(polygon.category)" ref="testRef"
+                       :lat-lngs="polygon.latlng"
                        :color="polygonLineColor" :fill-color="polygonFillColor" :fill-opacity="0.6">
                 <pop-up :item="polygon" :parent="polygon.parent"></pop-up>
             </l-polygon>
-        </template>
+        </div>
 
         <template v-for="(polyline, index) in polylines">
-            <l-polyline :key="index + markers.length + polygons.length" v-if="isAllowedCategory(polyline.category)" :lat-lngs="polyline.latlng">
+            <l-polyline :key="index + markers.length + polygons.length" v-if="isAllowedCategory(polyline.category)"
+                        :lat-lngs="polyline.latlng">
                 <pop-up :item="polyline" :parent="polyline.parent"></pop-up>
             </l-polyline>
         </template>
 
         <template v-for="(rectangle, index) in rectangles">
-            <l-polyline :key="index + markers.length + polygons.length + polylines.length" v-if="isAllowedCategory(rectangle.category)" :lat-lngs="rectangle.latlng">
+            <l-polyline :key="index + markers.length + polygons.length + polylines.length"
+                        v-if="isAllowedCategory(rectangle.category)" :lat-lngs="rectangle.latlng">
                 <pop-up :item="rectangle" :parent="rectangle.parent"></pop-up>
             </l-polyline>
         </template>
@@ -66,7 +69,10 @@
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 markers: [],
+
                 polygons: [],
+                polygonsAreInteractive: true,
+
                 polylines: [],
                 rectangles: [],
                 buttonImage: "img/MapPage/button.png",
@@ -87,7 +93,7 @@
                 this.parent = parent;
             },
             isAllowedCategory(cat) {
-                if(!this.parent || typeof(this.parent.pressedImages) == 'undefined')
+                if (!this.parent || typeof (this.parent.pressedImages) == 'undefined')
                     return true;
 
 
@@ -108,6 +114,7 @@
                 }
                 data.latlng = points;
                 data.parent = this;
+                data.isInteractive = true;
                 this.polygons.push(data);
             },
             createPoint: function (data, coordinates) {
@@ -115,7 +122,7 @@
                 data.parent = this;
                 this.markers.push(data);
             },
-            getMapObject(){
+            getMapObject() {
                 return this.$refs.map.mapObject;
             },
             loadMapObjects: function (data) {
@@ -124,10 +131,10 @@
                 this.polylines = [];
                 this.rectangles = [];
                 for (let i = 0; i < data.length; i++) {
-                    if(data[i].area) data[i].info = data[i].area;
-                    else if(data[i].location) {
+                    if (data[i].area) data[i].info = data[i].area;
+                    else if (data[i].location) {
                         data[i].info = data[i].location;
-                    }else continue;
+                    } else continue;
 
                     if (data[i].info.type == "Point") {
                         this.createPoint(data[i], data[i].info.coordinates);
@@ -142,7 +149,7 @@
                                 for (let k = 0; k < data[i].info.geometries[j].coordinates.length; k++) {
                                     points.push(L.latLng(data[i].info.geometries[j].coordinates[k][1], data[i].info.geometries[j].coordinates[k][0]));
                                 }
-                                if (data[i].info.geometries[j].type == "LineString"){
+                                if (data[i].info.geometries[j].type == "LineString") {
                                     data[i].parent = this;
                                     data[i].latlng = points;
                                     this.polylines.push(data[i]);
@@ -155,6 +162,9 @@
                         }
                     }
                 }
+            },
+            setPolygonsInteractive(isInteractive) {
+                this.polygons = [];
             }
         },
         mounted() {
