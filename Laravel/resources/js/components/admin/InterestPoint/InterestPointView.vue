@@ -13,7 +13,7 @@
                     :pagination.sync="pagination"
             >
                 <template v-slot:items="props">
-                    <tr @click="rowSelected(props.item)">
+                    <tr @click="rowSelected(props.item.id)">
                         <td>{{ props.item.name }}</td>
                         <td class="text-xs-left">{{ props.item.category }}</td>
                         <td class="text-xs-left">{{ getProjectName(props.item.project_id) }}</td>

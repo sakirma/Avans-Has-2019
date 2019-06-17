@@ -10,7 +10,7 @@
                              v-show="currentPageState === ProjectPageStates.editMode"></routes-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section ref="mapSection"></map-section>
+                <map-section :parent-page="this" ref="mapSection"></map-section>
             </v-flex>
         </v-layout>
     </v-container>
@@ -114,10 +114,28 @@
             },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
+                this.routes = [];
+                this.filteredRoutes = [];
+                axios.post('/admin/route/data')
+                    .then(response => {
+                        let r = response.data.routes;
+
+                        for (let i = 0; i < r.length; i++) {
+                            let t = {
+                                name: r[i].name,
+                                km: r[i].length,
+                                route: r[i].id,
+                            };
+                            this.routes.push(t);
+                            this.filteredRoutes.push(t);
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                });
             },
             editAProject(product) {
                 this.currentPageState = this.ProjectPageStates.editMode;
-                this.$refs.projectEditSection.projectEditSection(product, this.points, this.$refs.mapSection.getMapObject());
+                this.$refs.projectEditSection.loadEditSection(product, this.points, this.$refs.mapSection.getMapObject());
             }
         }
     }

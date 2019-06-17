@@ -57,7 +57,8 @@
                             <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
                         </v-flex>
                         <input type="file">
-                        <v-carousel ref="carousel" v-if="currentImages.length > 0" style="height:100%" class="blackButtonCarousel" :cycle="false">
+                        <v-carousel ref="carousel" v-if="currentImages.length > 0" style="height:100%"
+                                    class="blackButtonCarousel" :cycle="false">
                             <v-carousel-item
                                     v-for="(image,i) in currentImages"
                                     v-if="!image.isRemoved"
@@ -90,6 +91,15 @@
                             </v-card>
                         </v-btn>
                     </v-layout>
+
+                    <v-layout align-center justify-end row>
+                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="reset()">
+                            <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
+                                    class="white--text">
+                                reset polygon
+                            </v-card>
+                        </v-btn>
+                    </v-layout>
                 </v-flex>
             </v-layout>
         </div>
@@ -107,7 +117,8 @@
                 name: null,
                 information: null,
                 categories: [],
-                select: null
+                select: null,
+                latlngs: [],
             }
         },
         props: {
@@ -117,24 +128,43 @@
             }
         },
         methods: {
-            projectEditSection(product) {
+            reset() {
+                this.latlngs = [];
+                this.parent.$refs.mapSection.resetPolygon();
+            },
+            loadEditSection(product) {
                 this.id = product;
                 this.currentImages = [];
                 axios.get("/getProject/" + product)
                     .then(({data}) => {
+                        this.latlngs = [];
                         this.name = data.name;
                         this.select = data.category;
                         this.information = data.information;
+                        for (let i = 0; i < data.area.geometries[0].coordinates[0].length; i++) {
+                            let coords = data.area.geometries[0].coordinates[0][i];
+                            let lng = coords[0];
+                            let lat = coords[1];
+                            this.latlngs.push([lat, lng]);
+                        }
+                        this.parent.$refs.mapSection.polygon.latlngs = this.latlngs;
+                        this.parent.$refs.mapSection.onPolygonChanged();
                     });
 
                 axios.get("/getMediaFromProject/" + product)
                     .then(({data}) => {
                         for (let i = 0; i < data.length; i++) {
-                            this.currentImages.push({imageLocation: "getmedia/" + data[i], isRemoved: false, imageName: data[i]});
+                            this.currentImages.push({
+                                imageLocation: "getmedia/" + data[i],
+                                isRemoved: false,
+                                imageName: data[i]
+                            });
                         }
                     })
             },
             close() {
+                this.reset();
+                this.parent.$refs.mapSection.setDrawMode(false);
                 this.parent.enableViewMode();
             },
             onFileSelection() {
@@ -153,17 +183,20 @@
                 this.input.value = null;
             },
             removeFile(index) {
-                if(!this.currentImages[index].newFile)
+                if (!this.currentImages[index].newFile)
                     this.currentImages[index].isRemoved = true;
                 else
                     this.currentImages.splice(index, 1);
             },
             save() {
+                this.latlngs = this.parent.$refs.mapSection.polygon.latlngs;
                 axios.post("/beheer/updateProject", {
                     id: this.id,
                     name: this.name,
                     information: this.information,
-                    category: this.select
+                    category: this.select,
+                    latlngs: this.latlngs
+
                 }).then(({data}) => {
                     for (let i = 0; i < this.currentImages.length; i++) {
                         let projectImage = this.currentImages[i];

@@ -1,47 +1,26 @@
 <template>
-    <v-layout column fill-height justify-center>
-        <v-flex xs1>
-            <v-layout row align-center justify-center fill-height>
-                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324">
-                    Natuurgebieden
-                </v-btn>
-                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324">
-                    Bezienswaardigheden
-                </v-btn>
-                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324">
-                    Eten & Drinken
-                </v-btn>
-                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324">
-                    Activiteiten
-                </v-btn>
-            </v-layout>
-        </v-flex>
-        <v-flex>
-            <div style="height: 100%;">
-                <l-map :center="center" :zoom="zoom" id="map" ref="map" style="height:100%;" v-on:click="add($event)">
-                    <l-tile-layer :url="url"></l-tile-layer>
+    <map-component ref="map" :parent-page="parentPage" :add-event="add">
 
-                    <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng"></l-marker>
-                </l-map>
-            </div>
-        </v-flex>
-    </v-layout>
+    </map-component>
 </template>
 
 <script>
     import {LMap, LTileLayer, LMarker, LPolygon, LPolyline, LRectangle, LPopup} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
+    import mapComponent from "../Map";
+
     export default {
         name: "InterestPointMap",
         components: {
             LMap,
             LTileLayer,
             LMarker,
+            mapComponent,
         },
         props: {
-            parent: {
+            parentPage: {
                 type: Object,
-                required: true
+                required: true,
             }
         },
         data() {
@@ -51,43 +30,60 @@
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
                 isDrawMode: false,
                 markers: [],
+                mapObject: null,
+                placedMarker: null,
+                newMode: false,
+                editMode: false
             }
         },
+        mounted() {
+            this.mapObject = this.$refs.map.getMapObject();
+        },
         methods: {
-            setdrawMode(value) {
+            setNewMode(value) {
+                this.newMode = value;
+            },
+            setEditMode(value) {
+                this.editMode = value;
+            },
+            setDrawMode(value) {
                 this.isDrawMode = value;
             },
-            clearMap(){
-                if(this.markers.length > 0){
-                    this.markers.splice(-1, 1);
-                }
+            loadMapObjects(points) {
+                this.$refs.map.loadMapObjects(points);
             },
-            emitToParent (event) {
-                console.log("EMIT:");
-                console.log(this.markers[0].latlng);
-                this.$emit('childToParent', this.markers[0].latlng)
+            clearMap() {
+                if (this.placedMarker)
+                    this.mapObject.removeLayer(this.placedMarker);
+            },
+            editPoint(lat, lng) {
+                this.placedMarker = L.marker([lat, lng]);
+                this.placedMarker.addTo(this.mapObject);
             },
             add(event) {
-                if(this.isDrawMode){
-                    if(this.markers.length > 0){
-                        this.markers.splice(-1, 1);
+                if (this.isDrawMode) {
+                    let coords = event.latlng;
+                    let lat = coords.lat;
+                    let lng = coords.lng;
+
+                    if (this.placedMarker)
+                        this.mapObject.removeLayer(this.placedMarker);
+
+                    this.placedMarker = L.marker([lat, lng]);
+                    this.placedMarker.addTo(this.mapObject);
+
+                    if (this.newMode) {
+                        let newInterestPageComponent = this.parentPage.$refs.newInterestPage;
+                        newInterestPageComponent.marker = this.placedMarker._latlng;
+                        newInterestPageComponent.markerLat = this.placedMarker._latlng.lat;
+                        newInterestPageComponent.markerLng = this.placedMarker._latlng.lng;
                     }
-                    this.id++;
-                    var coord = event.latlng;
-                    var lat = coord.lat;
-                    var lng = coord.lng;
-                    this.long = lng;
-                    this.lat = lat;
-                    console.log("lat: "+ lat + " lng: " + lng)
-                    this.markers.push({
-                        id: this.id,
-                        latlng: L.latLng(parseFloat(lat), parseFloat(lng)),
-                        content: 'hoi!'
-                    });
-                    console.log('MArkers added: ');
-                    console.log(this.markers);
-                    this.emitToParent(event);
-                }},
+                    if (this.editMode) {
+                        this.parentPage.$refs.projectEditSection.markerLat = this.placedMarker._latlng.lat;
+                        this.parentPage.$refs.projectEditSection.markerLong = this.placedMarker._latlng.lng;
+                    }
+                }
+            },
         }
     }
 </script>

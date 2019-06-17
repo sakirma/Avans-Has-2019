@@ -1,5 +1,5 @@
 <template>
-    <div class="projectEditSection" v-bar >
+    <div class="projectEditSection" v-bar>
         <div class="pr-2">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Nieuw punt</v-card-title>
@@ -60,7 +60,7 @@
                                 <v-card-title class="title">Locatie Latidude:</v-card-title>
                             </v-flex>
                             <v-flex xs4>
-                                <v-textarea v-model="marker.lat" :rules="markerRules" box></v-textarea>
+                                <v-text-field v-model="markerLat" :rules="markerRules" box readonly></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -71,30 +71,31 @@
                                 <v-card-title class="title">Locatie Longitude::</v-card-title>
                             </v-flex>
                             <v-flex xs4>
-                                <v-textarea v-model="marker.lng" :rules="markerRules" box></v-textarea>
+                                <v-text-field v-model="markerLng" :rules="markerRules" box readonly></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-flex>
 
-                <v-flex xs1>
-                    <v-layout column>
-                        <v-flex>
-                            <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
-                        </v-flex>
-                        <input type="file">
-                        <v-carousel v-if="images.length > 0">
-                            <v-carousel-item
-                                    v-for="(image,i) in images"
-                                    :key="i"
-                                    :src="image"
-                            ></v-carousel-item>
-                        </v-carousel>
-                    </v-layout>
-                </v-flex>
+                    <v-flex xs1>
+                        <v-layout column>
+                            <v-flex>
+                                <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
+                            </v-flex>
+                            <input type="file">
+                            <v-carousel v-if="images.length > 0">
+                                <v-carousel-item
+                                        v-for="(image,i) in images"
+                                        :key="i"
+                                        :src="image"
+                                ></v-carousel-item>
+                            </v-carousel>
+                        </v-layout>
+                    </v-flex>
 
                     <v-layout align-center justify-end row>
-                        <v-btn @click="validate" style="max-width: 10%; height: 100%;" color="#89A226" >
-                            <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat class="white--text">
+                        <v-btn @click="validate" style="max-width: 10%; height: 100%;" color="#89A226">
+                            <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
+                                    class="white--text">
                                 Project punt Toevoegen
                             </v-card>
                         </v-btn>
@@ -125,9 +126,6 @@
                 type: Array,
                 required: true
             },
-            marker:{
-              type: Object,
-            }
         },
         data() {
             return {
@@ -148,20 +146,28 @@
                     v => !!v || 'Beschreiving is vereist',
                     v => (v && v.length <= 10000) || 'Tekst mag niet langer zijn dan 10.000 karakters zijn'
                 ],
-                markerRules:[
+                markerRules: [
                     v => !!v || 'U moet een locatie voor deze punt kiezen',
                 ],
                 input: null,
                 files: [],
                 images: [],
+                markerLat:null,
+                markerLng: null,
+                marker: {},
             }
         },
         methods: {
             close() {
-                this.parent.$refs.mapSection.setdrawMode(false);
-                this.parent.$refs.mapSection.clearMap();
-                this.$emit('close', this.marker);
-                this.parent.enableViewMode();            },
+                this.parent.$refs.map.clearMap();
+
+                this.parent.$refs.map.setDrawMode(false);
+                this.parent.$refs.map.setNewMode(false);
+                this.markerLat = null;
+                this.markerLng = null;
+
+                this.parent.enableViewMode();
+            },
             onFileSelection() {
                 for (let file of this.input.files) {
                     this.files.push(file);
@@ -177,61 +183,63 @@
                 this.files.splice(index, 1);
                 this.images.splice(index, 1);
             },
-            validate () {
-                if(this.projectName != null) {
-                    for(let i = 0; i<this.projectNames.length;i++){
-                        if(this.projects[i].name === this.projectName){
+            validate() {
+                if (this.projectName != null) {
+                    for (let i = 0; i < this.projectNames.length; i++) {
+                        if (this.projects[i].name === this.projectName) {
                             this.projectId = this.projects[i].id;
                         }
                     }
                 }
-                    if (this.$refs.form.validate()) {
-                        axios({
-                            method: 'post',
-                            url: '/admin/addProjectPoint',
-                            data: {
-                                project_id: this.projectId,
-                                name: this.name,
-                                category: this.category,
-                                information: this.text,
-                                markerLat: this.marker.lat,
-                                markerLong: this.marker.lng,
-                                area: null,
-                            }
-                        }).then(response => {
-                            for(let i = 0; i < this.files.length; i++){
-                                let formData = new FormData();
-                                formData.append("image", this.files[i]);
-                                formData.append("name", response.data.id + "_" + i);
-                                formData.append("folder", "points");
-                                formData.append("id", response.data.id);
-                                console.log(response);
-                                axios.post("/beheer/media", formData,
-                                    {
-                                        headers: {
-                                            'Content-Type': 'multipart/form-data'
-                                        }
+                console.log(this.projectId);
+                if (this.$refs.form.validate()) {
+                    axios({
+                        method: 'post',
+                        url: '/admin/addProjectPoint',
+                        data: {
+                            project_id: this.projectId,
+                            name: this.name,
+                            category: this.category,
+                            information: this.text,
+                            markerLat: this.markerLat,
+                            markerLong: this.markerLng,
+                            area: null,
+                        }
+                    }).then(response => {
+                        for (let i = 0; i < this.files.length; i++) {
+                            let formData = new FormData();
+                            formData.append("image", this.files[i]);
+                            formData.append("name", response.data.id + "_" + i);
+                            formData.append("folder", "points");
+                            formData.append("id", response.data.id);
+                            console.log(response);
+                            axios.post("/beheer/media", formData,
+                                {
+                                    headers: {
+                                        'Content-Type': 'multipart/form-data'
                                     }
-                                ).then(({ data }) => {
-                                    console.log(data);
-                                }).catch(error => {
-                                    alert("Er ging iets mis bij het opslaan van het interesse punt!");
-                                    console.log(error);
-                                });
-                            }
+                                }
+                            ).then(({data}) => {
+                                console.log(data);
+                            }).catch(error => {
+                                alert("Er ging iets mis bij het opslaan van het interesse punt!");
+                                console.log(error);
+                            });
+                        }
 
-                            this.parent.loadPoints();
-                            this.close();
-                        }).catch(error => {
-                            alert("Er ging iets mis bij het opslaan van het interesse punt!");
-                            console.log(error);
-                        });
-                    }else{
-                        alert("U heeft niet alles ingevuld");
-                    }
+                        this.parent.loadPoints();
+                        this.close();
+                    }).catch(error => {
+                        alert("Er ging iets mis bij het opslaan van het interesse punt!");
+                        console.log(error);
+                    });
+                } else {
+                    alert("U heeft niet alles ingevuld");
+                }
             },
         },
         mounted() {
+            this.marker = this.parent.getMarker();
             window.axios.get('/getCategories').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
