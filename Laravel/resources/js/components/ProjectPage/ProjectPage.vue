@@ -170,8 +170,6 @@
 
                     if(this.$parent.selectedProjectPage.project) { this.findRecommendationsProjects(data, this); }
                     else { this.findRecommendationsInterestPoint(data, this); }
-
-
                 });
 
                 axios.get(linkTwo + id).then(({data}) => {
@@ -217,7 +215,7 @@
                 }).then(function (response) {
                     let projects = response.data[0];
                     let images = response.data[1];
-                    
+
                     for (let i = 0; i < projects.length; i++) {
 
                         let suggestion = {
