@@ -165,7 +165,7 @@
             axios.get("/getAllMapObjects")
                 .then(({data}) => {
                     for (let i = 0; i < data.length; i++) {
-                        if(typeof(data[i].project_id) === 'undefined') this.mapObjects.push(data[i]);
+                        this.mapObjects.push(data[i]);
                     }
                     this.$refs.mapComponent.loadMapObjects(this.mapObjects);
                     this.filteredMapObjects = this.mapObjects;
