@@ -14,12 +14,6 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    /**
-     * @param Request $request
-     * featureCollection: JSON format of featureCollection GeoJson
-     * pointWKT: Well Known Text for Point
-     */
-
     public function createProject(Request $request)
     {
         $points = Array();
@@ -35,8 +29,8 @@ class ProjectController extends Controller
 
 
         $area = new GeometryCollection([new Polygon([new LineString($points)])]);
+        $point = new Project();
         if (isset($request->category) && isset($request->name) && isset($request->information)) {
-            $point = new Project();
             $point->area = $area;
             $point->name = $request->name;
             $point->information = $request->information;
@@ -45,6 +39,8 @@ class ProjectController extends Controller
         } else {
             return abort(400);
         }
+
+        return $point;
     }
 
     public function searchForName($name)

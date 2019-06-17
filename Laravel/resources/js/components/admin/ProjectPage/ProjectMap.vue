@@ -68,7 +68,6 @@
                 this.leafletPolygon.addTo(this.mapObject);
             },
             setPolygonsInteractive(isInteractive) {
-                console.log(isInteractive);
                this.$refs.map.setPolygonsInteractive(isInteractive);
             },
             resetPolygon() {
