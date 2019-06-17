@@ -79,6 +79,7 @@
             }
         },
         mounted() {
+            this.$refs.map.assignParentPage(this.parent);
             this.mapObject = this.$refs.map.getMapObject();
         }
     }

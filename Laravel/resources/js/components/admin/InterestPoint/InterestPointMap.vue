@@ -1,5 +1,5 @@
 <template>
-    <map-component ref="map" :parent-page="parentPage" :add-event="add">
+    <map-component ref="mapComponent" :add-event="add">
 
     </map-component>
 </template>
@@ -18,7 +18,7 @@
             mapComponent,
         },
         props: {
-            parentPage: {
+            parent: {
                 type: Object,
                 required: true,
             }
@@ -37,7 +37,8 @@
             }
         },
         mounted() {
-            this.mapObject = this.$refs.map.getMapObject();
+            this.$refs.mapComponent.assignParentPage(this.parent);
+            this.mapObject = this.$refs.mapComponent.getMapObject();
         },
         methods: {
             setNewMode(value) {
@@ -50,7 +51,7 @@
                 this.isDrawMode = value;
             },
             loadMapObjects(points) {
-                this.$refs.map.loadMapObjects(points);
+                this.$refs.mapComponent.loadMapObjects(points);
             },
             clearMap() {
                 if (this.placedMarker)
@@ -73,14 +74,14 @@
                     this.placedMarker.addTo(this.mapObject);
 
                     if (this.newMode) {
-                        let newInterestPageComponent = this.parentPage.$refs.newInterestPage;
+                        let newInterestPageComponent = this.parent.$refs.newInterestPage;
                         newInterestPageComponent.marker = this.placedMarker._latlng;
                         newInterestPageComponent.markerLat = this.placedMarker._latlng.lat;
                         newInterestPageComponent.markerLng = this.placedMarker._latlng.lng;
                     }
                     if (this.editMode) {
-                        this.parentPage.$refs.projectEditSection.markerLat = this.placedMarker._latlng.lat;
-                        this.parentPage.$refs.projectEditSection.markerLong = this.placedMarker._latlng.lng;
+                        this.parent.$refs.projectEditSection.markerLat = this.placedMarker._latlng.lat;
+                        this.parent.$refs.projectEditSection.markerLong = this.placedMarker._latlng.lng;
                     }
                 }
             },

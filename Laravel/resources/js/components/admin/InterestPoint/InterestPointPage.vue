@@ -13,7 +13,7 @@
                                      v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <interest-point-map ref="map" :parent-page="this"></interest-point-map>
+                <interest-point-map ref="map" :parent="this"></interest-point-map>
             </v-flex>
         </v-layout>
     </v-container>

@@ -26,7 +26,7 @@
         </v-flex>
         <v-flex>
             <div style="height: 100%;">
-                <map-component ref="mapComponent" :parent="this" :add-event="addEvent"></map-component>
+                <map-component ref="mapComponent" :add-event="addEvent"></map-component>
             </div>
         </v-flex>
     </v-layout>
@@ -43,10 +43,6 @@
             MapComponent
         },
         props: {
-            parentPage: {
-                type: Object,
-                required: true
-            },
             addEvent: {
                 type: Function,
             }
@@ -62,6 +58,7 @@
                     bezienswaardigheid: false,
                     natuurgebied: false
                 },
+                parentPage: null,
             }
         },
         methods: {
@@ -80,9 +77,12 @@
             setPolygonsInteractive(isInteractive) {
                 this.$refs.mapComponent.setPolygonsInteractive(isInteractive);
             },
+            assignParentPage(parent) {
+                this.parentPage = parent;
+            }
         },
         mounted() {
-
+            this.$refs.mapComponent.assignParentPage(this);
         }
     }
 </script>
