@@ -126,9 +126,6 @@
                 type: Array,
                 required: true
             },
-            marker: {
-                type: Object,
-            }
         },
         data() {
             return {
@@ -157,6 +154,7 @@
                 images: [],
                 markerLat:null,
                 markerLng: null,
+                marker: {},
             }
         },
         methods: {
@@ -188,7 +186,7 @@
             validate() {
                 if (this.projectName != null) {
                     for (let i = 0; i < this.projectNames.length; i++) {
-                        if (this.projects[i].name == this.projectName) {
+                        if (this.projects[i].name === this.projectName) {
                             this.projectId = this.projects[i].id;
                         }
                     }
@@ -241,6 +239,7 @@
             },
         },
         mounted() {
+            this.marker = this.parent.getMarker();
             window.axios.get('/getCategories').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {

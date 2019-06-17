@@ -75,7 +75,7 @@ class ProjectPointsController extends Controller
     {
         $projectPoint = ProjectPoint::find($request->id);
 
-        $location = new Point($request->long, $request->lat);
+        $location = new Point($request->lat, $request->long);
         if($request->project_id ===null){
 
         }else{

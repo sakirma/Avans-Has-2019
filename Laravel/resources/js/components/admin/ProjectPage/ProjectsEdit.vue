@@ -134,7 +134,7 @@
                 this.parent.$refs.map.resetPolygon();
 
             },
-            projectEditSection(product) {
+            loadEditSection(product) {
                 this.id = product;
                 this.currentImages = [];
                 axios.get("/getProject/" + product)

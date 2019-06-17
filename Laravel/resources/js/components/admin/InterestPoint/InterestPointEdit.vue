@@ -213,32 +213,25 @@
                 else
                     this.currentImages.splice(index, 1);
             },
-            projectEditSection(product) {
+            loadEditSection(product) {
                 this.currentImages = [];
                 axios.get("/getSingleProjectPoint/" + product)
                     .then(({data}) => {
-                        for (let i = 0; i < data.length; i++) {
-                            this.selectedProject = data[0];
-                            console.log(this.selectedProject);
-                            let projectId = this.selectedProject.project_id;
-                            projectId = projectId -1;
-                            this.projectName = this.projects[projectId].name;
-                        }
-                        this.selectedProject.name = data.name;
-                        this.selectedProject.category = data.category;
-                        this.selectedProject.information = data.information;
-                    });
+                        let interestPoint = data[0];
+                        this.selectedProject.id = interestPoint.id;
+                        this.selectedProject.name = interestPoint.name;
+                        this.selectedProject.category = interestPoint.category;
+                        this.selectedProject.information = interestPoint.information;
+                        this.markerLat = interestPoint.location.coordinates[1];
+                        this.markerLong = interestPoint.location.coordinates[0];
 
-                        this.markerLat = data.location.coordinates[1];
-                        this.markerLong = data.location.coordinates[0];
-                    });
-
-                this.currentImages = [];
-                axios.get("/getMediaFromProjectPoint/" + this.selectedProject.id)
-                    .then(({data}) => {
-                        for (let i = 0; i < data.length; i++) {
-                            this.currentImages.push({imageLocation: "getmedia/" + data[i], isRemoved: false, imageName: data[i]});
-                        }
+                        this.currentImages = [];
+                        axios.get("/getMediaFromProjectPoint/" + this.selectedProject.id)
+                            .then(({data}) => {
+                                for (let i = 0; i < data.length; i++) {
+                                    this.currentImages.push({imageLocation: "getmedia/" + data[i], isRemoved: false, imageName: data[i]});
+                                }
+                            });
                     });
             },
             close() {
@@ -254,6 +247,18 @@
                         url: '/admin/deleteProjectPoint',
                         data: {
                             id: this.selectedProject.id,
+                        }
+                    }).then(() => {
+                        for (let i = 0; i < this.currentImages.length; i++) {
+                            let projectImage = this.currentImages[i];
+
+                            // Remove existing file of the project
+                            if (!projectImage.newFile) {
+                                axios.post("/beheer/removemedia", {
+                                    medianame: projectImage.imageName,
+                                    folder: "points"
+                                });
+                            }
                         }
                     });
                     this.close();
@@ -284,7 +289,6 @@
                     }).then(({data}) => {
                         for (let i = 0; i < this.currentImages.length; i++) {
                             let projectImage = this.currentImages[i];
-
                             // Remove existing file of the project
                             if (!projectImage.newFile && projectImage.isRemoved) {
                                 axios.post("/beheer/removemedia", {

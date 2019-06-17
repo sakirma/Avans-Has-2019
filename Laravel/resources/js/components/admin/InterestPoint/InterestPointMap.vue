@@ -53,34 +53,32 @@
                 this.$refs.map.loadMapObjects(points);
             },
             clearMap() {
-                this.mapObject.removeLayer(this.placedMarker);
-
+                if (this.placedMarker)
+                    this.mapObject.removeLayer(this.placedMarker);
             },
-            editPoint(lat, lng){
+            editPoint(lat, lng) {
                 this.placedMarker = L.marker([lat, lng]);
                 this.placedMarker.addTo(this.mapObject);
             },
             add(event) {
-
                 if (this.isDrawMode) {
-                    var coord = event.latlng;
-                    var lat = coord.lat;
-                    var lng = coord.lng;
-                    console.log("teesssst");
+                    let coords = event.latlng;
+                    let lat = coords.lat;
+                    let lng = coords.lng;
 
-                    if(this.placedMarker)
+                    if (this.placedMarker)
                         this.mapObject.removeLayer(this.placedMarker);
 
                     this.placedMarker = L.marker([lat, lng]);
                     this.placedMarker.addTo(this.mapObject);
 
-                    if(this.newMode){
-                    this.parentPage.$refs.newInterstPage.marker = this.placedMarker._latlng;
-                        this.parentPage.$refs.newInterstPage.markerLat = this.placedMarker._latlng.lat;
-                        this.parentPage.$refs.newInterstPage.markerLng = this.placedMarker._latlng.lng;
-
-
-                    } if(this.editMode){
+                    if (this.newMode) {
+                        let newInterestPageComponent = this.parentPage.$refs.newInterestPage;
+                        newInterestPageComponent.marker = this.placedMarker._latlng;
+                        newInterestPageComponent.markerLat = this.placedMarker._latlng.lat;
+                        newInterestPageComponent.markerLng = this.placedMarker._latlng.lng;
+                    }
+                    if (this.editMode) {
                         this.parentPage.$refs.projectEditSection.markerLat = this.placedMarker._latlng.lat;
                         this.parentPage.$refs.projectEditSection.markerLong = this.placedMarker._latlng.lng;
                     }
