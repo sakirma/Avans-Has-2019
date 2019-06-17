@@ -3,7 +3,7 @@
            :zoom="zoom"
            :center="center"
            style="height:100%;"
-           @click="addEvent($event)">
+           @click="invokeAddEvent($event)">
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
         <template v-for="(marker, index) in markers">
@@ -45,9 +45,6 @@
     export default {
         name: 'MapPage',
         props: {
-            parent: {
-                type: Object,
-            },
             addEvent: {
                 type: Function,
             }
@@ -71,7 +68,6 @@
                 markers: [],
 
                 polygons: [],
-                polygonsAreInteractive: true,
 
                 polylines: [],
                 rectangles: [],
@@ -86,9 +82,14 @@
 
                     iconSize: [30, 60],
                 }),
+                parent: null,
             }
         },
         methods: {
+            invokeAddEvent(e) {
+                if(this.addEvent)
+                    this.addEvent(e);
+            },
             assignParentPage(parent) {
                 this.parent = parent;
             },
