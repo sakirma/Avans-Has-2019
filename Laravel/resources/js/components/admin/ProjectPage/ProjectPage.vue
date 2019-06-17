@@ -71,13 +71,12 @@
                         this.filteredProjects = this.values;
                         this.$refs.mapSection.loadMapObjects(this.filteredProjects);
                     });
-                this.$refs.mapSection.polygon.latlngs = new Array();
+                this.$refs.mapSection.polygon.latlngs = [];
 
             },
             editAProject(projectId) {
                 this.$refs.mapSection.polygon.latlngs = [];
                 this.$refs.projectEditSection.loadEditSection(projectId);
-                // this.$refs.mapSection.removeEventListenerPolygon(projectId);
                 this.$refs.mapSection.setDrawMode(true);
                 
                 this.currentPageState = this.ProjectPageStates.editMode;

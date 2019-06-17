@@ -1,5 +1,5 @@
 <template>
-    <map-component ref="map" :parent-page="this" :add-event="add"></map-component>
+    <map-component ref="map" :parent-page="parent" :add-event="add"></map-component>
 </template>
 
 <script>
