@@ -151,7 +151,7 @@
             clearMarkers: function () {
                 leaflet_create.default.clearMarkers();
             },
-            projectEditSection(product, points, map) {
+            loadEditSection(product, points, map) {
                 this.selectedRoute = product;
 
                 this.map = map;

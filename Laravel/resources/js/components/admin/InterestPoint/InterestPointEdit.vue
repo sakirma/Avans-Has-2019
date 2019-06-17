@@ -171,6 +171,10 @@
                 markerLong: null,
                 input: null,
                 currentImages: [],
+                project_points:[],
+                point:{
+
+                },
             }
         },
         props: {
@@ -209,39 +213,33 @@
                 else
                     this.currentImages.splice(index, 1);
             },
-            projectEditSection(product) {
-                this.selectedProject.id = product;
-                axios.get('/getProjectPoint/'+this.selectedProject.id)
-                    .then(({ data }) => {
-                        this.selectedProject.name = data.name;
-                        this.selectedProject.category = data.category;
-                        this.selectedProject.information = data.information;
-                        this.selectedProject.project_id = data.project_id;
-                        this.getUpdateProjectName();
-
-                        this.markerLat = data.location.coordinates[1];
-                        this.markerLong = data.location.coordinates[0];
-                    });
-
+            loadEditSection(product) {
                 this.currentImages = [];
-                axios.get("/getMediaFromProjectPoint/" + this.selectedProject.id)
+                axios.get("/getSingleProjectPoint/" + product)
                     .then(({data}) => {
-                        for (let i = 0; i < data.length; i++) {
-                            this.currentImages.push({imageLocation: "getmedia/" + data[i], isRemoved: false, imageName: data[i]});
-                        }
-                    })
+                        let interestPoint = data[0];
+                        this.selectedProject.id = interestPoint.id;
+                        this.selectedProject.name = interestPoint.name;
+                        this.selectedProject.category = interestPoint.category;
+                        this.selectedProject.information = interestPoint.information;
+                        this.markerLat = interestPoint.location.coordinates[1];
+                        this.markerLong = interestPoint.location.coordinates[0];
+
+                        this.currentImages = [];
+                        axios.get("/getMediaFromProjectPoint/" + this.selectedProject.id)
+                            .then(({data}) => {
+                                for (let i = 0; i < data.length; i++) {
+                                    this.currentImages.push({imageLocation: "getmedia/" + data[i], isRemoved: false, imageName: data[i]});
+                                }
+                            });
+                    });
             },
             close() {
                 this.parent.loadPoints();
+                this.parent.$refs.map.clearMap();
                 this.parent.enableViewMode();
             },
-            getUpdateProjectName() {
-                for (let i = 0; i < this.projects.length; i++) {
-                    if (this.projects[i].id == this.selectedProject.project_id) {
-                        this.projectName = this.projects[i].name;
-                    }
-                }
-            },
+
             deleteItem() {
                 if (confirm('Weet u zeker dat u dit interessepunt wilt verwijderen?')) {
                     axios({
@@ -249,6 +247,18 @@
                         url: '/admin/deleteProjectPoint',
                         data: {
                             id: this.selectedProject.id,
+                        }
+                    }).then(() => {
+                        for (let i = 0; i < this.currentImages.length; i++) {
+                            let projectImage = this.currentImages[i];
+
+                            // Remove existing file of the project
+                            if (!projectImage.newFile) {
+                                axios.post("/beheer/removemedia", {
+                                    medianame: projectImage.imageName,
+                                    folder: "points"
+                                });
+                            }
                         }
                     });
                     this.close();
@@ -273,14 +283,12 @@
                             category: this.selectedProject.category,
                             information: this.selectedProject.information,
                             project_id: this.projectId,
-
                             lat: this.markerLat,
                             long: this.markerLong,
                         }
                     }).then(({data}) => {
                         for (let i = 0; i < this.currentImages.length; i++) {
                             let projectImage = this.currentImages[i];
-
                             // Remove existing file of the project
                             if (!projectImage.newFile && projectImage.isRemoved) {
                                 axios.post("/beheer/removemedia", {
@@ -327,10 +335,7 @@
                 console.log(error);
             });
             window.axios.get('/getProjectPoints').then(response => {
-                let temp = response.data;
-                for (let i = 0; i < temp.length; i++) {
-
-                }
+               // this.project_points = response.data;
             }).catch(function (error) {
                 console.log(error);
             });

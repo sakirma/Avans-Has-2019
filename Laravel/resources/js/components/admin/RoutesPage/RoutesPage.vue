@@ -135,7 +135,7 @@
             },
             editAProject(product) {
                 this.currentPageState = this.ProjectPageStates.editMode;
-                this.$refs.projectEditSection.projectEditSection(product, this.points, this.$refs.mapSection.getMapObject());
+                this.$refs.projectEditSection.loadEditSection(product, this.points, this.$refs.mapSection.getMapObject());
             }
         }
     }

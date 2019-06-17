@@ -6,21 +6,21 @@
                                      :projects="projects"
                                      v-if="currentPageState === ProjectPageStates.viewMode"></interest-point-view>
                 <interest-point-new :parent="this" :projects="projects" :projectNames="projectNames"
-                                    :projectIds="projectIds" :marker="marker"
+                                    :projectIds="projectIds" ref="newInterestPage"
                                     v-else-if="currentPageState === ProjectPageStates.newMode"></interest-point-new>
                 <interest-point-edit :parent="this" ref="projectEditSection" :projects="projects"
                                      :projectNames="projectNames" :projectIds="projectIds"
                                      v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section ref="map" :parent-page="this" ></map-section>
+                <interest-point-map ref="map" :parent-page="this"></interest-point-map>
             </v-flex>
         </v-layout>
     </v-container>
 </template>
 
 <script>
-    import MapSection from './InterestPointMap';
+    import InterestPointMap from './InterestPointMap';
     import InterestPointView from './InterestPointView';
     import InterestPointNew from './InterestPointNew';
     import InterestPointEdit from './InterestPointEdit'
@@ -28,7 +28,7 @@
     export default {
         name: "InterestPointPage",
         components: {
-            MapSection,
+            InterestPointMap,
             InterestPointView,
             InterestPointNew,
             InterestPointEdit
@@ -70,8 +70,13 @@
             }
         },
         methods: {
+            getMarker() {
+                return this.marker;
+            },
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
+                this.$refs.map.setDrawMode(true);
+                this.$refs.map.setNewMode(true);
             },
             loadPoints() {
                 axios.get("/getProjectPoints").then(response => {
@@ -84,9 +89,21 @@
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
             },
-            editAProject(product) {
+            editAProject(productId) {
+                this.$refs.projectEditSection.loadEditSection(productId);
+                this.$refs.map.setDrawMode(true);
+                this.$refs.map.setEditMode(true);
+
+                // let point = null;
+                // for (let i = 0; i < this.project_points.length; i++) {
+                //         if (this.project_points[i].id === productId) {
+                //             point = this.project_points[i];
+                //         }
+                // }
+                // this.$refs.projectEditSection.markerLat = point.latlng.lat;
+                // this.$refs.projectEditSection.markerLong = point.latlng.lng;
+                // this.$refs.map.editPoint(point.latlng.lng, point.latlng.lat);
                 this.currentPageState = this.ProjectPageStates.editMode;
-                this.$refs.projectEditSection.projectEditSection(product);
             },
             filterList(search) {
                 this.filteredPoints = this.project_points.filter(point => {

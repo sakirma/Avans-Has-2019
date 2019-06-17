@@ -11,7 +11,6 @@ use Grimzy\LaravelMysqlSpatial\Types\GeometryCollection;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Grimzy\LaravelMysqlSpatial\Types\Polygon;
 use Grimzy\LaravelMysqlSpatial\Types\LineString;
-use console;
 
 
 use Illuminate\Http\Request;
@@ -37,15 +36,25 @@ class ProjectPointsController extends Controller
         $points = ProjectPoint::all();
         return $points->toJson();
     }
+    public function getSingleProjectPoint($id)
+    {
+        $points = ProjectPoint::where('id', $id)->get();
+        return $points;
+    }
+
 
     public function addProjectPoint(Request $request)
     {
         $point = new ProjectPoint();
 
         $location = new Point($request->markerLat, $request->markerLong);
-        if (isset($request->prokect_id)) {
+        if($request->project_id ===null){
+
+        }else{
             $point->project_id = $request->project_id;
+
         }
+
         $point->location = $location;
         $point->area = $request->area;
         $point->name = $request->name;
@@ -67,8 +76,11 @@ class ProjectPointsController extends Controller
         $projectPoint = ProjectPoint::find($request->id);
 
         $location = new Point($request->lat, $request->long);
-        if (isset($request->prokect_id)) {
+        if($request->project_id ===null){
+
+        }else{
             $projectPoint->project_id = $request->project_id;
+
         }
         $projectPoint->project_id = $request->project_id;
         $projectPoint->location = $location;
@@ -199,6 +211,8 @@ class ProjectPointsController extends Controller
         $model["comments"] = $model->comments;
         return json_encode($model);
     }
+
+
 
     public function getMedia($id)
     {
