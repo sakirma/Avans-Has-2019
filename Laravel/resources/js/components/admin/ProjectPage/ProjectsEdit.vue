@@ -1,6 +1,6 @@
 <template>
     <div class="projectEditSection" v-bar>
-        <div class="testingCSS">
+        <div class="removeScrollbar">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Project</v-card-title>
                 <v-flex class="tooltipTopRight">
@@ -25,7 +25,7 @@
                 </v-btn>
             </v-layout>
 
-            <v-layout column >
+            <v-layout column>
                 <v-flex xs1>
                     <v-layout row>
                         <v-flex xs3>
@@ -74,23 +74,21 @@
                             <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
                         </v-flex>
                         <input type="file">
-
-                        <v-carousel v-if="images.length > 0">
+                        <v-carousel ref="carousel" v-if="currentImages.length > 0" style="height:100%"
+                                    class="blackButtonCarousel" :cycle="false">
                             <v-carousel-item
-                                    v-for="(image,i) in images"
+                                    v-for="(image,i) in currentImages"
+                                    v-if="!image.isRemoved"
                                     :key="i"
-                                    :src="image"
-                            ></v-carousel-item>
+                                    :src="image.imageLocation"
+                                    class="containCarouselItem"
+                            >
+                                <v-btn absolute dark fab top right color="red" class="deleteButtonCarousel"
+                                       @click="removeFile(i)">
+                                    <v-icon>close</v-icon>
+                                </v-btn>
+                            </v-carousel-item>
                         </v-carousel>
-                    </v-layout>
-                </v-flex>
-
-                <v-flex xs1>
-                    <v-layout column>
-                        <v-flex>
-                            <v-card-title class="title">Video toevoegen:</v-card-title>
-                        </v-flex>
-                        <v-textarea box></v-textarea>
                     </v-layout>
                 </v-flex>
 
@@ -110,6 +108,15 @@
                             </v-card>
                         </v-btn>
                     </v-layout>
+
+                    <v-layout align-center justify-end row>
+                        <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="reset()">
+                            <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
+                                    class="white--text">
+                                reset polygon
+                            </v-card>
+                        </v-btn>
+                    </v-layout>
                 </v-flex>
             </v-layout>
         </div>
@@ -122,14 +129,13 @@
         data() {
             return {
                 id: 0,
-                offset: 0,
+                currentImages: [],
                 input: null,
-                files: [],
-                images: [],
                 name: null,
                 information: null,
                 categories: [],
-                select: null
+                select: null,
+                latlngs: [],
             }
         },
         props: {
@@ -139,82 +145,99 @@
             }
         },
         methods: {
-            projectEditSection(product) {
+            reset() {
+                this.latlngs = [];
+                this.parent.$refs.mapSection.resetPolygon();
+            },
+            loadEditSection(product) {
                 this.id = product;
-                this.files = [];
-                this.images = [];
-                axios.get("/getProject/"+product)
+                this.currentImages = [];
+                axios.get("/getProject/" + product)
                     .then(({data}) => {
+                        this.latlngs = [];
                         this.name = data.name;
                         this.select = data.category;
                         this.information = data.information;
+                        for (let i = 0; i < data.area.geometries[0].coordinates[0].length; i++) {
+                            let coords = data.area.geometries[0].coordinates[0][i];
+                            let lng = coords[0];
+                            let lat = coords[1];
+                            this.latlngs.push([lat, lng]);
+                        }
+                        this.parent.$refs.mapSection.polygon.latlngs = this.latlngs;
+                        this.parent.$refs.mapSection.onPolygonChanged();
                     });
 
-                axios.get("/getMediaFromProject/"+product)
+                axios.get("/getMediaFromProject/" + product)
                     .then(({data}) => {
-                        for(let i = 0; i < data.length; i++){
-                            this.files.push(data[i]);
-                            this.images.push("getmedia/" + data[i]);
+                        for (let i = 0; i < data.length; i++) {
+                            this.currentImages.push({
+                                imageLocation: "getmedia/" + data[i],
+                                isRemoved: false,
+                                imageName: data[i]
+                            });
                         }
-                        this.offset = data.length;
-                        this.startingMediaNumber = this.offset;
-                    }).catch((error) => {
-                    console.log(error);
-                });
+                    })
             },
             close() {
+                this.reset();
+                this.parent.$refs.mapSection.setDrawMode(false);
                 this.parent.enableViewMode();
             },
             onFileSelection() {
                 for (let file of this.input.files) {
-                    this.files.push(file);
                     let reader = new FileReader();
                     reader.onload = (ev) => {
-                        this.images.push(ev.target.result);
+                        this.currentImages.push({
+                            newFile: file,
+                            imageLocation: ev.target.result,
+                            isRemoved: false,
+                            number: this.currentImages.length
+                        });
                     };
                     reader.readAsDataURL(file);
                 }
                 this.input.value = null;
             },
             removeFile(index) {
-                if(index < this.offset){
-                    axios.post("/beheer/removemedia", {
-                        medianame: this.files[index],
-                        folder: "projects"
-                    }).catch((error) => {
-                        alert("Er ging iets mis bij het verwijderen van de foto...");
-                        return;
-                    });
-                    this.files.splice(index, 1);
-                    this.offset--;
-                }else{
-                    this.files.splice(index, 1)
-                }
+                if (!this.currentImages[index].newFile)
+                    this.currentImages[index].isRemoved = true;
+                else
+                    this.currentImages.splice(index, 1);
             },
-            save(){
+            save() {
+                this.latlngs = this.parent.$refs.mapSection.polygon.latlngs;
                 axios.post("/beheer/updateProject", {
                     id: this.id,
                     name: this.name,
                     information: this.information,
-                    category: this.select
-                }).then(({ data }) => {
-                    for(let i = this.offset; i < this.files.length; i++){
-                        if(this.files[i] == null) continue;
-                        let formData = new FormData();
-                        formData.append("image", this.files[i]);
-                        formData.append("name", data.id + "_" + (this.startingMediaNumber + i - this.offset));
-                        formData.append("folder", "projects");
-                        formData.append("id", data.id);
-                        axios.post("/beheer/media", formData,
-                            {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data'
+                    category: this.select,
+                    latlngs: this.latlngs
+
+                }).then(({data}) => {
+                    for (let i = 0; i < this.currentImages.length; i++) {
+                        let projectImage = this.currentImages[i];
+
+                        // Remove existing file of the project
+                        if (!projectImage.newFile && projectImage.isRemoved) {
+                            axios.post("/beheer/removemedia", {
+                                medianame: projectImage.imageName,
+                                folder: "projects"
+                            });
+                        } else if (projectImage.newFile) {
+                            let formData = new FormData();
+                            formData.append("image", projectImage.newFile);
+                            formData.append("name", projectImage.newFile.name);
+                            formData.append("folder", "projects");
+                            formData.append("id", data.id);
+                            axios.post("/beheer/media", formData,
+                                {
+                                    headers: {
+                                        'Content-Type': 'multipart/form-data'
+                                    }
                                 }
-                            }
-                        ).catch((error) => {
-                            alert("Er ging iets mis bij het opslaan...");
-                            console.log(error);
-                        });
+                            )
+                        }
                     }
                     this.close();
                 }).catch((error) => {
@@ -222,16 +245,18 @@
                     console.log(error);
                 });
             },
-            remove(){
-                axios.post("/beheer/removeProject", { id: this.id })
-                    .catch((error) => {
-                        alert("Er ging iets mis bij het verwijderen...");
-                        console.log(error.message);
-                    });
-                this.close();
+            remove() {
+                if (confirm('Weet u zeker dat u dit project wilt verwijderen?')) {
+                    axios.post("/beheer/removeProject", {id: this.id})
+                        .catch((error) => {
+                            alert("Er ging iets mis bij het verwijderen...");
+                            console.log(error.message);
+                        });
+                    this.close();
+                }
             }
         },
-        mounted(){
+        mounted() {
             this.input = this.$el.querySelector('input[type=file]');
             this.input.addEventListener('change', () => this.onFileSelection());
             this.input.setAttribute('multiple', 'multiple');
@@ -249,6 +274,22 @@
 </script>
 
 <style>
+    .deleteButtonCarousel.v-btn--top.v-btn--absolute {
+        top: 10px;
+    }
+
+    .containCarouselItem .v-carousel__item .v-image__image {
+        background-size: contain;
+    }
+
+    .blackButtonCarousel .v-carousel__next .v-btn {
+        background-color: gray;
+    }
+
+    .blackButtonCarousel .v-carousel__prev .v-btn {
+        background-color: gray;
+    }
+
     .projectEditSection {
         height: 100%;
         border-radius: 20px;
@@ -257,7 +298,7 @@
         border-color: #89a226;
     }
 
-    .testingCSS::-webkit-scrollbar {
+    .removeScrollbar::-webkit-scrollbar {
         display: none;
     }
 

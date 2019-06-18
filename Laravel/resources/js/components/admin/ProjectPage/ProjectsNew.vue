@@ -1,5 +1,5 @@
 <template>
-    <div class="projectEditSection" v-bar >
+    <div class="projectEditSection" v-bar>
         <div class="pr-2">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Nieuw Project</v-card-title>
@@ -74,29 +74,37 @@
                             <v-card-title class="title">Afbeelding toevoegen:</v-card-title>
                         </v-flex>
                         <input type="file">
-                        <v-carousel v-if="images.length > 0">
+                        <v-carousel ref="carousel" v-if="images.length > 0" style="height:100%"
+                                    class="blackButtonCarousel" :cycle="false">
                             <v-carousel-item
                                     v-for="(image,i) in images"
                                     :key="i"
                                     :src="image"
-                            ></v-carousel-item>
+                                    class="containCarouselItem"
+                            >
+                                <v-btn absolute dark fab top right color="red" class="deleteButtonCarousel"
+                                       @click="removeFile(i)">
+                                    <v-icon>close</v-icon>
+                                </v-btn>
+                            </v-carousel-item>
                         </v-carousel>
-                    </v-layout>
-                </v-flex>
-
-                <v-flex xs1>
-                    <v-layout column>
-                        <v-flex>
-                            <v-card-title class="title">Video toevoegen:</v-card-title>
-                        </v-flex>
-                        <v-textarea box></v-textarea>
                     </v-layout>
                 </v-flex>
 
                 <v-layout align-center justify-end row>
                     <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="save()">
-                        <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat class="white--text">
+                        <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
+                                class="white--text">
                             Project Toevoegen
+                        </v-card>
+                    </v-btn>
+                </v-layout>
+
+                <v-layout align-center justify-end row>
+                    <v-btn style="max-width: 10%; height: 100%;" color="#89A226" @click="reset()">
+                        <v-card style="white-space: normal; max-width: 60%;" color="transparent" flat
+                                class="white--text">
+                           reset polygon
                         </v-card>
                     </v-btn>
                 </v-layout>
@@ -113,9 +121,14 @@
                 type: Object,
                 required: true
             }
+
         },
+
         methods: {
             close() {
+                this.reset();
+                this.parent.$refs.mapSection.setDrawMode(false);
+                this.polygon.latlngs = [];
                 this.parent.enableViewMode();
             },
             onFileSelection() {
@@ -133,14 +146,20 @@
                 this.files.splice(index, 1);
                 this.images.splice(index, 1);
             },
-            save(){
+            reset(){
+                this.parent.$refs.mapSection.polygon.latlngs = [];
+                this.parent.$refs.mapSection.resetPolygon();
+            },
+            save() {
+                  this.polygon.latlngs = this.parent.$refs.mapSection.polygon.latlngs ;
                 axios.post("/beheer/createProject", {
                     project_id: this.project,
                     name: this.name,
                     information: this.information,
-                    category: this.select
-                }).then(({ data }) => {
-                    for(let i = 0; i < this.files.length; i++){
+                    category: this.select,
+                    latlngs: this.polygon.latlngs
+                }).then(({data}) => {
+                    for (let i = 0; i < this.files.length; i++) {
                         let formData = new FormData();
                         formData.append("image", this.files[i]);
                         formData.append("name", data.id + "_" + i);
@@ -157,6 +176,7 @@
                             console.log(error);
                         });
                     }
+
                     this.close();
                 }).catch(error => {
                     alert("Er ging iets mis bij het opslaan van het project!");
@@ -172,10 +192,13 @@
                 name: null,
                 information: null,
                 categories: [],
-                select: null
+                select: null,
+                polygon: {
+                    latlngs: [],
+                },
             }
         },
-        mounted(){
+        mounted() {
             this.input = this.$el.querySelector('input[type=file]');
             this.input.addEventListener('change', () => this.onFileSelection());
             this.input.setAttribute('multiple', 'multiple');
@@ -193,6 +216,22 @@
 </script>
 
 <style>
+    .deleteButtonCarousel.v-btn--top.v-btn--absolute {
+        top: 10px;
+    }
+
+    .containCarouselItem .v-carousel__item .v-image__image {
+        background-size: contain;
+    }
+
+    .blackButtonCarousel .v-carousel__next .v-btn {
+        background-color: gray;
+    }
+
+    .blackButtonCarousel .v-carousel__prev .v-btn {
+        background-color: gray;
+    }
+
     .projectEditSection {
         height: 100%;
         border-radius: 20px;

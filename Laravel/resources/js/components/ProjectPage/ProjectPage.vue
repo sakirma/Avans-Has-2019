@@ -2,58 +2,66 @@
     <div style="height: 100vh;  background-color: #89a226;">
         <v-layout column fill-height>
             <v-flex xs1 ma-3>
-                <project-page-header></project-page-header>
+                <project-page-header :name="name"></project-page-header>
             </v-flex>
 
             <v-container ml-0 pl-0 fluid grid-list-md style="background-color: white; "
                          v-if="!$vuetify.breakpoint.xsOnly">
                 <v-layout row fill-height>
                     <v-layout column fill-height>
-                        <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
-                            <v-card flat style="background-color: #A0B550; position:relative; overflow-y: hidden;"
-                                    v-bar>
-                                <v-card-text style="position: absolute;">
-                                    {{ information }}
-                                    <br>
-                                    <!-- {{ comments }} -->
-                                </v-card-text>
-                            </v-card>
-                        </v-flex>
-                        <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]"
-                                align-self-end>
-                            <v-card flat class="primary" style="position:relative; overflow-y: hidden;" v-bar>
-                                <v-card-text style="position: absolute;">
-                                    <v-carousel v-if="images.length > 0">
-                                        <v-carousel-item
-                                                v-for="(image,i) in images"
+                        <v-flex d-flex xs6 :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
+                            <v-layout row fill-height style="background-color: #A0B550;">
+
+                                <v-flex xs10>
+                                    <v-card flat
+                                            style=" background-color: transparent; position:relative; overflow-y: hidden; height: 100%;"
+                                            v-bar>
+                                        <v-card-text style="position: absolute;">
+                                            {{ information }}
+                                            <br>
+                                            <!-- {{ comments }} -->
+                                        </v-card-text>
+                                    </v-card>
+                                </v-flex>
+
+                                <v-flex xs3 pa-0>
+                                    <v-layout column fill-height style="background-color: rgba(255,255,255,0.3);" ma-0>
+                                        <div class="headline text-xs-center">Meer zoals dit.</div>
+                                        <v-card v-for="(suggestion, i) in suggestions"
                                                 :key="i"
-                                                :src="image"
-                                        ></v-carousel-item>
-                                    </v-carousel>
-                                </v-card-text>
-                            </v-card>
+                                                flat
+                                                style="cursor: pointer; position:relative; overflow: hidden; background-color: rgba(255,255,255,0.3);"
+                                                @click="init(suggestion.id)"
+                                        >
+                                            <v-img v-if="suggestion.path !== ''"
+                                                   contain
+                                                   height="10%"
+                                                   :src="suggestion.path"
+                                            ></v-img>
+                                            <v-card-text>
+                                                <b>{{suggestion.name}}</b> <br>
+                                                {{suggestion.category}}
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-layout>
+                                </v-flex>
+                            </v-layout>
+                        </v-flex>
+                        <v-flex d-flex xs6 :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]"
+                                align-self-end>
+                            <v-carousel v-if="images.length > 0" height="100%">
+                                <v-carousel-item
+                                        v-for="(image,i) in images"
+                                        :key="i"
+                                        :src="image"
+                                ></v-carousel-item>
+                            </v-carousel>
                         </v-flex>
                     </v-layout>
 
                     <v-flex lg4>
                         <v-card height="100%">
-<!--                            <l-map ref="map"-->
-<!--                                   :zoom="zoom"-->
-<!--                                   :center="center"-->
-<!--                                   style="height:100%;">-->
-
-<!--                                <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>-->
-
-<!--                                <template v-for="(marker, index) in markers">-->
-<!--                                    <l-marker :lat-lng="marker">-->
-<!--                                        <l-popup>-->
-<!--                                            <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>-->
-<!--                                        </l-popup>-->
-<!--                                    </l-marker>-->
-<!--                                </template>-->
-<!--                            </l-map>-->
-                            <map-component :parent-page="this">
-                            </map-component>
+                            <map-component ref="mapComponent"></map-component>
                         </v-card>
                     </v-flex>
                 </v-layout>
@@ -63,7 +71,7 @@
             <v-container ma-0 pa-0 pt-1 fluid grid-list-md style="background-color: white; " v-else>
                 <v-layout column fill-height>
 
-                    <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
+                    <v-flex d-flex xs6 :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
                         <v-card flat style="background-color: #A0B550; position:relative; overflow-y: hidden;"
                                 v-bar>
                             <v-card-text style="position: absolute;">
@@ -74,39 +82,20 @@
                         </v-card>
                     </v-flex>
 
-                    <v-flex d-flex :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]"
+                    <v-flex d-flex xs6 :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]"
                             align-self-end>
-                        <v-card flat class="primary" style="position:relative; overflow-y: hidden;" v-bar>
-                            <v-card-text style="position: absolute;">
-                                <v-carousel v-if="images.length > 0">
-                                    <v-carousel-item
-                                            v-for="(image,i) in images"
-                                            :key="i"
-                                            :src="image"
-                                    ></v-carousel-item>
-                                </v-carousel>
-                            </v-card-text>
-                        </v-card>
+                        <v-carousel v-if="images.length > 0" height="100%">
+                            <v-carousel-item
+                                    v-for="(image,i) in images"
+                                    :key="i"
+                                    :src="image"
+                            ></v-carousel-item>
+                        </v-carousel>
                     </v-flex>
 
                     <v-flex lg4>
                         <v-card height="100%">
-<!--                            <l-map ref="map"-->
-<!--                                   :zoom="zoom"-->
-<!--                                   :center="center"-->
-<!--                                   style="height:100%;">-->
-
-<!--                                <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>-->
-
-<!--                                <template v-for="(marker, index) in markers">-->
-<!--                                    <l-marker :lat-lng="marker">-->
-<!--                                        <l-popup>-->
-<!--                                            <v-btn @click="OpenProjectPagePressed(1)"> To Project Page</v-btn>-->
-<!--                                        </l-popup>-->
-<!--                                    </l-marker>-->
-<!--                                </template>-->
-<!--                            </l-map>-->
-                            <map-component :parentPage="this"></map-component>
+                            <map-component ref="mapComponent"></map-component>
                         </v-card>
                     </v-flex>
 
@@ -131,31 +120,130 @@
             return {
                 information: "",
                 images: [],
-                comments: []
+                comments: [],
+                mapPage: undefined,
+                mapObjects: [],
+                name: '',
+
+                suggestions: [],
             }
         },
         props: {
             onProjectOpened: {
                 type: Function,
             },
+            parent: {
+                type: Object,
+                required: true
+            }
         },
         methods: {
-            init() {
+            init(pid) {
+
                 this.images = [];
-                let id = this.$parent.selectedProjectPage.projectId;
-                axios.get("/getProjectPoint/"+id).then(({ data }) => {
+                this.suggestions = [];
+
+                let id = pid;
+                if (!id) {
+                    id = this.$parent.selectedProjectPage.projectId;
+                }
+
+                let linkOne = "/getProjectPoint/";
+                let linkTwo = "/getMediaFromProjectPoint/";
+                if (this.$parent.selectedProjectPage.project) {
+                    linkOne = "/getProject/";
+                    linkTwo = "/getMediaFromProject/";
+                }
+                axios.get(linkOne + id).then(({data}) => {
                     this.information = data.information;
                     this.comments = data.comments;
+                    this.name = data.name;
+
+                    if(this.$parent.selectedProjectPage.project) { this.findRecommendationsProjects(data, this); }
+                    else { this.findRecommendationsInterestPoint(data, this); }
+
+
                 });
 
-                axios.get("/getMediaFromProjectPoint/"+id).then(({ data }) => {
-                    for(let i = 0; i < data.length; i++)
+                axios.get(linkTwo + id).then(({data}) => {
+                    for (let i = 0; i < data.length; i++)
                         this.images.push("getmedia/" + data[i]);
+                });
+            },
+            findRecommendationsInterestPoint(d, t) {
+                axios.post('/projectpoints/similarIntrestPoint', {
+                    id: d.id,
+                    category: d.category,
+                }).then(function (response) {
+                    let projectPoints = response.data[0];
+                    let images = response.data[1];
+
+
+                    for (let i = 0; i < projectPoints.length; i++) {
+
+                        let suggestion = {
+                            id: projectPoints[i].id,
+                            name: projectPoints[i].name,
+                            information: projectPoints[i].information,
+                            category: projectPoints[i].category,
+                            path: ''
+                        };
+
+                        for (let j = 0; j < images.length; j++) {
+                            if (images[j].id === suggestion.id) {
+                                suggestion.path = images[j].location;
+                                break;
+                            }
+                        }
+                        t.suggestions.push(suggestion);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            findRecommendationsProjects(d, t) {
+                axios.post('/projectpoints/similarProject', {
+                    id: d.id,
+                    category: d.category,
+                }).then(function (response) {
+                    let projects = response.data[0];
+                    let images = response.data[1];
+
+                    for (let i = 0; i < projects.length; i++) {
+
+                        let suggestion = {
+                            id: projects[i].id,
+                            name: projects[i].name,
+                            information: projects[i].information,
+                            category: projects[i].category,
+                            path: ''
+                        };
+
+                        for (let j = 0; j < images.length; j++) {
+                            if (images[j].id === suggestion.id) {
+                                suggestion.path = "getmedia/" + images[j].location;
+                                break;
+                            }
+                        }
+                        t.suggestions.push(suggestion);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
                 });
             }
         },
         mounted() {
             this.$vuetify.goTo('#projectPage');
+            this.mapPage = this.parent.getMapPage();
+            this.$refs.mapComponent.assignParentPage(this.mapPage);
+
+            axios.get("/getAllMapObjects")
+                .then(({data}) => {
+                    for (let i = 0; i < data.length; i++) {
+                        this.mapObjects.push(data[i]);
+                    }
+                    this.$refs.mapComponent.loadMapObjects(this.mapObjects);
+                });
         },
         components: {
             ProjectPageHeader,

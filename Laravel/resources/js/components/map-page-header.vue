@@ -11,22 +11,25 @@
         <v-flex xs12 sm8 md7 lg4 :class="{ 'mx-5': $vuetify.breakpoint.smAndUp}" fill-height>
             <v-layout align-center justify-center row fill-height :class="{ 'mx-5': $vuetify.breakpoint.smAndUp}">
                 <v-flex d-flex>
-                    <v-img src="img/Symbolen_Activiteiten.png" :class="{'categoryButtonPressed': image0IsPressed}">
+                    <v-img src="img/Symbolen_Activiteiten.png"
+                           :class="{'categoryButtonPressed': toggleCatogory1}">
                         <div class="categoryButton" @click="toggleCategory(0)"></div>
                     </v-img>
                 </v-flex>
                 <v-flex d-flex>
-                    <v-img src="img/Symbolen_Horeca.png" :class="{'categoryButtonPressed': image1IsPressed}">
+                    <v-img src="img/Symbolen_Horeca.png" :class="{'categoryButtonPressed': toggleCatogory2}">
                         <div class="categoryButton" @click="toggleCategory(1)"></div>
                     </v-img>
                 </v-flex>
                 <v-flex d-flex>
-                    <v-img src="img/Symbolen_Bezienswaardigheden.png" :class="{'categoryButtonPressed': image2IsPressed}">
+                    <v-img src="img/Symbolen_Bezienswaardigheden.png"
+                           :class="{'categoryButtonPressed': toggleCatogory3}">
                         <div class="categoryButton" @click="toggleCategory(2)"></div>
                     </v-img>
                 </v-flex>
                 <v-flex d-flex>
-                    <v-img src="img/Symbolen_Natuurgebieden.png" :class="{'categoryButtonPressed': image3IsPressed}">
+                    <v-img src="img/Symbolen_Natuurgebieden.png"
+                           :class="{'categoryButtonPressed': toggleCatogory4}">
                         <div class="categoryButton" @click="toggleCategory(3)"></div>
                     </v-img>
                 </v-flex>
@@ -53,25 +56,32 @@
 <script>
     export default {
         name: "map-page-header",
-        methods: {
-            toggleCategory(imageNumber) {
-                if (imageNumber === 0) {
-                    this.image0IsPressed = !this.image0IsPressed;
-                } else if (imageNumber === 1) {
-                    this.image1IsPressed = !this.image1IsPressed;
-                } else if (imageNumber === 2) {
-                    this.image2IsPressed = !this.image2IsPressed;
-                } else if (imageNumber === 3) {
-                    this.image3IsPressed = !this.image3IsPressed;
-                }
-            }
+        props: {
+            parent: {
+                type: Object
+            },
         },
         data() {
             return {
-                image0IsPressed: false,
-                image1IsPressed: false,
-                image2IsPressed: false,
-                image3IsPressed: false,
+                toggleCatogory1: false,
+                toggleCatogory2: false,
+                toggleCatogory3: false,
+                toggleCatogory4: false,
+            }
+        },
+        methods: {
+            toggleCategory(id) {
+                let cat = Object.keys(this.parent.pressedImages)[id];
+                this.parent.filter(cat);
+                if (cat === "activiteit") {
+                    this.toggleCatogory1 = !this.toggleCatogory1;
+                } else if (cat === "eten en drinken") {
+                    this.toggleCatogory2 = !this.toggleCatogory2;
+                } else if (cat === "bezienswaardigheid") {
+                    this.toggleCatogory3 = !this.toggleCatogory3;
+                } else if (cat === "natuurgebied") {
+                    this.toggleCatogory4 = !this.toggleCatogory4;
+                }
             }
         }
     }

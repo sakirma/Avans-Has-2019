@@ -2,22 +2,25 @@
     <v-container fluid fill-height pt-3 pb-5>
         <v-layout row fill-height justify-space-around>
             <v-flex xs6 class="ml-5">
-                <interest-point-view :parent="this" :headers="headers" :project_points="filteredPoints" :projects="projects"
+                <interest-point-view :parent="this" :headers="headers" :project_points="filteredPoints"
+                                     :projects="projects"
                                      v-if="currentPageState === ProjectPageStates.viewMode"></interest-point-view>
-                <interest-point-new  v-on:close="clearmap" :parent="this" :projects="projects" :projectNames="projectNames" :projectIds="projectIds" :marker="marker"
+                <interest-point-new :parent="this" :projects="projects" :projectNames="projectNames"
+                                    :projectIds="projectIds" ref="newInterestPage"
                                     v-else-if="currentPageState === ProjectPageStates.newMode"></interest-point-new>
-                <interest-point-edit :parent="this" ref="projectEditSection" :projects="projects" :projectNames="projectNames" :projectIds="projectIds"
+                <interest-point-edit :parent="this" ref="projectEditSection" :projects="projects"
+                                     :projectNames="projectNames" :projectIds="projectIds"
                                      v-show="currentPageState === ProjectPageStates.editMode"></interest-point-edit>
             </v-flex>
             <v-flex d-flex xs5>
-                <map-section  ref="mapSection" :parent="this" v-on:childToParent="onChildClick" :markers="marker"></map-section>
+                <interest-point-map ref="map" :parent="this"></interest-point-map>
             </v-flex>
         </v-layout>
     </v-container>
 </template>
 
 <script>
-    import MapSection from './InterestPointMap';
+    import InterestPointMap from './InterestPointMap';
     import InterestPointView from './InterestPointView';
     import InterestPointNew from './InterestPointNew';
     import InterestPointEdit from './InterestPointEdit'
@@ -25,7 +28,7 @@
     export default {
         name: "InterestPointPage",
         components: {
-            MapSection,
+            InterestPointMap,
             InterestPointView,
             InterestPointNew,
             InterestPointEdit
@@ -39,7 +42,7 @@
                 projectNames: [],
                 projectIds: [],
                 categories: [],
-                marker:{},
+                marker: {},
                 filteredPoints: [],
 
                 headers: [
@@ -67,33 +70,40 @@
             }
         },
         methods: {
-            clearmap(){
-            },
-            onChildClick (value) {
-                this.marker = value;
-                this.$refs.projectEditSection.bool = true;
-                this.$refs.projectEditSection.markerLat = value.lng;
-                this.$refs.projectEditSection.markerLong = value.lat;
+            getMarker() {
+                return this.marker;
             },
             newProjectButtonPressed() {
                 this.currentPageState = this.ProjectPageStates.newMode;
-                this.marker.lat= null;
-                this.marker.lng= null;
-                this.$refs.mapSection.setdrawMode(true);            },
-             loadPoints(){
+                this.$refs.map.setDrawMode(true);
+                this.$refs.map.setNewMode(true);
+            },
+            loadPoints() {
                 axios.get("/getProjectPoints").then(response => {
                     this.project_points = this.filteredPoints = response.data;
+                    this.$refs.map.loadMapObjects(this.project_points);
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
             enableViewMode() {
                 this.currentPageState = this.ProjectPageStates.viewMode;
-                this.$refs.mapSection.setdrawMode(false);
             },
-            editAProject(product) {
+            editAProject(productId) {
+                this.$refs.projectEditSection.loadEditSection(productId);
+                this.$refs.map.setDrawMode(true);
+                this.$refs.map.setEditMode(true);
+
+                // let point = null;
+                // for (let i = 0; i < this.project_points.length; i++) {
+                //         if (this.project_points[i].id === productId) {
+                //             point = this.project_points[i];
+                //         }
+                // }
+                // this.$refs.projectEditSection.markerLat = point.latlng.lat;
+                // this.$refs.projectEditSection.markerLong = point.latlng.lng;
+                // this.$refs.map.editPoint(point.latlng.lng, point.latlng.lat);
                 this.currentPageState = this.ProjectPageStates.editMode;
-                this.$refs.projectEditSection.projectEditSection(product);
             },
             filterList(search) {
                 this.filteredPoints = this.project_points.filter(point => {
@@ -103,13 +113,12 @@
         },
         mounted() {
             this.loadPoints();
-            // Get all project
             window.axios.get('/getProjects').then(response => {
                 let temp = response.data;
                 for (let i = 0; i < temp.length; i++) {
                     this.projects.push({id: temp[i].id.toString(), name: temp[i].name.toString()});
-                    this.projectNames.push( temp[i].name.toString());
-                    this.projectIds.push( temp[i].id.toString());
+                    this.projectNames.push(temp[i].name.toString());
+                    this.projectIds.push(temp[i].id.toString());
                 }
             }).catch(function (error) {
                 console.log(error);

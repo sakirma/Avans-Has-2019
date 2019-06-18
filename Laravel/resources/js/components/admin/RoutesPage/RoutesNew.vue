@@ -163,7 +163,6 @@
         },
         methods: {
             createNewRouteButtonPressed(map, points) {
-                console.log("Hij is hier!");
                 this.map = map;
                 this.routingControl = leaflet_create.default.setVariables(map);
 

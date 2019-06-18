@@ -168,14 +168,13 @@
             clearMarkers: function () {
                 leaflet_create.default.clearMarkers();
             },
-            projectEditSection(product, points, map) {
+            loadEditSection(product, points, map) {
                 this.selectedRoute = product;
 
                 this.map = map;
                 this.routingControl = leaflet_create.default.setVariables(map);
 
                 this.loadProjectPoints(product.route);
-                console.log(points);
                 this.$refs.selectionList.addInterestPoints(points);
 
                 let markers = leaflet_create.default.getProjectMarkers();
@@ -242,7 +241,7 @@
         border-color: #89a226;
     }
 
-    .testingCSS::-webkit-scrollbar {
+    .removeScrollbar::-webkit-scrollbar {
         display: none;
     }
 
