@@ -23,14 +23,14 @@
                 {{ name }}
             </v-card>
         </v-flex>
-        <v-flex xs1 class="hidden-sm-and-up">
+        <v-flex xs1 class="hidden-md-and-up">
             <v-btn fab dark @click="GoBackToMapPage">
                 <v-icon>
                     arrow_upward
                 </v-icon>
             </v-btn>
         </v-flex>
-        <v-flex class="tooltipTopRight">
+        <v-flex class="tooltipTopRight hidden-xs-only">
             <v-tooltip top content-class="tooltip-inner">
                 <template v-slot:activator="{ on }">
                     <v-img class="tooltipImage"
