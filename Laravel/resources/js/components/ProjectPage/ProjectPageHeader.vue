@@ -42,6 +42,8 @@
                 <span>
                     Deze pagina geeft informatie weer over een interessante plek.
                     Wilt u terug naar de homepagina met de kaart, druk dan op de knop linksboven.
+                    Zou u graag uw eigen interessepunt op deze website terug willen zien?
+                    Stuur dan een e-mail naar: roadleafbeheerder@gmail.com
                 </span>
             </v-tooltip>
         </v-flex>
@@ -82,7 +84,7 @@
         padding: 24px;
         border-radius: 5px;
         box-shadow: 0 5px 30px;
-        max-height: 100px;
+        max-height: 150px;
         max-width: 450px;
     }
     
