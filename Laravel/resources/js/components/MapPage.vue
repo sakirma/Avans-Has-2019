@@ -82,13 +82,20 @@
                             </div>
                         </div>
                         <v-flex d-flex xs1>
-                            <v-text-field
-                                hide-details
-                                class="py-2"
-                                prepend-inner-icon="search"
-                                solo
-                                v-model="searchInput"
-                            ></v-text-field>
+                            <v-layout row align-center>
+                                <v-text-field
+                                    hide-details
+                                    class="py-2"
+                                    prepend-inner-icon="search"
+                                    solo
+                                    v-model="searchInput"
+                                ></v-text-field>
+                                <v-btn fab small @click="closeFullScreenSearchList">
+                                    <v-icon>
+                                        close
+                                    </v-icon>
+                                </v-btn>
+                            </v-layout>
                         </v-flex>
                     </v-layout>
                 </v-container>
@@ -163,6 +170,10 @@
             },
             searchTileClicked(item) {
                 this.OpenProjectPagePressed(item.id, (item.project_id !== null));
+            },
+            closeFullScreenSearchList() {
+                this.searchFieldIsFocused = false;
+                this.searchInput = '';
             }
         },
         watch: {
