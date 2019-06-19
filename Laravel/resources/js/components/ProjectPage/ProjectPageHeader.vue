@@ -1,11 +1,22 @@
 <template>
     <v-layout align-center justify-center row fill-height ml-3 style="position: relative">
+        <v-flex class="tooltipTopRight">
+            <v-tooltip top content-class="tooltip-inner">
+                <template v-slot:activator="{ on }">
+                    <v-img class="tooltipImage"
+                           contain
+                           v-on="on"
+                           src="img/context-sensitive-help.png"/>
+                </template>
+                <span>
+                    Deze pagina geeft informatie weer over een interessante plek.
+                    Wilt u terug naar de homepagina met de kaart, druk dan op de knop linksboven.
+                    Zou u graag uw eigen interessepunt op deze website terug willen zien?
+                    Stuur dan een e-mail naar: roadleafbeheerder@gmail.com
+                </span>
+            </v-tooltip>
+        </v-flex>
         <div style="position: absolute; left: 0;">
-            <v-flex class="hidden-md-and-up">
-                <v-btn @click="GoBackToMapPage">
-                    Go back
-                </v-btn>
-            </v-flex>
             <v-flex shrink class="hidden-sm-and-down v-card--reveal">
                 <v-layout align-center justify-center fill-height>
                     <v-img src="img/RoadLeaf-Logo.png"
@@ -22,30 +33,18 @@
                 </v-layout>
             </v-flex>
         </div>
-<!--        <v-flex grow>-->
-<!--            <v-card-title>{{ name }}</v-card-title>-->
-<!--        </v-flex>-->
         <v-flex fill-height xs5 py-4 style="background-color: #89a226">
             <v-card style="" flat color="transparent" class="white--text text-xs-center display-2 font-weight-black first-page-title"
                     :class="{'createOwnRouteTitle': $vuetify.breakpoint.xsOnly}">
                 {{ name }}
             </v-card>
         </v-flex>
-        <v-flex class="tooltipTopRight">
-            <v-tooltip top content-class="tooltip-inner">
-                <template v-slot:activator="{ on }">
-                    <v-img class="tooltipImage"
-                           contain
-                           v-on="on"
-                           src="img/context-sensitive-help.png"/>
-                </template>
-                <span>
-                    Deze pagina geeft informatie weer over een interessante plek.
-                    Wilt u terug naar de homepagina met de kaart, druk dan op de knop linksboven.
-                    Zou u graag uw eigen interessepunt op deze website terug willen zien?
-                    Stuur dan een e-mail naar: roadleafbeheerder@gmail.com
-                </span>
-            </v-tooltip>
+        <v-flex xs1>
+            <v-btn fab dark class="ml-5" @click="GoBackToMapPage">
+                <v-icon>
+                    arrow_upward
+                </v-icon>
+            </v-btn>
         </v-flex>
     </v-layout>
 </template>
