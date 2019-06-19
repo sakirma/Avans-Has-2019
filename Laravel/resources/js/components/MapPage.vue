@@ -8,9 +8,10 @@
             <v-flex style="position: relative">
                 <map-component ref="mapComponent">
                 </map-component>
-                <v-layout :class="{'ml-5': $vuetify.breakpoint.mdAndUp}" align-end justify-start row
+                <v-layout :class="{'ml-5': $vuetify.breakpoint.mdAndUp, 'ml-3': $vuetify.breakpoint.smOnly}" align-end
+                          justify-start row
                           style="position: absolute; bottom: 0; width: 100%;">
-                    <v-flex xs12 md3 lg2>
+                    <v-flex xs12 sm3 lg2>
                         <v-btn style="z-index: 1005;" depressed class="rounded-bottom-card" color="rgb(160, 181, 80, 1)"
                                @click="OpenRoutePagePressed">
                             <v-layout column>
@@ -22,16 +23,16 @@
                     </v-flex>
 
                     <!-- Search bar below-->
-                    <v-flex xs12 md3 lg2 v-show="$vuetify.breakpoint.xsOnly">
+                    <v-flex xs12 md3 lg2 v-show="$vuetify.breakpoint.xs">
                         <v-card style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" flat>
                             <v-layout column>
                                 <v-flex class="white--text font-weight-bold">
                                     <v-text-field
-                                        class="mx-3"
-                                        style="padding-top: 8px;"
-                                        prepend-inner-icon="search"
-                                        ref="fieldLower"
-                                        v-model="searchInput"
+                                            class="mx-3"
+                                            style="padding-top: 8px;"
+                                            prepend-inner-icon="search"
+                                            ref="fieldLower"
+                                            v-model="searchInput"
                                     ></v-text-field>
                                 </v-flex>
                             </v-layout>
@@ -40,7 +41,7 @@
                 </v-layout>
 
                 <!--   Search bar above -->
-                <v-layout v-show="$vuetify.breakpoint.smAndUp" column justify-start class="searchBarAboveMap"
+                <v-layout v-show="$vuetify.breakpoint.smAndUp" column justify-start class="searchBarAboveMap" :style="{'width': (($vuetify.breakpoint.mdAndUp) ? 25 : 35) + '%'}"
                           :fill-height="searchFieldIsFocused === true"
                           :class="{'backgroundOnFieldFocused': searchFieldIsFocused === true}">
                     <v-flex xs1>
@@ -69,7 +70,7 @@
                     </div>
                 </v-layout>
 
-                <!-- Search List full screen-->
+                <!-- Search List full screen -->
                 <v-container fluid fill-height v-if="$vuetify.breakpoint.xsOnly && searchFieldIsFocused"
                              style="background-color: #6e8822; position: absolute; bottom: 0; z-index: 1006;">
                     <v-layout column fill-height justify-space-between>
@@ -84,11 +85,11 @@
                         <v-flex d-flex xs1>
                             <v-layout row align-center>
                                 <v-text-field
-                                    hide-details
-                                    class="py-2"
-                                    prepend-inner-icon="search"
-                                    solo
-                                    v-model="searchInput"
+                                        hide-details
+                                        class="py-2"
+                                        prepend-inner-icon="search"
+                                        solo
+                                        v-model="searchInput"
                                 ></v-text-field>
                                 <v-btn fab small @click="closeFullScreenSearchList">
                                     <v-icon>
@@ -240,6 +241,5 @@
         z-index: 1000;
         top: 0;
         right: 0;
-        width: 25%;
     }
 </style>

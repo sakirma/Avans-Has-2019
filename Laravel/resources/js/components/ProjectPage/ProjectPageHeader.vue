@@ -1,11 +1,6 @@
 <template>
-    <v-layout align-center justify-center row fill-height ml-3 style="position: relative">
+    <v-layout align-center justify-center row fill-height :class="{ 'ml-3': $vuetify.breakpoint.smAndUp }"style="position: relative">
         <div style="position: absolute; left: 0;">
-            <v-flex class="hidden-md-and-up">
-                <v-btn @click="GoBackToMapPage">
-                    Go back
-                </v-btn>
-            </v-flex>
             <v-flex shrink class="hidden-sm-and-down v-card--reveal">
                 <v-layout align-center justify-center fill-height>
                     <v-img src="img/RoadLeaf-Logo.png"
@@ -22,14 +17,18 @@
                 </v-layout>
             </v-flex>
         </div>
-<!--        <v-flex grow>-->
-<!--            <v-card-title>{{ name }}</v-card-title>-->
-<!--        </v-flex>-->
         <v-flex fill-height xs5 py-4 style="background-color: #89a226">
             <v-card style="" flat color="transparent" class="white--text text-xs-center display-2 font-weight-black first-page-title"
                     :class="{'createOwnRouteTitle': $vuetify.breakpoint.xsOnly}">
                 {{ name }}
             </v-card>
+        </v-flex>
+        <v-flex xs1 class="hidden-sm-and-up">
+            <v-btn fab dark @click="GoBackToMapPage">
+                <v-icon>
+                    arrow_upward
+                </v-icon>
+            </v-btn>
         </v-flex>
         <v-flex class="tooltipTopRight">
             <v-tooltip top content-class="tooltip-inner">

@@ -6,17 +6,39 @@
             </v-flex>
 
             <v-flex style="position: relative">
-                <div style="width: 50%; right: 0; position: absolute; z-index: 1001">
-                    <v-container fluid grid-list-md ma-0 pa-0>-->
-                        <v-layout align-start fill-height justify-end row>
-                            <list-routes :routesParent="this"></list-routes>
-                        </v-layout>
-                        <v-layout justify-end>
-                            <v-btn class="putOnTop" v-on:click="exportToGoogle">Bekijk de route in Google Maps</v-btn>
-                        </v-layout>
-                    </v-container>
-                </div>
                 <map-component ref="mapComponent"></map-component>
+
+                <v-layout style="position: absolute; top: 0; right: 0; z-index: 1005;"
+                          v-show="$vuetify.breakpoint.smAndUp" column justify-start class="searchBarAboveMap"
+                          :style="{'width': (($vuetify.breakpoint.mdAndUp) ? 25 : 100) + '%'}"
+                          :fill-height="searchFieldIsFocused === true"
+                          :class="{'backgroundOnFieldFocused': searchFieldIsFocused === true}">
+                    <v-btn class="putOnTop" v-on:click="exportToGoogle">Bekijk de route in Google Maps</v-btn>
+                    <v-flex xs1>
+                        <v-layout row align-start justify-center>
+                            <v-text-field
+                                    hide-details
+                                    class="mx-3 py-2"
+                                    ref="field"
+                                    prepend-inner-icon="search"
+                                    solo
+                                    v-model="searchInput"
+                            ></v-text-field>
+                            <v-btn fab v-if="searchFieldIsFocused === true"
+                                   @click="() => {this.searchFieldIsFocused = false}">
+                                <v-icon large>close</v-icon>
+                            </v-btn>
+                        </v-layout>
+                    </v-flex>
+                    <div v-bar>
+                        <div>
+                            <v-flex class="removeScrollbar" xs12 v-if="searchFieldIsFocused === true">
+                                <search-list :on-search-tile-clicked="searchTileClicked"
+                                             :filtered-map-objects="filteredRoutes"/>
+                            </v-flex>
+                        </div>
+                    </div>
+                </v-layout>
             </v-flex>
 
             <v-flex xs1>
@@ -27,15 +49,14 @@
 </template>
 
 <script>
-    import MapPage from "../MapPage";
     import {LMap, LTileLayer, LMarker, LPopup} from 'vue2-leaflet';
     import "leaflet/dist/leaflet.css";
+    import SearchList from "../mapPage/SearchList"
 
     import RoutePageHeader from "./route-page-header";
     import ListRoutes from "./list-routes";
     import MapComponent from "../ProjectPage/MapComponent"
 
-    import routing from "leaflet-routing-machine";
     import * as routeList from "../routelist.js";
 
     export default {
@@ -44,6 +65,33 @@
             this.$vuetify.goTo('#routePage');
             this.mapObject = this.$refs.mapComponent.getMapObject();
             this.$refs.mapComponent.assignParentPage(this);
+
+            this.$watch(
+                () => {
+                    return this.$refs.field.isFocused
+                },
+                (val) => {
+                    if (val === true)
+                        this.searchFieldIsFocused = true;
+                }
+            );
+
+            window.axios
+                .get("getAllRoutes")
+                .then(response => {
+                    for (let i = 0; i < response.data.length; i++) {
+                        this.routeList.push({
+                            name: response.data[i].name,
+                            id: response.data[i].id,
+                            location: response.data[i].location,
+                        });
+                    }
+
+                    this.filteredRoutes = this.routeList;
+                })
+                .catch(e => {
+                    console.log(e);
+                });
         },
         props: {
             onProjectOpened: {
@@ -59,6 +107,13 @@
                 projectPoints: [],
                 routingControl: null,
                 mapObject: null,
+
+
+                searchFieldIsFocused: false,
+                searchInput: '',
+
+                routeList: [],
+                filteredRoutes: []
             };
         },
         components: {
@@ -68,7 +123,8 @@
             LMap,
             LTileLayer,
             LMarker,
-            LPopup
+            LPopup,
+            SearchList
         },
         methods: {
             GoToMapPage() {
@@ -97,7 +153,27 @@
                     window.open(url, "_blank");
                 }
             },
-        }
+            searchTileClicked(item) {
+                window.axios.get("getProjectPointOfRoute/" + item.id)
+                    .then(response => {
+                        this.drawPoints(response.data);
+                    });
+
+
+                if (this.$vuetify.breakpoint.mdAndDown)
+                    this.searchFieldIsFocused = false;
+            },
+        },
+        watch: {
+            searchInput: function (n, o) {
+                this.filteredRoutes = this.routeList.filter(item => {
+                    return item.name.toLowerCase().includes(n.toLowerCase());
+                });
+
+                if (this.$vuetify.breakpoint.xsOnly)
+                    this.searchFieldIsFocused = (n.length !== 0)
+            }
+        },
     }
 </script>
 
@@ -108,5 +184,27 @@
 
     .putOnTop {
         z-index: 1000;
+    }
+
+    .removeScrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .backgroundOnFieldFocused {
+        background-color: rgba(137, 163, 36, 0.58);
+    }
+
+    .rounded-bottom-card {
+        margin: 0;
+        border-radius: 10px 10px 0 0;
+        height: 50px;
+        width: 100%;
+    }
+
+    .searchBarAboveMap {
+        position: absolute;
+        z-index: 1000;
+        top: 0;
+        right: 0;
     }
 </style>
