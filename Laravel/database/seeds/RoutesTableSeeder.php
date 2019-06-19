@@ -26,6 +26,17 @@ class RoutesTableSeeder extends Seeder
             'name' => 'Boxtelse Route',
             'length' => 5.22,
             ]);
+
+        DB::table('route')->insert([
+            'name' => 'De Waterhoefse route',
+            'length' => 1.2,
+        ]);
+
+        DB::table('route')->insert([
+            'name' => 'Landschotse Heide Route',
+            'length' => 3.95,
+        ]);
+
         DB::table('route_has_interest_point')->insert([
             'point_id' => '13',
             'route_id' => 1,
@@ -69,6 +80,26 @@ class RoutesTableSeeder extends Seeder
         DB::table('route_has_interest_point')->insert([
             'point_id' => '28',
             'route_id' => 3,
+        ]);
+
+        DB::table('route_has_interest_point')->insert([
+            'point_id' => '13',
+            'route_id' => 4,
+        ]);
+
+        DB::table('route_has_interest_point')->insert([
+            'point_id' => '7',
+            'route_id' => 4,
+        ]);
+
+        DB::table('route_has_interest_point')->insert([
+            'point_id' => '19',
+            'route_id' => 5,
+        ]);
+
+        DB::table('route_has_interest_point')->insert([
+            'point_id' => '14',
+            'route_id' => 5,
         ]);
     }
 }
