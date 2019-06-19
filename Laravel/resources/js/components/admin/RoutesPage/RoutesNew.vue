@@ -3,6 +3,23 @@
         <div class="pr-2">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Route</v-card-title>
+                <v-flex class="tooltipTopRight">
+                    <v-tooltip top content-class="tooltip-inner">
+                        <template v-slot:activator="{ on }">
+                            <v-img class="tooltipImage"
+                                   contain
+                                   v-on="on"
+                                   src="img/context-sensitive-help.png"/>
+                        </template>
+                        <span>
+                            Op deze pagina kan een nieuwe route worden gemaakt.
+                            Geef de route een passende naam.
+                            Kies alle interessepunten die in de route opgenomen moeten worden.
+                            Verander de volgorde van de punten in de route door ze te verslepen in de lijst.
+                            Druk op 'route toevoegen' als u klaar bent.
+                        </span>
+                    </v-tooltip>
+                </v-flex>
                 <v-btn fab flat @click="close">
                     <v-icon x-large color="green">close</v-icon>
                 </v-btn>
@@ -266,5 +283,25 @@
 
     .vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {
         background-color: rgba(38, 38, 38, 0.5);
+    }
+
+    .tooltipTopRight {
+        max-width: 30px;
+        right: 10px;
+        position: relative;
+    }
+
+    .tooltipImage {
+        width: 20px;
+        height: 20px;
+    }
+
+    .tooltip-inner {
+        color: white;
+        padding: 24px;
+        border-radius: 5px;
+        box-shadow: 0 5px 30px;
+        max-height: 200px;
+        max-width: 450px;
     }
 </style>

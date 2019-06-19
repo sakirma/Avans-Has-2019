@@ -31,6 +31,20 @@
                 {{ name }}
             </v-card>
         </v-flex>
+        <v-flex class="tooltipTopRight">
+            <v-tooltip top content-class="tooltip-inner">
+                <template v-slot:activator="{ on }">
+                    <v-img class="tooltipImage"
+                           contain
+                           v-on="on"
+                           src="img/context-sensitive-help.png"/>
+                </template>
+                <span>
+                    Deze pagina geeft informatie weer over een interessante plek.
+                    Wilt u terug naar de homepagina met de kaart, druk dan op de knop linksboven.
+                </span>
+            </v-tooltip>
+        </v-flex>
     </v-layout>
 </template>
 
@@ -52,6 +66,26 @@
 </script>
 
 <style scoped>
+    .tooltipTopRight {
+        max-width: 30px;
+        right: 10px;
+        position: relative;
+    }
+
+    .tooltipImage {
+        width: 20px;
+        height: 20px;
+    }
+
+    .tooltip-inner {
+        color: white;
+        padding: 24px;
+        border-radius: 5px;
+        box-shadow: 0 5px 30px;
+        max-height: 100px;
+        max-width: 450px;
+    }
+    
     .first-page-title {
         font-family: "Market Deco", Market_Deco !important;
         font-weight: bold !important;
