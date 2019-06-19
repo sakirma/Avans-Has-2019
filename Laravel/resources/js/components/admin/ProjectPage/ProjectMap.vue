@@ -61,18 +61,19 @@
                 }
             },
             onPolygonChanged() {
-                if(this.leafletPolygon)
+                if (this.leafletPolygon)
                     this.mapObject.removeLayer(this.leafletPolygon);
 
                 this.leafletPolygon = L.polygon(this.polygon.latlngs);
                 this.leafletPolygon.addTo(this.mapObject);
             },
             setPolygonsInteractive(isInteractive) {
-               this.$refs.map.setPolygonsInteractive(isInteractive);
+                this.$refs.map.setPolygonsInteractive(isInteractive);
             },
             resetPolygon() {
                 this.polygon.latlngs = [];
-                this.mapObject.removeLayer(this.leafletPolygon);
+                if (this.leafletPolygon)
+                    this.mapObject.removeLayer(this.leafletPolygon);
             },
             loadMapObjects(projects) {
                 this.$refs.map.loadMapObjects(projects);
