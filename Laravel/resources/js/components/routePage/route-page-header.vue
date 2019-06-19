@@ -1,14 +1,14 @@
 <template>
     <v-layout align-center justify-center fill-height >
         <v-flex>
-            <v-btn fab dark class="ml-5" @click="GoBackToMapPage">
+            <v-btn fab dark class="ml-5" @click="GoToMapPage">
                 <v-icon>
                     arrow_upward
                 </v-icon>
             </v-btn>
         </v-flex>
         <v-flex class="tooltipTopRight">
-            <v-tooltip left content-class="tooltip-inner">
+            <v-tooltip top content-class="tooltip-inner">
                 <template v-slot:activator="{ on }">
                     <v-img class="tooltipImage"
                            contain
@@ -75,7 +75,7 @@
         padding: 24px;
         border-radius: 5px;
         box-shadow: 0 5px 30px;
-        max-height: 170px;
-        max-width: 700px;
+        max-height: 90vh;
+        max-width: 900px;
     }
 </style>
