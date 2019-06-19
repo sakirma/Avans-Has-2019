@@ -1,21 +1,5 @@
 <template>
-    <v-layout align-center justify-center row fill-height ml-3 style="position: relative">
-        <v-flex class="tooltipTopRight">
-            <v-tooltip top content-class="tooltip-inner">
-                <template v-slot:activator="{ on }">
-                    <v-img class="tooltipImage"
-                           contain
-                           v-on="on"
-                           src="img/context-sensitive-help.png"/>
-                </template>
-                <span>
-                    Deze pagina geeft informatie weer over een interessante plek.
-                    Wilt u terug naar de homepagina met de kaart, druk dan op de knop linksboven.
-                    Zou u graag uw eigen interessepunt op deze website terug willen zien?
-                    Stuur dan een e-mail naar: roadleafbeheerder@gmail.com
-                </span>
-            </v-tooltip>
-        </v-flex>
+    <v-layout align-center justify-center row fill-height :class="{ 'ml-3': $vuetify.breakpoint.smAndUp }"style="position: relative">
         <div style="position: absolute; left: 0;">
             <v-flex shrink class="hidden-sm-and-down v-card--reveal">
                 <v-layout align-center justify-center fill-height>
@@ -39,12 +23,28 @@
                 {{ name }}
             </v-card>
         </v-flex>
-        <v-flex xs1>
-            <v-btn fab dark class="ml-5" @click="GoBackToMapPage">
+        <v-flex xs1 class="hidden-sm-and-up">
+            <v-btn fab dark @click="GoBackToMapPage">
                 <v-icon>
                     arrow_upward
                 </v-icon>
             </v-btn>
+        </v-flex>
+        <v-flex class="tooltipTopRight">
+            <v-tooltip top content-class="tooltip-inner">
+                <template v-slot:activator="{ on }">
+                    <v-img class="tooltipImage"
+                           contain
+                           v-on="on"
+                           src="img/context-sensitive-help.png"/>
+                </template>
+                <span>
+                    Deze pagina geeft informatie weer over een interessante plek.
+                    Wilt u terug naar de homepagina met de kaart, druk dan op de knop linksboven.
+                    Zou u graag uw eigen interessepunt op deze website terug willen zien?
+                    Stuur dan een e-mail naar: roadleafbeheerder@gmail.com
+                </span>
+            </v-tooltip>
         </v-flex>
     </v-layout>
 </template>
