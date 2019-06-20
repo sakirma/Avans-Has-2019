@@ -40,20 +40,7 @@
                                             </v-flex>
                                         </v-layout>
                                         <v-flex xs6>
-                                            <v-card-text class="body-2" style="line-height: 1">
-                                                Lorem ipsum dolor sit amet,
-                                                consectetuer adipiscing elit, sed diam
-                                                nonummy nibh euismod tincidunt ut
-                                                laoreet dolore magna aliquam erat
-                                                volutpat. Ut wisi enim ad minim
-                                                veniam, quis nostrud exerci tation
-                                                ullamcorper suscipit lobortis nisl ut
-                                                aliquip ex ea commodo consequat.
-                                                Duis autem vel eum iriure dolor in
-                                                hendrerit in vulputate velit esse
-                                                molestie consequat, vel illum dolore
-                                                eu feugiat nulla facilisis at vero eros et
-                                            </v-card-text>
+                                            
                                         </v-flex>
                                     </v-layout>
                                 </v-layout>
@@ -120,19 +107,7 @@
                     </v-flex>
 
                     <v-flex xs6 d-flex fill-height>
-                        <v-card color="#8DA659" class="roundedCard">
-                            <v-card-text class="white--text body-2" style="line-height: 1;">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus dolor ante, a
-                                vestibulum magna imperdiet sit amet. Proin accumsan, urna nec lacinia vehicula,
-                                ipsum urna volutpat orci, eu semper erat justo eget ligula. Mauris interdum metus
-                                vitae laoreet euismod. Phasellus scelerisque urna id turpis gravida, vel condimentum
-                                mauris euismod. Mauris vel imperdiet nisl. Nam cursus porttitor placerat. Praesent
-                                luctus ullamcorper enim, nec sodales nisl. Suspendisse ultrices urna a orci tempus,
-                                ut condimentum sapien eleifend. Sed sodales ornare massa, id feugiat quam varius ut.
-                                Fusce dictum auctor dui vitae faucibus. Phasellus porta varius quam. Donec dolor ex,
-                                tincidunt eget scelerisque ut, tristique vitae eros. In ut vulputate quam.
-                            </v-card-text>
-                        </v-card>
+
                     </v-flex>
                 </v-layout>
             </v-flex>
