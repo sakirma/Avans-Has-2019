@@ -9,7 +9,7 @@
                 <map-component ref="mapComponent"></map-component>
 
                 <v-layout style="position: absolute; top: 0; right: 0; z-index: 1005;"
-                          v-show="$vuetify.breakpoint.smAndUp" column justify-start class="searchBarAboveMap"
+                          column justify-start class="searchBarAboveMap"
                           :style="{'width': (($vuetify.breakpoint.mdAndUp) ? 25 : 100) + '%'}"
                           :fill-height="searchFieldIsFocused === true"
                           :class="{'backgroundOnFieldFocused': searchFieldIsFocused === true}">
@@ -158,7 +158,6 @@
                     .then(response => {
                         this.drawPoints(response.data);
                     });
-
 
                 if (this.$vuetify.breakpoint.mdAndDown)
                     this.searchFieldIsFocused = false;
