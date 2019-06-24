@@ -169,6 +169,8 @@
                     for (let i = 0; i < data.length; i++)
                         this.images.push("getmedia/" + data[i]);
                 });
+
+                console.log(this.parent);
             },
             findRecommendationsInterestPoint(d, t) {
                 axios.post('/projectpoints/similarIntrestPoint', {
@@ -235,14 +237,14 @@
         mounted() {
             this.$vuetify.goTo('#projectPage');
             this.mapPage = this.parent.getMapPage();
-            this.$refs.mapComponent.assignParentPage(this.mapPage);
+            this.$refs.mapComponent.assignParentPage(this);
 
             axios.get("/getAllMapObjects")
                 .then(({data}) => {
                     for (let i = 0; i < data.length; i++) {
                         this.mapObjects.push(data[i]);
+                        this.$refs.mapComponent.loadMapObjects(this.mapObjects);
                     }
-                    this.$refs.mapComponent.loadMapObjects(this.mapObjects);
                 });
         },
         components: {

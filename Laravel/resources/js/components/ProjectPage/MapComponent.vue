@@ -7,29 +7,29 @@
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
         <template v-for="(marker, index) in markers">
-            <l-marker :key="index" v-if="isAllowedCategory(marker.category)" :lat-lng="marker.latlng" :icon="redPin"
+            <l-marker @add="checkOpenPopUp(marker, $event)" :key="index" v-if="isAllowedCategory(marker.category)" :lat-lng="marker.latlng" :icon="redPin" @click="zoomToPoint(marker)"
                       style="transform: scale(0.1)">
                 <pop-up :item="marker" :parent="marker.parent"></pop-up>
             </l-marker>
         </template>
 
         <div v-for="(polygon, index) in polygons">
-            <l-polygon :key="index + markers.length" v-if="isAllowedCategory(polygon.category)" ref="testRef"
+            <l-polygon @add="checkOpenPopUp(polygon, $event)" :key="index + markers.length" v-if="isAllowedCategory(polygon.category)" ref="testRef" @click="zoomToPoint(polygon)"
                        :lat-lngs="polygon.latlng"
                        :color="polygonLineColor" :fill-color="polygonFillColor" :fill-opacity="0.6">
-                <pop-up :item="polygon" :parent="polygon.parent"></pop-up>
+                <pop-up id="leaflet-popup" :lat-lng="polygon.latlng[0]" :item="polygon" :parent="polygon.parent"></pop-up>
             </l-polygon>
         </div>
 
         <template v-for="(polyline, index) in polylines">
-            <l-polyline :key="index + markers.length + polygons.length" v-if="isAllowedCategory(polyline.category)"
+            <l-polyline @add="checkOpenPopUp(polyline, $event)" :key="index + markers.length + polygons.length" v-if="isAllowedCategory(polyline.category)" @click="zoomToPoint(polyline)"
                         :lat-lngs="polyline.latlng">
                 <pop-up :item="polyline" :parent="polyline.parent"></pop-up>
             </l-polyline>
         </template>
 
         <template v-for="(rectangle, index) in rectangles">
-            <l-polyline :key="index + markers.length + polygons.length + polylines.length"
+            <l-polyline @add="checkOpenPopUp(rectangle, $event)" :key="index + markers.length + polygons.length + polylines.length" @click="zoomToPoint(rectangle)"
                         v-if="isAllowedCategory(rectangle.category)" :lat-lngs="rectangle.latlng">
                 <pop-up :item="rectangle" :parent="rectangle.parent"></pop-up>
             </l-polyline>
@@ -62,7 +62,7 @@
         data() {
             return {
                 zoom: 11,
-                center: L.latLng(51.7142669290121, 5.3173828125),
+                center: L.latLng(51.53096001302975, 5.288543701171875),
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 markers: [],
@@ -83,9 +83,51 @@
                     iconSize: [30, 60],
                 }),
                 parent: null,
+                currentPopUp: null
             }
         },
         methods: {
+            checkOpenPopUp(marker, event){
+                if(marker.id == 3){
+                    console.log(this.parent);
+                    console.log(this.parent.$options._componentTag);
+                    console.log(this.parent.parent);
+                    console.log(marker);
+                    if(this.parent.parent) console.log(this.parent.parent.selectedProject);
+                }
+
+                if(this.parent && this.parent.$options._componentTag === "project-page" && this.parent.parent && marker && marker.id == this.parent.parent.selectedProject.id && ((typeof(marker.project_id) !== 'undefined' && !this.parent.parent.selectedProject.project) || (typeof(marker.project_id) == 'undefined' && this.parent.parent.selectedProject.project))){
+                    console.log("show pressed project!");
+                    this.$nextTick(() => {
+                        event.target.openPopup();
+                        this.zoomToPoint(marker);
+                    })
+                }
+            },
+            zoomToPoint(marker) {
+                if (marker.latlng instanceof Array) {
+                    let lat = 0, lng = 0;
+                    for (let i = 0; i < marker.latlng.length; i++) {
+                        lat += marker.latlng[i].lat;
+                        lng += marker.latlng[i].lng;
+                    }
+                    lat /= marker.latlng.length;
+                    lng /= marker.latlng.length;
+                    this.center = L.latLng(lat, lng);
+
+                    let popup = document.getElementById("leaflet-popup");
+                    if (popup) {
+                        this.currentPopUp = popup.__vue__;
+                        this.$nextTick(() => {
+                            this.currentPopUp.latLng = this.center;
+                        });
+                    }
+                }else {
+                    this.center = marker.latlng;
+                }
+                this.zoom = 12;
+                this.$refs.map.setZoom(this.zoom);
+            },
             invokeAddEvent(e) {
                 if(this.addEvent)
                     this.addEvent(e);
