@@ -13,7 +13,7 @@
                           :style="{'width': (($vuetify.breakpoint.mdAndUp) ? 25 : 100) + '%'}"
                           :fill-height="searchFieldIsFocused === true"
                           :class="{'backgroundOnFieldFocused': searchFieldIsFocused === true}">
-                    <v-btn class="putOnTop" v-on:click="exportToGoogle">Bekijk de route in Google Maps</v-btn>
+                    <v-btn class="putOnTop" v-on:click="exportToGoogle" v-if="projectPoints.length > 0">Bekijk de route in Google Maps</v-btn>
                     <v-flex xs1>
                         <v-layout row align-start justify-center>
                             <v-text-field
@@ -103,13 +103,12 @@
                 zoom: 11,
                 center: L.latLng(51.7142669290121, 5.3173828125),
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 projectPoints: [],
                 routingControl: null,
                 mapObject: null,
 
 
-                searchFieldIsFocused: false,
+                searchFieldIsFocused: true,
                 searchInput: '',
 
                 routeList: [],

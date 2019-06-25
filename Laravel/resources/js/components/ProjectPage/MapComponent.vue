@@ -4,7 +4,7 @@
            :center="center"
            style="height:100%;"
            @click="invokeAddEvent($event)">
-        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+        <l-tile-layer :url="url"></l-tile-layer>
 
         <template v-for="(marker, index) in markers">
             <l-marker :key="index" v-if="isAllowedCategory(marker.category)" :lat-lng="marker.latlng" :icon="redPin"
@@ -64,7 +64,6 @@
                 zoom: 11,
                 center: L.latLng(51.7142669290121, 5.3173828125),
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 markers: [],
 
                 polygons: [],
