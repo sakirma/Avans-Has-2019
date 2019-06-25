@@ -49,39 +49,6 @@
                     <v-layout row align-start>
                         <v-card-title style="padding-top: 0 !important;" class="title">Punten toevoegen:</v-card-title>
                         <v-flex xs7 sm8 lg6 xl4>
-                            <v-responsive max-height="250px">
-                                <draggable
-                                        tag="ul"
-                                        v-model="routeList"
-                                        v-bind="dragOptions"
-                                        @start="drag=true"
-                                        @end="drag=false"
-                                >
-                                    <template v-for="(route, index) in routeList">
-                                        <div :key="index">
-                                            <v-layout align-center justify-space-between row fill-height>
-                                                <div style="width: 100%;" class="my-1 routeDrag" flat>
-                                                    <v-layout align-center justify-center row fill-height
-                                                              class="routeButton">
-                                                        <v-card-text class="py-0 headline "
-                                                                     style="color: rgba(137,163,36,0.75)">
-                                                            {{route.name}}
-                                                        </v-card-text>
-                                                        <v-icon color="#89a324" class="mr-1">
-                                                            list
-                                                        </v-icon>
-                                                    </v-layout>
-                                                </div>
-                                                <v-btn icon>
-                                                    <v-icon large color="rgba(137,163,36,0.75)">
-                                                        close
-                                                    </v-icon>
-                                                </v-btn>
-                                            </v-layout>
-                                        </div>
-                                    </template>
-                                </draggable>
-                            </v-responsive>
                             <project-selection-list ref="selectionList"></project-selection-list>
                         </v-flex>
                     </v-layout>
