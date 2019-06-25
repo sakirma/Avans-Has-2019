@@ -7,14 +7,15 @@
         <l-tile-layer :url="url"></l-tile-layer>
 
         <template v-for="(marker, index) in markers">
-            <l-marker :key="index" v-if="isAllowedCategory(marker.category)" :lat-lng="marker.latlng" :icon="redPin"
+            <l-marker :key="index" v-if="isAllowedCategory(marker.category)" :lat-lng="marker.latlng"
+                      :icon="getPin(marker.category)"
                       style="transform: scale(0.1)">
                 <pop-up :item="marker" :parent="marker.parent"></pop-up>
             </l-marker>
         </template>
 
         <div v-for="(polygon, index) in polygons">
-            <l-polygon :key="index + markers.length" v-if="isAllowedCategory(polygon.category)" ref="testRef"
+            <l-polygon :key="index + markers.length" v-if="isAllowedCategory(polygon.category)"
                        :lat-lngs="polygon.latlng"
                        :color="polygonLineColor" :fill-color="polygonFillColor" :fill-opacity="0.6">
                 <pop-up :item="polygon" :parent="polygon.parent"></pop-up>
@@ -81,12 +82,28 @@
 
                     iconSize: [30, 60],
                 }),
+                bluePin: L.icon({
+                    iconUrl: 'img/punaise_eten (2).svg',
+
+                    iconSize: [30, 60],
+                }),
+                greenPin: L.icon({
+                    iconUrl: 'img/punaise_natuur (3).svg',
+
+                    iconSize: [30, 60],
+                }),
+                yellowPin: L.icon({
+                    iconUrl: 'img/punaise_activiteiten (4).svg',
+
+                    iconSize: [30, 60],
+                }),
+
                 parent: null,
             }
         },
         methods: {
             invokeAddEvent(e) {
-                if(this.addEvent)
+                if (this.addEvent)
                     this.addEvent(e);
             },
             assignParentPage(parent) {
@@ -165,6 +182,18 @@
             },
             setPolygonsInteractive(isInteractive) {
                 this.polygons = [];
+            },
+            getPin(category) {
+                switch (category) {
+                    case "activiteit":
+                        return this.yellowPin;
+                    case "eten en drinken":
+                        return this.bluePin;
+                    case "bezienswaardigheid":
+                        return this.redPin;
+                    case "natuurgebied":
+                        return this.greenPin;
+                }
             }
         },
         mounted() {
