@@ -3,6 +3,23 @@
         <div class="pr-2">
             <v-layout align-center justify-space-between row>
                 <v-card-title class="display-1">Route</v-card-title>
+                <v-flex class="tooltipTopRight">
+                    <v-tooltip top content-class="tooltip-inner">
+                        <template v-slot:activator="{ on }">
+                            <v-img class="tooltipImage"
+                                   contain
+                                   v-on="on"
+                                   src="img/context-sensitive-help.png"/>
+                        </template>
+                        <span>
+                            Op deze pagina kan een nieuwe route worden gemaakt.
+                            Geef de route een passende naam.
+                            Kies alle interessepunten die in de route opgenomen moeten worden.
+                            Verander de volgorde van de punten in de route door ze te verslepen in de lijst.
+                            Druk op 'route toevoegen' als u klaar bent.
+                        </span>
+                    </v-tooltip>
+                </v-flex>
                 <v-btn fab flat @click="close">
                     <v-icon x-large color="green">close</v-icon>
                 </v-btn>
@@ -32,39 +49,6 @@
                     <v-layout row align-start>
                         <v-card-title style="padding-top: 0 !important;" class="title">Punten toevoegen:</v-card-title>
                         <v-flex xs7 sm8 lg6 xl4>
-                            <v-responsive max-height="250px">
-                                <draggable
-                                        tag="ul"
-                                        v-model="routeList"
-                                        v-bind="dragOptions"
-                                        @start="drag=true"
-                                        @end="drag=false"
-                                >
-                                    <template v-for="(route, index) in routeList">
-                                        <div :key="index">
-                                            <v-layout align-center justify-space-between row fill-height>
-                                                <div style="width: 100%;" class="my-1 routeDrag" flat>
-                                                    <v-layout align-center justify-center row fill-height
-                                                              class="routeButton">
-                                                        <v-card-text class="py-0 headline "
-                                                                     style="color: rgba(137,163,36,0.75)">
-                                                            {{route.name}}
-                                                        </v-card-text>
-                                                        <v-icon color="#89a324" class="mr-1">
-                                                            list
-                                                        </v-icon>
-                                                    </v-layout>
-                                                </div>
-                                                <v-btn icon>
-                                                    <v-icon large color="rgba(137,163,36,0.75)">
-                                                        close
-                                                    </v-icon>
-                                                </v-btn>
-                                            </v-layout>
-                                        </div>
-                                    </template>
-                                </draggable>
-                            </v-responsive>
                             <project-selection-list ref="selectionList"></project-selection-list>
                         </v-flex>
                     </v-layout>
@@ -266,5 +250,25 @@
 
     .vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {
         background-color: rgba(38, 38, 38, 0.5);
+    }
+
+    .tooltipTopRight {
+        max-width: 30px;
+        right: 10px;
+        position: relative;
+    }
+
+    .tooltipImage {
+        width: 20px;
+        height: 20px;
+    }
+
+    .tooltip-inner {
+        color: white;
+        padding: 24px;
+        border-radius: 5px;
+        box-shadow: 0 5px 30px;
+        max-height: 200px;
+        max-width: 450px;
     }
 </style>

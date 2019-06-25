@@ -42,7 +42,7 @@
     import ListRoutes from "./routePage/list-routes";
 
     import MapPageHeader from "./map-page-header";
-    import DropDownButton from "./mapPageButton/DropDownButton";
+    import DropDownButton from "./mapPage/DropDownButton";
 
     import routing from "leaflet-routing-machine";
     import * as routeList from "./routelist.js";

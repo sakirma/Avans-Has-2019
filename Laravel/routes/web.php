@@ -32,6 +32,9 @@ Route::group(['prefix' => 'admin'], function () {
     Auth::routes();
 });
 
+Route::get('admin', function () {
+    return redirect('beheer');
+});
 Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::get('admin/logout', 'Auth\LoginController@logout');
 
@@ -58,11 +61,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('beheer', 'ProjectController@main');
 
-//Route::post('/beheer/AddProjectPoint', 'ProjectController@addProject')->middleware('auth');
-//Route::post('/beheer/updateProject', 'ProjectController@update')->middleware('auth');
-//Route::post('/beheer/DeleteProject', 'ProjectController@destroy')->middleware('auth');
-//Route::get('/beheer/edit/{id}','ProjectController@edit')->middleware('auth');
-//Route::get('/beheer/projectpoints/', 'ProjectPointsController@index');
     Route::get('/beheer/project/aanmaken', 'ProjectController@create');
 
     Route::get('/admin/projectpoints', 'ProjectPointsController@viewProjectPoints')->middleware('auth');

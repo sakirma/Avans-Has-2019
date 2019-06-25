@@ -4,10 +4,10 @@
            :center="center"
            style="height:100%;"
            @click="invokeAddEvent($event)">
-        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+        <l-tile-layer :url="url"></l-tile-layer>
 
         <template v-for="(marker, index) in markers">
-            <l-marker @add="checkOpenPopUp(marker, $event)" :key="index" v-if="isAllowedCategory(marker.category)" :lat-lng="marker.latlng" :icon="redPin" @click="zoomToPoint(marker)"
+            <l-marker @add="checkOpenPopUp(marker, $event)" :key="index" v-if="isAllowedCategory(marker.category)" :lat-lng="marker.latlng" :icon="getPin(marker.category) @click="zoomToPoint(marker)"
                       style="transform: scale(0.1)">
                 <pop-up :item="marker" :parent="marker.parent"></pop-up>
             </l-marker>
@@ -64,7 +64,6 @@
                 zoom: 11,
                 center: L.latLng(51.53096001302975, 5.288543701171875),
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 markers: [],
 
                 polygons: [],
@@ -82,6 +81,22 @@
 
                     iconSize: [30, 60],
                 }),
+                bluePin: L.icon({
+                    iconUrl: 'img/punaise_eten (2).svg',
+
+                    iconSize: [30, 60],
+                }),
+                greenPin: L.icon({
+                    iconUrl: 'img/punaise_natuur (3).svg',
+
+                    iconSize: [30, 60],
+                }),
+                yellowPin: L.icon({
+                    iconUrl: 'img/punaise_activiteiten (4).svg',
+
+                    iconSize: [30, 60],
+                }),
+
                 parent: null,
                 currentPopUp: null
             }
@@ -129,7 +144,7 @@
                 this.$refs.map.setZoom(this.zoom);
             },
             invokeAddEvent(e) {
-                if(this.addEvent)
+                if (this.addEvent)
                     this.addEvent(e);
             },
             assignParentPage(parent) {
@@ -208,6 +223,18 @@
             },
             setPolygonsInteractive(isInteractive) {
                 this.polygons = [];
+            },
+            getPin(category) {
+                switch (category) {
+                    case "activiteit":
+                        return this.yellowPin;
+                    case "eten en drinken":
+                        return this.bluePin;
+                    case "bezienswaardigheid":
+                        return this.redPin;
+                    case "natuurgebied":
+                        return this.greenPin;
+                }
             }
         },
         mounted() {

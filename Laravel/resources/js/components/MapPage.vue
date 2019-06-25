@@ -8,9 +8,10 @@
             <v-flex style="position: relative">
                 <map-component ref="mapComponent">
                 </map-component>
-                <v-layout :class="{'ml-5': $vuetify.breakpoint.mdAndUp}" align-end justify-start row
+                <v-layout :class="{'ml-5': $vuetify.breakpoint.mdAndUp, 'ml-3': $vuetify.breakpoint.smOnly}" align-end
+                          justify-start row
                           style="position: absolute; bottom: 0; width: 100%;">
-                    <v-flex xs12 md3 lg2>
+                    <v-flex xs12 sm3 lg2>
                         <v-btn style="z-index: 1005;" depressed class="rounded-bottom-card" color="rgb(160, 181, 80, 1)"
                                @click="OpenRoutePagePressed">
                             <v-layout column>
@@ -21,14 +22,17 @@
                         </v-btn>
                     </v-flex>
 
-                    <v-flex xs12 md3 lg2 v-if="$vuetify.breakpoint.xsOnly">
-                        <v-card style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)">
+                    <!-- Search bar below-->
+                    <v-flex xs12 md3 lg2 v-show="$vuetify.breakpoint.xs">
+                        <v-card style="z-index: 1005;" class="rounded-bottom-card" color="rgb(160, 181, 80, 1)" flat>
                             <v-layout column>
                                 <v-flex class="white--text font-weight-bold">
                                     <v-text-field
                                             class="mx-3"
                                             style="padding-top: 8px;"
                                             prepend-inner-icon="search"
+                                            ref="fieldLower"
+                                            v-model="searchInput"
                                     ></v-text-field>
                                 </v-flex>
                             </v-layout>
@@ -36,17 +40,19 @@
                     </v-flex>
                 </v-layout>
 
-                <v-layout column justify-start class="searchBarAboveMap" :fill-height="searchFieldIsFocused === true"
+                <!--   Search bar above -->
+                <v-layout v-show="$vuetify.breakpoint.smAndUp" column justify-start class="searchBarAboveMap" :style="{'width': (($vuetify.breakpoint.mdAndUp) ? 25 : 35) + '%'}"
+                          :fill-height="searchFieldIsFocused === true"
                           :class="{'backgroundOnFieldFocused': searchFieldIsFocused === true}">
                     <v-flex xs1>
                         <v-layout row align-start justify-center>
                             <v-text-field
-                                    hide-details
-                                    class="mx-3 py-2"
-                                    ref="field"
-                                    prepend-inner-icon="search"
-                                    solo
-                                    v-model="searchInput"
+                                hide-details
+                                class="mx-3 py-2"
+                                ref="field"
+                                prepend-inner-icon="search"
+                                solo
+                                v-model="searchInput"
                             ></v-text-field>
                             <v-btn fab v-if="searchFieldIsFocused === true"
                                    @click="() => {this.searchFieldIsFocused = false}">
@@ -57,31 +63,43 @@
                     <div v-bar>
                         <div>
                             <v-flex class="removeScrollbar" xs12 v-if="searchFieldIsFocused === true">
-                                <v-layout fill-height align-start justify-start>
-                                    <v-list style="background-color: transparent; width: 100%; padding: 0;"
-                                            class="white--text" two-line
-                                            pt-0>
-                                        <template v-for="(item, index) in filteredMapObjects">
-                                            <v-list-tile
-                                                    :key="index"
-                                                    avatar
-                                                    ripple
-                                                    style="background-color: rgba(137, 163, 36, 0.9);"
-                                                    @click="searchTileClicked(item)"
-                                            >
-                                                <v-list-tile-content>
-                                                    <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                                                    <v-list-tile-sub-title class="white--text">{{ item.information }}
-                                                    </v-list-tile-sub-title>
-                                                </v-list-tile-content>
-                                            </v-list-tile>
-                                        </template>
-                                    </v-list>
-                                </v-layout>
+                                <search-list :on-search-tile-clicked="searchTileClicked"
+                                             :filtered-map-objects="filteredMapObjects"/>
                             </v-flex>
                         </div>
                     </div>
                 </v-layout>
+
+                <!-- Search List full screen -->
+                <v-container fluid fill-height v-if="$vuetify.breakpoint.xsOnly && searchFieldIsFocused"
+                             style="background-color: #6e8822; position: absolute; bottom: 0; z-index: 1006;">
+                    <v-layout column fill-height justify-space-between>
+                        <div v-bar>
+                            <div>
+                                <v-flex d-flex xs11 class="removeScrollbar" style="max-width: 100%">
+                                    <search-list :on-search-tile-clicked="searchTileClicked"
+                                                 :filtered-map-objects="filteredMapObjects"></search-list>
+                                </v-flex>
+                            </div>
+                        </div>
+                        <v-flex d-flex xs1>
+                            <v-layout row align-center>
+                                <v-text-field
+                                        hide-details
+                                        class="py-2"
+                                        prepend-inner-icon="search"
+                                        solo
+                                        v-model="searchInput"
+                                ></v-text-field>
+                                <v-btn fab small @click="closeFullScreenSearchList">
+                                    <v-icon>
+                                        close
+                                    </v-icon>
+                                </v-btn>
+                            </v-layout>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
             </v-flex>
 
             <v-flex xs1>
@@ -94,15 +112,17 @@
 
 <script>
     import MapPageHeader from "./map-page-header";
-    import DropDownButton from "./mapPageButton/DropDownButton"
+    import DropDownButton from "./mapPage/DropDownButton"
     import MapComponent from './ProjectPage/MapComponent';
+    import SearchList from './mapPage/SearchList'
 
     export default {
         name: 'MapPage',
         components: {
             MapPageHeader,
             DropDownButton,
-            MapComponent
+            MapComponent,
+            SearchList
         },
         props: {
             onProjectOpened: {
@@ -150,7 +170,11 @@
                 this.onRoutePageOpened();
             },
             searchTileClicked(item) {
-                this.OpenProjectPagePressed(item.id, !item.project_id);
+                this.OpenProjectPagePressed(item.id, (item.project_id !== null));
+            },
+            closeFullScreenSearchList() {
+                this.searchFieldIsFocused = false;
+                this.searchInput = '';
             }
         },
         watch: {
@@ -158,6 +182,9 @@
                 this.filteredMapObjects = this.mapObjects.filter(item => {
                     return item.name.toLowerCase().includes(n.toLowerCase());
                 });
+
+                if (this.$vuetify.breakpoint.xsOnly)
+                    this.searchFieldIsFocused = (n.length !== 0)
             }
         },
         mounted() {
@@ -180,7 +207,7 @@
                         this.searchFieldIsFocused = true;
                 }
             );
-        }
+        },
     }
 </script>
 
@@ -190,50 +217,6 @@
         border-style: solid;
         border-width: 1px;
         border-color: #b4c9cf;
-    }
-
-    .vb > .vb-dragger {
-        z-index: 5;
-        width: 12px;
-        right: 0;
-    }
-
-    .vb > .vb-dragger > .vb-dragger-styler {
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        -webkit-transform: rotate3d(0, 0, 0, 0);
-        transform: rotate3d(0, 0, 0, 0);
-        -webkit-transition: background-color 100ms ease-out,
-        margin 100ms ease-out,
-        height 100ms ease-out;
-        transition: background-color 100ms ease-out,
-        margin 100ms ease-out,
-        height 100ms ease-out;
-        background-color: rgba(38, 38, 38, 0.1);
-        margin: 5px 5px 5px 0;
-        border-radius: 20px;
-        height: calc(100% - 10px);
-        display: block;
-    }
-
-    .vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler {
-        background-color: rgba(38, 38, 38, 0.3);
-    }
-
-    .vb > .vb-dragger:hover > .vb-dragger-styler {
-        background-color: rgba(38, 38, 38, 0.5);
-        margin: 0px;
-        height: 100%;
-    }
-
-    .vb.vb-dragging > .vb-dragger > .vb-dragger-styler {
-        background-color: rgba(38, 38, 38, 0.5);
-        margin: 0px;
-        height: 100%;
-    }
-
-    .vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {
-        background-color: rgba(38, 38, 38, 0.5);
     }
 </style>
 
@@ -258,6 +241,5 @@
         z-index: 1000;
         top: 0;
         right: 0;
-        width: 25%;
     }
 </style>

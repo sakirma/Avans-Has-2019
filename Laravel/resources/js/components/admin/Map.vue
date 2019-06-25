@@ -2,31 +2,31 @@
     <v-layout column fill-height justify-center>
         <v-flex xs1>
             <v-layout row align-center justify-center fill-height>
-                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324"
+                <v-btn depressed block class="categorieButton mx-1 white--text" color="#F29635"
                        :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[0]]}"
-                       @click="filter(Object.keys(pressedImages)[0])">
+                       @click="filter(Object.keys(pressedImages)[0])" v-resize-text="{ratio:1.4, minFontSize: '5px', maxFontSize: '20px'}">
                     Activiteiten
                 </v-btn>
-                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324"
+                <v-btn depressed block class="categorieButton mx-1 white--text" color="#375980"
                        :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[1]]}"
-                       @click="filter(Object.keys(pressedImages)[1])">
+                       @click="filter(Object.keys(pressedImages)[1])" v-resize-text="{ratio:1.4, minFontSize: '5px', maxFontSize: '20px'}">
                     Eten & Drinken
                 </v-btn>
-                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324"
+                <v-btn depressed block class="categorieButton mx-1 white--text" color="#FF6666"
                        :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[2]]}"
-                       @click="filter(Object.keys(pressedImages)[2])">
-                    Bezienswaardigheden
+                       @click="filter(Object.keys(pressedImages)[2])" v-resize-text="{ratio:1.4, minFontSize: '5px', maxFontSize: '20px'}">
+                        Bezienswaardigheden
                 </v-btn>
-                <v-btn depressed block class="categorieButton mx-1 white--text" color="#89A324"
+                <v-btn depressed block class="categorieButton mx-1 white--text" color="#81BB5A"
                        :class="{'categoryButtonPressed': pressedImages[Object.keys(pressedImages)[3]]}"
-                       @click="filter(Object.keys(pressedImages)[3])">
+                       @click="filter(Object.keys(pressedImages)[3])" v-resize-text="{ratio:1.4, minFontSize: '5px', maxFontSize: '20px'}">
                     Natuurgebieden
                 </v-btn>
             </v-layout>
         </v-flex>
         <v-flex>
             <div style="height: 100%;">
-                <map-component ref="mapComponent" :parent="this" :add-event="addEvent"></map-component>
+                <map-component ref="mapComponent" :add-event="addEvent"></map-component>
             </div>
         </v-flex>
     </v-layout>
@@ -43,10 +43,6 @@
             MapComponent
         },
         props: {
-            parentPage: {
-                type: Object,
-                required: true
-            },
             addEvent: {
                 type: Function,
             }
@@ -62,6 +58,7 @@
                     bezienswaardigheid: false,
                     natuurgebied: false
                 },
+                parentPage: null,
             }
         },
         methods: {
@@ -80,9 +77,12 @@
             setPolygonsInteractive(isInteractive) {
                 this.$refs.mapComponent.setPolygonsInteractive(isInteractive);
             },
+            assignParentPage(parent) {
+                this.parentPage = parent;
+            }
         },
         mounted() {
-
+            this.$refs.mapComponent.assignParentPage(this);
         }
     }
 </script>

@@ -70,7 +70,7 @@ class MediaController extends Controller
     }
 
 
-    /**
+    /**r
      * @param $mediaUsedByProject The media has project/point model
      * @return string return the name of the media
      */
