@@ -9,7 +9,8 @@
                          v-if="!$vuetify.breakpoint.xsOnly">
                 <v-layout row fill-height>
                     <v-layout column fill-height>
-                        <v-flex d-flex xs6 :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
+                        <v-flex d-flex xs6
+                                :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
                             <v-layout row fill-height style="background-color: #A0B550;">
 
                                 <v-flex xs10>
@@ -39,15 +40,16 @@
                                                    :src="suggestion.path"
                                             ></v-img>
                                             <v-card-text>
-                                                <b>{{suggestion.name}}</b> <br>
-                                                {{suggestion.category}}
+                                                <b>{{suggestion.name}}</b>
                                             </v-card-text>
+                                            <v-divider></v-divider>
                                         </v-card>
                                     </v-layout>
                                 </v-flex>
                             </v-layout>
                         </v-flex>
-                        <v-flex d-flex xs6 :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]"
+                        <v-flex d-flex xs6
+                                :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]"
                                 align-self-end>
                             <v-carousel v-if="images.length > 0" height="100%">
                                 <v-carousel-item
@@ -158,9 +160,13 @@
                     this.information = data.information;
                     this.comments = data.comments;
                     this.name = data.name;
+                    this.zoomToPoint(data.area);
 
-                    if(this.$parent.selectedProjectPage.project) { this.findRecommendationsProjects(data, this); }
-                    else { this.findRecommendationsInterestPoint(data, this); }
+                    if (this.$parent.selectedProjectPage.project) {
+                        this.findRecommendationsProjects(data, this);
+                    } else {
+                        this.findRecommendationsInterestPoint(data, this);
+                    }
 
 
                 });
@@ -170,7 +176,24 @@
                         this.images.push("getmedia/" + data[i]);
                 });
 
-                console.log(this.parent);
+            },
+            zoomToPoint(area) {
+                return;
+                let geom = area.geometries[0].coordinates[0];
+
+                let lat = 0, lng = 0;
+                let geomLength = geom.length;
+                for (let i = 0; i < geomLength; i++) {
+                    lat += geom[i][0]; // longitude
+                    lng += geom[i][1]; // latitude
+                }
+                lat /= geomLength;
+                lng /= geomLength;
+                this.center = L.latLng(lat, lng);
+
+                
+                this.zoom = 12;
+                this.$refs.map.setZoom(this.zoom);
             },
             findRecommendationsInterestPoint(d, t) {
                 axios.post('/projectpoints/similarIntrestPoint', {
