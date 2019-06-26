@@ -5,7 +5,10 @@
                 <br>
                 {{this.project ? '(Project)' : ''}}
             </p>
-            <v-card-text class="text-xs-center">{{ this.item.information }}</v-card-text>
+            <v-card-text class="text-xs-center"
+                         style="height: 10vh; overflow: hidden;">
+                {{ this.item.information }}
+            </v-card-text>
             <v-btn dark @click="parent.OpenProjectPagePressed(item.id, project)">Open</v-btn>
         </v-layout>
     </l-popup>
@@ -29,13 +32,13 @@
                 required: true
             }
         },
-        data(){
+        data() {
             return {
                 project: false
             }
         },
-        mounted(){
-            this.project = (typeof(this.item.project_id) == 'undefined');
+        mounted() {
+            this.project = (typeof (this.item.project_id) == 'undefined');
         }
     }
 </script>
