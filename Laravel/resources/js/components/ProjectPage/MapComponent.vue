@@ -206,6 +206,9 @@
                     case "natuurgebied":
                         return this.greenPin;
                 }
+            },
+            setCenter(center) {
+                this.$refs.map.setCenter(center);
             }
         },
         mounted() {
