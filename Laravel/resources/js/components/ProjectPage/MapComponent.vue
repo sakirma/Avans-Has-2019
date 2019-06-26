@@ -207,8 +207,8 @@
                         return this.greenPin;
                 }
             },
-            setCenter(center) {
-                this.$refs.map.setCenter(center);
+            panTo(lat, lng, zoomIn) {
+                this.$refs.map.mapObject.setView([lat,lng], zoomIn);
             }
         },
         mounted() {
