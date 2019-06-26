@@ -1,14 +1,14 @@
 <template>
     <div style="height: 100vh;  background-color: #89a226;">
         <v-layout column fill-height>
-            <v-flex xs2 d-flex ma-3>
+            <v-flex shrink d-flex ma-3>
                 <project-page-header :name="name"></project-page-header>
             </v-flex>
 
-            <v-flex xs9 d-flex v-if="!$vuetify.breakpoint.xsOnly">
+            <v-flex grow d-flex v-if="!$vuetify.breakpoint.xsOnly">
                 <!--- Bigger Screen ---->
                 <v-container ma-0 pl-0 fluid grid-list-md style="background-color: white; "
-                             >
+                >
                     <v-layout row fill-height>
                         <v-flex>
                             <v-layout column align-start fill-height>
@@ -20,7 +20,7 @@
                                             <v-card flat
                                                     style=" background-color: transparent; position:relative; overflow-y: hidden; height: 100%;"
                                                     v-bar>
-                                                <v-card-text style="position: absolute;">
+                                                <v-card-text style="position: absolute;" class="white--text">
                                                     {{ information }}
                                                     <br>
                                                     <!-- {{ comments }} -->
@@ -29,19 +29,25 @@
                                         </v-flex>
 
                                         <v-flex xs2 pa-0 v-bar>
-                                            <v-layout column ma-0>
-                                                <div class="text-xs-center" style="background-color: rgba(255,255,255,0.3);"
-                                                     v-resize-text="{ratio:1, minFontSize: '10px', maxFontSize: '30px'}">
-                                                    Meer zoals dit
-                                                </div>
-                                                <v-card flat v-for="(suggestion, i) in suggestions" :key="i"
-                                                        style="height: 100%; cursor: pointer; position:relative; overflow: hidden; background-color: rgba(255,255,255,0.3);"
-                                                        @click="init(suggestion.id)">
-                                                    <div style="background-color: rgba(255,255,255,0.3);">
-                                                        <b>{{suggestion.name}}</b>
+                                            <div>
+                                                <v-layout column justify-start align-start ma-0 fill-height>
+                                                    <div class="text-xs-center"
+                                                         style="background-color: rgba(255,255,255,0.3); width: 100%"
+                                                         v-resize-text="{ratio:1, minFontSize: '10px', maxFontSize: '30px'}">
+                                                        Meer zoals dit
                                                     </div>
-                                                </v-card>
-                                            </v-layout>
+                                                    <v-flex xs2 v-for="(suggestion, i) in suggestions" :key="i" style="width: 100%;" pa-0>
+                                                        <v-card flat class="text-xs-center"
+                                                                style="height: 100%; cursor: pointer; position:relative; overflow: hidden; background-color: rgb(209,218,172);"
+                                                                @click="init(suggestion.id)" >
+                                                            <div>
+                                                                <b>{{suggestion.name}}</b>
+                                                            </div>
+                                                        </v-card>
+                                                        <v-divider></v-divider>
+                                                    </v-flex>
+                                                </v-layout>
+                                            </div>
                                         </v-flex>
                                     </v-layout>
                                 </v-flex>

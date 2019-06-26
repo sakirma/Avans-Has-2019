@@ -1,5 +1,5 @@
 <template>
-    <v-layout align-center justify-center row fill-height :class="{ 'ml-3': $vuetify.breakpoint.smAndUp }"style="position: relative">
+    <v-layout align-center justify-center row fill-height :class="{ 'ml-3': $vuetify.breakpoint.smAndUp }" style="position: relative">
         <div style="position: absolute; left: 0;">
             <v-flex shrink class="hidden-sm-and-down v-card--reveal">
                 <v-layout align-center justify-center fill-height>
@@ -18,8 +18,8 @@
             </v-flex>
         </div>
         <v-flex fill-height xs5 py-4 style="background-color: #89a226">
-            <v-card style="" flat color="transparent" class="white--text text-xs-center display-2 font-weight-black first-page-title"
-                    :class="{'createOwnRouteTitle': $vuetify.breakpoint.xsOnly}">
+            <v-card style="" flat color="transparent" class="white--text text-xs-center font-weight-black first-page-title"
+                    :class="{'createOwnRouteTitle': $vuetify.breakpoint.xsOnly}" v-resize-text="{ratio:1, minFontSize: '10px', maxFontSize: '30px'}">
                 {{ name }}
             </v-card>
         </v-flex>
