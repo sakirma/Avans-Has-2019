@@ -7,23 +7,26 @@
         <l-tile-layer :url="url"></l-tile-layer>
 
         <template v-for="(marker, index) in markers">
-            <l-marker :key="index" v-if="isAllowedCategory(marker.category)" :lat-lng="marker.latlng"
-                      :icon="getPin(marker.category)"
-                      style="transform: scale(0.1)">
+            <l-marker :key="index" v-if="isAllowedCategory(marker.category)"
+                      :lat-lng="marker.latlng" style="transform: scale(0.1)"
+                      :icon="getPin(marker.category)">
                 <pop-up :item="marker" :parent="marker.parent"></pop-up>
             </l-marker>
         </template>
 
         <div v-for="(polygon, index) in polygons">
-            <l-polygon :key="index + markers.length" v-if="isAllowedCategory(polygon.category)"
+            <l-polygon :key="index + markers.length"
+                       v-if="isAllowedCategory(polygon.category)"
                        :lat-lngs="polygon.latlng"
                        :color="polygonLineColor" :fill-color="polygonFillColor" :fill-opacity="0.6">
-                <pop-up :item="polygon" :parent="polygon.parent"></pop-up>
+                <pop-up id="leaflet-popup" :lat-lng="polygon.latlng[0]" :item="polygon"
+                        :parent="polygon.parent"></pop-up>
             </l-polygon>
         </div>
 
         <template v-for="(polyline, index) in polylines">
-            <l-polyline :key="index + markers.length + polygons.length" v-if="isAllowedCategory(polyline.category)"
+            <l-polyline :key="index + markers.length + polygons.length"
+                        v-if="isAllowedCategory(polyline.category)"
                         :lat-lngs="polyline.latlng">
                 <pop-up :item="polyline" :parent="polyline.parent"></pop-up>
             </l-polyline>
@@ -63,7 +66,7 @@
         data() {
             return {
                 zoom: 11,
-                center: L.latLng(51.7142669290121, 5.3173828125),
+                center: L.latLng(51.53096001302975, 5.288543701171875),
                 url: 'https://api.mapbox.com/styles/v1/sakirma/cjw0hdemp03kx1coxkbji4wem/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2FraXJtYSIsImEiOiJjanM5Y3kzYm0xZzdiNDNybmZueG5jeGw0In0.yNltTMF52t5uEFdU15Uxig',
                 markers: [],
 
@@ -99,9 +102,19 @@
                 }),
 
                 parent: null,
+                currentPopUp: null
             }
         },
         methods: {
+            checkOpenPopUp(marker, event) {
+                if (this.parent && this.parent.$options._componentTag === "project-page" && this.parent.parent && marker && marker.id == this.parent.parent.selectedProject.id && ((typeof (marker.project_id) !== 'undefined' && !this.parent.parent.selectedProject.project) || (typeof (marker.project_id) == 'undefined' && this.parent.parent.selectedProject.project))) {
+                    console.log("show pressed project!");
+                    this.$nextTick(() => {
+                        event.target.openPopup();
+                        this.zoomToPoint(marker);
+                    })
+                }
+            },
             invokeAddEvent(e) {
                 if (this.addEvent)
                     this.addEvent(e);
@@ -112,7 +125,6 @@
             isAllowedCategory(cat) {
                 if (!this.parent || typeof (this.parent.pressedImages) == 'undefined')
                     return true;
-
 
                 if (cat in this.parent.pressedImages)
                     return !this.parent.pressedImages[cat];
@@ -194,6 +206,9 @@
                     case "natuurgebied":
                         return this.greenPin;
                 }
+            },
+            panTo(lat, lng, zoomIn) {
+                this.$refs.map.mapObject.setView([lat,lng], zoomIn);
             }
         },
         mounted() {

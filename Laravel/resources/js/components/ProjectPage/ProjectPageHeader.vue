@@ -1,5 +1,5 @@
 <template>
-    <v-layout align-center justify-center row fill-height :class="{ 'ml-3': $vuetify.breakpoint.smAndUp }"style="position: relative">
+    <v-layout align-center justify-center row fill-height :class="{ 'ml-3': $vuetify.breakpoint.smAndUp }" style="position: relative">
         <div style="position: absolute; left: 0;">
             <v-flex shrink class="hidden-sm-and-down v-card--reveal">
                 <v-layout align-center justify-center fill-height>
@@ -17,11 +17,15 @@
                 </v-layout>
             </v-flex>
         </div>
-        <v-flex fill-height xs5 py-4 style="background-color: #89a226">
-            <v-card style="" flat color="transparent" class="white--text text-xs-center display-2 font-weight-black first-page-title"
-                    :class="{'createOwnRouteTitle': $vuetify.breakpoint.xsOnly}">
-                {{ name }}
-            </v-card>
+        <v-flex fill-height xs5 :class="{'py-4': !$vuetify.breakpoint.mdAndDown}"  style="background-color: #89a226">
+            <v-layout column fill-height align-center justify-center>
+                <v-flex xs1>
+                    <div flat color="transparent" class="white--text text-xs-center font-weight-black first-page-title"
+                            :class="{'createOwnRouteTitle': $vuetify.breakpoint.xsOnly}" v-resize-text="{ratio:1, minFontSize: '30px', maxFontSize: '50px'}">
+                        {{ name }}
+                    </div>
+                </v-flex>
+            </v-layout>
         </v-flex>
         <v-flex xs1 class="hidden-md-and-up">
             <v-btn fab dark @click="GoBackToMapPage">

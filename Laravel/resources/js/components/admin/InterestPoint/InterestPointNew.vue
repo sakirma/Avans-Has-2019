@@ -237,9 +237,7 @@
                                         'Content-Type': 'multipart/form-data'
                                     }
                                 }
-                            ).then(({data}) => {
-                                console.log(data);
-                            }).catch(error => {
+                            ).catch(error => {
                                 alert("Er ging iets mis bij het opslaan van het interesse punt!");
                                 console.log(error);
                             });

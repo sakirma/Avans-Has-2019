@@ -56,7 +56,7 @@ class ProjectPointsController extends Controller
         }
 
         $point->location = $location;
-        $point->area = $request->area;
+        $point->area = new GeometryCollection([$location]);
         $point->name = $request->name;
         $point->information = $request->information;
         $point->category = $request->category;
@@ -84,7 +84,7 @@ class ProjectPointsController extends Controller
         }
         $projectPoint->project_id = $request->project_id;
         $projectPoint->location = $location;
-        $projectPoint->area = null;
+        $projectPoint->area = new GeometryCollection([$location]);
         $projectPoint->name = $request->name;
         $projectPoint->information = $request->information;
         $projectPoint->category = $request->category;
