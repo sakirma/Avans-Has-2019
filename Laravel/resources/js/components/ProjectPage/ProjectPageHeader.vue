@@ -17,11 +17,15 @@
                 </v-layout>
             </v-flex>
         </div>
-        <v-flex fill-height xs5 py-4 style="background-color: #89a226">
-            <v-card style="" flat color="transparent" class="white--text text-xs-center font-weight-black first-page-title"
-                    :class="{'createOwnRouteTitle': $vuetify.breakpoint.xsOnly}" v-resize-text="{ratio:1, minFontSize: '10px', maxFontSize: '30px'}">
-                {{ name }}
-            </v-card>
+        <v-flex fill-height xs5 :class="{'py-4': !$vuetify.breakpoint.mdAndDown}"  style="background-color: #89a226">
+            <v-layout column fill-height align-center justify-center>
+                <v-flex xs1>
+                    <div flat color="transparent" class="white--text text-xs-center font-weight-black first-page-title"
+                            :class="{'createOwnRouteTitle': $vuetify.breakpoint.xsOnly}" v-resize-text="{ratio:1, minFontSize: '30px', maxFontSize: '50px'}">
+                        {{ name }}
+                    </div>
+                </v-flex>
+            </v-layout>
         </v-flex>
         <v-flex xs1 class="hidden-md-and-up">
             <v-btn fab dark @click="GoBackToMapPage">

@@ -1,11 +1,11 @@
 <template>
-    <div style="height: 100vh;  background-color: #89a226;">
+    <div style="height: 100vh;  background-color: #89a226; max-height: 100vh" >
         <v-layout column fill-height>
-            <v-flex shrink d-flex ma-3>
+            <v-flex xs1 sm1 ma-3>
                 <project-page-header :name="name"></project-page-header>
             </v-flex>
 
-            <v-flex grow d-flex v-if="!$vuetify.breakpoint.xsOnly">
+            <v-flex grow d-flex v-if="!$vuetify.breakpoint.mdAndDown">
                 <!--- Bigger Screen ---->
                 <v-container ma-0 pl-0 fluid grid-list-md style="background-color: white; "
                 >
@@ -20,10 +20,9 @@
                                             <v-card flat
                                                     style=" background-color: transparent; position:relative; overflow-y: hidden; height: 100%;"
                                                     v-bar>
-                                                <v-card-text style="position: absolute;" class="white--text">
+                                                <v-card-text class="py-4 pr-0 pl-1  white--text">
                                                     {{ information }}
                                                     <br>
-                                                    <!-- {{ comments }} -->
                                                 </v-card-text>
                                             </v-card>
                                         </v-flex>
@@ -64,7 +63,7 @@
                                 </v-flex>
                             </v-layout>
                         </v-flex>
-                        <v-flex lg4>
+                        <v-flex lg5>
                             <v-card height="100%">
                                 <map-component ref="mapComponent"></map-component>
                             </v-card>
@@ -79,12 +78,9 @@
                 <v-layout column fill-height>
 
                     <v-flex d-flex xs6 :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
-                        <v-card flat style="background-color: #A0B550; position:relative; overflow-y: hidden;"
-                                v-bar>
-                            <v-card-text style="position: absolute;">
+                        <v-card flat style="background-color: #A0B550; position:relative; overflow-y: hidden;" v-bar>
+                            <v-card-text  class="py-4 pr-0 pl-1 white--text">
                                 {{ information }}
-                                <br>
-                                <!--{{ comments }} -->
                             </v-card-text>
                         </v-card>
                     </v-flex>
