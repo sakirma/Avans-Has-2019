@@ -10,7 +10,7 @@
                 <v-container ma-0 pl-0 fluid grid-list-md style="background-color: white; "
                 >
                     <v-layout row fill-height>
-                        <v-flex>
+                        <v-flex xs7>
                             <v-layout column align-start fill-height>
                                 <v-flex d-flex xs6
                                         :style="[$vuetify.breakpoint.mdAndDown ? {'width': '100%'} : {'width': '75%'}]">
@@ -64,7 +64,7 @@
                                 </v-flex>
                             </v-layout>
                         </v-flex>
-                        <v-flex lg5>
+                        <v-flex xs5>
                             <v-card height="100%">
                                 <map-component ref="mapComponent"></map-component>
                             </v-card>
@@ -82,16 +82,6 @@
                         <div style="overflow-y: auto;  max-height: 40vh;">
                             <div class="py-4 pl-1 white--text">
                                 {{ information }}
-
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis arcu sed velit semper gravida. Nullam id auctor urna. Mauris sed sem blandit lorem lacinia ultrices at ut augue. Duis accumsan, nisl nec pellentesque fringilla, justo dui finibus leo, vitae laoreet magna est quis ex. Proin nisi augue, malesuada id libero sit amet, facilisis rutrum risus. Sed ut eleifend mauris. Phasellus sed dapibus augue, sit amet ultricies nulla. Nulla facilisi. Vestibulum eget condimentum ligula, quis accumsan urna.
-
-                                Sed felis orci, viverra vitae tellus a, consectetur consequat mauris. Cras metus dui, finibus ac tristique vel, luctus ut metus. Sed justo arcu, mollis ac imperdiet id, elementum in ante. Phasellus diam nisl, mollis sed cursus eu, faucibus non risus. Ut rutrum gravida feugiat. Curabitur quam tellus, porta vel ullamcorper a, rutrum sed lacus. Sed maximus sagittis est, vitae mattis justo sollicitudin ut. Sed vel ex egestas lacus dignissim tristique at posuere tellus.
-
-                                Duis accumsan vestibulum tortor id dapibus. Ut egestas mauris nisl, vel finibus odio vulputate ac. Integer quis velit nec enim pretium finibus. In ac auctor diam. Proin ac mi imperdiet, finibus neque eu, hendrerit justo. Nunc non pharetra metus. Fusce at molestie neque.
-
-                                Nam molestie nec justo ut bibendum. Mauris et neque sit amet ex finibus rhoncus. Phasellus porttitor turpis at dui ullamcorper faucibus. Morbi vestibulum nulla non gravida vestibulum. Proin finibus quis ante vel dignissim. Fusce ut volutpat est. Sed elementum erat nec tincidunt suscipit. Aenean fringilla, risus a dapibus varius, ante ligula aliquet erat, in condimentum dui ipsum quis orci. Integer venenatis mauris eget mauris auctor, ut ultrices risus molestie. Maecenas sagittis risus eget lacinia porttitor. Etiam orci est, viverra quis arcu vel, hendrerit mattis ligula. Nulla sed leo vehicula, pretium libero in, lacinia leo. Aliquam viverra eget nibh eget sagittis.
-
-                                Quisque sed hendrerit turpis. Fusce in ligula vitae velit lobortis venenatis. In metus arcu, interdum eu venenatis vitae, feugiat sed quam. Morbi eu justo eu erat elementum egestas vel nec nunc. Aliquam id lorem sapien. Nulla nec neque ante. Nam felis eros, elementum nec nisi vel, euismod hendrerit elit. Aliquam vitae ex viverra, porttitor justo eu, fringilla risus. Integer vitae venenatis mauris. Morbi quis dui et ligula tincidunt sagittis. Duis rhoncus blandit nibh in ullamcorper. Etiam in nisl lorem. Sed molestie et diam quis pharetra. Sed magna massa, sollicitudin eget volutpat ut, vulputate ut lacus. Proin vehicula tortor dui, et accumsan lacus finibus vel. Interdum et malesuada fames ac ante ipsum primis in faucibus.
                             </div>
                         </div>
 
